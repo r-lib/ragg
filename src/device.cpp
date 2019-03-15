@@ -8,7 +8,9 @@
 #include "agg_renderer_base.h"
 #include "agg_ellipse.h"
 #include "agg_path_storage.h"
+#include "agg_math_stroke.h"
 #include "agg_conv_stroke.h"
+#include "agg_conv_dash.h"
 
 #include "agg_rasterizer_scanline_aa.h"
 #include "agg_scanline_p.h"
@@ -79,41 +81,142 @@ public:
     }
     return false;
   }
-  void drawCircle(double x, double y, double r, int fill, int col, double lwd, int lty) {
+  void drawCircle(double x, double y, double r, int fill, int col, double lwd, 
+                  int lty, R_GE_lineend lend) {
     bool draw_fill = visibleColour(fill);
-    bool draw_stroke = visibleColour(col) && lwd > 0.0;
+    bool draw_stroke = visibleColour(col) && lwd > 0.0 && lty != LTY_BLANK;
     
     if (!draw_fill && !draw_stroke) return; // Early exit
     
-    agg::rasterizer_scanline_aa<> pf;
-    agg::scanline_p8 sl;
+    agg::rasterizer_scanline_aa<> ras;
+    agg::scanline_p8 slp;
     agg::ellipse e1;
-    e1.init(x, y, r, r);
-    pf.add_path(e1);
-    if (draw_fill) {
-      agg::render_scanlines_aa_solid(pf, sl, renderer, convertColour(fill));
+    if (r < 5) {
+      e1.init(x, y, r, r, 16);
+    } else if (r < 10) {
+      e1.init(x, y, r, r, 32);
+    } else if (r < 20) {
+      e1.init(x, y, r, r, 64);
+    } else {
+      e1.init(x, y, r, r);
     }
-    if (draw_stroke) {
-      // TODO: draw outline
+    
+    if (draw_fill) {
+      ras.add_path(e1);
+      agg::render_scanlines_aa_solid(ras, slp, renderer, convertColour(fill));
+    }
+    if (!draw_stroke) return;
+    
+    agg::scanline_u8 slu;
+    if (lty == LTY_SOLID) {
+      agg::conv_stroke<agg::ellipse> pg(e1);
+      pg.width(lwd);
+      ras.add_path(pg);
+      agg::render_scanlines_aa_solid(ras, slu, renderer, convertColour(col));
+    } else {
+      agg::conv_dash<agg::ellipse> pd(e1);
+      agg::conv_stroke< agg::conv_dash<agg::ellipse> > pg(pd);
+      makeDash(pd, lty, lwd);
+      pg.width(lwd);
+      pg.line_cap(convertLineend(lend));
+      ras.add_path(pg);
+      agg::render_scanlines_aa_solid(ras, slu, renderer, convertColour(col));
     }
   }
-  void drawLine(double x1, double y1, double x2, double y2, int col, double lwd, int lty) {
-    if (!visibleColour(col) || lwd == 0.0) return;
+  void drawLine(double x1, double y1, double x2, double y2, int col, double lwd, 
+                int lty, R_GE_lineend lend) {
+    if (!visibleColour(col) || lwd == 0.0 || lty == LTY_BLANK) return;
     agg::scanline_u8 sl;
     agg::rasterizer_scanline_aa<> ras;
     agg::path_storage ps;
-    agg::conv_stroke<agg::path_storage> pg(ps);
-    pg.width(lwd);
     ps.remove_all();
     ps.move_to(x1, y1);
     ps.line_to(x2, y2);
-    ras.add_path(pg);
-    agg::render_scanlines_aa_solid(ras, sl, renderer, convertColour(col));
+    
+    if (lty == LTY_SOLID) {
+      agg::conv_stroke<agg::path_storage> pg(ps);
+      pg.width(lwd);
+      pg.line_cap(convertLineend(lend));
+      ras.add_path(pg);
+      agg::render_scanlines_aa_solid(ras, sl, renderer, convertColour(col));
+    } else {
+      agg::conv_dash<agg::path_storage> pd(ps);
+      agg::conv_stroke< agg::conv_dash<agg::path_storage> > pg(pd);
+      makeDash(pd, lty, lwd);
+      pg.width(lwd);
+      pg.line_cap(convertLineend(lend));
+      ras.add_path(pg);
+      agg::render_scanlines_aa_solid(ras, sl, renderer, convertColour(col));
+    }
+  }
+  void drawPolyline(int n, double* x, double* y, int col, double lwd, int lty,
+                    R_GE_lineend lend, R_GE_linejoin ljoin, double lmitre) {
+    if (!visibleColour(col) || lwd == 0.0 || lty == LTY_BLANK || n < 2) return;
+    agg::scanline_u8 sl;
+    agg::rasterizer_scanline_aa<> ras;
+    agg::path_storage ps;
+    ps.remove_all();
+    ps.move_to(x[0], y[0]);
+    for (int i = 1; i < n; i++) {
+      ps.line_to(x[i], y[i]);
+    }
+    
+    if (lty == LTY_SOLID) {
+      agg::conv_stroke<agg::path_storage> pg(ps);
+      pg.width(lwd);
+      pg.line_cap(convertLineend(lend));
+      pg.line_join(convertLinejoin(ljoin));
+      pg.miter_limit(lmitre);
+      ras.add_path(pg);
+      agg::render_scanlines_aa_solid(ras, sl, renderer, convertColour(col));
+    } else {
+      agg::conv_dash<agg::path_storage> pd(ps);
+      agg::conv_stroke< agg::conv_dash<agg::path_storage> > pg(pd);
+      makeDash(pd, lty, lwd);
+      pg.width(lwd);
+      pg.line_cap(convertLineend(lend));
+      pg.line_join(convertLinejoin(ljoin));
+      pg.miter_limit(lmitre);
+      ras.add_path(pg);
+      agg::render_scanlines_aa_solid(ras, sl, renderer, convertColour(col));
+    }
   }
   
 private:
   agg::rgba8 convertColour(unsigned int col) {
     return agg::rgba8(R_RED(col), R_GREEN(col), R_BLUE(col), R_ALPHA(col));
+  }
+  agg::line_cap_e convertLineend(R_GE_lineend lend) {
+    switch (lend) {
+    case GE_ROUND_CAP:
+      return agg::round_cap;
+    case GE_BUTT_CAP:
+      return agg::butt_cap;
+    case GE_SQUARE_CAP:
+      return agg::square_cap;
+    }
+  }
+  agg::line_join_e convertLinejoin(R_GE_linejoin ljoin) {
+    switch(ljoin) {
+    case GE_ROUND_JOIN:
+      return agg::round_join;
+    case GE_MITRE_JOIN:
+      return agg::miter_join;
+    case GE_BEVEL_JOIN:
+      return agg::bevel_join;
+    }
+  }
+  template<class T>
+  void makeDash(T &dash_conv, int lty, double lwd) {
+    dash_conv.remove_all_dashes();
+    double dash, gap;
+    for(int i = 0 ; i < 8 && lty & 15 ; i += 2) {
+      dash = (lty & 15) * lwd;
+      lty = lty>>4;
+      gap = (lty & 15) * lwd;
+      lty = lty>>4;
+      dash_conv.add_dash(dash, gap);
+    }
   }
   bool visibleColour(unsigned int col) {
     return col != NA_INTEGER && R_ALPHA(col) != 0;
@@ -152,12 +255,15 @@ void agg_close(pDevDesc dd) {
 void agg_line(double x1, double y1, double x2, double y2,
                const pGEcontext gc, pDevDesc dd) {
   AggDevice * device = (AggDevice *) dd->deviceSpecific;
-  device->drawLine(x1, y1, x2, y2, gc->col, gc->lwd, gc->lty);
+  device->drawLine(x1, y1, x2, y2, gc->col, gc->lwd, gc->lty, gc->lend);
   return;
 }
 
 void agg_polyline(int n, double *x, double *y, const pGEcontext gc,
                    pDevDesc dd) {
+  AggDevice * device = (AggDevice *) dd->deviceSpecific;
+  device->drawPolyline(n, x, y, gc->col, gc->lwd, gc->lty, gc->lend, gc->ljoin, 
+                       gc->lmitre);
   return;
 }
 void agg_polygon(int n, double *x, double *y, const pGEcontext gc,
@@ -184,7 +290,7 @@ void agg_rect(double x0, double y0, double x1, double y1,
 void agg_circle(double x, double y, double r, const pGEcontext gc,
                  pDevDesc dd) {
   AggDevice * device = (AggDevice *) dd->deviceSpecific;
-  device->drawCircle(x, y, r, gc->fill, gc->col, gc->lwd, gc->lty);
+  device->drawCircle(x, y, r, gc->fill, gc->col, gc->lwd, gc->lty, gc->lend);
   return;
 }
 
