@@ -1,6 +1,6 @@
-#include "agg/include/agg_pixfmt_rgb.h"
-#include "agg/include/agg_pixfmt_amask_adaptor.h"
-#include "agg/include/agg_alpha_mask_u8.h"
+#include "agg_pixfmt_rgb.h"
+#include "agg_pixfmt_amask_adaptor.h"
+#include "agg_alpha_mask_u8.h"
 #include <Rcpp.h>
 using namespace Rcpp;
 
