@@ -23,3 +23,5 @@ Description: Anti-Grain Geometry (AGG) is a high-quality and high-performance
 License: MIT + file LICENSE
 Imports: Rcpp (>= 1.0.0)
 LinkingTo: Rcpp
+URL: https://github.com/thomasp85/ragg
+BugReports: https://github.com/thomasp85/ragg/issues
