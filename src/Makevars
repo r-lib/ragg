@@ -1,0 +1,2 @@
+PKG_CXXFLAGS = -Iagg/include 
+PKG_LIBS = -Lagg/src
