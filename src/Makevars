@@ -1,5 +1,5 @@
-PKG_CXXFLAGS = -Iagg/include 
-PKG_LIBS = -Lagg/src
+PKG_CXXFLAGS = -I./agg/include
+PKG_LIBS = -L./agg/src
 
 SOURCES = $(wildcard agg/src/*.cpp)
 OBJECTS = device.o rcpp_hello_world.o RcppExports.o $(SOURCES:.cpp=.o)
