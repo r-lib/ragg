@@ -1,7 +1,8 @@
-#include <Rcpp.h>
-#include <stdlib.h> // for NULL
-#include <R_ext/Rdynload.h>
+#include <R.h>
+#include <Rinternals.h>
 #include <R_ext/GraphicsEngine.h>
+
+#include "ragg.h"
 
 #include "agg_basics.h"
 #include "agg_pixfmt_rgb.h"
@@ -16,8 +17,6 @@
 #include "agg_scanline_p.h"
 #include "agg_scanline_u.h"
 #include "agg_renderer_scanline.h"
-
-using namespace Rcpp;
 
 #define R_USE_PROTOTYPES 1
 
@@ -36,9 +35,13 @@ public:
   int pageno;
   const char* file;
   agg::rgba8 background;
-  AggDevice(const char* fp, int w, int h, int bg) {
+  int background_int;
+  double pointsize;
+  AggDevice(const char* fp, int w, int h, double ps, int bg) {
     width = w;
     height = h;
+    background_int = bg;
+    pointsize = ps;
     buffer = new unsigned char[width * height * bytes_per_pixel];
     rbuf = agg::rendering_buffer(buffer, width, height, width * bytes_per_pixel);
     pixf = new pixfmt_type(rbuf);
@@ -55,7 +58,7 @@ public:
   void newPage() {
     if (pageno != 0) {
       if (!savePage()) {
-        stop("agg could not write to the given file");
+        Rf_error("agg could not write to the given file");
       }
     }
     renderer.reset_clipping(true);
@@ -65,7 +68,7 @@ public:
   void close() {
     if (pageno == 0) pageno++;
     if (!savePage()) {
-      stop("agg could not write to the given file");
+      Rf_error("agg could not write to the given file");
     }
   }
   bool savePage() {
@@ -317,15 +320,15 @@ void agg_raster(unsigned int *raster, int w, int h,
 }
 
 
-pDevDesc agg_device_new(AggDevice* device, int width, int height, double pointsize, int bg) {
+pDevDesc agg_device_new(AggDevice* device) {
   
   pDevDesc dd = (DevDesc*) calloc(1, sizeof(DevDesc));
   if (dd == NULL)
     return dd;
   
-  dd->startfill = bg;
+  dd->startfill = device->background_int;
   dd->startcol = R_RGB(0, 0, 0);
-  dd->startps = pointsize;
+  dd->startps = device->pointsize;
   dd->startlty = LTY_SOLID;
   dd->startfont = 1;
   dd->startgamma = 1;
@@ -359,8 +362,8 @@ pDevDesc agg_device_new(AggDevice* device, int width, int height, double pointsi
   // Screen Dimensions in pts
   dd->left = 0.0;
   dd->top = 0.0;
-  dd->right = width;
-  dd->bottom = height;
+  dd->right = device->width;
+  dd->bottom = device->height;
   
   // Magic constants copied from other graphics devices
   // nominal character sizes in pts
@@ -387,11 +390,11 @@ pDevDesc agg_device_new(AggDevice* device, int width, int height, double pointsi
   return dd;
 }
 
-void makeDevice(AggDevice* device, int width, int height, double pointsize, int bg) {
+void makeDevice(AggDevice* device) {
   R_GE_checkVersionOrDie(R_GE_version);
   R_CheckDeviceAvailable();
   BEGIN_SUSPEND_INTERRUPTS {
-    pDevDesc dev = agg_device_new(device, width, height, pointsize, bg);
+    pDevDesc dev = agg_device_new(device);
     if (dev == NULL)
       Rf_error("agg device failed to open");
     
@@ -402,11 +405,16 @@ void makeDevice(AggDevice* device, int width, int height, double pointsize, int 
   } END_SUSPEND_INTERRUPTS;
 }
 
-//[[Rcpp::export]]
-SEXP agg_dev(String file, int width, int height, double pointsize, SEXP bg) {
+// [[export]]
+SEXP agg_dev_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg) {
   int bgCol = RGBpar(bg, 0);
-  AggDevice* device = new AggDevice(file.get_cstring(), width, height, bgCol);
-  makeDevice(device, width, height, pointsize, bgCol);
+  AggDevice* device = new AggDevice(
+    CHAR(STRING_ELT(file, 0)), 
+    INTEGER(width)[0], 
+    INTEGER(height)[0], 
+    REAL(pointsize)[0], 
+    bgCol);
+  makeDevice(device);
   
   return R_NilValue;
 }
