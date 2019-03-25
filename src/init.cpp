@@ -6,7 +6,7 @@
 #include "ragg.h"
 
 static const R_CallMethodDef CallEntries[] = {
-  {"agg_dev_c", (DL_FUNC) &agg_dev_c, 5},
+  {"agg_ppm_c", (DL_FUNC) &agg_ppm_c, 5},
   {NULL, NULL, 0}
 };
 

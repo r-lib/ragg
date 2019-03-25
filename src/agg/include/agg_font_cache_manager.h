@@ -344,7 +344,7 @@ namespace agg
         mono_scanline_type&  mono_scanline()  { return m_mono_scanline;  }
 
         //--------------------------------------------------------------------
-        const glyph_cache* perv_glyph() const { return m_prev_glyph; }
+        const glyph_cache* prev_glyph() const { return m_prev_glyph; }
         const glyph_cache* last_glyph() const { return m_last_glyph; }
 
         //--------------------------------------------------------------------

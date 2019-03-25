@@ -1,5 +1,5 @@
-PKG_CXXFLAGS = -I./agg/include
-PKG_LIBS = -L./agg/src
+PKG_CXXFLAGS = -I./agg/include `pkg-config --cflags freetype2 fontconfig`
+PKG_LIBS = -L./agg/src `pkg-config --libs freetype2 fontconfig`
 
 AGG_SOURCES = $(wildcard agg/src/*.cpp)
 OWN_SOURCES = $(wildcard *.cpp)
