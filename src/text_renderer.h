@@ -44,12 +44,6 @@ static const char trailingBytesForUTF8[256] = {
   2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2, 3,3,3,3,3,3,3,3,4,4,4,4,5,5,5,5
 };
 
-/* returns length of next utf-8 sequence */
-static int u8_seqlen(char *s)
-{
-  return trailingBytesForUTF8[(unsigned int)(unsigned char)s[0]] + 1;
-}
-
 /* conversions without error checking
  only works for valid UTF-8, i.e. no 5- or 6-byte sequences
  srcsz = source size in bytes, or -1 if 0-terminated
@@ -151,6 +145,7 @@ public:
     feng.height(size);
     feng.width(size);
     feng.flip_y(true);
+    feng.gamma(agg::gamma_power(1.5));
     agg::trans_affine mtx;
     feng.transform(mtx);
     
@@ -177,6 +172,7 @@ public:
     *width = glyph->advance_x;
   }
   
+  template<typename renderer_solid>
   void plot_text(double x, double y, const char *string, double rot, double hadj, 
                  renderer_solid &ren_solid) {
     agg::scanline_u8 sl;

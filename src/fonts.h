@@ -1,13 +1,28 @@
 #include <string>
-#include <R.h>
-#include <Rinternals.h>
+#include "ragg.h"
 #include <fontconfig/fontconfig.h>
 
 #ifndef FONTS_INCLUDED
 #define FONTS_INCLUDED
 
+font_map* get_font_map();
+
 static std::pair<std::string, int> get_font_file(const char* family, int bold, 
                                                  int italic, int symbol) {
+  FcChar8* fontfamily;
+  if (symbol) {
+    fontfamily = (FcChar8 *) "Symbol";
+  } else {
+    fontfamily = (FcChar8 *) (*family ? family : "Arial");
+  }
+  
+  font_key key = std::make_tuple(std::string((char *) fontfamily), bold, italic);
+  font_map* map = get_font_map();
+  font_map::iterator font_it = map->find(key);
+  if (font_it != map->end()) {
+    return font_it->second;
+  }
+  
   std::pair<std::string, int> res;
   res.first = "";
   res.second = 0;
@@ -18,12 +33,7 @@ static std::pair<std::string, int> get_font_file(const char* family, int bold,
   }
   FcPattern* pattern;
   
-  FcChar8* fontfamily;
-  if (symbol) {
-    fontfamily = (FcChar8 *) "Symbol";
-  } else {
-    fontfamily = (FcChar8 *) (*family ? family : "Arial");
-  }
+  
   
   if(!(pattern = FcNameParse(fontfamily))) { // Defaults to Arial
     Rf_warning("Fontconfig error: unable to parse font name: %s. Using system font", 
@@ -54,6 +64,8 @@ static std::pair<std::string, int> get_font_file(const char* family, int bold,
   FcPatternGetInteger(match, FC_INDEX, 0, &res.second);
   
   FcPatternDestroy(match);
+  
+  (*map)[key] = res;
   
   return res;
 }

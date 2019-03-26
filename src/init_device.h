@@ -101,7 +101,7 @@ void agg_text(double x, double y, const char *str, double rot, double hadj,
   return;
 }
 
-void agg_size(double *left, double *right, double *bottom, double *top,
+static void agg_size(double *left, double *right, double *bottom, double *top,
               pDevDesc dd) {
   *left = dd->left;
   *right = dd->right;
@@ -166,15 +166,15 @@ pDevDesc agg_device_new(T* device) {
   
   // Magic constants copied from other graphics devices
   // nominal character sizes in pts
-  dd->cra[0] = 0.9 * 12;
-  dd->cra[1] = 1.2 * 12;
+  dd->cra[0] = 0.9 * device->pointsize;
+  dd->cra[1] = 1.2 * device->pointsize;
   // character alignment offsets
   dd->xCharOffset = 0.4900;
   dd->yCharOffset = 0.3333;
   dd->yLineBias = 0.2;
   // inches per pt
-  dd->ipr[0] = 1.0 / 72.0;
-  dd->ipr[1] = 1.0 / 72.0;
+  dd->ipr[0] = 1.0 / (72 * device->res_mod);
+  dd->ipr[1] = 1.0 / (72 * device->res_mod);
   
   // Capabilities
   dd->canClip = TRUE;

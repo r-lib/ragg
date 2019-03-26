@@ -25,3 +25,10 @@ URL: https://github.com/thomasp85/ragg
 BugReports: https://github.com/thomasp85/ragg/issues
 Encoding: UTF-8
 RoxygenNote: 6.1.1
+SystemRequirements: 
+    C++11,
+    GNU Make,
+    pkg-config,
+    freetype2,
+    fontconfig
+    libpng
