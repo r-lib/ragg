@@ -121,6 +121,9 @@ class TextRenderer {
   font_engine_type feng;
   font_manager_type fman;
   UTF_UCS converter;
+  std::pair<std::string, int> last_font;
+  agg::glyph_rendering last_gren;
+  double last_size;
   
 public:
   TextRenderer() :
@@ -128,7 +131,12 @@ public:
     fman(feng),
     converter()
   {
-    
+    last_font = std::make_pair("", -1);
+    last_gren = agg::glyph_ren_native_mono;
+    last_size = -1.0;
+    feng.hinting(true);
+    feng.flip_y(true);
+    feng.gamma(agg::gamma_power(1.5));
   }
   
   bool load_font(agg::glyph_rendering gren, const char *family, int face, 
@@ -137,17 +145,20 @@ public:
                                                      face == 2 || face == 4, 
                                                      face == 3 || face == 4,
                                                      face == 5);
-    if (!feng.load_font(font.first.c_str(), font.second, gren)) {
-      Rf_warning("Unable to load font: %s", family);
-      return false;
+    if (!(gren == last_gren || 
+        font.second == last_font.second || 
+        font.first == last_font.first)) {
+      if (!feng.load_font(font.first.c_str(), font.second, gren)) {
+        Rf_warning("Unable to load font: %s", family);
+        return false;
+      }
+      last_font = font;
+      last_gren = gren;
     }
-    feng.hinting(true);
-    feng.height(size);
-    feng.width(size);
-    feng.flip_y(true);
-    feng.gamma(agg::gamma_power(1.5));
-    agg::trans_affine mtx;
-    feng.transform(mtx);
+    if (size != last_size) {
+      feng.height(size);
+      last_size = size;
+    }
     
     return true;
   }
@@ -184,10 +195,12 @@ public:
     const uint32_t* string_conv = converter.convert(string, size_out);
     double width = text_width(string_conv, size_out);
     
-    rot = agg::deg2rad(-rot);
-    agg::trans_affine mtx;
-    mtx *= agg::trans_affine_rotation(rot);
-    feng.transform(mtx);
+    if (rot != 0) {
+      rot = agg::deg2rad(-rot);
+      agg::trans_affine mtx;
+      mtx *= agg::trans_affine_rotation(rot);
+      feng.transform(mtx);
+    }
     
     x -= (width * hadj) * cos(rot);
     y -= (width * hadj) * sin(rot);
@@ -218,6 +231,10 @@ public:
         y += glyph->advance_y;
       }
       string_conv++;
+    }
+    
+    if (rot != 0) {
+      feng.transform(agg::trans_affine());
     }
   }
 
