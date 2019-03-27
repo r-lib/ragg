@@ -21,8 +21,8 @@
 #define R_USE_PROTOTYPES 1
 typedef agg::pixfmt_rgb24                   pixfmt_type_24;
 typedef agg::pixfmt_rgba32                  pixfmt_type_32;
-typedef agg::pixfmt_rgb48                   pixfmt_type_48;
-typedef agg::pixfmt_rgba64                  pixfmt_type_64;
+typedef agg::pixfmt_rgb48_pre                   pixfmt_type_48;
+typedef agg::pixfmt_rgba64_plain                  pixfmt_type_64;
 typedef agg::pixfmt_rgba32                  pixfmt_r_raster;
 
 typedef std::tuple<std::string, int, int> font_key;

@@ -28,7 +28,7 @@
  * regardless. The base class outputs images in ppm format which is not realy
  * a usable format. See png and tiff versions for actual usable classes.
  */
-template<class PIXFMT>
+template<class PIXFMT, class R_COLOR = agg::rgba8>
 class AggDevice {
 public:
   typedef PIXFMT pixfmt_type;
@@ -52,7 +52,7 @@ public:
   
   int pageno;
   std::string file;
-  agg::rgba8 background;
+  R_COLOR background;
   int background_int;
   double pointsize;
   double res_mod;
@@ -95,8 +95,8 @@ public:
                 int face, double size, double rot, double hadj, int col);
   
 private:
-  inline agg::rgba8 convertColour(unsigned int col) {
-    return agg::rgba8(R_RED(col), R_GREEN(col), R_BLUE(col), R_ALPHA(col));
+  virtual inline R_COLOR convertColour(unsigned int col) {
+    return R_COLOR(R_RED(col), R_GREEN(col), R_BLUE(col), R_ALPHA(col));
   }
   inline bool visibleColour(unsigned int col) {
     return col != NA_INTEGER && R_ALPHA(col) != 0;
@@ -142,8 +142,9 @@ private:
 /* The initialiser takes care of setting up the buffer, and caching a pixel 
  * formatter and renderer.
  */
-template<class PIXFMT>
-AggDevice<PIXFMT>::AggDevice(const char* fp, int w, int h, double ps, int bg, double res) : 
+template<class PIXFMT, class R_COLOR>
+AggDevice<PIXFMT, R_COLOR>::AggDevice(const char* fp, int w, int h, double ps, 
+                                      int bg, double res) : 
   width(w),
   height(h),
   pageno(0),
@@ -160,8 +161,8 @@ AggDevice<PIXFMT>::AggDevice(const char* fp, int w, int h, double ps, int bg, do
   background = convertColour(background_int);
   renderer.clear(background);
 }
-template<class PIXFMT>
-AggDevice<PIXFMT>::~AggDevice() {
+template<class PIXFMT, class R_COLOR>
+AggDevice<PIXFMT, R_COLOR>::~AggDevice() {
   delete pixf;
   delete [] buffer;
 }
@@ -170,8 +171,8 @@ AggDevice<PIXFMT>::~AggDevice() {
  * appropriate savePage() method. For scrren devices it may make sense to change
  * it for performance
  */
-template<class PIXFMT>
-void AggDevice<PIXFMT>::newPage() {
+template<class PIXFMT, class R_COLOR>
+void AggDevice<PIXFMT, R_COLOR>::newPage() {
   if (pageno != 0) {
     if (!savePage()) {
       Rf_error("agg could not write to the given file");
@@ -181,8 +182,8 @@ void AggDevice<PIXFMT>::newPage() {
   renderer.clear(background);
   pageno++;
 }
-template<class PIXFMT>
-void AggDevice<PIXFMT>::close() {
+template<class PIXFMT, class R_COLOR>
+void AggDevice<PIXFMT, R_COLOR>::close() {
   if (pageno == 0) pageno++;
   if (!savePage()) {
     Rf_error("agg could not write to the given file");
@@ -193,8 +194,8 @@ void AggDevice<PIXFMT>::close() {
  * may be specified as a printf string with room for a page counter, so the 
  * method should take care of resolving that together with the pageno field.
  */
-template<class PIXFMT>
-bool AggDevice<PIXFMT>::savePage() {
+template<class PIXFMT, class R_COLOR>
+bool AggDevice<PIXFMT, R_COLOR>::savePage() {
   return true;
 }
 
@@ -205,8 +206,9 @@ bool AggDevice<PIXFMT>::savePage() {
  * gain the different drawing methods should set it on the rasterizer as well
  * to avoid unneccesary allocation and looping
  */
-template<class PIXFMT>
-void AggDevice<PIXFMT>::clipRect(double x0, double y0, double x1, double y1) {
+template<class PIXFMT, class R_COLOR>
+void AggDevice<PIXFMT, R_COLOR>::clipRect(double x0, double y0, double x1, 
+                                          double y1) {
   clip_left = x0;
   clip_right = x1;
   clip_top = y0;
@@ -220,19 +222,20 @@ void AggDevice<PIXFMT>::clipRect(double x0, double y0, double x1, double y1) {
  * They work on gray8 bitmap to speed it up as all metrixs are assumed to be in
  * horizontal mode only
  */
-template<class PIXFMT>
-double AggDevice<PIXFMT>::stringWidth(const char *str, const char *family, 
-                                      int face, double size) {
+template<class PIXFMT, class R_COLOR>
+double AggDevice<PIXFMT, R_COLOR>::stringWidth(const char *str, 
+                                               const char *family, int face, 
+                                               double size) {
   size *= res_mod;
-  agg::glyph_rendering gren = agg::glyph_ren_native_mono;
+  agg::glyph_rendering gren = agg::glyph_ren_agg_gray8;
   if (!t_ren.load_font(gren, family, face, size)) {
     return 0.0;
   }
   
   return t_ren.get_text_width(str);
 }
-template<class PIXFMT>
-void AggDevice<PIXFMT>::charMetric(int c, const char *family, int face, 
+template<class PIXFMT, class R_COLOR>
+void AggDevice<PIXFMT, R_COLOR>::charMetric(int c, const char *family, int face, 
                                    double size, double *ascent, double *descent, 
                                    double *width) {
   size *= res_mod;
@@ -260,10 +263,10 @@ void AggDevice<PIXFMT>::charMetric(int c, const char *family, int face,
  * number of points around the circle is precalculated below a radius of 64
  * pixels in order to speed up point rendering
  */
-template<class PIXFMT>
-void AggDevice<PIXFMT>::drawCircle(double x, double y, double r, int fill, 
-                                   int col, double lwd, int lty, 
-                                   R_GE_lineend lend) {
+template<class PIXFMT, class R_COLOR>
+void AggDevice<PIXFMT, R_COLOR>::drawCircle(double x, double y, double r, 
+                                            int fill, int col, double lwd, 
+                                            int lty, R_GE_lineend lend) {
   bool draw_fill = visibleColour(fill);
   bool draw_stroke = visibleColour(col) && lwd > 0.0 && lty != LTY_BLANK;
   
@@ -313,10 +316,11 @@ void AggDevice<PIXFMT>::drawCircle(double x, double y, double r, int fill,
   }
 }
 
-template<class PIXFMT>
-void AggDevice<PIXFMT>::drawRect(double x0, double y0, double x1, double y1, 
-                                 int fill, int col, double lwd, int lty, 
-                                 R_GE_lineend lend) {
+template<class PIXFMT, class R_COLOR>
+void AggDevice<PIXFMT, R_COLOR>::drawRect(double x0, double y0, double x1, 
+                                          double y1, int fill, int col, 
+                                          double lwd, int lty, 
+                                          R_GE_lineend lend) {
   bool draw_fill = visibleColour(fill);
   bool draw_stroke = visibleColour(col) && lwd > 0.0 && lty != LTY_BLANK;
   
@@ -358,11 +362,12 @@ void AggDevice<PIXFMT>::drawRect(double x0, double y0, double x1, double y1,
   }
 }
 
-template<class PIXFMT>
-void AggDevice<PIXFMT>::drawPolygon(int n, double *x, double *y, int fill, 
-                                    int col, double lwd, int lty, 
-                                    R_GE_lineend lend, R_GE_linejoin ljoin, 
-                                    double lmitre) {
+template<class PIXFMT, class R_COLOR>
+void AggDevice<PIXFMT, R_COLOR>::drawPolygon(int n, double *x, double *y, 
+                                             int fill, int col, double lwd, 
+                                             int lty, R_GE_lineend lend, 
+                                             R_GE_linejoin ljoin, 
+                                             double lmitre) {
   bool draw_fill = visibleColour(fill);
   bool draw_stroke = visibleColour(col) && lwd > 0.0 && lty != LTY_BLANK;
   
@@ -409,10 +414,10 @@ void AggDevice<PIXFMT>::drawPolygon(int n, double *x, double *y, int fill,
   }
 }
 
-template<class PIXFMT>
-void AggDevice<PIXFMT>::drawLine(double x1, double y1, double x2, double y2, 
-                                 int col, double lwd, int lty, 
-                                 R_GE_lineend lend) {
+template<class PIXFMT, class R_COLOR>
+void AggDevice<PIXFMT, R_COLOR>::drawLine(double x1, double y1, double x2, 
+                                          double y2, int col, double lwd, 
+                                          int lty, R_GE_lineend lend) {
   if (!visibleColour(col) || lwd == 0.0 || lty == LTY_BLANK) return;
   
   lwd *= res_mod;
@@ -442,10 +447,12 @@ void AggDevice<PIXFMT>::drawLine(double x1, double y1, double x2, double y2,
   }
 }
 
-template<class PIXFMT>
-void AggDevice<PIXFMT>::drawPolyline(int n, double* x, double* y, int col, 
-                                     double lwd, int lty, R_GE_lineend lend, 
-                                     R_GE_linejoin ljoin, double lmitre) {
+template<class PIXFMT, class R_COLOR>
+void AggDevice<PIXFMT, R_COLOR>::drawPolyline(int n, double* x, double* y, 
+                                              int col, double lwd, int lty, 
+                                              R_GE_lineend lend, 
+                                              R_GE_linejoin ljoin, 
+                                              double lmitre) {
   if (!visibleColour(col) || lwd == 0.0 || lty == LTY_BLANK || n < 2) return;
   
   lwd *= res_mod;
@@ -481,11 +488,13 @@ void AggDevice<PIXFMT>::drawPolyline(int n, double* x, double* y, int col,
   }
 }
 
-template<class PIXFMT>
-void AggDevice<PIXFMT>::drawPath(int npoly, int* nper, double* x, double* y, 
-                                 int col, int fill, double lwd, int lty, 
-                                 R_GE_lineend lend, R_GE_linejoin ljoin, 
-                                 double lmitre, bool evenodd) {
+template<class PIXFMT, class R_COLOR>
+void AggDevice<PIXFMT, R_COLOR>::drawPath(int npoly, int* nper, double* x, 
+                                          double* y, int col, int fill, 
+                                          double lwd, int lty, 
+                                          R_GE_lineend lend, 
+                                          R_GE_linejoin ljoin, double lmitre, 
+                                          bool evenodd) {
   bool draw_fill = visibleColour(fill);
   bool draw_stroke = visibleColour(col) && lwd > 0.0 && lty != LTY_BLANK;
   
@@ -544,17 +553,20 @@ void AggDevice<PIXFMT>::drawPath(int npoly, int* nper, double* x, double* y,
   }
 }
 
-template<class PIXFMT>
-void AggDevice<PIXFMT>::drawRaster(unsigned int *raster, int w, int h, double x, 
-                                   double y, double final_width, 
-                                   double final_height, double rot, 
-                                   bool interpolate) {
-  agg::rendering_buffer rbuf(reinterpret_cast<unsigned char*>(raster), w, h, w * 4);
+template<class PIXFMT, class R_COLOR>
+void AggDevice<PIXFMT, R_COLOR>::drawRaster(unsigned int *raster, int w, int h, 
+                                            double x, double y, 
+                                            double final_width, 
+                                            double final_height, double rot, 
+                                            bool interpolate) {
+  agg::rendering_buffer rbuf(reinterpret_cast<unsigned char*>(raster), w, h, 
+                             w * 4);
   
   agg::trans_affine img_mtx;
   img_mtx *= agg::trans_affine_reflection(0);
   img_mtx *= agg::trans_affine_translation(0, h);
-  img_mtx *= agg::trans_affine_scaling(final_width / double(w), final_height / double (h));
+  img_mtx *= agg::trans_affine_scaling(final_width / double(w), 
+                                       final_height / double (h));
   img_mtx *= agg::trans_affine_rotation(-rot * agg::pi / 180.0);
   img_mtx *= agg::trans_affine_translation(x, y);
   agg::trans_affine src_mtx = img_mtx;
@@ -595,10 +607,11 @@ void AggDevice<PIXFMT>::drawRaster(unsigned int *raster, int w, int h, double x,
   }
 }
 
-template<class PIXFMT>
-void AggDevice<PIXFMT>::drawText(double x, double y, const char *str, 
-                                 const char *family, int face, double size, 
-                                 double rot, double hadj, int col) {
+template<class PIXFMT, class R_COLOR>
+void AggDevice<PIXFMT, R_COLOR>::drawText(double x, double y, const char *str, 
+                                          const char *family, int face, 
+                                          double size, double rot, double hadj, 
+                                          int col) {
   agg::glyph_rendering gren = std::fmod(rot, 90) == 0.0 ? agg::glyph_ren_agg_gray8 : agg::glyph_ren_outline;
   
   size *= res_mod;

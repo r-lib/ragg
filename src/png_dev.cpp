@@ -30,27 +30,27 @@ SEXP agg_png_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, SEXP
       makeDevice<AggDevicePngAlpha>(device, "agg_png");
     }
   } else {
-    //if (R_ALPHA(bgCol) == 255) { // Opaque bg... no need for alpha channel
-    //  AggDevicePng16* device = new AggDevicePng16(
-    //    CHAR(STRING_ELT(file, 0)), 
-    //    INTEGER(width)[0], 
-    //    INTEGER(height)[0], 
-    //    REAL(pointsize)[0], 
-    //    bgCol,
-    //    REAL(res)[0]
-    //  );
-    //  makeDevice<AggDevicePng16>(device, "agg_png");
-    //} else {
-    //  AggDevicePng16Alpha* device = new AggDevicePng16Alpha(
-    //    CHAR(STRING_ELT(file, 0)), 
-    //    INTEGER(width)[0], 
-    //    INTEGER(height)[0], 
-    //    REAL(pointsize)[0], 
-    //    bgCol,
-    //    REAL(res)[0]
-    //  );
-    //  makeDevice<AggDevicePng16Alpha>(device, "agg_png");
-    //}
+    if (R_ALPHA(bgCol) == 255) { // Opaque bg... no need for alpha channel
+      AggDevicePng16NoAlpha* device = new AggDevicePng16NoAlpha(
+        CHAR(STRING_ELT(file, 0)), 
+        INTEGER(width)[0], 
+        INTEGER(height)[0], 
+        REAL(pointsize)[0], 
+        bgCol,
+        REAL(res)[0]
+      );
+      makeDevice<AggDevicePng16NoAlpha>(device, "agg_png");
+    } else {
+      AggDevicePng16Alpha* device = new AggDevicePng16Alpha(
+        CHAR(STRING_ELT(file, 0)), 
+        INTEGER(width)[0], 
+        INTEGER(height)[0], 
+        REAL(pointsize)[0], 
+        bgCol,
+        REAL(res)[0]
+      );
+      makeDevice<AggDevicePng16Alpha>(device, "agg_png");
+    }
   }
   
   return R_NilValue;
