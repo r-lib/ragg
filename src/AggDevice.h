@@ -177,7 +177,7 @@ template<class PIXFMT, class R_COLOR>
 void AggDevice<PIXFMT, R_COLOR>::newPage() {
   if (pageno != 0) {
     if (!savePage()) {
-      Rf_error("agg could not write to the given file");
+      Rf_warning("agg could not write to the given file");
     }
   }
   renderer.reset_clipping(true);
@@ -188,7 +188,7 @@ template<class PIXFMT, class R_COLOR>
 void AggDevice<PIXFMT, R_COLOR>::close() {
   if (pageno == 0) pageno++;
   if (!savePage()) {
-    Rf_error("agg could not write to the given file");
+    Rf_warning("agg could not write to the given file");
   }
 }
 
