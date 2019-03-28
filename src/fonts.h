@@ -6,6 +6,8 @@
 #define FONTS_INCLUDED
 
 font_map* get_font_map();
+void set_ragg_fc();
+void unset_ragg_fc();
 
 static std::pair<std::string, int> get_font_file(const char* family, int bold, 
                                                  int italic, int symbol) {
@@ -27,13 +29,14 @@ static std::pair<std::string, int> get_font_file(const char* family, int bold,
   res.first = "";
   res.second = 0;
   
+  set_ragg_fc();
   if (!FcInit()) {
     Rf_warning("Could not initialise fontconfig. Using system font");
+    unset_ragg_fc();
     return res;
   }
+  unset_ragg_fc();
   FcPattern* pattern;
-  
-  
   
   if(!(pattern = FcNameParse(fontfamily))) { // Defaults to Arial
     Rf_warning("Fontconfig error: unable to parse font name: %s. Using system font", 
