@@ -94,9 +94,11 @@ public:
   
 private:
   inline agg::rgba16 convertColour(unsigned int col) {
-    agg::rgba8 base_col(R_RED(col), R_GREEN(col), R_BLUE(col), R_ALPHA(col));
-    agg::rgba16 full_col = base_col;
-    full_col.a *= alpha_mod;
-    return full_col;
+    uint16_t red = R_RED(col), green = R_GREEN(col), blue = R_BLUE(col), alpha = R_ALPHA(col);
+    red = red << 8 | red;
+    green = green << 8 | green;
+    blue = blue << 8 | blue;
+    alpha = alpha << 8 | alpha;
+    return agg::rgba16(red, green, blue, alpha);
   }
 };
