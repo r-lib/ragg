@@ -56,6 +56,7 @@ public:
   int background_int;
   double pointsize;
   double res_mod;
+  double lwd_mod;
   
   TextRenderer t_ren;
   
@@ -152,6 +153,7 @@ AggDevice<PIXFMT, R_COLOR>::AggDevice(const char* fp, int w, int h, double ps,
   background_int(bg),
   pointsize(ps),
   res_mod(res / 72.0),
+  lwd_mod(res / 96.0),
   t_ren()
 {
   buffer = new unsigned char[width * height * bytes_per_pixel];
@@ -272,7 +274,7 @@ void AggDevice<PIXFMT, R_COLOR>::drawCircle(double x, double y, double r,
   
   if (!draw_fill && !draw_stroke) return; // Early exit
   
-  lwd *= res_mod;
+  lwd *= lwd_mod;
   
   agg::rasterizer_scanline_aa<> ras;
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
@@ -326,7 +328,7 @@ void AggDevice<PIXFMT, R_COLOR>::drawRect(double x0, double y0, double x1,
   
   if (!draw_fill && !draw_stroke) return; // Early exit
   
-  lwd *= res_mod;
+  lwd *= lwd_mod;
   
   agg::rasterizer_scanline_aa<> ras;
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
@@ -373,7 +375,7 @@ void AggDevice<PIXFMT, R_COLOR>::drawPolygon(int n, double *x, double *y,
   
   if (n < 2 || (!draw_fill && !draw_stroke)) return; // Early exit
   
-  lwd *= res_mod;
+  lwd *= lwd_mod;
   
   agg::rasterizer_scanline_aa<> ras;
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
@@ -420,7 +422,7 @@ void AggDevice<PIXFMT, R_COLOR>::drawLine(double x1, double y1, double x2,
                                           int lty, R_GE_lineend lend) {
   if (!visibleColour(col) || lwd == 0.0 || lty == LTY_BLANK) return;
   
-  lwd *= res_mod;
+  lwd *= lwd_mod;
   
   agg::scanline_u8 sl;
   agg::rasterizer_scanline_aa<> ras;
@@ -455,7 +457,7 @@ void AggDevice<PIXFMT, R_COLOR>::drawPolyline(int n, double* x, double* y,
                                               double lmitre) {
   if (!visibleColour(col) || lwd == 0.0 || lty == LTY_BLANK || n < 2) return;
   
-  lwd *= res_mod;
+  lwd *= lwd_mod;
   
   agg::scanline_u8 sl;
   agg::rasterizer_scanline_aa<> ras;
@@ -500,7 +502,7 @@ void AggDevice<PIXFMT, R_COLOR>::drawPath(int npoly, int* nper, double* x,
   
   if (!draw_fill && !draw_stroke) return; // Early exit
   
-  lwd *= res_mod;
+  lwd *= lwd_mod;
   
   agg::rasterizer_scanline_aa<> ras;
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
