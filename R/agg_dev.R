@@ -39,7 +39,7 @@ agg_ppm <- function(file = 'Rplot%03d.ppm', width = 480, height = 480,
 #' concern (though the defaults are often very good). In contrast to 
 #' [grDevices::png()] the date and time will not be written to the file, meaning
 #' that similar plot code will produce identical files (a good feature if used 
-#' with version control). It will however write in the dimensions of the image
+#' with version control). It will, however, write in the dimensions of the image
 #' based on the `res` argument.
 #' 
 #' @inheritParams agg_ppm
