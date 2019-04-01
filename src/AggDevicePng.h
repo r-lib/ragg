@@ -54,6 +54,8 @@ public:
     
     png_write_info(png, info);
     
+    demultiply<PIXFMT>(this->pixf);
+    
     agg::row_ptr_cache<unsigned char> buffer_rows(
         this->buffer, this->width, this->height, this->rbuf.stride_abs()
     );
@@ -74,8 +76,8 @@ typedef AggDevicePng<pixfmt_type_32> AggDevicePngAlpha;
 template<class PIXFMT>
 class AggDevicePng16 : public AggDevice16<PIXFMT> {
 public:
-  AggDevicePng16(const char* fp, int w, int h, double ps, int bg, double res) : 
-  AggDevice16<PIXFMT>(fp, w, h, ps, bg, res)
+  AggDevicePng16(const char* fp, int w, int h, double ps, int bg, double res, double alpha_mod = 1.0) : 
+  AggDevice16<PIXFMT>(fp, w, h, ps, bg, res, alpha_mod)
   {
     
   }
@@ -121,10 +123,12 @@ public:
     
     png_write_info(png, info);
     
+    demultiply<PIXFMT>(this->pixf);
+    this->to_bigend();
+    
     agg::row_ptr_cache<unsigned char> buffer_rows(
         this->buffer, this->width, this->height, this->rbuf.stride_abs()
     );
-    
     png_write_image(png, (png_byte **) buffer_rows.rows());
     png_write_end(png, NULL);
     

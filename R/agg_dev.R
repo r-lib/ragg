@@ -1,6 +1,7 @@
 #' Draw to a PPM file
 #' 
-#' The PPM format defines one of the simplest storage formats available for 
+#' The PPM (Portable Pixel Map) format defines one of the simplest storage 
+#' formats available for 
 #' image data. It is basically a raw 8bit RGB stream with a few bytes of 
 #' information in the start. It goes without saying, that this file format is
 #' horribly inefficient and should only be used if you want to play around with
@@ -31,7 +32,8 @@ agg_ppm <- function(file = 'Rplot%03d.ppm', width = 480, height = 480,
 
 #' Draw to a PNG file
 #' 
-#' The PNG format is one of the most ubiquitous today, due to its versatiliity 
+#' The PNG (Portable Network Graphic) format is one of the most ubiquitous 
+#' today, due to its versatiliity 
 #' and widespread support. It supports transparancy as well as both 8 and 16 bit
 #' colour. The device uses default compression and filtering and will not use a
 #' colour palette as this is less useful for antialiased data. This means that 
@@ -56,5 +58,81 @@ agg_png <- function(file = 'Rplot%03d.png', width = 480, height = 480,
   dim <- get_dims(width, height, units, res)
   .Call("agg_png_c", file, dim[1], dim[2], as.numeric(pointsize), background, 
         as.numeric(res), as.integer(bitsize), PACKAGE = 'ragg')
+  invisible()
+}
+#' Draw to a TIFF file
+#' 
+#' The TIFF (Tagged Image File Format) format is a very versatile raster image
+#' storage format that supports 8 and 16bit colour mode, true transparency, as
+#' well as a range of other features not relevant to drawing from R (e.g. 
+#' support for different colour spaces). The storage mode of the image data is
+#' not fixed and different compression modes are possible, in contrast to PNGs
+#' one-approach-fits-all. The default (uncompressed) will result in much larger
+#' files than PNG, and in general PNG is a better format for many of the graphic
+#' types produced in R. Still, TIFF has its purposes and sometimes this file
+#' format is explicetly requested.
+#' 
+#' @section Transparency:
+#' TIFF have support for true transparency, meaning that the pixel colour is 
+#' stored in pre-multiplied form. This is in contrast to pixels being stored in 
+#' plain format, where the alpha values more function as a mask. The utility of
+#' this is not always that important, but it is one of the benefits of TIFF over
+#' PNG so it should be noted.
+#' 
+#' @inheritParams agg_png
+#' @param compression The compression type to use for the image data. The 
+#' standard options from the [grDevices::tiff()] function are available under 
+#' the same name.
+#' 
+#' @export
+#' 
+agg_tiff <- function(file = 'Rplot%03d.tiff', width = 480, height = 480, 
+                    units = 'px', pointsize = 12, background = 'white', 
+                    res = 72, compression = 'none', bitsize = 8) {
+  encoding <- switch(compression, 'lzw+p' = , 'zip+p' = 1L, 0L)
+  compression <- switch(
+    compression,
+    'none' = 0L,
+    'rle' = 2L,
+    'lzw+p' = ,
+    'lzw' = 5L,
+    'jpeg' = 7L,
+    'zip+p' = ,
+    'zip' = 8L
+  )
+  if (!bitsize %in% c(8, 16)) {
+    stop('Only 8 and 16 bit is supported', call. = FALSE)
+  }
+  dim <- get_dims(width, height, units, res)
+  .Call("agg_tiff_c", file, dim[1], dim[2], as.numeric(pointsize), background, 
+        as.numeric(res), as.integer(bitsize), compression, encoding, 
+        PACKAGE = 'ragg')
+  invisible()
+}
+#' Draw to a PNG file, modifying transparency on the fly
+#' 
+#' The graphic engine in R only supports 8bit colours. This is for the most part
+#' fine, as 8bit gives all the fidelity needed for most graphing needs. However,
+#' this may become a limitation if you need to plot thousands of very 
+#' translucent shapes on top of each other. 8bit only afford a minimum of 1/255
+#' alpha, which may end up accumulating to fully opaque at some point. This 
+#' device allows you to create a 16bit device that modifies the alpha level of 
+#' all incomming colours by a fixed multiplier, thus allowing for much more 
+#' translucent colours. The device will only modify transparent colour, so if
+#' you pass in an opaque colour it will be left unchanged.
+#' 
+#' @inheritParams agg_ppm
+#' @param alpha_mod A numeric between 0 and 1 that will be multiplied to the 
+#' alpha channel of all transparent colours
+#' 
+#' @export
+#' @keywords internal
+#' 
+agg_supertransparent <- function(file = 'Rplot%03d.png', width = 480, 
+                                 height = 480, units = 'px', pointsize = 12, 
+                                 background = 'white', res = 72, alpha_mod = 1) {
+  dim <- get_dims(width, height, units, res)
+  .Call("agg_supertransparent_c", file, dim[1], dim[2], as.numeric(pointsize), 
+        background, as.numeric(res), as.double(alpha_mod), PACKAGE = 'ragg')
   invisible()
 }

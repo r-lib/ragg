@@ -19,11 +19,17 @@
 #define RAGG_INCLUDED
 
 #define R_USE_PROTOTYPES 1
-typedef agg::pixfmt_rgb24                   pixfmt_type_24;
-typedef agg::pixfmt_rgba32                  pixfmt_type_32;
-typedef agg::pixfmt_rgb48                   pixfmt_type_48;
-typedef agg::pixfmt_rgba64                  pixfmt_type_64;
-typedef agg::pixfmt_rgba32                  pixfmt_r_raster;
+typedef agg::pixfmt_rgb24_pre                   pixfmt_type_24;
+typedef agg::pixfmt_rgba32_pre                  pixfmt_type_32;
+typedef agg::pixfmt_rgb48_pre                   pixfmt_type_48;
+typedef agg::pixfmt_rgba64_pre                  pixfmt_type_64;
+
+#ifdef __BIG_ENDIAN__ 
+typedef agg::pixfmt_abgr32                      pixfmt_r_raster;
+#else
+typedef agg::pixfmt_rgba32                      pixfmt_r_raster;
+#endif
+
 
 typedef std::tuple<std::string, int, int> font_key;
 
@@ -49,7 +55,30 @@ struct key_equal : public std::binary_function<font_key, font_key, bool>
 
 typedef std::unordered_map<font_key, std::pair< std::string, int >, key_hash, key_equal> font_map;
 
-SEXP agg_ppm_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, SEXP res);
-SEXP agg_png_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, SEXP res, SEXP bit);
+
+// pixfmt agnosting demultiplying
+template<typename PIXFMT>
+inline void demultiply(PIXFMT* pixfmt) {
+  return;
+}
+template<>
+inline void demultiply<pixfmt_type_32>(pixfmt_type_32* pixfmt) {
+  pixfmt->demultiply();
+  return;
+}
+template<>
+inline void demultiply<pixfmt_type_64>(pixfmt_type_64* pixfmt) {
+  pixfmt->demultiply();
+  return;
+}
+
+SEXP agg_ppm_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, 
+               SEXP res);
+SEXP agg_png_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, 
+               SEXP res, SEXP bit);
+SEXP agg_supertransparent_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, 
+                            SEXP bg, SEXP res, SEXP alpha_mod);
+SEXP agg_tiff_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, 
+                SEXP res, SEXP bit, SEXP compression, SEXP encoding);
 
 #endif

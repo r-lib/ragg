@@ -55,3 +55,30 @@ SEXP agg_png_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, SEXP
   
   return R_NilValue;
 }
+
+SEXP agg_supertransparent_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, SEXP res, SEXP alpha_mod) {
+  int bgCol = RGBpar(bg, 0);
+  if (R_ALPHA(bgCol) == 255) { // Opaque bg... no need for alpha channel
+    AggDevicePng16NoAlpha* device = new AggDevicePng16NoAlpha(
+      CHAR(STRING_ELT(file, 0)), 
+      INTEGER(width)[0], 
+      INTEGER(height)[0], 
+      REAL(pointsize)[0], 
+      bgCol,
+      REAL(res)[0],
+      REAL(alpha_mod)[0]
+    );
+    makeDevice<AggDevicePng16NoAlpha>(device, "agg_png");
+  } else {
+    AggDevicePng16Alpha* device = new AggDevicePng16Alpha(
+      CHAR(STRING_ELT(file, 0)), 
+      INTEGER(width)[0], 
+      INTEGER(height)[0], 
+      REAL(pointsize)[0], 
+      bgCol,
+      REAL(res)[0],
+      REAL(alpha_mod)[0]
+    );
+    makeDevice<AggDevicePng16Alpha>(device, "agg_png");
+  }
+}

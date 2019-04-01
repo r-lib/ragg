@@ -26,7 +26,8 @@ dimensions given in inches, centimeters, or millimeters will be converted
 to pixels. Further, it will be used to scale text sizes and linewidths}
 }
 \description{
-The PPM format defines one of the simplest storage formats available for 
+The PPM (Portable Pixel Map) format defines one of the simplest storage 
+formats available for 
 image data. It is basically a raw 8bit RGB stream with a few bytes of 
 information in the start. It goes without saying, that this file format is
 horribly inefficient and should only be used if you want to play around with

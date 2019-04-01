@@ -2,4 +2,6 @@
 
 export(agg_png)
 export(agg_ppm)
+export(agg_supertransparent)
+export(agg_tiff)
 useDynLib(ragg, .registration = TRUE)

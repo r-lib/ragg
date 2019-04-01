@@ -97,7 +97,7 @@ public:
   
 private:
   virtual inline R_COLOR convertColour(unsigned int col) {
-    return R_COLOR(R_RED(col), R_GREEN(col), R_BLUE(col), R_ALPHA(col));
+    return R_COLOR(R_RED(col), R_GREEN(col), R_BLUE(col), R_ALPHA(col)).premultiply();
   }
   inline bool visibleColour(unsigned int col) {
     return col != NA_INTEGER && R_ALPHA(col) != 0;

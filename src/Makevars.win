@@ -1,0 +1,18 @@
+VERSION = 1.15.10
+RWINLIB = ../windows/cairo-${VERSION}
+
+PKG_CPPFLAGS = -I${RWINLIB}/include/cairo -I${RWINLIB}/include \
+	-I${RWINLIB}/include/freetype2 -I../inst/include
+
+PKG_LIBS = -L${RWINLIB}/lib${R_ARCH} -lcairo -lfontconfig -lfreetype -lpng -lpixman-1 \
+	-lexpat -lharfbuzz -lbz2 -lintl -lz -lgdi32
+
+all: winlibs
+
+winlibs:
+	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R" ${VERSION}
+
+AGG_SOURCES = $(wildcard agg/src/*.cpp)
+OWN_SOURCES = $(wildcard *.cpp)
+SOURCES = $(AGG_SOURCES) $(OWN_SOURCES)
+OBJECTS = $(SOURCES:.cpp=.o)

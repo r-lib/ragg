@@ -31,7 +31,8 @@ to pixels. Further, it will be used to scale text sizes and linewidths}
 \item{bitsize}{Should the device record colour as 8 or 16bit}
 }
 \description{
-The PNG format is one of the most ubiquitous today, due to its versatiliity 
+The PNG (Portable Network Graphic) format is one of the most ubiquitous 
+today, due to its versatiliity 
 and widespread support. It supports transparancy as well as both 8 and 16 bit
 colour. The device uses default compression and filtering and will not use a
 colour palette as this is less useful for antialiased data. This means that 
