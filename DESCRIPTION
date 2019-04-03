@@ -32,3 +32,11 @@ SystemRequirements:
     freetype2,
     fontconfig
     libpng
+Suggests: 
+    knitr,
+    rmarkdown,
+    ggplot2,
+    devoid,
+    bench,
+    rlang
+VignetteBuilder: knitr
