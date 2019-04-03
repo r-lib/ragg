@@ -1,0 +1,31 @@
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+
+language: R
+cache: packages
+
+latex: false
+fortran: false
+env:
+  - _R_CHECK_FORCE_SUGGESTS_=false
+
+matrix:
+  include:
+    - dist: trusty
+    - dist: xenial
+    - os: osx
+      brew_packages:
+        - pkg-config
+        - freetype
+        - fontconfig
+        - libpng
+        - libtiff
+
+addons:
+  apt:
+    update: true
+    packages:
+        - pkg-config
+        - freetype
+        - fontconfig
+        - libpng
+        - libtiff
