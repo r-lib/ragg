@@ -5,8 +5,6 @@ cache: packages
 
 latex: false
 fortran: false
-env:
-  - _R_CHECK_FORCE_SUGGESTS_=false
 
 matrix:
   include:
