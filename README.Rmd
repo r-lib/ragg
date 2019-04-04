@@ -57,7 +57,8 @@ You can use it like any other device. The main functions are `agg_png()` and
 ```{r}
 library(ragg)
 library(ggplot2)
-file <- tempfile(fileext = '.png')
+
+file <- knitr::fig_path('.png')
 
 agg_png(file, width = 1000, height = 500, res = 144)
 ggplot(mtcars) + 

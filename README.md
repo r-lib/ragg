@@ -52,7 +52,8 @@ and `agg_tiff()`, both have arguments that closely match that of the
 ``` r
 library(ragg)
 library(ggplot2)
-file <- tempfile(fileext = '.png')
+
+file <- knitr::fig_path('.png')
 
 agg_png(file, width = 1000, height = 500, res = 144)
 ggplot(mtcars) + 
@@ -64,4 +65,4 @@ invisible(dev.off())
 knitr::include_graphics(file)
 ```
 
-<img src="/var/folders/wq/20rfm4212kx8fdtc4q_bvfd00000gn/T//RtmpNDgh9G/fileb08c3e75230a.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
