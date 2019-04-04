@@ -6,6 +6,9 @@ cache: packages
 latex: false
 fortran: false
 
+r_github_packages: 
+  - r-lib/devoid
+
 matrix:
   include:
     - dist: trusty
