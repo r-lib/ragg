@@ -24,6 +24,7 @@
 agg_ppm <- function(file = 'Rplot%03d.ppm', width = 480, height = 480, 
                     units = 'px', pointsize = 12, background = 'white', 
                     res = 72) {
+  file <- validate_path(file)
   dim <- get_dims(width, height, units, res)
   .Call("agg_ppm_c", file, dim[1], dim[2], as.numeric(pointsize), background, 
         as.numeric(res), PACKAGE = 'ragg')
@@ -52,6 +53,7 @@ agg_ppm <- function(file = 'Rplot%03d.ppm', width = 480, height = 480,
 agg_png <- function(file = 'Rplot%03d.png', width = 480, height = 480, 
                     units = 'px', pointsize = 12, background = 'white', 
                     res = 72, bitsize = 8) {
+  file <- validate_path(file)
   if (!bitsize %in% c(8, 16)) {
     stop('Only 8 and 16 bit is supported', call. = FALSE)
   }
@@ -89,6 +91,7 @@ agg_png <- function(file = 'Rplot%03d.png', width = 480, height = 480,
 agg_tiff <- function(file = 'Rplot%03d.tiff', width = 480, height = 480, 
                     units = 'px', pointsize = 12, background = 'white', 
                     res = 72, compression = 'none', bitsize = 8) {
+  file <- validate_path(file)
   encoding <- switch(compression, 'lzw+p' = , 'zip+p' = 1L, 0L)
   compression <- switch(
     compression,
@@ -131,6 +134,7 @@ agg_tiff <- function(file = 'Rplot%03d.tiff', width = 480, height = 480,
 agg_supertransparent <- function(file = 'Rplot%03d.png', width = 480, 
                                  height = 480, units = 'px', pointsize = 12, 
                                  background = 'white', res = 72, alpha_mod = 1) {
+  file <- validate_path(file)
   dim <- get_dims(width, height, units, res)
   .Call("agg_supertransparent_c", file, dim[1], dim[2], as.numeric(pointsize), 
         background, as.numeric(res), as.double(alpha_mod), PACKAGE = 'ragg')

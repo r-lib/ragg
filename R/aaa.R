@@ -9,3 +9,12 @@ get_dims <- function(width, height, units, res) {
   )
   as.integer(dims)
 }
+
+validate_path <- function(path) {
+  path <- normalizePath(path)
+  dir <- dirname(path)
+  if (!dir.exists(dir)) {
+    dir.create(dir)
+  }
+  path
+}
