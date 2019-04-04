@@ -413,11 +413,13 @@ glyphs in the font database as it is about rendering speed.
 All of these primitives apart can be difficult to compare. In general it appears
 like ragg has a small but consistent lead in performance among the anti-aliased
 devices safe for a few areas. The last benchmark will tie it all together in a
-more complete graphic made using ggplot2:
+more complete graphic made using ggplot2 (don't worry about the quality of the
+graphic — we are simply pilling stuff on top of each others):
 
 ```{r, fig.height=5, message=FALSE}
 p <- ggplot(diamonds, aes(carat, price)) + 
-  geom_hex(aes(alpha = stat(count))) + 
+  geom_hex() + 
+  geom_point(shape = 1, size = 0.05, colour = 'white') + 
   geom_smooth() +
   facet_wrap(~clarity) + 
   labs(title = '5 things you didn\'t knew about the diamonds dataset',
@@ -428,7 +430,7 @@ p
 
 We will prebuild the plot so mainly rendering will be measured
 
-```{r, message=FALSE}
+```{r, message=FALSE, warning=FALSE}
 p <- ggplotGrob(p)
 void_dev()
 system.time(plot(p))
@@ -438,23 +440,33 @@ res <- all_render_bench(plot(p))
 plot_bench(res, 'Complex composite performance')
 ```
 
+We see that with complex graphics the speed benefit of the non anti-aliased Xlib
+device disappears (probably due to its slow text rendering). Ragg is clearly the
+fastest anti-aliased device, but it should be noted that the example 
+deliberately included both stroked and filled shapes. If only plotting fill the
+speed advantage might become smaller or disappear. Something else that we 
+haven't discussed here, but may affect speed in such a complex graphic is 
+clipping speed (not drawing elements outside of the clipping region).
+
 ## Conclusion
 If there is one point, beyond any doubt, to gain from this, it is that 
-anti-aliasing will cost you. Xlib and non anti-aliased cairo is almost 
-consistently the fastest, though both show surprising problems in some tasks. If
-you want anti-aliasing (you generally do), then ragg is consistently the fastest
-options, with a general speed gain of around ~33% compared to cairo. In the
-places where the speed gain is less it is mainly because cairo chooses not to
-use anti-aliasing for fill. The decision to not anti-alias fill is questionable
-in my opinion. If a stroke is also drawn it is indeed immaterial whether the
-underlying fill is anti-aliased, that is, unless the stroke is transparent. If
-no stroke is drawn the result is obviously ugly. It could be argued that the 
-device could inspect whether a solid stroke was going to be drawn and make a 
-choice based on that, but line width comes into effect as well. A very thin 
-stroke will not be able to hide the jagged non anti-aliased fill completely and
-result in unacceptable visual artefacts. Because of this, ragg has chosen to 
-simply always use anti-aliasing. At worst, it makes it only as performant as
-the cairo counterpart, at best it is faster and with a higher quality output.
+anti-aliasing will cost you in specific situation, but it will even out in 
+complex tasks. Xlib and non anti-aliased cairo is almost 
+consistently the fastest at rendering primitives, though both show surprising 
+problems in some tasks. If you want anti-aliasing (you generally do), then ragg 
+is consistently the fastest options, with a general speed gain of around ~33% 
+compared to cairo. In the places where the speed gain is less it is mainly 
+because cairo chooses not to use anti-aliasing for fill. The decision to not 
+anti-alias fill is questionable in my opinion. If a stroke is also drawn it is 
+indeed immaterial whether the underlying fill is anti-aliased, that is, unless 
+the stroke is transparent. If no stroke is drawn the result is obviously ugly. 
+It could be argued that the device could inspect whether a solid stroke was 
+going to be drawn and make a choice based on that, but line width comes into 
+effect as well. A very thin stroke will not be able to hide the jagged non 
+anti-aliased fill completely and result in unacceptable visual artefacts. 
+Because of this, ragg has chosen to simply always use anti-aliasing. At worst, 
+it makes it only as performant as the cairo counterpart, at best it is faster 
+and with a higher quality output.
 
 ## Session info
 ```{r}
