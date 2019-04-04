@@ -29,3 +29,39 @@ package using devtools:
 # install.packages('devtools')
 devtools::install_github('thomasp85/ragg')
 ```
+
+## Use
+
+ragg provides *almost* drop-in replacements for the png and tiff graphic
+devices provided by default from the grDevices packages and can both
+produce png and tiff files. Notable features, that sets itself apart
+from the build-in devices, includes:
+
+  - Faster (up to 40% faster than anti-aliased cairo device)
+  - Direct access to all system fonts
+  - High quality anti-aliasing
+  - High quality rotated text
+  - Support 16-bit output
+  - System independent rendering (output from Mac, Windows, and Linux
+    should be identical)
+
+You can use it like any other device. The main functions are `agg_png()`
+and `agg_tiff()`, both have arguments that closely match that of the
+`png()` and `tiff()` functions, so switching over should be easy.
+
+``` r
+library(ragg)
+library(ggplot2)
+file <- tempfile(fileext = '.png')
+
+agg_png(file, width = 1000, height = 500, res = 144)
+ggplot(mtcars) + 
+  geom_point(aes(mpg, disp, colour = hp)) + 
+  labs(title = 'System fonts — Oh My!') + 
+  theme(text = element_text(family = 'Papyrus'))
+invisible(dev.off())
+
+knitr::include_graphics(file)
+```
+
+<img src="/var/folders/wq/20rfm4212kx8fdtc4q_bvfd00000gn/T//RtmpNDgh9G/fileb08c3e75230a.png" width="100%" />
