@@ -43,4 +43,6 @@ Suggests:
     ggridges,
     dplyr,
     sessioninfo
+Remotes: 
+    r-lib/devoid
 VignetteBuilder: knitr

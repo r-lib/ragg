@@ -6,11 +6,6 @@ cache: packages
 latex: false
 fortran: false
 
-r_packages:
-  - tidyr
-r_github_packages: 
-  - r-lib/devoid
-
 matrix:
   include:
     - dist: trusty
