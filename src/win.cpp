@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <cstdio>
 
 // Declared in init.cpp
 
