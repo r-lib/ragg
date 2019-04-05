@@ -54,7 +54,7 @@ plot(bench::mark(
   cairo = {png(file, type = 'cairo'); plot.new(); dev.off()},
   cairo_png = {png(file, type = 'cairo-png'); plot.new(); dev.off()},
   Xlib = {png(file, type = 'Xlib'); plot.new(); dev.off()}
-)) + ggtitle('Open and close performance')
+), type = 'ridge') + ggtitle('Open and close performance')
 ```
 
 As can be seen, it is not as clear cut as it seems. ragg and cairo_png hae 
