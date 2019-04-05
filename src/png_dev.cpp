@@ -1,3 +1,4 @@
+#include <arpa/inet.h>
 #include "ragg.h"
 #include "init_device.h"
 
