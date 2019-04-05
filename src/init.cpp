@@ -2,8 +2,14 @@
 #include <Rinternals.h>
 #include <stdlib.h> // for NULL
 #include <R_ext/Rdynload.h>
-
 #include "ragg.h"
+
+
+/* FIXME:  use _putenv() on Windows */
+#ifdef _WIN32
+#define setenv(x,y,z)
+#define unsetenv(x)
+#endif
 
 static font_map* fonts;
 
