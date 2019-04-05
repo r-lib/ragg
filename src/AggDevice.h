@@ -111,6 +111,9 @@ private:
     case GE_SQUARE_CAP:
       return agg::square_cap;
     }
+    
+    //should never happen
+    return agg::square_cap;
   }
   inline agg::line_join_e convertLinejoin(R_GE_linejoin ljoin) {
     switch(ljoin) {
@@ -121,6 +124,9 @@ private:
     case GE_BEVEL_JOIN:
       return agg::bevel_join;
     }
+    
+    //should never happen
+    return agg::round_join;
   }
   template<class T>
   void makeDash(T &dash_conv, int lty, double lwd) {
