@@ -2,6 +2,11 @@
 #include "AggDevice.h"
 #include "util/agg_color_conv.h"
 
+/* For htons */
+#ifdef _WIN32
+#include <winsock.h>
+#endif
+
 // Functor for dimming alpha if needed
 struct AlphaDim {
   double alpha_mod;
