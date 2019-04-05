@@ -1,8 +1,10 @@
+extern "C" {
+#include <png.h>
+}
+
 #include "ragg.h"
 #include "AggDevice.h"
 #include "AggDevice16.h"
-
-#include <png.h>
 
 template<class PIXFMT>
 class AggDevicePng : public AggDevice<PIXFMT> {

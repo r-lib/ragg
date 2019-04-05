@@ -18,5 +18,5 @@ matrix:
 addons:
   apt:
     packages:
-    - libpng16-dev
+    - libfontconfig1-dev
     
