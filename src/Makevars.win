@@ -1,18 +1,29 @@
 VERSION = 1.15.10
 RWINLIB = ../windows/cairo-${VERSION}
 
+AGG_SOURCES = $(wildcard agg/src/*.cpp)
+AGG_OBJECTS = $(AGG_SOURCES:.cpp=.o)
+
 PKG_CPPFLAGS = -I${RWINLIB}/include/cairo -I${RWINLIB}/include \
-	-I${RWINLIB}/include/freetype2 -I../inst/include
+  -I../windows/baselibs-3.5.0/include \
+	-I${RWINLIB}/include/freetype2 -I./agg/include \
+	-DSTRICT_R_HEADERS
 
-PKG_LIBS = -L${RWINLIB}/lib${R_ARCH} -lcairo -lfontconfig -lfreetype -lpng -lpixman-1 \
-	-lexpat -lharfbuzz -lbz2 -lintl -lz -lgdi32
+PKG_LIBS = -Lagg -lstatagg \
+  -L${RWINLIB}/lib${R_ARCH} -lcairo -lfontconfig -lfreetype -lpng -lpixman-1 \
+  -L../windows/baselibs-3.5.0/lib${R_ARCH} -ltiff \
+	-lexpat -lharfbuzz -lbz2 -lintl -lz -lgdi32 -lws2_32
+	
+STATLIB = agg/libstatagg.a
 
-all: winlibs
+all: clean winlibs
+
+$(SHLIB): $(STATLIB)
+
+$(STATLIB): $(AGG_OBJECTS)
 
 winlibs:
 	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R" ${VERSION}
 
-AGG_SOURCES = $(wildcard agg/src/*.cpp)
-OWN_SOURCES = $(wildcard *.cpp)
-SOURCES = $(AGG_SOURCES) $(OWN_SOURCES)
-OBJECTS = $(SOURCES:.cpp=.o)
+clean:
+	rm -f $(OBJECTS) $(STATLIB) $(SHLIB) $(AGG_OBJECTS)
