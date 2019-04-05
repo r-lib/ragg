@@ -14,9 +14,3 @@ matrix:
         - libpng
         - freetype
         - fontconfig
-
-addons:
-  apt:
-    packages:
-    - libfontconfig1-dev
-    
