@@ -81,4 +81,6 @@ SEXP agg_supertransparent_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, 
     );
     makeDevice<AggDevicePng16Alpha>(device, "agg_png");
   }
+  
+  return R_NilValue;
 }

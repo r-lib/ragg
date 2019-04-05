@@ -21,8 +21,8 @@ public:
   
   AggDevice16(const char* fp, int w, int h, double ps, int bg, double res, 
               double alpha_mod = 1.0) : 
-    alpha_mod(alpha_mod),
-    AggDevice<PIXFMT, agg::rgba16>(fp, w, h, ps, bg, res)
+    AggDevice<PIXFMT, agg::rgba16>(fp, w, h, ps, bg, res),
+    alpha_mod(alpha_mod)
   {
       this->background = convertColour(this->background_int);
       this->renderer.clear(this->background);
