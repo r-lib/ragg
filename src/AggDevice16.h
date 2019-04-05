@@ -5,6 +5,8 @@
 /* For htons */
 #ifdef _WIN32
 #include <winsock.h>
+#else
+#include <arpa/inet.h>
 #endif
 
 // Functor for dimming alpha if needed
