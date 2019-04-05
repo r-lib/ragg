@@ -141,7 +141,7 @@ public:
     last_size = -1.0;
     feng.hinting(true);
     feng.flip_y(true);
-    feng.gamma(agg::gamma_power(1.5));
+    feng.gamma(agg::gamma_power(1.8));
   }
   
   bool load_font(agg::glyph_rendering gren, const char *family, int face, 
