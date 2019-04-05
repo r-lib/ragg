@@ -40,5 +40,7 @@ Suggests:
     bench,
     rlang,
     tidyr,
-    ggridges
+    ggridges,
+    dplyr,
+    sessioninfo
 VignetteBuilder: knitr
