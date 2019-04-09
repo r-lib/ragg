@@ -407,3 +407,9 @@ down to cairo vs ragg. While for the most part the two rendering systems provide
 comparable output, there are two areas where ragg takes the lead, quality-wise:
 rendering of fill, and rendering of rotated text. If these areas are of interest 
 to you then ragg will be the obvious choice.
+
+## Session info
+```{r}
+sessioninfo::session_info()
+```
+
