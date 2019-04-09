@@ -7,7 +7,7 @@ Authors@R:
     c(person(given = "Thomas Lin",
              family = "Pedersen",
              role = c("cre", "aut"),
-             email = "thomasp.pedersen@rstudio.com",
+             email = "thomas.pedersen@rstudio.com",
              comment = c(ORCID = "0000-0002-5147-4711")),
       person(given = "Maxim",
              family = "Shemanarev",
@@ -15,7 +15,7 @@ Authors@R:
              comment = "Author of AGG"),
       person(given = "RStudio",
              role = "cph"))
-Maintainer: Thomas Lin Pedersen <thomasp.pedersen@rstudio.com>
+Maintainer: Thomas Lin Pedersen <thomas.pedersen@rstudio.com>
 Description: Anti-Grain Geometry (AGG) is a high-quality and high-performance
     2D drawing library. The 'ragg' package provides a set of graphic devices 
     based on AGG to use as alternative to the raster devices provided through
