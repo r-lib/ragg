@@ -42,7 +42,8 @@ Suggests:
     tidyr,
     ggridges,
     dplyr,
-    sessioninfo
+    sessioninfo,
+    magick
 Remotes: 
     r-lib/devoid
 VignetteBuilder: knitr
