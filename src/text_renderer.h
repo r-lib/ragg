@@ -215,8 +215,7 @@ public:
       if (glyph) {
         fman.add_kerning(&x, &y);
         fman.init_embedded_adaptors(glyph, x, y);
-        switch(glyph->data_type)
-        {
+        switch(glyph->data_type) {
         default: break;
         case agg::glyph_data_gray8:
           agg::render_scanlines(fman.gray8_adaptor(), 
