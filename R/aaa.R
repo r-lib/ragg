@@ -11,10 +11,10 @@ get_dims <- function(width, height, units, res) {
 }
 
 validate_path <- function(path) {
-  path <- normalizePath(path)
   dir <- dirname(path)
   if (!dir.exists(dir)) {
-    dir.create(dir)
+    dir.create(dir, recursive = TRUE)
   }
-  path
+  dir <- normalizePath(dir)
+  file.path(dir, basename(path))
 }
