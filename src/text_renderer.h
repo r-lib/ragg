@@ -128,7 +128,6 @@ class TextRenderer {
   UTF_UCS converter;
   std::pair<std::string, int> last_font;
   agg::glyph_rendering last_gren;
-  double last_size;
   
 public:
   TextRenderer() :
@@ -138,7 +137,6 @@ public:
   {
     last_font = std::make_pair("", -1);
     last_gren = agg::glyph_ren_native_mono;
-    last_size = -1.0;
     feng.hinting(true);
     feng.flip_y(true);
     feng.gamma(agg::gamma_power(1.8));
@@ -150,8 +148,8 @@ public:
                                                      face == 2 || face == 4, 
                                                      face == 3 || face == 4,
                                                      face == 5);
-    if (!(gren == last_gren || 
-        font.second == last_font.second || 
+    if (!(gren == last_gren && 
+        font.second == last_font.second && 
         font.first == last_font.first)) {
       if (!feng.load_font(font.first.c_str(), font.second, gren)) {
         Rf_warning("Unable to load font: %s", family);
@@ -159,12 +157,10 @@ public:
       }
       last_font = font;
       last_gren = gren;
-    }
-    if (size != last_size) {
       feng.height(size);
-      last_size = size;
+    } else if (size != feng.height()) {
+      feng.height(size);
     }
-    
     return true;
   }
   
