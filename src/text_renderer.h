@@ -181,11 +181,12 @@ public:
       c = -c;
     }
     const agg::glyph_cache* glyph = fman.glyph(c);
-    
-    *ascent = (double) -glyph->bounds.y1;
-    *descent = (double) glyph->bounds.y2;
-    
-    *width = glyph->advance_x;
+    if (glyph) {
+      *ascent = (double) -glyph->bounds.y1;
+      *descent = (double) glyph->bounds.y2;
+      
+      *width = glyph->advance_x;
+    }
   }
   
   template<typename renderer_solid>
