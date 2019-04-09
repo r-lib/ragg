@@ -19,6 +19,7 @@ knitr::opts_chunk$set(
 library(ragg)
 library(devoid)
 library(ggplot2)
+has_xlib <- Sys.info()['sysname'] != 'Windows'
 ```
 
 This document serves as a collection of benchmarks between ragg and the build-in
@@ -53,7 +54,7 @@ plot(bench::mark(
   ragg = {agg_png(file); plot.new(); dev.off()},
   cairo = {png(file, type = 'cairo'); plot.new(); dev.off()},
   cairo_png = {png(file, type = 'cairo-png'); plot.new(); dev.off()},
-  Xlib = {png(file, type = 'Xlib'); plot.new(); dev.off()}
+  Xlib = if (has_xlib) {png(file, type = 'Xlib'); plot.new(); dev.off()} else NULL
 ), type = 'ridge') + ggtitle('Open and close performance')
 ```
 
@@ -99,7 +100,7 @@ all_render_bench <- function(expr, xlib = TRUE) {
                  cairo_gray = !!expr),
     render_bench(png(file, type = "cairo", antialias = 'subpixel'), 
                  cairo_subpixel = !!expr),
-    if (xlib) render_bench(png(file, type = "Xlib"), xlib = !!expr) else NULL
+    if (has_xlib && xlib) render_bench(png(file, type = "Xlib"), xlib = !!expr) else NULL
   )
   res <- suppressWarnings(dplyr::bind_rows(res))
   res$Anti_aliased <- c(TRUE, FALSE, TRUE, TRUE, FALSE)[seq_len(nrow(res))]
