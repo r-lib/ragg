@@ -62,7 +62,7 @@ public:
   
   // Lifecycle methods
   AggDevice(const char* fp, int w, int h, double ps, int bg, double res);
-  ~AggDevice();
+  virtual ~AggDevice();
   void newPage();
   void close();
   virtual bool savePage();
