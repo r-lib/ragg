@@ -235,7 +235,7 @@ double AggDevice<PIXFMT, R_COLOR>::stringWidth(const char *str,
                                                const char *family, int face, 
                                                double size) {
   size *= res_mod;
-  agg::glyph_rendering gren = agg::glyph_ren_native_gray8;
+  agg::glyph_rendering gren = agg::glyph_ren_agg_gray8;
   if (!t_ren.load_font(gren, family, face, size)) {
     return 0.0;
   }
@@ -247,7 +247,7 @@ void AggDevice<PIXFMT, R_COLOR>::charMetric(int c, const char *family, int face,
                                    double size, double *ascent, double *descent, 
                                    double *width) {
   size *= res_mod;
-  agg::glyph_rendering gren = agg::glyph_ren_native_gray8;
+  agg::glyph_rendering gren = agg::glyph_ren_agg_gray8;
   if (!t_ren.load_font(gren, family, face, size)) {
     *ascent = 0.0;
     *descent = 0.0;
@@ -620,7 +620,7 @@ void AggDevice<PIXFMT, R_COLOR>::drawText(double x, double y, const char *str,
                                           const char *family, int face, 
                                           double size, double rot, double hadj, 
                                           int col) {
-  agg::glyph_rendering gren = std::fmod(rot, 90) == 0.0 ? agg::glyph_ren_native_gray8 : agg::glyph_ren_outline;
+  agg::glyph_rendering gren = std::fmod(rot, 90) == 0.0 ? agg::glyph_ren_agg_gray8 : agg::glyph_ren_outline;
   
   size *= res_mod;
   
