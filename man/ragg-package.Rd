@@ -20,7 +20,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Thomas Lin Pedersen \email{thomasp.pedersen@rstudio.com} (0000-0002-5147-4711)
+\strong{Maintainer}: Thomas Lin Pedersen \email{thomas.pedersen@rstudio.com} (0000-0002-5147-4711)
 
 Authors:
 \itemize{

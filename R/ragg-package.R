@@ -1,5 +1,6 @@
 #' @keywords internal
 #' @useDynLib ragg, .registration = TRUE
+#' @importFrom systemfonts match_font
 "_PACKAGE"
 
 # The following block is used by usethis to automatically manage

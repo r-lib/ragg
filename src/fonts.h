@@ -6,6 +6,14 @@
 
 font_map* get_font_map();
 
+static void locate_font(const char *family, int italic, int bold, char *path, int max_path_length) {
+  static void (*p_locate_font)(const char *family, int italic, int bold, char *path, int max_path_length) = NULL;
+  if (p_locate_font == NULL) {
+    p_locate_font = (void(*)(const char *, int, int, char *, int)) R_GetCCallable("systemfonts", "locate_font");
+  }
+  p_locate_font(family, italic, bold, path, max_path_length);
+}
+
 static std::string get_font_file(const char* family, int bold, int italic, int symbol) {
   const char* fontfamily;
   if (symbol) {
@@ -22,7 +30,7 @@ static std::string get_font_file(const char* family, int bold, int italic, int s
   }
   char *path = new char[PATH_MAX+1];
   path[PATH_MAX] = '\0';
-  (*p_locate_font)(fontfamily, italic, bold, path, PATH_MAX);
+  locate_font(fontfamily, italic, bold, path, PATH_MAX);
   std::string res = path;
   delete[] path;
   

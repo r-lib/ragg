@@ -10,7 +10,7 @@ PKG_CPPFLAGS = -I${RWINLIB}/include/cairo -I${RWINLIB}/include \
 	-DSTRICT_R_HEADERS
 
 PKG_LIBS = -Lagg -lstatagg \
-  -L${RWINLIB}/lib${R_ARCH} -lcairo -lfontconfig -lfreetype -lpng -lpixman-1 \
+  -L${RWINLIB}/lib${R_ARCH} -lcairo -lfreetype -lpng -lpixman-1 \
   -L../windows/baselibs-3.5.0/lib${R_ARCH} -ltiff \
 	-lexpat -lharfbuzz -lbz2 -lintl -lz -lgdi32 -lws2_32
 	

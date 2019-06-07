@@ -20,7 +20,6 @@ static const R_CallMethodDef CallEntries[] = {
 
 extern "C" void R_init_ragg(DllInfo *dll) {
   fonts = new font_map();
-  p_locate_font = (void(*)(const char *, int, int, char *, int))R_GetCCallable("systemfonts", "locate_font");
   
   R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
   R_useDynamicSymbols(dll, FALSE);

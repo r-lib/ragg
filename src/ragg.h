@@ -1,3 +1,6 @@
+#ifndef RAGG_INCLUDED
+#define RAGG_INCLUDED
+
 #include <string>
 #include <tuple>
 #include <utility>
@@ -14,9 +17,6 @@
 
 #include "agg_renderer_base.h"
 #include "agg_renderer_scanline.h"
-
-#ifndef RAGG_INCLUDED
-#define RAGG_INCLUDED
 
 #define R_USE_PROTOTYPES 1
 typedef agg::pixfmt_rgb24_pre                   pixfmt_type_24;
@@ -71,8 +71,6 @@ inline void demultiply<pixfmt_type_64>(pixfmt_type_64* pixfmt) {
   pixfmt->demultiply();
   return;
 }
-
-void(*p_locate_font)(const char *family, int italic, int bold, char *path, int max_path_length);
 
 SEXP agg_ppm_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, 
                SEXP res);
