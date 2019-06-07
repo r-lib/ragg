@@ -22,10 +22,10 @@ should be identical across operating systems.
 ## Installation
 
 The package is currently under development and has only been configured
-for Mac and Linux. You’ll need to have pkg-config, freetype, fontconfig,
-libpng, and libtiff available on your system to compile the package. If
-you have these libraries available you should be able to install the
-package using devtools:
+for Mac and Linux. You’ll need to have pkg-config, freetype, libpng, and
+libtiff available on your system to compile the package. If you have
+these libraries available you should be able to install the package
+using devtools:
 
 ``` r
 # install.packages('devtools')
