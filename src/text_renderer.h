@@ -126,7 +126,7 @@ class TextRenderer {
   font_engine_type feng;
   font_manager_type fman;
   UTF_UCS converter;
-  std::pair<std::string, int> last_font;
+  std::string last_font;
   agg::glyph_rendering last_gren;
   
 public:
@@ -135,7 +135,7 @@ public:
     fman(feng),
     converter()
   {
-    last_font = std::make_pair("", -1);
+    last_font = "";
     last_gren = agg::glyph_ren_native_mono;
     feng.hinting(true);
     feng.flip_y(true);
@@ -144,14 +144,11 @@ public:
   
   bool load_font(agg::glyph_rendering gren, const char *family, int face, 
                  double size) {
-    std::pair<std::string, int> font = get_font_file(family, 
-                                                     face == 2 || face == 4, 
-                                                     face == 3 || face == 4,
-                                                     face == 5);
-    if (!(gren == last_gren && 
-        font.second == last_font.second && 
-        font.first == last_font.first)) {
-      if (!feng.load_font(font.first.c_str(), font.second, gren)) {
+    std::string font = get_font_file(family, face == 2 || face == 4,
+                                     face == 3 || face == 4,
+                                     face == 5);
+    if (!(gren == last_gren && font == last_font)) {
+      if (!feng.load_font(font.c_str(), 0, gren)) {
         Rf_warning("Unable to load font: %s", family);
         return false;
       }

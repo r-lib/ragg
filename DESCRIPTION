@@ -29,8 +29,7 @@ SystemRequirements:
     C++11,
     GNU Make,
     pkg-config,
-    freetype2,
-    fontconfig
+    freetype2
     libpng
 Suggests: 
     knitr,
@@ -45,5 +44,7 @@ Suggests:
     sessioninfo,
     magick
 Remotes: 
-    r-lib/devoid
+    thomasp85/systemfonts
 VignetteBuilder: knitr
+Imports: 
+    systemfonts
