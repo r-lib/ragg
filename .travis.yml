@@ -9,6 +9,8 @@ fortran: false
 matrix:
   include:
     - dist: xenial
+      r_binary_packages: 
+        - cairo
     - os: osx
       brew_packages:
         - libpng
