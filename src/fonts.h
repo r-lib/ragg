@@ -6,20 +6,19 @@
 
 font_map* get_font_map();
 
-static void locate_font(const char *family, int italic, int bold, char *path, int max_path_length) {
-  static void (*p_locate_font)(const char *family, int italic, int bold, char *path, int max_path_length) = NULL;
+static int locate_font(const char *family, int italic, int bold, char *path, int max_path_length) {
+  static int (*p_locate_font)(const char *family, int italic, int bold, char *path, int max_path_length) = NULL;
   if (p_locate_font == NULL) {
-    p_locate_font = (void(*)(const char *, int, int, char *, int)) R_GetCCallable("systemfonts", "locate_font");
+    p_locate_font = (int(*)(const char *, int, int, char *, int)) R_GetCCallable("systemfonts", "locate_font");
   }
-  p_locate_font(family, italic, bold, path, max_path_length);
+  return p_locate_font(family, italic, bold, path, max_path_length);
 }
 
-static std::string get_font_file(const char* family, int bold, int italic, int symbol) {
-  const char* fontfamily;
+static std::pair<std::string, int> get_font_file(const char* family, int bold, 
+                                                 int italic, int symbol) {
+  const char* fontfamily = family;
   if (symbol) {
     fontfamily = "Symbol";
-  } else {
-    fontfamily = *family ? family : "Arial";
   }
   
   font_key key = std::make_tuple(std::string((char *) fontfamily), bold, italic);
@@ -30,8 +29,10 @@ static std::string get_font_file(const char* family, int bold, int italic, int s
   }
   char *path = new char[PATH_MAX+1];
   path[PATH_MAX] = '\0';
-  locate_font(fontfamily, italic, bold, path, PATH_MAX);
-  std::string res = path;
+  int index = locate_font(fontfamily, italic, bold, path, PATH_MAX);
+  std::pair<std::string, int> res;
+  res.first = path;
+  res.second = index;
   delete[] path;
   
   (*map)[key] = res;

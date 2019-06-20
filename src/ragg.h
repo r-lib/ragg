@@ -53,7 +53,7 @@ struct key_equal : public std::binary_function<font_key, font_key, bool>
   }
 };
 
-typedef std::unordered_map<font_key, std::string, key_hash, key_equal> font_map;
+typedef std::unordered_map<font_key, std::pair< std::string, int >, key_hash, key_equal> font_map;
 
 
 // pixfmt agnosting demultiplying
