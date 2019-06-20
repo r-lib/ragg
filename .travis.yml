@@ -10,7 +10,7 @@ matrix:
   include:
     - dist: xenial
       r_binary_packages: 
-        - cairo
+        - Cairo
     - os: osx
       brew_packages:
         - libpng
