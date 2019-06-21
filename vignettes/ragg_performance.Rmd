@@ -54,7 +54,8 @@ plot(bench::mark(
   ragg = {agg_png(file); plot.new(); dev.off()},
   cairo = {png(file, type = 'cairo'); plot.new(); dev.off()},
   cairo_png = {png(file, type = 'cairo-png'); plot.new(); dev.off()},
-  Xlib = if (has_xlib) {png(file, type = 'Xlib'); plot.new(); dev.off()} else NULL
+  Xlib = if (has_xlib) {png(file, type = 'Xlib'); plot.new(); dev.off()} else NULL,
+  check = FALSE
 ), type = 'ridge') + ggtitle('Open and close performance')
 ```
 
