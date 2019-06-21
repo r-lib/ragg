@@ -1,8 +1,9 @@
-VERSION = 1.15.10
+VERSION = 1.16.0
 RWINLIB = ../windows/cairo-${VERSION}
 
-AGG_SOURCES = $(wildcard agg/src/*.cpp)
-AGG_OBJECTS = $(AGG_SOURCES:.cpp=.o)
+AGG_OBJECTS = agg/src/agg_curves.o agg/src/agg_font_freetype.o \
+	agg/src/agg_trans_affine.o agg/src/agg_vcgen_dash.o \
+	agg/src/agg_vcgen_stroke.o
 
 PKG_CPPFLAGS = -I${RWINLIB}/include/cairo -I${RWINLIB}/include \
   -I../windows/baselibs-3.5.0/include \
@@ -10,9 +11,10 @@ PKG_CPPFLAGS = -I${RWINLIB}/include/cairo -I${RWINLIB}/include \
 	-DSTRICT_R_HEADERS
 
 PKG_LIBS = -Lagg -lstatagg \
-  -L${RWINLIB}/lib${R_ARCH} -lcairo -lfreetype -lpng -lpixman-1 \
-  -L../windows/baselibs-3.5.0/lib${R_ARCH} -ltiff \
-	-lexpat -lharfbuzz -lbz2 -lintl -lz -lgdi32 -lws2_32
+  -L${RWINLIB}/lib${R_ARCH} \
+	-lfreetype -lharfbuzz -lfreetype -lpng -lbz2 -lz \
+	-L../windows/baselibs-3.5.0/lib${R_ARCH} -ltiff \
+	-lgdi32 -lws2_32
 	
 STATLIB = agg/libstatagg.a
 
