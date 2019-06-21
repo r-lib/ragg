@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 library(ragg)
 library(grid)
 library(magick)
-has_xlib <- capabilities()$X11
+has_xlib <- capabilities()['X11']
 img_zoom <- function(path) {
   img <- image_read(path)
   img <- image_crop(img, '300x150+150+75')

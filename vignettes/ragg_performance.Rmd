@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 library(ragg)
 library(devoid)
 library(ggplot2)
-has_xlib <- capabilities()$X11
+has_xlib <- capabilities()['X11']
 ```
 
 This document serves as a collection of benchmarks between ragg and the build-in
