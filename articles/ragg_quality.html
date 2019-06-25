@@ -61,14 +61,7 @@
   </ul>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/r-lib/ragg">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
-      </ul>
+<ul class="nav navbar-nav navbar-right"></ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -83,7 +76,7 @@
       <h1>Ragg Quality</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/r-lib/ragg/blob/master/vignettes/ragg_quality.Rmd"><code>vignettes/ragg_quality.Rmd</code></a></small>
+      
       <div class="hidden name"><code>ragg_quality.Rmd</code></div>
 
     </div>
@@ -93,17 +86,16 @@
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ragg)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(grid)</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(magick)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; Linking to ImageMagick 6.9.10.23</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; Enabled features: fontconfig, freetype, fftw, lcms, pango, webp, x11</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; Disabled features: cairo, ghostscript, rsvg</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">has_xlib &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/capabilities">capabilities</a></span>()[<span class="st">'X11'</span>]</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">img_zoom &lt;-<span class="st"> </span><span class="cf">function</span>(path) {</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">  img &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/magick/topics/editing">image_read</a></span>(path)</a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">  img &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/magick/topics/transform">image_crop</a></span>(img, <span class="st">'300x150+150+75'</span>)</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">  img &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/magick/topics/transform">image_sample</a></span>(img, <span class="st">'600x300'</span>)</a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">  img</a>
-<a class="sourceLine" id="cb1-13" data-line-number="13">}</a></code></pre></div>
+<a class="sourceLine" id="cb1-4" data-line-number="4">img_zoom &lt;-<span class="st"> </span><span class="cf">function</span>(path) {</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">  img &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/magick/topics/editing">image_read</a></span>(path)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">  img &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/magick/topics/transform">image_crop</a></span>(img, <span class="st">'300x150+150+75'</span>)</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">  img &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/magick/topics/transform">image_sample</a></span>(img, <span class="st">'600x300'</span>)</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">  img</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">}</a></code></pre></div>
 <p>This vignette tries to compare the quality of the output of ragg, with that of cairo and, if the system supports it, Xlib (Xlib is unix only). As quality is, to a certain extend, subjective, the vignette will be short on conclusions and filled with examples.</p>
+<blockquote>
+<p>The present version of this vignette has been compiled on a system without the X11 device. The benchmarkings will thus omit this device, though the text will still refer to it.</p>
+</blockquote>
 <div id="scope" class="section level2">
 <h2 class="hasAnchor">
 <a href="#scope" class="anchor"></a>Scope</h2>
@@ -128,32 +120,32 @@
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">circle_quality</span>(agg_png, <span class="st">'ragg'</span>, ragg_circle)</a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/include_graphics">include_graphics</a></span>(ragg_circle)</a></code></pre></div>
-<p><img src="ragg_quality_files/figure-html/unnamed-chunk-3-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-4-1.png"><!-- --></p>
+<p><img src="ragg_quality_files/figure-html/unnamed-chunk-5-1.png"><!-- --></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">cairo_none_circle &lt;-<span class="st"> </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/fig_path">fig_path</a></span>(<span class="st">'.png'</span>)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw">circle_quality</span>(png, <span class="st">'cairo no AA'</span>, cairo_none_circle, </a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">               <span class="dt">type =</span> <span class="st">'cairo'</span>, <span class="dt">antialias =</span> <span class="st">'none'</span>)</a>
 <a class="sourceLine" id="cb4-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/include_graphics">include_graphics</a></span>(cairo_none_circle)</a></code></pre></div>
-<p><img src="ragg_quality_files/figure-html/unnamed-chunk-7-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-8-1.png"><!-- --></p>
+<p><img src="ragg_quality_files/figure-html/unnamed-chunk-9-1.png"><!-- --></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">cairo_gray_circle &lt;-<span class="st"> </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/fig_path">fig_path</a></span>(<span class="st">'.png'</span>)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw">circle_quality</span>(png, <span class="st">'cairo gray AA'</span>, cairo_gray_circle, </a>
 <a class="sourceLine" id="cb5-4" data-line-number="4">               <span class="dt">type =</span> <span class="st">'cairo'</span>, <span class="dt">antialias =</span> <span class="st">'gray'</span>)</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb5-6" data-line-number="6">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/include_graphics">include_graphics</a></span>(cairo_gray_circle)</a></code></pre></div>
-<p><img src="ragg_quality_files/figure-html/unnamed-chunk-9-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-10-1.png"><!-- --></p>
+<p><img src="ragg_quality_files/figure-html/unnamed-chunk-11-1.png"><!-- --></p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">cairo_subpixel_circle &lt;-<span class="st"> </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/fig_path">fig_path</a></span>(<span class="st">'.png'</span>)</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw">circle_quality</span>(png, <span class="st">'cairo subpixel AA'</span>, cairo_subpixel_circle, </a>
 <a class="sourceLine" id="cb6-4" data-line-number="4">               <span class="dt">type =</span> <span class="st">'cairo'</span>, <span class="dt">antialias =</span> <span class="st">'subpixel'</span>)</a>
 <a class="sourceLine" id="cb6-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb6-6" data-line-number="6">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/include_graphics">include_graphics</a></span>(cairo_subpixel_circle)</a></code></pre></div>
-<p><img src="ragg_quality_files/figure-html/unnamed-chunk-11-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-12-1.png"><!-- --></p>
+<p><img src="ragg_quality_files/figure-html/unnamed-chunk-13-1.png"><!-- --></p>
 <div id="observations" class="section level3">
 <h3 class="hasAnchor">
 <a href="#observations" class="anchor"></a>Observations</h3>
@@ -183,63 +175,63 @@
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw">text_quality</span>(agg_png, <span class="st">'ragg'</span>, ragg_text)</a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb8-5" data-line-number="5">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/include_graphics">include_graphics</a></span>(ragg_text)</a></code></pre></div>
-<p><img src="ragg_quality_files/figure-html/unnamed-chunk-14-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-15-1.png"><!-- --></p>
+<p><img src="ragg_quality_files/figure-html/unnamed-chunk-16-1.png"><!-- --></p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">ragg_text_rot &lt;-<span class="st"> </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/fig_path">fig_path</a></span>(<span class="st">'.png'</span>)</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb9-3" data-line-number="3"><span class="kw">text_quality</span>(agg_png, <span class="st">'ragg'</span>, ragg_text_rot, <span class="dt">rotation =</span> <span class="dv">27</span>)</a>
 <a class="sourceLine" id="cb9-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb9-5" data-line-number="5">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/include_graphics">include_graphics</a></span>(ragg_text_rot)</a></code></pre></div>
-<p><img src="ragg_quality_files/figure-html/unnamed-chunk-16-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-17-1.png"><!-- --></p>
+<p><img src="ragg_quality_files/figure-html/unnamed-chunk-18-1.png"><!-- --></p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">cairo_none_text &lt;-<span class="st"> </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/fig_path">fig_path</a></span>(<span class="st">'.png'</span>)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="kw">text_quality</span>(png, <span class="st">'cairo no AA'</span>, cairo_none_text, </a>
 <a class="sourceLine" id="cb10-4" data-line-number="4">             <span class="dt">type =</span> <span class="st">'cairo'</span>, <span class="dt">antialias =</span> <span class="st">'none'</span>)</a>
 <a class="sourceLine" id="cb10-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb10-6" data-line-number="6">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/include_graphics">include_graphics</a></span>(cairo_none_text)</a></code></pre></div>
-<p><img src="ragg_quality_files/figure-html/unnamed-chunk-22-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-23-1.png"><!-- --></p>
+<p><img src="ragg_quality_files/figure-html/unnamed-chunk-24-1.png"><!-- --></p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">cairo_none_text_rot &lt;-<span class="st"> </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/fig_path">fig_path</a></span>(<span class="st">'.png'</span>)</a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw">text_quality</span>(png, <span class="st">'cairo no AA'</span>, cairo_none_text_rot, <span class="dt">rotation =</span> <span class="dv">27</span>, </a>
 <a class="sourceLine" id="cb11-4" data-line-number="4">             <span class="dt">type =</span> <span class="st">'cairo'</span>, <span class="dt">antialias =</span> <span class="st">'none'</span>)</a>
 <a class="sourceLine" id="cb11-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb11-6" data-line-number="6">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/include_graphics">include_graphics</a></span>(cairo_none_text_rot)</a></code></pre></div>
-<p><img src="ragg_quality_files/figure-html/unnamed-chunk-24-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-25-1.png"><!-- --></p>
+<p><img src="ragg_quality_files/figure-html/unnamed-chunk-26-1.png"><!-- --></p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">cairo_gray_text &lt;-<span class="st"> </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/fig_path">fig_path</a></span>(<span class="st">'.png'</span>)</a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb12-3" data-line-number="3"><span class="kw">text_quality</span>(png, <span class="st">'cairo gray AA'</span>, cairo_gray_text, </a>
 <a class="sourceLine" id="cb12-4" data-line-number="4">             <span class="dt">type =</span> <span class="st">'cairo'</span>, <span class="dt">antialias =</span> <span class="st">'gray'</span>)</a>
 <a class="sourceLine" id="cb12-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb12-6" data-line-number="6">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/include_graphics">include_graphics</a></span>(cairo_gray_text)</a></code></pre></div>
-<p><img src="ragg_quality_files/figure-html/unnamed-chunk-26-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-27-1.png"><!-- --></p>
+<p><img src="ragg_quality_files/figure-html/unnamed-chunk-28-1.png"><!-- --></p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">cairo_gray_text_rot &lt;-<span class="st"> </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/fig_path">fig_path</a></span>(<span class="st">'.png'</span>)</a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb13-3" data-line-number="3"><span class="kw">text_quality</span>(png, <span class="st">'cairo gray AA'</span>, cairo_gray_text_rot, <span class="dt">rotation =</span> <span class="dv">27</span>, </a>
 <a class="sourceLine" id="cb13-4" data-line-number="4">             <span class="dt">type =</span> <span class="st">'cairo'</span>, <span class="dt">antialias =</span> <span class="st">'gray'</span>)</a>
 <a class="sourceLine" id="cb13-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb13-6" data-line-number="6">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/include_graphics">include_graphics</a></span>(cairo_gray_text_rot)</a></code></pre></div>
-<p><img src="ragg_quality_files/figure-html/unnamed-chunk-28-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-29-1.png"><!-- --></p>
+<p><img src="ragg_quality_files/figure-html/unnamed-chunk-30-1.png"><!-- --></p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">cairo_subpixel_text &lt;-<span class="st"> </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/fig_path">fig_path</a></span>(<span class="st">'.png'</span>)</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb14-3" data-line-number="3"><span class="kw">text_quality</span>(png, <span class="st">'cairo subpixel AA'</span>, cairo_subpixel_text, </a>
 <a class="sourceLine" id="cb14-4" data-line-number="4">             <span class="dt">type =</span> <span class="st">'cairo'</span>, <span class="dt">antialias =</span> <span class="st">'subpixel'</span>)</a>
 <a class="sourceLine" id="cb14-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb14-6" data-line-number="6">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/include_graphics">include_graphics</a></span>(cairo_subpixel_text)</a></code></pre></div>
-<p><img src="ragg_quality_files/figure-html/unnamed-chunk-30-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-31-1.png"><!-- --></p>
+<p><img src="ragg_quality_files/figure-html/unnamed-chunk-32-1.png"><!-- --></p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">cairo_subpixel_text_rot &lt;-<span class="st"> </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/fig_path">fig_path</a></span>(<span class="st">'.png'</span>)</a>
 <a class="sourceLine" id="cb15-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb15-3" data-line-number="3"><span class="kw">text_quality</span>(png, <span class="st">'cairo subpixel AA'</span>, cairo_subpixel_text_rot, <span class="dt">rotation =</span> <span class="dv">27</span>, </a>
 <a class="sourceLine" id="cb15-4" data-line-number="4">             <span class="dt">type =</span> <span class="st">'cairo'</span>, <span class="dt">antialias =</span> <span class="st">'subpixel'</span>)</a>
 <a class="sourceLine" id="cb15-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb15-6" data-line-number="6">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/include_graphics">include_graphics</a></span>(cairo_subpixel_text_rot)</a></code></pre></div>
-<p><img src="ragg_quality_files/figure-html/unnamed-chunk-32-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-33-1.png"><!-- --></p>
+<p><img src="ragg_quality_files/figure-html/unnamed-chunk-34-1.png"><!-- --></p>
 <div id="observations-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#observations-1" class="anchor"></a>Observations</h3>
@@ -262,13 +254,13 @@
 <a class="sourceLine" id="cb17-3" data-line-number="3"><span class="kw">blend_quality</span>(agg_png, <span class="st">'ragg'</span>, ragg_blend)</a>
 <a class="sourceLine" id="cb17-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb17-5" data-line-number="5">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/include_graphics">include_graphics</a></span>(ragg_blend)</a></code></pre></div>
-<p><img src="ragg_quality_files/figure-html/unnamed-chunk-35-1.png"><!-- --></p>
+<p><img src="ragg_quality_files/figure-html/unnamed-chunk-36-1.png"><!-- --></p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">cairo_blend &lt;-<span class="st"> </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/fig_path">fig_path</a></span>(<span class="st">'.png'</span>)</a>
 <a class="sourceLine" id="cb18-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb18-3" data-line-number="3"><span class="kw">blend_quality</span>(png, <span class="st">'cairo'</span>, cairo_blend, <span class="dt">type =</span> <span class="st">'cairo'</span>)</a>
 <a class="sourceLine" id="cb18-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb18-5" data-line-number="5">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/include_graphics">include_graphics</a></span>(cairo_blend)</a></code></pre></div>
-<p><img src="ragg_quality_files/figure-html/unnamed-chunk-36-1.png"><!-- --></p>
+<p><img src="ragg_quality_files/figure-html/unnamed-chunk-37-1.png"><!-- --></p>
 <div id="observations-2" class="section level3">
 <h3 class="hasAnchor">
 <a href="#observations-2" class="anchor"></a>Observations</h3>
@@ -294,13 +286,13 @@
 <a class="sourceLine" id="cb20-3" data-line-number="3"><span class="kw">raster_quality</span>(agg_png, <span class="st">'ragg'</span>, ragg_raster)</a>
 <a class="sourceLine" id="cb20-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb20-5" data-line-number="5">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/include_graphics">include_graphics</a></span>(ragg_raster)</a></code></pre></div>
-<p><img src="ragg_quality_files/figure-html/unnamed-chunk-38-1.png"><!-- --></p>
+<p><img src="ragg_quality_files/figure-html/unnamed-chunk-39-1.png"><!-- --></p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">cairo_raster &lt;-<span class="st"> </span>knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/fig_path">fig_path</a></span>(<span class="st">'.png'</span>)</a>
 <a class="sourceLine" id="cb21-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb21-3" data-line-number="3"><span class="kw">raster_quality</span>(png, <span class="st">'cairo'</span>, cairo_raster, <span class="dt">type =</span> <span class="st">'cairo'</span>)</a>
 <a class="sourceLine" id="cb21-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb21-5" data-line-number="5">knitr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/knitr/topics/include_graphics">include_graphics</a></span>(cairo_raster)</a></code></pre></div>
-<p><img src="ragg_quality_files/figure-html/unnamed-chunk-40-1.png"><!-- --></p>
+<p><img src="ragg_quality_files/figure-html/unnamed-chunk-41-1.png"><!-- --></p>
 <div id="observations-3" class="section level3">
 <h3 class="hasAnchor">
 <a href="#observations-3" class="anchor"></a>Observations</h3>
