@@ -157,7 +157,7 @@ agg_supertransparent <- function(file = 'Rplot%03d.png', width = 480,
 #' (default) the return value is a `matrix` of colour values and if `TRUE` the 
 #' return value is a `nativeRaster` object.
 #' 
-#' @importFrom grDevices dev.list dev.off dev.cur
+#' @importFrom grDevices dev.list dev.off dev.cur dev.capture dev.set
 #' @export
 #' 
 #' @examples 
