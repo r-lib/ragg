@@ -39,8 +39,10 @@ On Mac installation the `png()` function also offers (and defaults to) a quartz
 backend. As this is not available on all systems it will not be included here. 
 Local tests have shown it to be about as performant or slightly below ragg.
 
-```{r, echo=FALSE, results='asis', eval=!has_xlib}
-cat(">The present version of this vignette has been compiled on a system without the X11 device. The benchmarkings will thus omit this device, though the text will still refer to it.")
+```{asis, echo=!has_xlib}
+>The present version of this vignette has been compiled on a system without the 
+X11 device. The benchmarkings will thus omit this device, though the text will 
+still refer to it.
 ```
 
 ## Opening and closing

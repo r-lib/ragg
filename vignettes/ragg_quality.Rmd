@@ -33,8 +33,10 @@ cairo and, if the system supports it, Xlib (Xlib is unix only). As quality is,
 to a certain extend, subjective, the vignette will be short on conclusions and
 filled with examples.
 
-```{r, echo=FALSE, results='asis', eval=!has_xlib}
-cat(">The present version of this vignette has been compiled on a system without the X11 device. The benchmarkings will thus omit this device, though the text will still refer to it.")
+```{asis, echo=!has_xlib}
+>The present version of this vignette has been compiled on a system without the 
+X11 device. The benchmarkings will thus omit this device, though the text will 
+still refer to it.
 ```
 
 ## Scope
