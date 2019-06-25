@@ -6,9 +6,9 @@
 <!-- badges: start -->
 
 [![Travis build
-status](https://travis-ci.org/thomasp85/ragg.svg?branch=master)](https://travis-ci.org/thomasp85/ragg)
+status](https://travis-ci.org/r-lib/ragg.svg?branch=master)](https://travis-ci.org/r-lib/ragg)
 [![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/thomasp85/ragg?branch=master&svg=true)](https://ci.appveyor.com/project/thomasp85/ragg)
+status](https://ci.appveyor.com/api/projects/status/github/r-lib/ragg?branch=master&svg=true)](https://ci.appveyor.com/project/r-lib/ragg)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/ragg)](https://cran.r-project.org/package=ragg)
 <!-- badges: end -->
