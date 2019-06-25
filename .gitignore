@@ -10,3 +10,4 @@ src/agg/src/*.so
 src/agg/src/*.dll
 .DS_Store
 inst/doc
+docs/
