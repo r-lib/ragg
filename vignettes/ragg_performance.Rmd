@@ -37,7 +37,11 @@ a measure for the time spend on non-rendering operations.
 
 On Mac installation the `png()` function also offers (and defaults to) a quartz
 backend. As this is not available on all systems it will not be included here. 
-Local tests have shown it to be about 
+Local tests have shown it to be about as performant or slightly below ragg.
+
+```{r, echo=FALSE, results='asis', eval=!has_xlib}
+cat(">The present version of this vignette has been compiled on a system without the X11 device. The benchmarkings will thus omit this device, though the text will still refer to it.")
+```
 
 ## Opening and closing
 All subsequent benchmarks will not include the opening and closing of the device
@@ -50,13 +54,17 @@ both ragg and grDevices uses the same underlying libraries to write to png files
 
 ```{r, message=FALSE}
 file <- tempfile(fileext = '.png')
-plot(bench::mark(
+res <- bench::mark(
   ragg = {agg_png(file); plot.new(); dev.off()},
   cairo = {png(file, type = 'cairo'); plot.new(); dev.off()},
   cairo_png = {png(file, type = 'cairo-png'); plot.new(); dev.off()},
   Xlib = if (has_xlib) {png(file, type = 'Xlib'); plot.new(); dev.off()} else NULL,
   check = FALSE
-), type = 'ridge') + ggtitle('Open and close performance')
+)
+if (!has_xlib) {
+  res <- res[-4, ]
+}
+plot(res, type = 'ridge') + ggtitle('Open and close performance')
 ```
 
 As can be seen, it is not as clear cut as it seems. ragg and cairo_png hae 
@@ -82,7 +90,7 @@ with subpixel antialiasing). Below is an attempt to benchmark each of the device
 methods by constructing as direct calls to each of them. Remember, `void_dev()`
 provides the baseline.
 
-```{r}
+```{r, message=FALSE}
 render_bench <- function(dev_f, ...) {
   dots <- rlang::enexprs(...)
   force(dev_f)
@@ -128,7 +136,7 @@ scatter plots as the default point type. It is thus of high importance that
 circle drawing is as performant as possible, as it may get called thousands of 
 times during the creation of a plot.
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, message=FALSE}
 x <- runif(1000)
 y <- runif(1000)
 pch <- 1
@@ -141,7 +149,7 @@ res <- all_render_bench(points(x, y, pch = pch))
 plot_bench(res, 'Unfilled circle performance')
 ```
 
-```{r}
+```{r, message=FALSE}
 pch <- 19
 
 void_dev()
@@ -163,7 +171,7 @@ Lines is another fundamental part. It can be used to draw single line segments
 directly and is also the workhorse for some of the different symbol types, e.g.
 `pch = 4`, which we will use here.
 
-```{r}
+```{r, message=FALSE}
 pch <- 4
 
 void_dev()
@@ -183,7 +191,7 @@ lines as the operations are quite similar. We will also test different line
 patterns here to asses if there are any differences in the efficency with which
 patterns are generated.
 
-```{r}
+```{r, message=FALSE}
 void_dev()
 plot.new()
 system.time(lines(x, y))
@@ -192,7 +200,7 @@ res <- all_render_bench(lines(x, y))
 plot_bench(res, 'Connected line performance')
 ```
 
-```{r}
+```{r, message=FALSE}
 void_dev()
 plot.new()
 system.time(lines(x, y, lty = 4))
@@ -211,7 +219,7 @@ cost of quality).
 Rectangles is another graphic primitive that has its own method. Again, it is 
 used when plotting certain types of points, and this is how we'll test it:
 
-```{r}
+```{r, message=FALSE}
 pch <- 0
 
 void_dev()
@@ -222,7 +230,7 @@ res <- all_render_bench(points(x, y, pch = pch))
 plot_bench(res, 'Unfilled rectangle performance')
 ```
 
-```{r}
+```{r, message=FALSE}
 pch <- 15
 
 void_dev()
@@ -243,7 +251,7 @@ While certain optimisations may be possible for e.g. rectanges the polygon
 method of device needs to handle all cases. It is used in points for e.g. 
 triangles, but we will also test performance for bigger, more complex polygons.
 
-```{r}
+```{r, message=FALSE}
 pch <- 2
 
 void_dev()
@@ -254,7 +262,7 @@ res <- all_render_bench(points(x, y, pch = pch))
 plot_bench(res, 'Simple polygon performance')
 ```
 
-```{r}
+```{r, message=FALSE}
 void_dev()
 plot.new()
 system.time(polygon(x, y))
@@ -263,7 +271,7 @@ res <- all_render_bench(polygon(x, y))
 plot_bench(res, 'Unfilled complex polygon performance')
 ```
 
-```{r}
+```{r, message=FALSE}
 void_dev()
 plot.new()
 system.time(polygon(x, y, border = 'gray', col = 'black'))
@@ -285,7 +293,7 @@ implemented in the same way as polygon rendering (the polygon method being a
 special case of the path method), but how the other devices implement it is not
 something I know.
 
-```{r}
+```{r, message=FALSE}
 section <- rep(1:10, each = 100)
 x_path <- unlist(lapply(split(x, section), function(x) c(x, NA)))
 y_path <- unlist(lapply(split(y, section), function(x) c(x, NA)))
@@ -301,7 +309,7 @@ res <- all_render_bench(polypath(x_path, y_path, rule = 'evenodd'),
 plot_bench(res, 'Unfilled path performance')
 ```
 
-```{r}
+```{r, message=FALSE}
 void_dev()
 plot.new()
 system.time(polypath(x_path, y_path, rule = 'evenodd', border = 'gray', 
@@ -325,7 +333,7 @@ we look at do. Raster images can be rotated, and they can  be interpolated or
 not during scaling. How interpolation happens is device specific, so there's a 
 lot of room for quality differences which we will not look at here.
 
-```{r}
+```{r, message=FALSE}
 raster <- matrix(hcl(0, 80, seq(50, 80, 10)), nrow = 4, ncol = 5)
 
 void_dev()
@@ -339,7 +347,7 @@ res <- all_render_bench(rasterImage(raster, xleft = 0.25, ybottom = 0.25,
 plot_bench(res, 'Non-interpolated, non-rotated raster performance')
 ```
 
-```{r}
+```{r, message=FALSE}
 void_dev()
 plot.new()
 system.time(rasterImage(raster, xleft = rep(0.25, 100), ybottom = 0.25, xright = 0.75,
@@ -351,7 +359,7 @@ res <- all_render_bench(rasterImage(raster, xleft = 0.25, ybottom = 0.25,
 plot_bench(res, 'Non-interpolated, rotated raster performance')
 ```
 
-```{r}
+```{r, message=FALSE}
 void_dev()
 plot.new()
 system.time(rasterImage(raster, xleft = rep(0.25, 100), ybottom = 0.25, xright = 0.75,
@@ -363,7 +371,7 @@ res <- all_render_bench(rasterImage(raster, xleft = 0.25, ybottom = 0.25,
 plot_bench(res, 'Interpolated, non-rotated raster performance')
 ```
 
-```{r}
+```{r, message=FALSE}
 void_dev()
 plot.new()
 system.time(rasterImage(raster, xleft = rep(0.25, 100), ybottom = 0.25, xright = 0.75,
@@ -388,7 +396,7 @@ native devices to find system fonts, thus having to rely on e.g. the extrafont
 or showtext packages for that. Anyway, again we only look at performance in this
 document.
 
-```{r}
+```{r, message=FALSE}
 pch <- "#"
 
 void_dev()
@@ -399,7 +407,7 @@ res <- all_render_bench(points(x, y, pch = pch))
 plot_bench(res, 'Single character performance')
 ```
 
-```{r}
+```{r, message=FALSE}
 void_dev()
 plot.new()
 system.time(text(x, y, label = 'abcdefghijk'))
