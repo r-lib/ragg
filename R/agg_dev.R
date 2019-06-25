@@ -140,3 +140,59 @@ agg_supertransparent <- function(file = 'Rplot%03d.png', width = 480,
         background, as.numeric(res), as.double(alpha_mod), PACKAGE = 'ragg')
   invisible()
 }
+
+#' Draw to a buffer that can be accessed directly
+#' 
+#' Usually the point of using a graphic device is to create a file or show the 
+#' graphic on the screen. A few times we need the image data for further 
+#' processing in R, and instead of writing it to a file and then reading it back
+#' into R the `agg_capture()` device lets you get the image data directly from 
+#' the buffer. In contrast to the other devices this device returns a function,
+#' that when called will return the current state of the buffer.
+#' 
+#' @inheritParams agg_ppm
+#' 
+#' @return A function that when called returns the current state of the buffer.
+#' The return value of the function depends on the `native` argument. If `FALSE`
+#' (default) the return value is a `matrix` of colour values and if `TRUE` the 
+#' return value is a `nativeRaster` object.
+#' 
+#' @importFrom grDevices dev.list dev.off dev.cur
+#' @export
+#' 
+#' @examples 
+#' cap <- agg_capture()
+#' plot(1:10, 1:10)
+#' 
+#' # Get the plot as a matrix
+#' raster <- cap()
+#' 
+#' # Get the plot as a nativeRaster
+#' raster_n <- cap(native = TRUE)
+#' 
+#' dev.off()
+#' 
+#' # Look at the output
+#' plot(as.raster(raster))
+#' 
+agg_capture <- function(width = 480, height = 480, units = 'px', pointsize = 12, 
+                        background = 'white', res = 72) {
+  dim <- get_dims(width, height, units, res)
+  name <- paste0('agg_capture_', sample(.Machine$integer.max, 1))
+  .Call("agg_capture_c", name, dim[1], dim[2], as.numeric(pointsize), 
+        background, as.numeric(res), PACKAGE = 'ragg')
+  cap <- function(native = FALSE) {
+    current_dev = dev.cur()
+    if (names(current_dev)[1] == name) {
+      return(dev.capture(native = native))
+    }
+    all_dev <- dev.list()
+    if (!name %in% names(all_dev)) {
+      stop('The device (', name, ') is no longer open', call. = FALSE)
+    }
+    dev.set(all_dev[name])
+    on.exit(dev.set(current_dev))
+    dev.capture(native = native)
+  }
+  invisible(cap)
+}

@@ -119,6 +119,12 @@ void agg_raster(unsigned int *raster, int w, int h, double x, double y,
 }
 
 template<class T>
+SEXP agg_capture(pDevDesc dd) {
+  T * device = (T *) dd->deviceSpecific;
+  return device->capture();
+}
+
+template<class T>
 pDevDesc agg_device_new(T* device) {
   
   pDevDesc dd = (DevDesc*) calloc(1, sizeof(DevDesc));
@@ -149,7 +155,11 @@ pDevDesc agg_device_new(T* device) {
   dd->path = agg_path<T>;
   dd->mode = NULL;
   dd->metricInfo = agg_metric_info<T>;
-  dd->cap = NULL;
+  if (device->can_capture) {
+    dd->cap = agg_capture<T>;
+  } else {
+    dd->cap = NULL;
+  }
   dd->raster = agg_raster<T>;
   
   // UTF-8 support

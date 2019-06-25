@@ -38,6 +38,8 @@ public:
   
   static const int bytes_per_pixel = pixfmt_type::pix_width;
   
+  bool can_capture = false;
+  
   int width;
   int height;
   double clip_left;
@@ -66,6 +68,7 @@ public:
   void newPage();
   void close();
   virtual bool savePage();
+  SEXP capture();
   
   // Behaviour
   void clipRect(double x0, double y0, double x1, double y1);
@@ -196,6 +199,11 @@ void AggDevice<PIXFMT, R_COLOR>::close() {
   if (!savePage()) {
     Rf_warning("agg could not write to the given file");
   }
+}
+
+template<class PIXFMT, class R_COLOR>
+SEXP AggDevice<PIXFMT, R_COLOR>::capture() {
+  return Rf_allocVector(INTSXP, 0);
 }
 
 /* This takes care of writing the buffer to an appropriate file. The filename

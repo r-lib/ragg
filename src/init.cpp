@@ -15,6 +15,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"agg_png_c", (DL_FUNC) &agg_png_c, 7},
   {"agg_supertransparent_c", (DL_FUNC) &agg_supertransparent_c, 7},
   {"agg_tiff_c", (DL_FUNC) &agg_tiff_c, 9},
+  {"agg_capture_c", (DL_FUNC) &agg_capture_c, 6},
   {NULL, NULL, 0}
 };
 
