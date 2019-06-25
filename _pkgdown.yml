@@ -4,3 +4,15 @@ url: https://ragg.r-lib.org
 authors:
   Thomas Lin Pedersen:
     href: https://data-imaginist.com
+
+reference:
+  - title: Graphic Devices
+    desc: >
+      ragg currently provides 4 different devices. They all share the same 
+      underlying rendering code, so the only difference is in their output 
+      formats.
+    contents:
+    - agg_png
+    - agg_tiff
+    - agg_capture
+    - agg_ppm
