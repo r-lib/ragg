@@ -39,6 +39,7 @@ Suggests:
     rlang,
     tidyr,
     ggridges,
+    hexbin,
     dplyr,
     sessioninfo,
     magick
