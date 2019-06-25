@@ -2,7 +2,6 @@ Package: ragg
 Type: Package
 Title: Graphic Devices Based on AGG
 Version: 0.0.1
-Date: 2019-03-13
 Authors@R: 
     c(person(given = "Thomas Lin",
              family = "Pedersen",
