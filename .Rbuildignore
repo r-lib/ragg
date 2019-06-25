@@ -6,3 +6,6 @@
 ^src/agg/src.*\.o$
 ^appveyor\.yml$
 ^CODE_OF_CONDUCT\.md$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
