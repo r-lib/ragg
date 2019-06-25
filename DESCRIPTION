@@ -21,8 +21,8 @@ Description: Anti-Grain Geometry (AGG) is a high-quality and high-performance
     based on AGG to use as alternative to the raster devices provided through
     the 'grDevices' package.
 License: MIT + file LICENSE
-URL: https://github.com/thomasp85/ragg
-BugReports: https://github.com/thomasp85/ragg/issues
+URL: https://github.com/r-lib/ragg
+BugReports: https://github.com/r-lib/ragg/issues
 Encoding: UTF-8
 RoxygenNote: 6.1.1
 SystemRequirements: 
