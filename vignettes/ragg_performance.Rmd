@@ -240,7 +240,7 @@ plot.new()
 system.time(points(x, y, pch = pch))
 invisible(dev.off())
 res <- all_render_bench(points(x, y, pch = pch))
-plot_bench(res, 'Unfilled rectangle performance')
+plot_bench(res, 'Filled rectangle performance')
 ```
 
 We see a new pattern with the filled rectangles, where ragg is suddenly the slow
@@ -415,7 +415,7 @@ plot.new()
 system.time(text(x, y, label = 'abcdefghijk'))
 invisible(dev.off())
 res <- all_render_bench(text(x, y, label = 'abcdefghijk'))
-plot_bench(res, 'Single character performance')
+plot_bench(res, 'Text string performance')
 ```
 
 Once again Xlib surprises with a significantly slower font handling than its 
