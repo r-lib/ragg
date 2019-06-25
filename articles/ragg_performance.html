@@ -175,7 +175,7 @@
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
 <a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt;       0       0       0</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt;   0.001   0.000   0.000</span></a>
 <a class="sourceLine" id="cb5-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
 <a class="sourceLine" id="cb5-9" data-line-number="9">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
 <a class="sourceLine" id="cb5-10" data-line-number="10"><span class="kw">plot_bench</span>(res, <span class="st">'Filled circle performance'</span>)</a></code></pre></div>
@@ -216,7 +216,7 @@
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/lines">lines</a></span>(x, y, <span class="dt">lty =</span> <span class="dv">4</span>))</a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt;   0.001   0.000   0.001</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt;   0.001   0.000   0.000</span></a>
 <a class="sourceLine" id="cb8-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
 <a class="sourceLine" id="cb8-7" data-line-number="7">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/lines">lines</a></span>(x, y, <span class="dt">lty =</span> <span class="dv">4</span>))</a>
 <a class="sourceLine" id="cb8-8" data-line-number="8"><span class="kw">plot_bench</span>(res, <span class="st">'Patterned connected line performance'</span>)</a></code></pre></div>
@@ -233,7 +233,7 @@
 <a class="sourceLine" id="cb9-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
 <a class="sourceLine" id="cb9-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
 <a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt;   0.001   0.000   0.000</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt;   0.000   0.000   0.001</span></a>
 <a class="sourceLine" id="cb9-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
 <a class="sourceLine" id="cb9-9" data-line-number="9">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
 <a class="sourceLine" id="cb9-10" data-line-number="10"><span class="kw">plot_bench</span>(res, <span class="st">'Unfilled rectangle performance'</span>)</a></code></pre></div>
@@ -247,7 +247,7 @@
 <a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt;   0.001   0.000   0.001</span></a>
 <a class="sourceLine" id="cb10-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
 <a class="sourceLine" id="cb10-9" data-line-number="9">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="kw">plot_bench</span>(res, <span class="st">'Unfilled rectangle performance'</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="kw">plot_bench</span>(res, <span class="st">'Filled rectangle performance'</span>)</a></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
 <p>We see a new pattern with the filled rectangles, where ragg is suddenly the slow one. The reason for this is again that cairo does not apply anti-aliasing on fills and drawing a non anti-aliased filled rectangle is extremely simple.</p>
 </div>
@@ -261,7 +261,7 @@
 <a class="sourceLine" id="cb11-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
 <a class="sourceLine" id="cb11-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
 <a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt;   0.001   0.000   0.000</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt;       0       0       0</span></a>
 <a class="sourceLine" id="cb11-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
 <a class="sourceLine" id="cb11-9" data-line-number="9">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
 <a class="sourceLine" id="cb11-10" data-line-number="10"><span class="kw">plot_bench</span>(res, <span class="st">'Simple polygon performance'</span>)</a></code></pre></div>
@@ -311,7 +311,7 @@
 <a class="sourceLine" id="cb15-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/polypath">polypath</a></span>(x_path, y_path, <span class="dt">rule =</span> <span class="st">'evenodd'</span>, <span class="dt">border =</span> <span class="st">'gray'</span>, </a>
 <a class="sourceLine" id="cb15-4" data-line-number="4">                     <span class="dt">col =</span> <span class="st">'black'</span>))</a>
 <a class="sourceLine" id="cb15-5" data-line-number="5"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="co">#&gt;       0       0       0</span></a>
+<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="co">#&gt;   0.001   0.000   0.000</span></a>
 <a class="sourceLine" id="cb15-7" data-line-number="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
 <a class="sourceLine" id="cb15-8" data-line-number="8">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/polypath">polypath</a></span>(x_path, y_path, <span class="dt">rule =</span> <span class="st">'evenodd'</span>, </a>
 <a class="sourceLine" id="cb15-9" data-line-number="9">                                <span class="dt">border =</span> <span class="st">'gray'</span>, <span class="dt">col =</span> <span class="st">'black'</span>),</a>
@@ -331,7 +331,7 @@
 <a class="sourceLine" id="cb16-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/rasterImage">rasterImage</a></span>(raster, <span class="dt">xleft =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="fl">0.25</span>, <span class="dv">100</span>), <span class="dt">ybottom =</span> <span class="fl">0.25</span>, <span class="dt">xright =</span> <span class="fl">0.75</span>,</a>
 <a class="sourceLine" id="cb16-6" data-line-number="6">                        <span class="dt">ytop =</span> <span class="fl">0.75</span>, <span class="dt">interpolate =</span> <span class="ot">FALSE</span>))</a>
 <a class="sourceLine" id="cb16-7" data-line-number="7"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="co">#&gt;   0.001   0.000   0.001</span></a>
+<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="co">#&gt;   0.001   0.000   0.000</span></a>
 <a class="sourceLine" id="cb16-9" data-line-number="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
 <a class="sourceLine" id="cb16-10" data-line-number="10">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/rasterImage">rasterImage</a></span>(raster, <span class="dt">xleft =</span> <span class="fl">0.25</span>, <span class="dt">ybottom =</span> <span class="fl">0.25</span>, </a>
 <a class="sourceLine" id="cb16-11" data-line-number="11">                                    <span class="dt">xright =</span> <span class="fl">0.75</span>, <span class="dt">ytop =</span> <span class="fl">0.75</span>, </a>
@@ -367,7 +367,7 @@
 <a class="sourceLine" id="cb19-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/rasterImage">rasterImage</a></span>(raster, <span class="dt">xleft =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="fl">0.25</span>, <span class="dv">100</span>), <span class="dt">ybottom =</span> <span class="fl">0.25</span>, <span class="dt">xright =</span> <span class="fl">0.75</span>,</a>
 <a class="sourceLine" id="cb19-4" data-line-number="4">                        <span class="dt">ytop =</span> <span class="fl">0.75</span>, <span class="dt">interpolate =</span> <span class="ot">TRUE</span>, <span class="dt">angle =</span> <span class="dv">27</span>))</a>
 <a class="sourceLine" id="cb19-5" data-line-number="5"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb19-6" data-line-number="6"><span class="co">#&gt;   0.001   0.000   0.000</span></a>
+<a class="sourceLine" id="cb19-6" data-line-number="6"><span class="co">#&gt;       0       0       0</span></a>
 <a class="sourceLine" id="cb19-7" data-line-number="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
 <a class="sourceLine" id="cb19-8" data-line-number="8">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/rasterImage">rasterImage</a></span>(raster, <span class="dt">xleft =</span> <span class="fl">0.25</span>, <span class="dt">ybottom =</span> <span class="fl">0.25</span>, </a>
 <a class="sourceLine" id="cb19-9" data-line-number="9">                                    <span class="dt">xright =</span> <span class="fl">0.75</span>, <span class="dt">ytop =</span> <span class="fl">0.75</span>, </a>
@@ -386,7 +386,7 @@
 <a class="sourceLine" id="cb20-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
 <a class="sourceLine" id="cb20-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
 <a class="sourceLine" id="cb20-6" data-line-number="6"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb20-7" data-line-number="7"><span class="co">#&gt;   0.002   0.000   0.002</span></a>
+<a class="sourceLine" id="cb20-7" data-line-number="7"><span class="co">#&gt;   0.002   0.000   0.001</span></a>
 <a class="sourceLine" id="cb20-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
 <a class="sourceLine" id="cb20-9" data-line-number="9">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
 <a class="sourceLine" id="cb20-10" data-line-number="10"><span class="kw">plot_bench</span>(res, <span class="st">'Single character performance'</span>)</a></code></pre></div>
@@ -398,7 +398,7 @@
 <a class="sourceLine" id="cb21-5" data-line-number="5"><span class="co">#&gt;   0.002   0.000   0.002</span></a>
 <a class="sourceLine" id="cb21-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
 <a class="sourceLine" id="cb21-7" data-line-number="7">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/text">text</a></span>(x, y, <span class="dt">label =</span> <span class="st">'abcdefghijk'</span>))</a>
-<a class="sourceLine" id="cb21-8" data-line-number="8"><span class="kw">plot_bench</span>(res, <span class="st">'Single character performance'</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb21-8" data-line-number="8"><span class="kw">plot_bench</span>(res, <span class="st">'Text string performance'</span>)</a></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
 <p>Once again Xlib surprises with a significantly slower font handling than its anti-aliased peers. ragg is slightly faster than cairo again but not by much. In general text rendering is governed as much by how quickly the code looks up glyphs in the font database as it is about rendering speed.</p>
 </div>
@@ -414,45 +414,14 @@
 <a class="sourceLine" id="cb22-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">title =</span> <span class="st">'5 things you didn</span><span class="ch">\'</span><span class="st">t knew about the diamonds dataset'</span>,</a>
 <a class="sourceLine" id="cb22-7" data-line-number="7">       <span class="dt">subtitle =</span> <span class="st">'You won</span><span class="ch">\'</span><span class="st">t believe number 4'</span>,</a>
 <a class="sourceLine" id="cb22-8" data-line-number="8">       <span class="dt">caption =</span> <span class="st">'Source: The ggplot2 package'</span>)</a>
-<a class="sourceLine" id="cb22-9" data-line-number="9">p</a>
-<a class="sourceLine" id="cb22-10" data-line-number="10"><span class="co">#&gt; Warning: Computation failed in `stat_binhex()`:</span></a>
-<a class="sourceLine" id="cb22-11" data-line-number="11"><span class="co">#&gt; Package `hexbin` required for `stat_binhex`.</span></a>
-<a class="sourceLine" id="cb22-12" data-line-number="12"><span class="co">#&gt; Please install and try again.</span></a>
-<a class="sourceLine" id="cb22-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb22-14" data-line-number="14"><span class="co">#&gt; Warning: Computation failed in `stat_binhex()`:</span></a>
-<a class="sourceLine" id="cb22-15" data-line-number="15"><span class="co">#&gt; Package `hexbin` required for `stat_binhex`.</span></a>
-<a class="sourceLine" id="cb22-16" data-line-number="16"><span class="co">#&gt; Please install and try again.</span></a>
-<a class="sourceLine" id="cb22-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb22-18" data-line-number="18"><span class="co">#&gt; Warning: Computation failed in `stat_binhex()`:</span></a>
-<a class="sourceLine" id="cb22-19" data-line-number="19"><span class="co">#&gt; Package `hexbin` required for `stat_binhex`.</span></a>
-<a class="sourceLine" id="cb22-20" data-line-number="20"><span class="co">#&gt; Please install and try again.</span></a>
-<a class="sourceLine" id="cb22-21" data-line-number="21"></a>
-<a class="sourceLine" id="cb22-22" data-line-number="22"><span class="co">#&gt; Warning: Computation failed in `stat_binhex()`:</span></a>
-<a class="sourceLine" id="cb22-23" data-line-number="23"><span class="co">#&gt; Package `hexbin` required for `stat_binhex`.</span></a>
-<a class="sourceLine" id="cb22-24" data-line-number="24"><span class="co">#&gt; Please install and try again.</span></a>
-<a class="sourceLine" id="cb22-25" data-line-number="25"></a>
-<a class="sourceLine" id="cb22-26" data-line-number="26"><span class="co">#&gt; Warning: Computation failed in `stat_binhex()`:</span></a>
-<a class="sourceLine" id="cb22-27" data-line-number="27"><span class="co">#&gt; Package `hexbin` required for `stat_binhex`.</span></a>
-<a class="sourceLine" id="cb22-28" data-line-number="28"><span class="co">#&gt; Please install and try again.</span></a>
-<a class="sourceLine" id="cb22-29" data-line-number="29"></a>
-<a class="sourceLine" id="cb22-30" data-line-number="30"><span class="co">#&gt; Warning: Computation failed in `stat_binhex()`:</span></a>
-<a class="sourceLine" id="cb22-31" data-line-number="31"><span class="co">#&gt; Package `hexbin` required for `stat_binhex`.</span></a>
-<a class="sourceLine" id="cb22-32" data-line-number="32"><span class="co">#&gt; Please install and try again.</span></a>
-<a class="sourceLine" id="cb22-33" data-line-number="33"></a>
-<a class="sourceLine" id="cb22-34" data-line-number="34"><span class="co">#&gt; Warning: Computation failed in `stat_binhex()`:</span></a>
-<a class="sourceLine" id="cb22-35" data-line-number="35"><span class="co">#&gt; Package `hexbin` required for `stat_binhex`.</span></a>
-<a class="sourceLine" id="cb22-36" data-line-number="36"><span class="co">#&gt; Please install and try again.</span></a>
-<a class="sourceLine" id="cb22-37" data-line-number="37"></a>
-<a class="sourceLine" id="cb22-38" data-line-number="38"><span class="co">#&gt; Warning: Computation failed in `stat_binhex()`:</span></a>
-<a class="sourceLine" id="cb22-39" data-line-number="39"><span class="co">#&gt; Package `hexbin` required for `stat_binhex`.</span></a>
-<a class="sourceLine" id="cb22-40" data-line-number="40"><span class="co">#&gt; Please install and try again.</span></a></code></pre></div>
+<a class="sourceLine" id="cb22-9" data-line-number="9">p</a></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
 <p>We will prebuild the plot so mainly rendering will be measured</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">p &lt;-<span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplotGrob.html">ggplotGrob</a></span>(p)</a>
 <a class="sourceLine" id="cb23-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
 <a class="sourceLine" id="cb23-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(p))</a>
 <a class="sourceLine" id="cb23-4" data-line-number="4"><span class="co">#&gt;    user  system elapsed </span></a>
-<a class="sourceLine" id="cb23-5" data-line-number="5"><span class="co">#&gt;   0.186   0.000   0.185</span></a>
+<a class="sourceLine" id="cb23-5" data-line-number="5"><span class="co">#&gt;   0.198   0.000   0.197</span></a>
 <a class="sourceLine" id="cb23-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
 <a class="sourceLine" id="cb23-7" data-line-number="7"></a>
 <a class="sourceLine" id="cb23-8" data-line-number="8">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(p))</a>
@@ -501,46 +470,46 @@
 <a class="sourceLine" id="cb24-30" data-line-number="30"><span class="co">#&gt;  ggridges       0.5.1    2018-09-27 [1]</span></a>
 <a class="sourceLine" id="cb24-31" data-line-number="31"><span class="co">#&gt;  glue           1.3.1    2019-03-12 [1]</span></a>
 <a class="sourceLine" id="cb24-32" data-line-number="32"><span class="co">#&gt;  gtable         0.3.0    2019-03-25 [1]</span></a>
-<a class="sourceLine" id="cb24-33" data-line-number="33"><span class="co">#&gt;  htmltools      0.3.6    2017-04-28 [1]</span></a>
-<a class="sourceLine" id="cb24-34" data-line-number="34"><span class="co">#&gt;  knitr          1.23     2019-05-18 [1]</span></a>
-<a class="sourceLine" id="cb24-35" data-line-number="35"><span class="co">#&gt;  labeling       0.3      2014-08-23 [1]</span></a>
-<a class="sourceLine" id="cb24-36" data-line-number="36"><span class="co">#&gt;  lattice        0.20-38  2018-11-04 [4]</span></a>
-<a class="sourceLine" id="cb24-37" data-line-number="37"><span class="co">#&gt;  lazyeval       0.2.2    2019-03-15 [1]</span></a>
-<a class="sourceLine" id="cb24-38" data-line-number="38"><span class="co">#&gt;  magrittr       1.5      2014-11-22 [1]</span></a>
-<a class="sourceLine" id="cb24-39" data-line-number="39"><span class="co">#&gt;  MASS           7.3-51.4 2019-03-31 [4]</span></a>
-<a class="sourceLine" id="cb24-40" data-line-number="40"><span class="co">#&gt;  Matrix         1.2-17   2019-03-22 [4]</span></a>
-<a class="sourceLine" id="cb24-41" data-line-number="41"><span class="co">#&gt;  memoise        1.1.0    2017-04-21 [1]</span></a>
-<a class="sourceLine" id="cb24-42" data-line-number="42"><span class="co">#&gt;  mgcv           1.8-28   2019-03-21 [4]</span></a>
-<a class="sourceLine" id="cb24-43" data-line-number="43"><span class="co">#&gt;  munsell        0.5.0    2018-06-12 [1]</span></a>
-<a class="sourceLine" id="cb24-44" data-line-number="44"><span class="co">#&gt;  nlme           3.1-139  2019-04-09 [4]</span></a>
-<a class="sourceLine" id="cb24-45" data-line-number="45"><span class="co">#&gt;  pillar         1.4.1    2019-05-28 [1]</span></a>
-<a class="sourceLine" id="cb24-46" data-line-number="46"><span class="co">#&gt;  pkgconfig      2.0.2    2018-08-16 [1]</span></a>
-<a class="sourceLine" id="cb24-47" data-line-number="47"><span class="co">#&gt;  pkgdown        1.3.0    2018-12-07 [1]</span></a>
-<a class="sourceLine" id="cb24-48" data-line-number="48"><span class="co">#&gt;  plyr           1.8.4    2016-06-08 [1]</span></a>
-<a class="sourceLine" id="cb24-49" data-line-number="49"><span class="co">#&gt;  profmem        0.5.0    2018-01-30 [1]</span></a>
-<a class="sourceLine" id="cb24-50" data-line-number="50"><span class="co">#&gt;  purrr          0.3.2    2019-03-15 [1]</span></a>
-<a class="sourceLine" id="cb24-51" data-line-number="51"><span class="co">#&gt;  R6             2.4.0    2019-02-14 [1]</span></a>
-<a class="sourceLine" id="cb24-52" data-line-number="52"><span class="co">#&gt;  ragg         * 0.0.1    2019-06-25 [1]</span></a>
-<a class="sourceLine" id="cb24-53" data-line-number="53"><span class="co">#&gt;  RColorBrewer   1.1-2    2014-12-07 [1]</span></a>
-<a class="sourceLine" id="cb24-54" data-line-number="54"><span class="co">#&gt;  Rcpp           1.0.1    2019-03-17 [3]</span></a>
-<a class="sourceLine" id="cb24-55" data-line-number="55"><span class="co">#&gt;  rlang          0.4.0    2019-06-25 [1]</span></a>
-<a class="sourceLine" id="cb24-56" data-line-number="56"><span class="co">#&gt;  rmarkdown      1.13     2019-05-22 [1]</span></a>
-<a class="sourceLine" id="cb24-57" data-line-number="57"><span class="co">#&gt;  roxygen2       6.1.1    2018-11-07 [1]</span></a>
-<a class="sourceLine" id="cb24-58" data-line-number="58"><span class="co">#&gt;  rprojroot      1.3-2    2018-01-03 [1]</span></a>
-<a class="sourceLine" id="cb24-59" data-line-number="59"><span class="co">#&gt;  scales         1.0.0    2018-08-09 [1]</span></a>
-<a class="sourceLine" id="cb24-60" data-line-number="60"><span class="co">#&gt;  sessioninfo    1.1.1    2018-11-05 [1]</span></a>
-<a class="sourceLine" id="cb24-61" data-line-number="61"><span class="co">#&gt;  stringi        1.4.3    2019-03-12 [1]</span></a>
-<a class="sourceLine" id="cb24-62" data-line-number="62"><span class="co">#&gt;  stringr        1.4.0    2019-02-10 [1]</span></a>
-<a class="sourceLine" id="cb24-63" data-line-number="63"><span class="co">#&gt;  systemfonts    0.1.0    2019-06-25 [1]</span></a>
-<a class="sourceLine" id="cb24-64" data-line-number="64"><span class="co">#&gt;  tibble         2.1.3    2019-06-06 [1]</span></a>
-<a class="sourceLine" id="cb24-65" data-line-number="65"><span class="co">#&gt;  tidyr          0.8.3    2019-03-01 [1]</span></a>
-<a class="sourceLine" id="cb24-66" data-line-number="66"><span class="co">#&gt;  tidyselect     0.2.5    2018-10-11 [1]</span></a>
-<a class="sourceLine" id="cb24-67" data-line-number="67"><span class="co">#&gt;  withr          2.1.2    2018-03-15 [1]</span></a>
-<a class="sourceLine" id="cb24-68" data-line-number="68"><span class="co">#&gt;  xfun           0.8      2019-06-25 [1]</span></a>
-<a class="sourceLine" id="cb24-69" data-line-number="69"><span class="co">#&gt;  xml2           1.2.0    2018-01-24 [1]</span></a>
-<a class="sourceLine" id="cb24-70" data-line-number="70"><span class="co">#&gt;  yaml           2.2.0    2018-07-25 [1]</span></a>
-<a class="sourceLine" id="cb24-71" data-line-number="71"><span class="co">#&gt;  source                                </span></a>
-<a class="sourceLine" id="cb24-72" data-line-number="72"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
+<a class="sourceLine" id="cb24-33" data-line-number="33"><span class="co">#&gt;  hexbin         1.27.3   2019-05-14 [1]</span></a>
+<a class="sourceLine" id="cb24-34" data-line-number="34"><span class="co">#&gt;  htmltools      0.3.6    2017-04-28 [1]</span></a>
+<a class="sourceLine" id="cb24-35" data-line-number="35"><span class="co">#&gt;  knitr          1.23     2019-05-18 [1]</span></a>
+<a class="sourceLine" id="cb24-36" data-line-number="36"><span class="co">#&gt;  labeling       0.3      2014-08-23 [1]</span></a>
+<a class="sourceLine" id="cb24-37" data-line-number="37"><span class="co">#&gt;  lattice        0.20-38  2018-11-04 [4]</span></a>
+<a class="sourceLine" id="cb24-38" data-line-number="38"><span class="co">#&gt;  lazyeval       0.2.2    2019-03-15 [1]</span></a>
+<a class="sourceLine" id="cb24-39" data-line-number="39"><span class="co">#&gt;  magrittr       1.5      2014-11-22 [1]</span></a>
+<a class="sourceLine" id="cb24-40" data-line-number="40"><span class="co">#&gt;  MASS           7.3-51.4 2019-03-31 [4]</span></a>
+<a class="sourceLine" id="cb24-41" data-line-number="41"><span class="co">#&gt;  Matrix         1.2-17   2019-03-22 [4]</span></a>
+<a class="sourceLine" id="cb24-42" data-line-number="42"><span class="co">#&gt;  memoise        1.1.0    2017-04-21 [1]</span></a>
+<a class="sourceLine" id="cb24-43" data-line-number="43"><span class="co">#&gt;  mgcv           1.8-28   2019-03-21 [4]</span></a>
+<a class="sourceLine" id="cb24-44" data-line-number="44"><span class="co">#&gt;  munsell        0.5.0    2018-06-12 [1]</span></a>
+<a class="sourceLine" id="cb24-45" data-line-number="45"><span class="co">#&gt;  nlme           3.1-139  2019-04-09 [4]</span></a>
+<a class="sourceLine" id="cb24-46" data-line-number="46"><span class="co">#&gt;  pillar         1.4.1    2019-05-28 [1]</span></a>
+<a class="sourceLine" id="cb24-47" data-line-number="47"><span class="co">#&gt;  pkgconfig      2.0.2    2018-08-16 [1]</span></a>
+<a class="sourceLine" id="cb24-48" data-line-number="48"><span class="co">#&gt;  pkgdown        1.3.0    2018-12-07 [1]</span></a>
+<a class="sourceLine" id="cb24-49" data-line-number="49"><span class="co">#&gt;  plyr           1.8.4    2016-06-08 [1]</span></a>
+<a class="sourceLine" id="cb24-50" data-line-number="50"><span class="co">#&gt;  profmem        0.5.0    2018-01-30 [1]</span></a>
+<a class="sourceLine" id="cb24-51" data-line-number="51"><span class="co">#&gt;  purrr          0.3.2    2019-03-15 [1]</span></a>
+<a class="sourceLine" id="cb24-52" data-line-number="52"><span class="co">#&gt;  R6             2.4.0    2019-02-14 [1]</span></a>
+<a class="sourceLine" id="cb24-53" data-line-number="53"><span class="co">#&gt;  ragg         * 0.0.1    2019-06-25 [1]</span></a>
+<a class="sourceLine" id="cb24-54" data-line-number="54"><span class="co">#&gt;  RColorBrewer   1.1-2    2014-12-07 [1]</span></a>
+<a class="sourceLine" id="cb24-55" data-line-number="55"><span class="co">#&gt;  Rcpp           1.0.1    2019-03-17 [3]</span></a>
+<a class="sourceLine" id="cb24-56" data-line-number="56"><span class="co">#&gt;  rlang          0.4.0    2019-06-25 [1]</span></a>
+<a class="sourceLine" id="cb24-57" data-line-number="57"><span class="co">#&gt;  rmarkdown      1.13     2019-05-22 [1]</span></a>
+<a class="sourceLine" id="cb24-58" data-line-number="58"><span class="co">#&gt;  roxygen2       6.1.1    2018-11-07 [1]</span></a>
+<a class="sourceLine" id="cb24-59" data-line-number="59"><span class="co">#&gt;  rprojroot      1.3-2    2018-01-03 [1]</span></a>
+<a class="sourceLine" id="cb24-60" data-line-number="60"><span class="co">#&gt;  scales         1.0.0    2018-08-09 [1]</span></a>
+<a class="sourceLine" id="cb24-61" data-line-number="61"><span class="co">#&gt;  sessioninfo    1.1.1    2018-11-05 [1]</span></a>
+<a class="sourceLine" id="cb24-62" data-line-number="62"><span class="co">#&gt;  stringi        1.4.3    2019-03-12 [1]</span></a>
+<a class="sourceLine" id="cb24-63" data-line-number="63"><span class="co">#&gt;  stringr        1.4.0    2019-02-10 [1]</span></a>
+<a class="sourceLine" id="cb24-64" data-line-number="64"><span class="co">#&gt;  systemfonts    0.1.0    2019-06-25 [1]</span></a>
+<a class="sourceLine" id="cb24-65" data-line-number="65"><span class="co">#&gt;  tibble         2.1.3    2019-06-06 [1]</span></a>
+<a class="sourceLine" id="cb24-66" data-line-number="66"><span class="co">#&gt;  tidyr          0.8.3    2019-03-01 [1]</span></a>
+<a class="sourceLine" id="cb24-67" data-line-number="67"><span class="co">#&gt;  tidyselect     0.2.5    2018-10-11 [1]</span></a>
+<a class="sourceLine" id="cb24-68" data-line-number="68"><span class="co">#&gt;  withr          2.1.2    2018-03-15 [1]</span></a>
+<a class="sourceLine" id="cb24-69" data-line-number="69"><span class="co">#&gt;  xfun           0.8      2019-06-25 [1]</span></a>
+<a class="sourceLine" id="cb24-70" data-line-number="70"><span class="co">#&gt;  xml2           1.2.0    2018-01-24 [1]</span></a>
+<a class="sourceLine" id="cb24-71" data-line-number="71"><span class="co">#&gt;  yaml           2.2.0    2018-07-25 [1]</span></a>
+<a class="sourceLine" id="cb24-72" data-line-number="72"><span class="co">#&gt;  source                                </span></a>
 <a class="sourceLine" id="cb24-73" data-line-number="73"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
 <a class="sourceLine" id="cb24-74" data-line-number="74"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
 <a class="sourceLine" id="cb24-75" data-line-number="75"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
@@ -576,30 +545,32 @@
 <a class="sourceLine" id="cb24-105" data-line-number="105"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
 <a class="sourceLine" id="cb24-106" data-line-number="106"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
 <a class="sourceLine" id="cb24-107" data-line-number="107"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
-<a class="sourceLine" id="cb24-108" data-line-number="108"><span class="co">#&gt;  local                                 </span></a>
+<a class="sourceLine" id="cb24-108" data-line-number="108"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
 <a class="sourceLine" id="cb24-109" data-line-number="109"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
-<a class="sourceLine" id="cb24-110" data-line-number="110"><span class="co">#&gt;  CRAN (R 3.5.3)                        </span></a>
+<a class="sourceLine" id="cb24-110" data-line-number="110"><span class="co">#&gt;  local                                 </span></a>
 <a class="sourceLine" id="cb24-111" data-line-number="111"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
-<a class="sourceLine" id="cb24-112" data-line-number="112"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
+<a class="sourceLine" id="cb24-112" data-line-number="112"><span class="co">#&gt;  CRAN (R 3.5.3)                        </span></a>
 <a class="sourceLine" id="cb24-113" data-line-number="113"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
 <a class="sourceLine" id="cb24-114" data-line-number="114"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
 <a class="sourceLine" id="cb24-115" data-line-number="115"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
 <a class="sourceLine" id="cb24-116" data-line-number="116"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
 <a class="sourceLine" id="cb24-117" data-line-number="117"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
 <a class="sourceLine" id="cb24-118" data-line-number="118"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
-<a class="sourceLine" id="cb24-119" data-line-number="119"><span class="co">#&gt;  Github (thomasp85/systemfonts@cdc6a36)</span></a>
+<a class="sourceLine" id="cb24-119" data-line-number="119"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
 <a class="sourceLine" id="cb24-120" data-line-number="120"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
-<a class="sourceLine" id="cb24-121" data-line-number="121"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
+<a class="sourceLine" id="cb24-121" data-line-number="121"><span class="co">#&gt;  Github (thomasp85/systemfonts@cdc6a36)</span></a>
 <a class="sourceLine" id="cb24-122" data-line-number="122"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
 <a class="sourceLine" id="cb24-123" data-line-number="123"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
 <a class="sourceLine" id="cb24-124" data-line-number="124"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
 <a class="sourceLine" id="cb24-125" data-line-number="125"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
 <a class="sourceLine" id="cb24-126" data-line-number="126"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
-<a class="sourceLine" id="cb24-127" data-line-number="127"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb24-128" data-line-number="128"><span class="co">#&gt; [1] /home/travis/R/Library</span></a>
-<a class="sourceLine" id="cb24-129" data-line-number="129"><span class="co">#&gt; [2] /usr/local/lib/R/site-library</span></a>
-<a class="sourceLine" id="cb24-130" data-line-number="130"><span class="co">#&gt; [3] /usr/lib/R/site-library</span></a>
-<a class="sourceLine" id="cb24-131" data-line-number="131"><span class="co">#&gt; [4] /home/travis/R-bin/lib/R/library</span></a></code></pre></div>
+<a class="sourceLine" id="cb24-127" data-line-number="127"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
+<a class="sourceLine" id="cb24-128" data-line-number="128"><span class="co">#&gt;  CRAN (R 3.6.0)                        </span></a>
+<a class="sourceLine" id="cb24-129" data-line-number="129"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb24-130" data-line-number="130"><span class="co">#&gt; [1] /home/travis/R/Library</span></a>
+<a class="sourceLine" id="cb24-131" data-line-number="131"><span class="co">#&gt; [2] /usr/local/lib/R/site-library</span></a>
+<a class="sourceLine" id="cb24-132" data-line-number="132"><span class="co">#&gt; [3] /usr/lib/R/site-library</span></a>
+<a class="sourceLine" id="cb24-133" data-line-number="133"><span class="co">#&gt; [4] /home/travis/R-bin/lib/R/library</span></a></code></pre></div>
 </div>
   </div>
 
