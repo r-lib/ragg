@@ -5,6 +5,24 @@ authors:
   Thomas Lin Pedersen:
     href: https://data-imaginist.com
 
+navbar:
+  left:
+    - icon: fa-home fa-lg
+      href: index.html
+    - text: Reference
+      href: reference/index.html
+    - text: News
+      menu:
+      - text: "Release notes"
+      - text: "Version 0.1.0"
+        href: ""
+      - text: "------------------"
+      - text: "Change log"
+        href: news/index.html
+  right:
+    - icon: fa-github fa-lg
+      href: https://github.com/r-lib/ragg
+
 reference:
   - title: Graphic Devices
     desc: >
