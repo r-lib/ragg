@@ -11,6 +11,12 @@ navbar:
       href: index.html
     - text: Reference
       href: reference/index.html
+    - text: Benchmarks
+      menu:
+        - text: Quality
+          href: articles/ragg_quality.html
+        - text: Performance
+          href: articles/ragg_performance.html
     - text: News
       menu:
       - text: "Release notes"
