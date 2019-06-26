@@ -43,3 +43,10 @@ that similar plot code will produce identical files (a good feature if used
 with version control). It will, however, write in the dimensions of the image
 based on the `res` argument.
 }
+\examples{
+file <- tempfile(fileext = '.png')
+agg_png(file)
+plot(sin, -pi, 2*pi)
+dev.off()
+
+}

@@ -33,3 +33,10 @@ information in the start. It goes without saying, that this file format is
 horribly inefficient and should only be used if you want to play around with
 a simple file format, or need a file-based image stream.
 }
+\examples{
+file <- tempfile(fileext = '.ppm')
+agg_ppm(file)
+plot(sin, -pi, 2*pi)
+dev.off()
+
+}

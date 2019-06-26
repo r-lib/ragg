@@ -21,6 +21,12 @@
 #'
 #' @export
 #' 
+#' @examples 
+#' file <- tempfile(fileext = '.ppm')
+#' agg_ppm(file)
+#' plot(sin, -pi, 2*pi)
+#' dev.off()
+#' 
 agg_ppm <- function(file = 'Rplot%03d.ppm', width = 480, height = 480, 
                     units = 'px', pointsize = 12, background = 'white', 
                     res = 72) {
@@ -49,6 +55,12 @@ agg_ppm <- function(file = 'Rplot%03d.ppm', width = 480, height = 480,
 #' @param bitsize Should the device record colour as 8 or 16bit 
 #' 
 #' @export
+#' 
+#' @examples 
+#' file <- tempfile(fileext = '.png')
+#' agg_png(file)
+#' plot(sin, -pi, 2*pi)
+#' dev.off()
 #' 
 agg_png <- function(file = 'Rplot%03d.png', width = 480, height = 480, 
                     units = 'px', pointsize = 12, background = 'white', 
@@ -87,6 +99,13 @@ agg_png <- function(file = 'Rplot%03d.png', width = 480, height = 480,
 #' the same name.
 #' 
 #' @export
+#' 
+#' @examples 
+#' file <- tempfile(fileext = '.tiff')
+#' # Use jpeg compression
+#' agg_tiff(file, compression = 'jpeg')
+#' plot(sin, -pi, 2*pi)
+#' dev.off()
 #' 
 agg_tiff <- function(file = 'Rplot%03d.tiff', width = 480, height = 480, 
                     units = 'px', pointsize = 12, background = 'white', 

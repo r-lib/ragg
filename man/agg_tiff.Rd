@@ -54,3 +54,11 @@ this is not always that important, but it is one of the benefits of TIFF over
 PNG so it should be noted.
 }
 
+\examples{
+file <- tempfile(fileext = '.tiff')
+# Use jpeg compression
+agg_tiff(file, compression = 'jpeg')
+plot(sin, -pi, 2*pi)
+dev.off()
+
+}
