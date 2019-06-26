@@ -6,6 +6,8 @@
 \alias{ragg-package}
 \title{ragg: Graphic Devices Based on AGG}
 \description{
+\if{html}{\figure{logo.png}{options: align='right'}}
+
 Anti-Grain Geometry (AGG) is a high-quality and high-performance
     2D drawing library. The 'ragg' package provides a set of graphic devices 
     based on AGG to use as alternative to the raster devices provided through
@@ -14,7 +16,7 @@ Anti-Grain Geometry (AGG) is a high-quality and high-performance
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/r-lib/ragg}
+  \item \url{https://ragg.r-lib.org}
   \item Report bugs at \url{https://github.com/r-lib/ragg/issues}
 }
 

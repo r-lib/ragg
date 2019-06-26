@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# ragg
+# ragg <a href='https://ragg.r-lib.org'><img src='man/figures/logo.png' align="right" height="131.5" /></a>
 
 <!-- badges: start -->
 
@@ -11,6 +11,8 @@ status](https://travis-ci.org/r-lib/ragg.svg?branch=master)](https://travis-ci.o
 status](https://ci.appveyor.com/api/projects/status/github/r-lib/ragg?branch=master&svg=true)](https://ci.appveyor.com/project/r-lib/ragg)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/ragg)](https://cran.r-project.org/package=ragg)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
 This package provides graphic devices for R based on the AGG library
