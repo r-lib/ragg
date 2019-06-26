@@ -97,23 +97,30 @@ format is explicetly requested." />
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    News
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Release notes</li>
     <li>
-      <a href="../articles/ragg_performance.html">Ragg Performance</a>
+      <a href="../">Version 0.1.0</a>
     </li>
+    <li class="divider"></li>
     <li>
-      <a href="../articles/ragg_quality.html">Ragg Quality</a>
+      <a href="../news/index.html">Change log</a>
     </li>
   </ul>
 </li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/r-lib/ragg">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -207,6 +214,14 @@ this is not always that important, but it is one of the benefits of TIFF over
 PNG so it should be noted.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>'.tiff'</span>)
+<span class='co'># Use jpeg compression</span>
+<span class='fu'>agg_tiff</span>(<span class='no'>file</span>, <span class='kw'>compression</span> <span class='kw'>=</span> <span class='st'>'jpeg'</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>sin</span>, -<span class='no'>pi</span>, <span class='fl'>2</span>*<span class='no'>pi</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/grDevices/topics/dev'>dev.off</a></span>()</div><div class='output co'>#&gt; pdf 
+#&gt;   2 </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -214,7 +229,9 @@ PNG so it should be noted.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#transparency">Transparency</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
