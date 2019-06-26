@@ -357,7 +357,7 @@ void AggDevice<PIXFMT, R_COLOR>::drawRect(double x0, double y0, double x1,
   
   if (draw_fill) {
     ras.add_path(rect);
-    agg::render_scanlines_aa_solid(ras, slp, renderer, convertColour(fill));
+    agg::render_scanlines_bin_solid(ras, slp, renderer, convertColour(fill));
   }
   if (!draw_stroke) return;
   
