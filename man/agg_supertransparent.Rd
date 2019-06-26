@@ -4,12 +4,12 @@
 \alias{agg_supertransparent}
 \title{Draw to a PNG file, modifying transparency on the fly}
 \usage{
-agg_supertransparent(file = "Rplot\%03d.png", width = 480,
+agg_supertransparent(filename = "Rplot\%03d.png", width = 480,
   height = 480, units = "px", pointsize = 12, background = "white",
   res = 72, alpha_mod = 1)
 }
 \arguments{
-\item{file}{The name of the file. Follows the same semantics as the file 
+\item{filename}{The name of the file. Follows the same semantics as the file 
 naming in [grDevices::png()], meaning that you can provide a [sprintf()] 
 compliant string format to name multiple plots (such as the default value)}
 

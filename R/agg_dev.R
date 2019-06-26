@@ -7,7 +7,7 @@
 #' horribly inefficient and should only be used if you want to play around with
 #' a simple file format, or need a file-based image stream.
 #' 
-#' @param file The name of the file. Follows the same semantics as the file 
+#' @param filename The name of the file. Follows the same semantics as the file 
 #'   naming in [grDevices::png()], meaning that you can provide a [sprintf()] 
 #'   compliant string format to name multiple plots (such as the default value)
 #' @param width,height The dimensions of the device
@@ -27,10 +27,13 @@
 #' plot(sin, -pi, 2*pi)
 #' dev.off()
 #' 
-agg_ppm <- function(file = 'Rplot%03d.ppm', width = 480, height = 480, 
+agg_ppm <- function(filename = 'Rplot%03d.ppm', width = 480, height = 480, 
                     units = 'px', pointsize = 12, background = 'white', 
                     res = 72) {
-  file <- validate_path(file)
+  if (deparse(sys.call()) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
+    units <- 'in'
+  }
+  file <- validate_path(filename)
   dim <- get_dims(width, height, units, res)
   .Call("agg_ppm_c", file, dim[1], dim[2], as.numeric(pointsize), background, 
         as.numeric(res), PACKAGE = 'ragg')
@@ -62,10 +65,13 @@ agg_ppm <- function(file = 'Rplot%03d.ppm', width = 480, height = 480,
 #' plot(sin, -pi, 2*pi)
 #' dev.off()
 #' 
-agg_png <- function(file = 'Rplot%03d.png', width = 480, height = 480, 
+agg_png <- function(filename = 'Rplot%03d.png', width = 480, height = 480, 
                     units = 'px', pointsize = 12, background = 'white', 
                     res = 72, bitsize = 8) {
-  file <- validate_path(file)
+  if (deparse(sys.call()) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
+    units <- 'in'
+  }
+  file <- validate_path(filename)
   if (!bitsize %in% c(8, 16)) {
     stop('Only 8 and 16 bit is supported', call. = FALSE)
   }
@@ -107,10 +113,13 @@ agg_png <- function(file = 'Rplot%03d.png', width = 480, height = 480,
 #' plot(sin, -pi, 2*pi)
 #' dev.off()
 #' 
-agg_tiff <- function(file = 'Rplot%03d.tiff', width = 480, height = 480, 
+agg_tiff <- function(filename = 'Rplot%03d.tiff', width = 480, height = 480, 
                     units = 'px', pointsize = 12, background = 'white', 
                     res = 72, compression = 'none', bitsize = 8) {
-  file <- validate_path(file)
+  if (deparse(sys.call()) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
+    units <- 'in'
+  }
+  file <- validate_path(filename)
   encoding <- switch(compression, 'lzw+p' = , 'zip+p' = 1L, 0L)
   compression <- switch(
     compression,
@@ -150,10 +159,13 @@ agg_tiff <- function(file = 'Rplot%03d.tiff', width = 480, height = 480,
 #' @export
 #' @keywords internal
 #' 
-agg_supertransparent <- function(file = 'Rplot%03d.png', width = 480, 
+agg_supertransparent <- function(filename = 'Rplot%03d.png', width = 480, 
                                  height = 480, units = 'px', pointsize = 12, 
                                  background = 'white', res = 72, alpha_mod = 1) {
-  file <- validate_path(file)
+  if (deparse(sys.call()) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
+    units <- 'in'
+  }
+  file <- validate_path(filename)
   dim <- get_dims(width, height, units, res)
   .Call("agg_supertransparent_c", file, dim[1], dim[2], as.numeric(pointsize), 
         background, as.numeric(res), as.double(alpha_mod), PACKAGE = 'ragg')
@@ -196,6 +208,9 @@ agg_supertransparent <- function(file = 'Rplot%03d.png', width = 480,
 #' 
 agg_capture <- function(width = 480, height = 480, units = 'px', pointsize = 12, 
                         background = 'white', res = 72) {
+  if (deparse(sys.call()) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
+    units <- 'in'
+  }
   dim <- get_dims(width, height, units, res)
   name <- paste0('agg_capture_', sample(.Machine$integer.max, 1))
   .Call("agg_capture_c", name, dim[1], dim[2], as.numeric(pointsize), 

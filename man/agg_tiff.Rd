@@ -4,12 +4,12 @@
 \alias{agg_tiff}
 \title{Draw to a TIFF file}
 \usage{
-agg_tiff(file = "Rplot\%03d.tiff", width = 480, height = 480,
+agg_tiff(filename = "Rplot\%03d.tiff", width = 480, height = 480,
   units = "px", pointsize = 12, background = "white", res = 72,
   compression = "none", bitsize = 8)
 }
 \arguments{
-\item{file}{The name of the file. Follows the same semantics as the file 
+\item{filename}{The name of the file. Follows the same semantics as the file 
 naming in [grDevices::png()], meaning that you can provide a [sprintf()] 
 compliant string format to name multiple plots (such as the default value)}
 
