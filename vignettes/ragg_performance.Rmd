@@ -120,9 +120,12 @@ all_render_bench <- function(expr, xlib = TRUE) {
   res$Anti_aliased <- c(TRUE, FALSE, TRUE, TRUE, FALSE)[seq_len(nrow(res))]
   res
 }
-plot_bench <- function(x, title) {
+plot_bench <- function(x, title, baseline) {
   plot(x, type = 'ridge', aes(fill = Anti_aliased)) + 
     facet_null() +
+    geom_vline(xintercept = baseline['elapsed'], linetype = 2, colour = 'grey') + 
+    annotate('text', x = baseline['elapsed'], y = -Inf, label = ' baseline',
+             vjust = 0, hjust = 0, colour = 'grey') +
     scale_fill_brewer(labels = c('No', 'Yes'), type = 'qual') +
     labs(title = title, fill = 'Anti-aliased', x = NULL, y = NULL) + 
     theme_minimal() + 
@@ -145,10 +148,10 @@ pch <- 1
 
 void_dev()
 plot.new()
-system.time(points(x, y, pch = pch))
+b <- system.time(points(x, y, pch = pch))
 invisible(dev.off())
 res <- all_render_bench(points(x, y, pch = pch))
-plot_bench(res, 'Unfilled circle performance')
+plot_bench(res, 'Unfilled circle performance', b)
 ```
 
 ```{r, message=FALSE}
@@ -156,10 +159,10 @@ pch <- 19
 
 void_dev()
 plot.new()
-system.time(points(x, y, pch = pch))
+b <- system.time(points(x, y, pch = pch))
 invisible(dev.off())
 res <- all_render_bench(points(x, y, pch = pch))
-plot_bench(res, 'Filled circle performance')
+plot_bench(res, 'Filled circle performance', b)
 ```
 
 Of the antialiased devices it is clear that ragg is the most performant. The 
@@ -178,10 +181,10 @@ pch <- 4
 
 void_dev()
 plot.new()
-system.time(points(x, y, pch = pch))
+b <- system.time(points(x, y, pch = pch))
 invisible(dev.off())
 res <- all_render_bench(points(x, y, pch = pch))
-plot_bench(res, 'Line segment performance')
+plot_bench(res, 'Line segment performance', b)
 ```
 
 Again, we see a clear performance difference between devices using antialiasing
@@ -196,19 +199,19 @@ patterns are generated.
 ```{r, message=FALSE}
 void_dev()
 plot.new()
-system.time(lines(x, y))
+b <- system.time(lines(x, y))
 invisible(dev.off())
 res <- all_render_bench(lines(x, y))
-plot_bench(res, 'Connected line performance')
+plot_bench(res, 'Connected line performance', b)
 ```
 
 ```{r, message=FALSE}
 void_dev()
 plot.new()
-system.time(lines(x, y, lty = 4))
+b <- system.time(lines(x, y, lty = 4))
 invisible(dev.off())
 res <- all_render_bench(lines(x, y, lty = 4))
-plot_bench(res, 'Patterned connected line performance')
+plot_bench(res, 'Patterned connected line performance', b)
 ```
 
 The results here are quite surprising. While the general pattern continues, the
@@ -226,10 +229,10 @@ pch <- 0
 
 void_dev()
 plot.new()
-system.time(points(x, y, pch = pch))
+b <- system.time(points(x, y, pch = pch))
 invisible(dev.off())
 res <- all_render_bench(points(x, y, pch = pch))
-plot_bench(res, 'Unfilled rectangle performance')
+plot_bench(res, 'Unfilled rectangle performance', b)
 ```
 
 ```{r, message=FALSE}
@@ -237,10 +240,10 @@ pch <- 15
 
 void_dev()
 plot.new()
-system.time(points(x, y, pch = pch))
+b <- system.time(points(x, y, pch = pch))
 invisible(dev.off())
 res <- all_render_bench(points(x, y, pch = pch))
-plot_bench(res, 'Filled rectangle performance')
+plot_bench(res, 'Filled rectangle performance', b)
 ```
 
 We see a new pattern with the filled rectangles, where ragg is suddenly the slow
@@ -258,28 +261,28 @@ pch <- 2
 
 void_dev()
 plot.new()
-system.time(points(x, y, pch = pch))
+b <- system.time(points(x, y, pch = pch))
 invisible(dev.off())
 res <- all_render_bench(points(x, y, pch = pch))
-plot_bench(res, 'Simple polygon performance')
+plot_bench(res, 'Simple polygon performance', b)
 ```
 
 ```{r, message=FALSE}
 void_dev()
 plot.new()
-system.time(polygon(x, y))
+b <- system.time(polygon(x, y))
 invisible(dev.off())
 res <- all_render_bench(polygon(x, y))
-plot_bench(res, 'Unfilled complex polygon performance')
+plot_bench(res, 'Unfilled complex polygon performance', b)
 ```
 
 ```{r, message=FALSE}
 void_dev()
 plot.new()
-system.time(polygon(x, y, border = 'gray', col = 'black'))
+b <- system.time(polygon(x, y, border = 'gray', col = 'black'))
 invisible(dev.off())
 res <- all_render_bench(polygon(x, y, border = 'gray', col = 'black'))
-plot_bench(res, 'Filled complex polygon performance')
+plot_bench(res, 'Filled complex polygon performance', b)
 ```
 
 The findings here reflects what is seen above. ragg is faster when it comes to
@@ -304,23 +307,23 @@ y_path <- y_path[-length(y_path)]
 
 void_dev()
 plot.new()
-system.time(polypath(x_path, y_path, rule = 'evenodd'))
+b <- system.time(polypath(x_path, y_path, rule = 'evenodd'))
 invisible(dev.off())
 res <- all_render_bench(polypath(x_path, y_path, rule = 'evenodd'), 
                         xlib = FALSE)
-plot_bench(res, 'Unfilled path performance')
+plot_bench(res, 'Unfilled path performance', b)
 ```
 
 ```{r, message=FALSE}
 void_dev()
 plot.new()
-system.time(polypath(x_path, y_path, rule = 'evenodd', border = 'gray', 
-                     col = 'black'))
+b <- system.time(polypath(x_path, y_path, rule = 'evenodd', border = 'gray', 
+                          col = 'black'))
 invisible(dev.off())
 res <- all_render_bench(polypath(x_path, y_path, rule = 'evenodd', 
                                 border = 'gray', col = 'black'),
                         xlib = FALSE)
-plot_bench(res, 'Filled path performance')
+plot_bench(res, 'Filled path performance', b)
 ```
 
 The path performance mirrors that of the other shape rendering. ragg is faster
@@ -340,49 +343,51 @@ raster <- matrix(hcl(0, 80, seq(50, 80, 10)), nrow = 4, ncol = 5)
 
 void_dev()
 plot.new()
-system.time(rasterImage(raster, xleft = rep(0.25, 100), ybottom = 0.25, xright = 0.75,
-                        ytop = 0.75, interpolate = FALSE))
+b <- system.time(rasterImage(raster, xleft = rep(0.25, 100), ybottom = 0.25, 
+                             xright = 0.75, ytop = 0.75, interpolate = FALSE))
 invisible(dev.off())
 res <- all_render_bench(rasterImage(raster, xleft = 0.25, ybottom = 0.25, 
                                     xright = 0.75, ytop = 0.75, 
                                     interpolate = FALSE))
-plot_bench(res, 'Non-interpolated, non-rotated raster performance')
+plot_bench(res, 'Non-interpolated, non-rotated raster performance', b)
 ```
 
 ```{r, message=FALSE}
 void_dev()
 plot.new()
-system.time(rasterImage(raster, xleft = rep(0.25, 100), ybottom = 0.25, xright = 0.75,
-                        ytop = 0.75, interpolate = FALSE, angle = 27))
+b <- system.time(rasterImage(raster, xleft = rep(0.25, 100), ybottom = 0.25, 
+                             xright = 0.75, ytop = 0.75, interpolate = FALSE, 
+                             angle = 27))
 invisible(dev.off())
 res <- all_render_bench(rasterImage(raster, xleft = 0.25, ybottom = 0.25, 
                                     xright = 0.75, ytop = 0.75, 
                                     interpolate = FALSE, angle = 27))
-plot_bench(res, 'Non-interpolated, rotated raster performance')
+plot_bench(res, 'Non-interpolated, rotated raster performance', b)
 ```
 
 ```{r, message=FALSE}
 void_dev()
 plot.new()
-system.time(rasterImage(raster, xleft = rep(0.25, 100), ybottom = 0.25, xright = 0.75,
-                        ytop = 0.75, interpolate = TRUE))
+b <- system.time(rasterImage(raster, xleft = rep(0.25, 100), ybottom = 0.25, 
+                             xright = 0.75, ytop = 0.75, interpolate = TRUE))
 invisible(dev.off())
 res <- all_render_bench(rasterImage(raster, xleft = 0.25, ybottom = 0.25, 
                                     xright = 0.75, ytop = 0.75, 
                                     interpolate = TRUE))
-plot_bench(res, 'Interpolated, non-rotated raster performance')
+plot_bench(res, 'Interpolated, non-rotated raster performance', b)
 ```
 
 ```{r, message=FALSE}
 void_dev()
 plot.new()
-system.time(rasterImage(raster, xleft = rep(0.25, 100), ybottom = 0.25, xright = 0.75,
-                        ytop = 0.75, interpolate = TRUE, angle = 27))
+b <- system.time(rasterImage(raster, xleft = rep(0.25, 100), ybottom = 0.25, 
+                             xright = 0.75, ytop = 0.75, interpolate = TRUE, 
+                             angle = 27))
 invisible(dev.off())
 res <- all_render_bench(rasterImage(raster, xleft = 0.25, ybottom = 0.25, 
                                     xright = 0.75, ytop = 0.75, 
                                     interpolate = TRUE, angle = 27))
-plot_bench(res, 'Interpolated, rotated raster performance')
+plot_bench(res, 'Interpolated, rotated raster performance', b)
 ```
 
 Plotting rasters are whicked fast it appears. For non-rotated rasters ragg is a
@@ -403,19 +408,19 @@ pch <- "#"
 
 void_dev()
 plot.new()
-system.time(points(x, y, pch = pch))
+b <- system.time(points(x, y, pch = pch))
 invisible(dev.off())
 res <- all_render_bench(points(x, y, pch = pch))
-plot_bench(res, 'Single character performance')
+plot_bench(res, 'Single character performance', b)
 ```
 
 ```{r, message=FALSE}
 void_dev()
 plot.new()
-system.time(text(x, y, label = 'abcdefghijk'))
+b <- system.time(text(x, y, label = 'abcdefghijk'))
 invisible(dev.off())
 res <- all_render_bench(text(x, y, label = 'abcdefghijk'))
-plot_bench(res, 'Text string performance')
+plot_bench(res, 'Text string performance', b)
 ```
 
 Once again Xlib surprises with a significantly slower font handling than its 
@@ -447,11 +452,11 @@ We will prebuild the plot so mainly rendering will be measured
 ```{r, message=FALSE, warning=FALSE}
 p <- ggplotGrob(p)
 void_dev()
-system.time(plot(p))
+b <- system.time(plot(p))
 invisible(dev.off())
 
 res <- all_render_bench(plot(p))
-plot_bench(res, 'Complex composite performance')
+plot_bench(res, 'Complex composite performance', b)
 ```
 
 We see that with complex graphics the speed benefit of the non anti-aliased Xlib
