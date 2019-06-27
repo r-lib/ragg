@@ -30,7 +30,7 @@ The package is currently under development but will be released on CRAN shortly.
 
 ```{r, eval=FALSE}
 # install.packages('devtools')
-devtools::install_github('thomasp85/ragg')
+devtools::install_github('r-lib/ragg')
 ```
 
 ## Use
