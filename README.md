@@ -27,7 +27,7 @@ shortly.
 
 ``` r
 # install.packages('devtools')
-devtools::install_github('thomasp85/ragg')
+devtools::install_github('r-lib/ragg')
 ```
 
 ## Use
