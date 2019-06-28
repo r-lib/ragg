@@ -219,6 +219,11 @@ the same name.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>`'jpeg'` compression is only available if ragg is compiled with a 
+version of `libtiff` where jpeg support has been turned on.</p>
+    
     <h2 class="hasAnchor" id="transparency"><a class="anchor" href="#transparency"></a>Transparency</h2>
 
     
@@ -232,7 +237,7 @@ PNG so it should be noted.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>'.tiff'</span>)
 <span class='co'># Use jpeg compression</span>
-<span class='fu'>agg_tiff</span>(<span class='no'>file</span>, <span class='kw'>compression</span> <span class='kw'>=</span> <span class='st'>'jpeg'</span>)
+<span class='fu'>agg_tiff</span>(<span class='no'>file</span>, <span class='kw'>compression</span> <span class='kw'>=</span> <span class='st'>'lzw+p'</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>sin</span>, -<span class='no'>pi</span>, <span class='fl'>2</span>*<span class='no'>pi</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/grDevices/topics/dev'>dev.off</a></span>()</div><div class='output co'>#&gt; pdf 
 #&gt;   2 </div><div class='input'>
@@ -243,6 +248,8 @@ PNG so it should be noted.</p>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#note">Note</a></li>
+
       <li><a href="#transparency">Transparency</a></li>
       
       <li><a href="#examples">Examples</a></li>
