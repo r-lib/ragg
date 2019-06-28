@@ -8,7 +8,7 @@
 [![Travis build
 status](https://travis-ci.org/r-lib/ragg.svg?branch=master)](https://travis-ci.org/r-lib/ragg)
 [![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/r-lib/ragg?branch=master&svg=true)](https://ci.appveyor.com/project/r-lib/ragg)
+status](https://ci.appveyor.com/api/projects/status/github/r-lib/ragg?branch=master&svg=true)](https://ci.appveyor.com/project/thomasp85/ragg)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/ragg)](https://cran.r-project.org/package=ragg)
 [![Lifecycle:
@@ -18,7 +18,9 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 This package provides graphic devices for R based on the AGG library
 developed by the late Maxim Shemanarev. AGG provides both higher
 performance and higher quality than the standard raster devices provided
-by grDevices.
+by grDevices. For a comparison with the default devices, see the
+[performance](https://ragg.r-lib.org/articles/ragg_performance.html) and
+[quality](https://ragg.r-lib.org/articles/ragg_quality.html) vignettes.
 
 ## Installation
 
