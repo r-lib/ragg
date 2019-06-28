@@ -104,12 +104,15 @@ agg_png <- function(filename = 'Rplot%03d.png', width = 480, height = 480,
 #' standard options from the [grDevices::tiff()] function are available under 
 #' the same name.
 #' 
+#' @note `'jpeg'` compression is only available if ragg is compiled with a 
+#' version of `libtiff` where jpeg support has been turned on.
+#' 
 #' @export
 #' 
 #' @examples 
 #' file <- tempfile(fileext = '.tiff')
 #' # Use jpeg compression
-#' agg_tiff(file, compression = 'jpeg')
+#' agg_tiff(file, compression = 'lzw+p')
 #' plot(sin, -pi, 2*pi)
 #' dev.off()
 #' 

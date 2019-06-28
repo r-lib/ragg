@@ -45,6 +45,10 @@ files than PNG, and in general PNG is a better format for many of the graphic
 types produced in R. Still, TIFF has its purposes and sometimes this file
 format is explicetly requested.
 }
+\note{
+`'jpeg'` compression is only available if ragg is compiled with a 
+version of `libtiff` where jpeg support has been turned on.
+}
 \section{Transparency}{
 
 TIFF have support for true transparency, meaning that the pixel colour is 
@@ -57,7 +61,7 @@ PNG so it should be noted.
 \examples{
 file <- tempfile(fileext = '.tiff')
 # Use jpeg compression
-agg_tiff(file, compression = 'jpeg')
+agg_tiff(file, compression = 'lzw+p')
 plot(sin, -pi, 2*pi)
 dev.off()
 
