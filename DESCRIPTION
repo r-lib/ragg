@@ -43,8 +43,6 @@ Suggests:
     dplyr,
     sessioninfo,
     magick
-Remotes: 
-    thomasp85/systemfonts
 VignetteBuilder: knitr
 Imports: 
     systemfonts
