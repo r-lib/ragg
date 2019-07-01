@@ -111,7 +111,7 @@ public:
   }
   u_int32_t * convert(const char * string, int &n_conv) {
     int n_bytes = strlen(string) + 1;
-    int max_size = n_bytes * 4;
+    unsigned int max_size = n_bytes * 4;
     if (buffer.size() < max_size) {
       buffer.resize(max_size);
     }
