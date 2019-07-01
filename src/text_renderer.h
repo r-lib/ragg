@@ -171,11 +171,6 @@ public:
   }
   
   void get_char_metric(int c, double *ascent, double *descent, double *width) {
-    bool is_unicode = mbcslocale;
-    if (c < 0) {
-      is_unicode = true;
-      c = -c;
-    }
     const agg::glyph_cache* glyph = fman.glyph(c);
     if (glyph) {
       *ascent = (double) -glyph->bounds.y1;
