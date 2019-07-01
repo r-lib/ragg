@@ -9,18 +9,15 @@ fortran: false
 matrix:
   include:
     - dist: xenial
-    - os: osx
       before_cache: Rscript -e 'remotes::install_cran("pkgdown")'
       deploy:
         provider: script
         script: Rscript -e 'pkgdown::deploy_site_github()'
         skip_cleanup: true
-      before_install:
-        - brew cask reinstall xquartz
+    - os: osx
       brew_packages:
         - libpng
         - freetype
-        - fontconfig
 
 addons:
   apt:
