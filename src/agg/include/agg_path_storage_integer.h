@@ -17,6 +17,7 @@
 #define AGG_PATH_STORAGE_INTEGER_INCLUDED
 
 #include <cstring>
+#include <type_traits>
 #include "agg_array.h"
 
 namespace agg
@@ -24,6 +25,7 @@ namespace agg
     //---------------------------------------------------------vertex_integer
     template<class T, unsigned CoordShift=6> struct vertex_integer
     {
+        typedef typename std::make_unsigned<T>::type uT;
         enum path_cmd
         {
             cmd_move_to = 0,
@@ -41,8 +43,8 @@ namespace agg
         T x,y;
         vertex_integer() {}
         vertex_integer(T x_, T y_, unsigned flag) :
-            x(((x_ << 1) & ~1) | (flag &  1)),
-            y(((y_ << 1) & ~1) | (flag >> 1)) {}
+            x((( (uT) x_ << 1) & ~1) | (flag &  1)),
+            y((( (uT) y_ << 1) & ~1) | (flag >> 1)) {}
 
         unsigned vertex(double* x_, double* y_, 
                         double dx=0, double dy=0,

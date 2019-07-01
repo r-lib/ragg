@@ -368,7 +368,7 @@ namespace agg
         if(dx == 0)
         {
             int ex = x1 >> poly_subpixel_shift;
-            int two_fx = (x1 - (ex << poly_subpixel_shift)) << 1;
+            int two_fx = (x1 - ( (unsigned int) ex << poly_subpixel_shift)) << 1;
             int area;
 
             first = poly_subpixel_scale;
