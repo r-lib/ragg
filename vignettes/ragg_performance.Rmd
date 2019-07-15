@@ -32,8 +32,8 @@ give the fullest overview.
 
 All benchmarks will also include timings of the same code with the `void_dev()`
 device from the devoid package. The `void_dev()` device is a very simple device
-that does no operations on the input it recieves. Because of this it serves as
-a measure for the time spend on non-rendering operations.
+that does no operations on the input it receives. Because of this it serves as
+a measure for the time spent on non-rendering operations.
 
 On Mac installation the `png()` function also offers (and defaults to) a quartz
 backend. As this is not available on all systems it will not be included here. 
