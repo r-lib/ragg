@@ -9,6 +9,19 @@ fortran: false
 matrix:
   include:
     - dist: xenial
+      r_packages:
+        - knitr
+        - rmarkdown
+        - ggplot2
+        - devoid
+        - bench
+        - rlang
+        - tidyr
+        - ggridges
+        - hexbin
+        - dplyr
+        - sessioninfo
+        - magick
       before_cache: Rscript -e 'remotes::install_cran("pkgdown")'
       deploy:
         provider: script

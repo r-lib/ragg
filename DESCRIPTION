@@ -45,18 +45,5 @@ SystemRequirements:
     freetype2
     libpng
 Suggests: 
-    knitr,
-    rmarkdown,
-    ggplot2,
-    devoid,
-    bench,
-    rlang,
-    tidyr,
-    ggridges,
-    hexbin,
-    dplyr,
-    sessioninfo,
-    magick
-VignetteBuilder: knitr
 Imports: 
     systemfonts

@@ -26,11 +26,14 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Maxim Shemanarev (Author of AGG)
+  \item Maxim Shemanarev (Author of AGG) [copyright holder]
 }
 
 Other contributors:
 \itemize{
+  \item Tony Juricic \email{tonygeek@yahoo.com} (Contributor to AGG) [contributor, copyright holder]
+  \item Milan Marusinec \email{milan@marusinec.sk} (Contributor to AGG) [contributor, copyright holder]
+  \item Spencer Garrett (Contributor to AGG) [contributor]
   \item RStudio [copyright holder]
 }
 
