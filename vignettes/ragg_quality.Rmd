@@ -47,7 +47,7 @@ also look into alpha blending and raster interpolation.
 
 ## Shape rendering
 The examples here are relevant for rendering of all different types of shapes, 
-be it lines or polygons. Lines obviously doesn't have fill, so only the stroke
+be it lines or polygons. Lines obviously don't have fill, so only the stroke
 rendering will have relevance here. We chose to use a circle for this as it 
 provides a nice sampling of uneven edges.
 
