@@ -24,8 +24,8 @@ by grDevices. For a comparison with the default devices, see the
 
 ## Installation
 
-The package is currently under development but will be released on CRAN
-shortly.
+The package can be installed from CRAN with `install.packages('ragg')`
+or, if the development version is desired, directly from github:
 
 ``` r
 # install.packages('devtools')
