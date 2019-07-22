@@ -263,10 +263,10 @@ namespace agg
             m_covers(),
             m_spans(256-2),         // Block increment size
             m_scanlines(),
-            m_min_x(std::numeric_limits<int>::max()),
-            m_min_y(std::numeric_limits<int>::max()),
-            m_max_x(std::numeric_limits<int>::min()),
-            m_max_y(std::numeric_limits<int>::min()),
+            m_min_x(std::numeric_limits<long>::max()),
+            m_min_y(std::numeric_limits<long>::max()),
+            m_max_x(std::numeric_limits<long>::min()),
+            m_max_y(std::numeric_limits<long>::min()),
             m_cur_scanline(0)
         {
             m_fake_scanline.y = 0;
@@ -284,10 +284,10 @@ namespace agg
             m_covers.remove_all();
             m_scanlines.remove_all();
             m_spans.remove_all();
-            m_min_x = std::numeric_limits<int>::max();
-            m_min_y = std::numeric_limits<int>::max();
-            m_max_x = std::numeric_limits<int>::min();
-            m_max_y = std::numeric_limits<int>::min();
+            m_min_x = std::numeric_limits<long>::max();
+            m_min_y = std::numeric_limits<long>::max();
+            m_max_x = std::numeric_limits<long>::min();
+            m_max_y = std::numeric_limits<long>::min();
             m_cur_scanline = 0;
         }
 
@@ -330,10 +330,10 @@ namespace agg
 
         //---------------------------------------------------------------
         // Iterate scanlines interface
-        int min_x() const { return m_min_x; }
-        int min_y() const { return m_min_y; }
-        int max_x() const { return m_max_x; }
-        int max_y() const { return m_max_y; }
+        long min_x() const { return m_min_x; }
+        long min_y() const { return m_min_y; }
+        long max_x() const { return m_max_x; }
+        long max_y() const { return m_max_y; }
 
         //---------------------------------------------------------------
         bool rewind_scanlines()
@@ -518,10 +518,10 @@ namespace agg
         pod_bvector<scanline_data, 8> m_scanlines;
         span_data     m_fake_span;
         scanline_data m_fake_scanline;
-        int           m_min_x;
-        int           m_min_y;
-        int           m_max_x;
-        int           m_max_y;
+        long          m_min_x;
+        long          m_min_y;
+        long          m_max_x;
+        long          m_max_y;
         unsigned      m_cur_scanline;
     };
 
@@ -655,10 +655,10 @@ namespace agg
             m_ptr(0),
             m_dx(0),
             m_dy(0),
-            m_min_x(std::numeric_limits<int>::max()),
-            m_min_y(std::numeric_limits<int>::max()),
-            m_max_x(std::numeric_limits<int>::min()),
-            m_max_y(std::numeric_limits<int>::min())
+            m_min_x(std::numeric_limits<long>::max()),
+            m_min_y(std::numeric_limits<long>::max()),
+            m_max_x(std::numeric_limits<long>::min()),
+            m_max_y(std::numeric_limits<long>::min())
         {}
 
         //--------------------------------------------------------------------
@@ -669,10 +669,10 @@ namespace agg
             m_ptr(data),
             m_dx(iround(dx)),
             m_dy(iround(dy)),
-            m_min_x(std::numeric_limits<int>::max()),
-            m_min_y(std::numeric_limits<int>::max()),
-            m_max_x(std::numeric_limits<int>::min()),
-            m_max_y(std::numeric_limits<int>::min())
+            m_min_x(std::numeric_limits<long>::max()),
+            m_min_y(std::numeric_limits<long>::max()),
+            m_max_x(std::numeric_limits<long>::min()),
+            m_max_y(std::numeric_limits<long>::min())
         {}
 
         //--------------------------------------------------------------------
@@ -683,10 +683,10 @@ namespace agg
             m_ptr   = data;
             m_dx    = iround(dx);
             m_dy    = iround(dy);
-            m_min_x = std::numeric_limits<int>::max();
-            m_min_y = std::numeric_limits<int>::max();
-            m_max_x = std::numeric_limits<int>::min();
-            m_max_y = std::numeric_limits<int>::min();
+            m_min_x = std::numeric_limits<long>::max();
+            m_min_y = std::numeric_limits<long>::max();
+            m_max_x = std::numeric_limits<long>::min();
+            m_max_y = std::numeric_limits<long>::min();
         }
 
     private:
@@ -729,10 +729,10 @@ namespace agg
         }
 
         //--------------------------------------------------------------------
-        int min_x() const { return m_min_x; }
-        int min_y() const { return m_min_y; }
-        int max_x() const { return m_max_x; }
-        int max_y() const { return m_max_y; }
+        long min_x() const { return m_min_x; }
+        long min_y() const { return m_min_y; }
+        long max_x() const { return m_max_x; }
+        long max_y() const { return m_max_y; }
 
         //--------------------------------------------------------------------
         template<class Scanline> bool sweep_scanline(Scanline& sl)
@@ -796,10 +796,10 @@ namespace agg
         const int8u* m_ptr;
         int          m_dx;
         int          m_dy;
-        int          m_min_x;
-        int          m_min_y;
-        int          m_max_x;
-        int          m_max_y;
+        long         m_min_x;
+        long         m_min_y;
+        long         m_max_x;
+        long         m_max_y;
     };
 
 
