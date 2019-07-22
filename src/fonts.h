@@ -4,7 +4,7 @@
 #ifndef FONTS_INCLUDED
 #define FONTS_INCLUDED
 
-font_map* get_font_map();
+font_map& get_font_map();
 
 static int locate_font(const char *family, int italic, int bold, char *path, int max_path_length) {
   static int (*p_locate_font)(const char *family, int italic, int bold, char *path, int max_path_length) = NULL;
@@ -22,9 +22,9 @@ static std::pair<std::string, int> get_font_file(const char* family, int bold,
   }
   
   font_key key = std::make_tuple(std::string((char *) fontfamily), bold, italic);
-  font_map* map = get_font_map();
-  font_map::iterator font_it = map->find(key);
-  if (font_it != map->end()) {
+  font_map map = get_font_map();
+  font_map::iterator font_it = map.find(key);
+  if (font_it != map.end()) {
     return font_it->second;
   }
   char *path = new char[PATH_MAX+1];
@@ -35,7 +35,7 @@ static std::pair<std::string, int> get_font_file(const char* family, int bold,
   res.second = index;
   delete[] path;
   
-  (*map)[key] = res;
+  map[key] = res;
   
   return res;
 }
