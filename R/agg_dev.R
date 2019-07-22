@@ -30,7 +30,7 @@
 agg_ppm <- function(filename = 'Rplot%03d.ppm', width = 480, height = 480, 
                     units = 'px', pointsize = 12, background = 'white', 
                     res = 72) {
-  if (deparse(sys.call()) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
+  if (deparse(sys.call(), nlines = 1, width.cutoff = 500) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
     units <- 'in'
   }
   file <- validate_path(filename)
@@ -68,7 +68,7 @@ agg_ppm <- function(filename = 'Rplot%03d.ppm', width = 480, height = 480,
 agg_png <- function(filename = 'Rplot%03d.png', width = 480, height = 480, 
                     units = 'px', pointsize = 12, background = 'white', 
                     res = 72, bitsize = 8) {
-  if (deparse(sys.call()) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
+  if (deparse(sys.call(), nlines = 1, width.cutoff = 500) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
     units <- 'in'
   }
   file <- validate_path(filename)
@@ -119,7 +119,7 @@ agg_png <- function(filename = 'Rplot%03d.png', width = 480, height = 480,
 agg_tiff <- function(filename = 'Rplot%03d.tiff', width = 480, height = 480, 
                     units = 'px', pointsize = 12, background = 'white', 
                     res = 72, compression = 'none', bitsize = 8) {
-  if (deparse(sys.call()) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
+  if (deparse(sys.call(), nlines = 1, width.cutoff = 500) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
     units <- 'in'
   }
   file <- validate_path(filename)
@@ -165,7 +165,7 @@ agg_tiff <- function(filename = 'Rplot%03d.tiff', width = 480, height = 480,
 agg_supertransparent <- function(filename = 'Rplot%03d.png', width = 480, 
                                  height = 480, units = 'px', pointsize = 12, 
                                  background = 'white', res = 72, alpha_mod = 1) {
-  if (deparse(sys.call()) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
+  if (deparse(sys.call(), nlines = 1, width.cutoff = 500) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
     units <- 'in'
   }
   file <- validate_path(filename)
@@ -211,7 +211,7 @@ agg_supertransparent <- function(filename = 'Rplot%03d.png', width = 480,
 #' 
 agg_capture <- function(width = 480, height = 480, units = 'px', pointsize = 12, 
                         background = 'white', res = 72) {
-  if (deparse(sys.call()) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
+  if (deparse(sys.call(), nlines = 1, width.cutoff = 500) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
     units <- 'in'
   }
   dim <- get_dims(width, height, units, res)
