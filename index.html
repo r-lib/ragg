@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">ragg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
   <ul class="dropdown-menu" role="menu">
 <li class="dropdown-header">Release notes</li>
     <li>
-      <a href="">Version 0.1.0</a>
+      <a href="https://www.tidyverse.org/articles/2019/07/ragg-0-1-0/">Version 0.1.0</a>
     </li>
     <li class="divider">
     </li>
@@ -122,7 +122,7 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>The package is currently under development but will be released on CRAN shortly.</p>
+<p>The package can be installed from CRAN with <code><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages('ragg')</a></code> or, if the development version is desired, directly from github:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages('devtools')</span></a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">'r-lib/ragg'</span>)</a></code></pre></div>
 </div>
@@ -138,7 +138,7 @@
 <li>Support 16-bit output</li>
 <li>System independent rendering (output from Mac, Windows, and Linux should be identical)</li>
 </ul>
-<p>You can use it like any other device. The main functions are <code><a href="reference/agg_png.html">agg_png()</a></code> and <code><a href="reference/agg_tiff.html">agg_tiff()</a></code>, both have arguments that closely match that of the <code><a href="https://www.rdocumentation.org/packages/grDevices/topics/png">png()</a></code> and <code><a href="https://www.rdocumentation.org/packages/grDevices/topics/png">tiff()</a></code> functions, so switching over should be easy.</p>
+<p>You can use it like any other device. The main functions are <code><a href="reference/agg_png.html">agg_png()</a></code> and <code><a href="reference/agg_tiff.html">agg_tiff()</a></code>, both have arguments that closely match those of the <code><a href="https://www.rdocumentation.org/packages/grDevices/topics/png">png()</a></code> and <code><a href="https://www.rdocumentation.org/packages/grDevices/topics/png">tiff()</a></code> functions, so switching over should be easy.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ragg)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"></a>
