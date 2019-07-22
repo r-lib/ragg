@@ -1,3 +1,7 @@
+Updated DESCRIPTION to include all contributors to AGG as per requested by CRAN
+
+Fixed a bug in resolution scaling
+
 ## Test environments
 * local OS X install, R 3.6.0
 * ubuntu 14.04 (on travis-ci), R 3.6.0

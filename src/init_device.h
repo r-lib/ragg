@@ -176,8 +176,8 @@ pDevDesc agg_device_new(T* device) {
   
   // Magic constants copied from other graphics devices
   // nominal character sizes in pts
-  dd->cra[0] = 0.9 * device->pointsize;
-  dd->cra[1] = 1.2 * device->pointsize;
+  dd->cra[0] = 0.9 * device->pointsize * device->res_mod;
+  dd->cra[1] = 1.2 * device->pointsize * device->res_mod;
   // character alignment offsets
   dd->xCharOffset = 0.4900;
   dd->yCharOffset = 0.3333;

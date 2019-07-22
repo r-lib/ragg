@@ -11,3 +11,4 @@
 ^pkgdown$
 ^cran-comments\.md$
 ^man/figures/logo\.svg$
+^CRAN-RELEASE$

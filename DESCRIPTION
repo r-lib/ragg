@@ -1,7 +1,7 @@
 Package: ragg
 Type: Package
 Title: Graphic Devices Based on AGG
-Version: 0.0.1
+Version: 0.1.0
 Authors@R: 
     c(person(given = "Thomas Lin",
              family = "Pedersen",
@@ -10,8 +10,22 @@ Authors@R:
              comment = c(ORCID = "0000-0002-5147-4711")),
       person(given = "Maxim",
              family = "Shemanarev",
-             role = "aut",
+             role = c("aut", "cph"),
              comment = "Author of AGG"),
+      person(given = "Tony",
+             family = "Juricic",
+             role = c("ctb", "cph"),
+             email = "tonygeek@yahoo.com",
+             comment = "Contributor to AGG"),
+      person(given = "Milan",
+             family = "Marusinec",
+             role = c("ctb", "cph"),
+             email = "milan@marusinec.sk",
+             comment = "Contributor to AGG"),
+      person(given = "Spencer",
+             family = "Garrett",
+             role = "ctb",
+             comment = "Contributor to AGG"),
       person(given = "RStudio",
              role = "cph"))
 Maintainer: Thomas Lin Pedersen <thomas.pedersen@rstudio.com>
