@@ -21,7 +21,7 @@ navbar:
       menu:
       - text: "Release notes"
       - text: "Version 0.1.0"
-        href: ""
+        href: "https://www.tidyverse.org/articles/2019/07/ragg-0-1-0/"
       - text: "------------------"
       - text: "Change log"
         href: news/index.html
