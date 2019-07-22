@@ -48,7 +48,7 @@ build-in devices, includes:
     should be identical)
 
 You can use it like any other device. The main functions are `agg_png()`
-and `agg_tiff()`, both have arguments that closely match that of the
+and `agg_tiff()`, both have arguments that closely match those of the
 `png()` and `tiff()` functions, so switching over should be easy.
 
 ``` r
