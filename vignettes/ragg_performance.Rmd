@@ -192,7 +192,7 @@ and those that do not. ragg is once again the fastest one using anti-aliasing.
 
 ### Polylines
 Polylines are connected line segments. We should expect the same picture as for
-lines giventhat the operations are quite similar. We will also test different line
+lines given that the operations are quite similar. We will also test different line
 patterns here to assess whether there are any differences in the efficency with which
 patterns are generated.
 
