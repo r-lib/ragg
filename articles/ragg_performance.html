@@ -140,11 +140,11 @@
 <a class="sourceLine" id="cb2-11" data-line-number="11">}</a>
 <a class="sourceLine" id="cb2-12" data-line-number="12"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(res, <span class="dt">type =</span> <span class="st">'ridge'</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">'Open and close performance'</span>)</a></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
-<p>As can be seen, it is not as clear cut as it seems. ragg and cairo_png hae equivalent performance, while cairois a about twice as fast. Xlib on the other hand is even slower. Looking at the produced files we can see that ragg and cairo_png produces files of around 2Kb, whereas cairo produces files of around 300B and XLib around 6Kb. The differences can thus be ascribed to disk write speed more than anything, and is probably due to different compression and filtering settings used. ragg uses the default heuristics from libpng, and my guess is that cairo_png uses this as well. A white rectange (as produced by <code><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new()</a></code>) is ammenable to a lot of compression and it is possible that cairo have been tuned for that. It is likely that the advantage will disappear with more complex plots but it is difficult to test without inflating it with rendering speed.</p>
+<p>As can be seen, it is not as clear cut as it seems. ragg and cairo_png have equivalent performance, while Cairo is about twice as fast. Xlib on the other hand is even slower. Looking at the produced files we can see that ragg and cairo_png produce files of around 2Kb, whereas cairo produces files of around 300B and XLib around 6Kb. The differences can thus be ascribed to disk write speed more than anything, and is probably due to different compression and filtering settings used. ragg uses the default heuristics from libpng, and my guess is that cairo_png uses this as well. A white rectangle (as produced by <code><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new()</a></code>) is amenable to a lot of compression and it is possible that cairo has been tuned for that. It is likely that the advantage will disappear with more complex plots but it is difficult to test without inflating it with rendering speed.</p>
 <div id="rendering" class="section level3">
 <h3 class="hasAnchor">
 <a href="#rendering" class="anchor"></a>Rendering</h3>
-<p>A graphic device provides a range of methods that Rs graphic engine will use when it recieves plotting instructions from the user. The more performant each of these methods are, the more performant the graphic device is as a whole. The possible devices from grDevices increases here, as different anti-aliasing settings can be used (ragg, again, has no settings for this. It will always draw with subpixel antialiasing). Below is an attempt to benchmark each of the device methods by constructing as direct calls to each of them. Remember, <code><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev()</a></code> provides the baseline.</p>
+<p>A graphic device provides a range of methods that R’s graphic engine will use when it receives plotting instructions from the user. The more performant each of these methods are, the more performant the graphic device is as a whole. The possible devices from grDevices increases here, as different anti-aliasing settings can be used (ragg, again, has no settings for this. It will always draw with subpixel antialiasing). Below is an attempt to benchmark each of the device methods by constructing as direct as possible calls to each of them. Remember, <code><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev()</a></code> provides the baseline.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">render_bench &lt;-<span class="st"> </span><span class="cf">function</span>(dev_f, ...) {</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">  dots &lt;-<span class="st"> </span>rlang<span class="op">::</span><span class="kw"><a href="https://rlang.r-lib.org/reference/quotation.html">enexprs</a></span>(...)</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/force">force</a></span>(dev_f)</a>
@@ -210,7 +210,7 @@
 <a class="sourceLine" id="cb5-7" data-line-number="7">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
 <a class="sourceLine" id="cb5-8" data-line-number="8"><span class="kw">plot_bench</span>(res, <span class="st">'Filled circle performance'</span>, b)</a></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
-<p>Of the antialiased devices it is clear that ragg is the most performant. The performance gain is most pronounce with unfilled circles due to the fact that cairo don’t antialias fill, only stroke and text. Xlib is by far the most performant device, but also the one rendering with the lowest quality by far (see the <em>Rendering quality</em> vignette).</p>
+<p>Of all of the antialiased devices it is clear that ragg is the most performant. The performance gain is most pronounced with unfilled circles due to the fact that cairo doesn’t antialias fill, only stroke and text. Xlib is by far the most performant device, but also the one rendering with the lowest quality by far (see the <em>Rendering quality</em> vignette).</p>
 </div>
 <div id="lines" class="section level3">
 <h3 class="hasAnchor">
@@ -230,7 +230,7 @@
 <div id="polylines" class="section level3">
 <h3 class="hasAnchor">
 <a href="#polylines" class="anchor"></a>Polylines</h3>
-<p>Polylines are connected line segments. We should expect the same picture as for lines as the operations are quite similar. We will also test different line patterns here to asses if there are any differences in the efficency with which patterns are generated.</p>
+<p>Polylines are connected line segments. We should expect the same picture as for lines given that the operations are quite similar. We will also test different line patterns here to assess whether there are any differences in the efficency with which patterns are generated.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3">b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/lines">lines</a></span>(x, y))</a>
@@ -250,7 +250,7 @@
 <div id="rectangles" class="section level3">
 <h3 class="hasAnchor">
 <a href="#rectangles" class="anchor"></a>Rectangles</h3>
-<p>Rectangles is another graphic primitive that has its own method. Again, it is used when plotting certain types of points, and this is how we’ll test it:</p>
+<p>Rectangle is another graphic primitive that has its own method. Again, it is used when plotting certain types of points, and this is how we’ll test it:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">pch &lt;-<span class="st"> </span><span class="dv">0</span></a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb9-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
@@ -298,7 +298,7 @@
 <a class="sourceLine" id="cb13-5" data-line-number="5">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/polygon">polygon</a></span>(x, y, <span class="dt">border =</span> <span class="st">'gray'</span>, <span class="dt">col =</span> <span class="st">'black'</span>))</a>
 <a class="sourceLine" id="cb13-6" data-line-number="6"><span class="kw">plot_bench</span>(res, <span class="st">'Filled complex polygon performance'</span>, b)</a></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
-<p>The findings here reflects what is seen above. ragg is faster when it comes to drawing the lines, but looses the advantage with fill as it is the only one anti-aliasing fill.</p>
+<p>The findings here reflect what is seen above. ragg is faster when it comes to drawing the lines, but looses the advantage with fill as it is the only one performing anti-aliasing fill.</p>
 </div>
 <div id="paths" class="section level3">
 <h3 class="hasAnchor">
@@ -378,12 +378,12 @@
 <a class="sourceLine" id="cb19-9" data-line-number="9">                                    <span class="dt">interpolate =</span> <span class="ot">TRUE</span>, <span class="dt">angle =</span> <span class="dv">27</span>))</a>
 <a class="sourceLine" id="cb19-10" data-line-number="10"><span class="kw">plot_bench</span>(res, <span class="st">'Interpolated, rotated raster performance'</span>, b)</a></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-20-1.png" width="672"></p>
-<p>Plotting rasters are whicked fast it appears. For non-rotated rasters ragg is a tiny bit slower than cairo, maybe due to anti-aliasing of the edges. The loss is gained again when it comes to rotation, indicating a more performanct affine transformation implementation. Xlib is significantly slower here, for reasons beyond me.</p>
+<p>Plotting rasters is whicked fast it appears. For non-rotated rasters ragg is a tiny bit slower than cairo, maybe due to anti-aliasing of the edges. The loss is gained again when it comes to rotation, indicating a more performant affine transformation implementation. Xlib is significantly slower here, for reasons beyond me.</p>
 </div>
 <div id="text" class="section level3">
 <h3 class="hasAnchor">
 <a href="#text" class="anchor"></a>Text</h3>
-<p>Text in data visualisation is crucial, and one of the hardest parts in implementing a graphic device. This is reflected in e.g. the inability of the native devices to find system fonts, thus having to rely on e.g. the extrafont or showtext packages for that. Anyway, again we only look at performance in this document.</p>
+<p>Text in data visualisation is crucial, and one of the hardest parts when implementing a graphic device. This is reflected in e.g. the inability of the native devices to find system fonts, thus having to rely on e.g. the extrafont or showtext packages for that. Anyway, again we only look at performance in this document.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">pch &lt;-<span class="st"> "#"</span></a>
 <a class="sourceLine" id="cb20-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb20-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
@@ -447,7 +447,7 @@
 <a class="sourceLine" id="cb24-9" data-line-number="9"><span class="co">#&gt;  collate  en_US.UTF-8                 </span></a>
 <a class="sourceLine" id="cb24-10" data-line-number="10"><span class="co">#&gt;  ctype    en_US.UTF-8                 </span></a>
 <a class="sourceLine" id="cb24-11" data-line-number="11"><span class="co">#&gt;  tz       UTC                         </span></a>
-<a class="sourceLine" id="cb24-12" data-line-number="12"><span class="co">#&gt;  date     2019-07-22                  </span></a>
+<a class="sourceLine" id="cb24-12" data-line-number="12"><span class="co">#&gt;  date     2019-07-23                  </span></a>
 <a class="sourceLine" id="cb24-13" data-line-number="13"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb24-14" data-line-number="14"><span class="co">#&gt; ─ Packages ──────────────────────────────────────────────────────────────</span></a>
 <a class="sourceLine" id="cb24-15" data-line-number="15"><span class="co">#&gt;  package      * version    date       lib source        </span></a>
@@ -488,7 +488,7 @@
 <a class="sourceLine" id="cb24-50" data-line-number="50"><span class="co">#&gt;  profmem        0.5.0      2018-01-30 [1] CRAN (R 3.6.0)</span></a>
 <a class="sourceLine" id="cb24-51" data-line-number="51"><span class="co">#&gt;  purrr          0.3.2      2019-03-15 [1] CRAN (R 3.6.0)</span></a>
 <a class="sourceLine" id="cb24-52" data-line-number="52"><span class="co">#&gt;  R6             2.4.0      2019-02-14 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-53" data-line-number="53"><span class="co">#&gt;  ragg         * 0.1.0.9000 2019-07-22 [1] local         </span></a>
+<a class="sourceLine" id="cb24-53" data-line-number="53"><span class="co">#&gt;  ragg         * 0.1.0.9000 2019-07-23 [1] local         </span></a>
 <a class="sourceLine" id="cb24-54" data-line-number="54"><span class="co">#&gt;  RColorBrewer   1.1-2      2014-12-07 [1] CRAN (R 3.6.0)</span></a>
 <a class="sourceLine" id="cb24-55" data-line-number="55"><span class="co">#&gt;  Rcpp           1.0.1      2019-03-17 [3] CRAN (R 3.5.3)</span></a>
 <a class="sourceLine" id="cb24-56" data-line-number="56"><span class="co">#&gt;  rlang          0.4.0      2019-06-25 [1] CRAN (R 3.6.1)</span></a>
