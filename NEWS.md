@@ -1,10 +1,11 @@
-# ragg (development version)
+# ragg 0.1.1
 
 * Avoid a bug when the call to start a device included too many characters (#16)
 * Fix integer overflow runtime errors in agg source code 
   (`agg_scanline_storage_aa.h`), by changing storage to `long`
 * Remove benchmarking vignettes as it was causing too much trouble on stripped
   down systems... They are still available on <https://ragg.r-lib.org>
+* Better build setup to properly build on all macOS systems
 
 # ragg 0.1.0
 
