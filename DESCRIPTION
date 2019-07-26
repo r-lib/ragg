@@ -1,7 +1,7 @@
 Package: ragg
 Type: Package
 Title: Graphic Devices Based on AGG
-Version: 0.1.0.9000
+Version: 0.1.1
 Authors@R: 
     c(person(given = "Thomas Lin",
              family = "Pedersen",
