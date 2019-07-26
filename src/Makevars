@@ -1,7 +1,0 @@
-PKG_CXXFLAGS = -I./agg/include `pkg-config --cflags freetype2 libpng libtiff-4`
-PKG_LIBS = -L./agg/src `pkg-config --libs freetype2 libpng libtiff-4`
-
-AGG_SOURCES = $(wildcard agg/src/*.cpp)
-OWN_SOURCES = $(wildcard *.cpp)
-SOURCES = $(AGG_SOURCES) $(OWN_SOURCES)
-OBJECTS = $(SOURCES:.cpp=.o)

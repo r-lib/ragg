@@ -30,6 +30,9 @@ matrix:
     - os: osx
       disable_homebrew: true
     - os: osx
+      brew_packages:
+        - freetype
+        - libpng
 
 addons:
   apt:

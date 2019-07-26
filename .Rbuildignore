@@ -4,6 +4,7 @@
 ^\.Rproj\.user$
 ^\.travis\.yml$
 ^src/agg/src.*\.o$
+^src/Makevars$
 ^appveyor\.yml$
 ^CODE_OF_CONDUCT\.md$
 ^_pkgdown\.yml$
