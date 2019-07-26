@@ -1,0 +1,7 @@
+PKG_CXXFLAGS = -I./agg/include @cflags@
+PKG_LIBS = -L./agg/src @libs@
+
+AGG_SOURCES = $(wildcard agg/src/*.cpp)
+OWN_SOURCES = $(wildcard *.cpp)
+SOURCES = $(AGG_SOURCES) $(OWN_SOURCES)
+OBJECTS = $(SOURCES:.cpp=.o)

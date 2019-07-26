@@ -28,9 +28,11 @@ matrix:
         script: Rscript -e 'pkgdown::deploy_site_github()'
         skip_cleanup: true
     - os: osx
+      disable_homebrew: true
+    - os: osx
       brew_packages:
-        - libpng
         - freetype
+        - libpng
 
 addons:
   apt:
