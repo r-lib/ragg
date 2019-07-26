@@ -1,6 +1,10 @@
-Updated DESCRIPTION to include all contributors to AGG as per requested by CRAN
+Fixed macOS compilation on cran machines.
 
-Fixed a bug in resolution scaling
+Fixed a range of sanitizer errors in the bundled AGG code.
+
+Removed vignettes to avoid build errors with poor device support.
+
+Fixed declaration mismatch in C++ code
 
 ## Test environments
 * local OS X install, R 3.6.0
