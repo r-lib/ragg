@@ -20,7 +20,7 @@ CFLAGS=`${R_HOME}/bin/R CMD config CFLAGS`
 CPPFLAGS=`${R_HOME}/bin/R CMD config CPPFLAGS`
 
 # Use pkg-config if available
-pkg-config --version >/dev/null 2>&1 && R_HAS_PKG_CONFIG=1;
+pkg-config --exists ${PKG_CONFIG_NAME} >/dev/null 2>&1 && R_HAS_PKG_CONFIG=1;
 
 # Note that cflags may be empty in case of success
 if [ "$INCLUDE_DIR" ] || [ "$LIB_DIR" ]; then
