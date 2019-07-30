@@ -1,3 +1,8 @@
+# ragg 0.1.2
+
+* Fix compilation on certain Linux systems by preferring dynamic libraries over 
+  static ones (#25, @jimhester).
+
 # ragg 0.1.1
 
 * Avoid a bug when the call to start a device included too many characters (#16)
