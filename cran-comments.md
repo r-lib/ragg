@@ -1,10 +1,4 @@
-Fixed macOS compilation on cran machines.
-
-Fixed a range of sanitizer errors in the bundled AGG code.
-
-Removed vignettes to avoid build errors with poor device support.
-
-Fixed declaration mismatch in C++ code
+As requested by BDR this version checks for the availability of dynamic libraries before trying to use static libraries which should fix compilation on eg fedora
 
 ## Test environments
 * local OS X install, R 3.6.0
