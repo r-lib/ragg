@@ -5,6 +5,7 @@ ragg.Rproj
 src/*.o
 src/*.so
 src/*.dll
+src/agg/*.a
 src/agg/src/*.o
 src/agg/src/*.so
 src/agg/src/*.dll

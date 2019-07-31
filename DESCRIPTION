@@ -40,7 +40,6 @@ Encoding: UTF-8
 RoxygenNote: 6.1.1
 SystemRequirements: 
     C++11,
-    GNU Make,
     freetype2
     libpng
 Suggests: 
