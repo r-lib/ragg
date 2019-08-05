@@ -70,7 +70,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ragg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -142,6 +142,27 @@
       
     </div>
 
+    <div id="ragg-0-1-2" class="section level1">
+<h1 class="page-header">
+<a href="#ragg-0-1-2" class="anchor"></a>ragg 0.1.2<small> 2019-07-30 </small>
+</h1>
+<ul>
+<li>Fix compilation on certain Linux systems by preferring dynamic libraries over static ones (#25, <a href='https://github.com/jimhester'>@jimhester</a>).</li>
+</ul>
+</div>
+    <div id="ragg-0-1-1" class="section level1">
+<h1 class="page-header">
+<a href="#ragg-0-1-1" class="anchor"></a>ragg 0.1.1<small> 2019-07-29 </small>
+</h1>
+<ul>
+<li>Avoid a bug when the call to start a device included too many characters (#16)</li>
+<li>Fix integer overflow runtime errors in agg source code (<code>agg_scanline_storage_aa.h</code>), by changing storage to <code>long</code>
+</li>
+<li>Remove benchmarking vignettes as it was causing too much trouble on stripped down systems… They are still available on <a href="https://ragg.r-lib.org" class="uri">https://ragg.r-lib.org</a>
+</li>
+<li>Better build setup to properly build on all macOS systems</li>
+</ul>
+</div>
     <div id="ragg-0-1-0" class="section level1">
 <h1 class="page-header">
 <a href="#ragg-0-1-0" class="anchor"></a>ragg 0.1.0<small> 2019-07-15 </small>
@@ -157,6 +178,8 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#ragg-0-1-2">0.1.2</a></li>
+        <li><a href="#ragg-0-1-1">0.1.1</a></li>
         <li><a href="#ragg-0-1-0">0.1.0</a></li>
       </ul>
     </div>
