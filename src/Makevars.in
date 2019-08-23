@@ -1,7 +1,13 @@
 PKG_CXXFLAGS = -I./agg/include @cflags@
-PKG_LIBS = -L./agg/src @libs@
+PKG_LIBS = -Lagg -lstatagg @libs@
 
-AGG_SOURCES = $(wildcard agg/src/*.cpp)
-OWN_SOURCES = $(wildcard *.cpp)
-SOURCES = $(AGG_SOURCES) $(OWN_SOURCES)
-OBJECTS = $(SOURCES:.cpp=.o)
+AGG_OBJECTS = agg/src/agg_curves.o agg/src/agg_font_freetype.o \
+	agg/src/agg_trans_affine.o agg/src/agg_vcgen_dash.o \
+	agg/src/agg_vcgen_stroke.o
+
+STATLIB = agg/libstatagg.a
+
+$(SHLIB): $(STATLIB)
+
+$(STATLIB): $(AGG_OBJECTS)
+	$(AR) rcs $(STATLIB) $(AGG_OBJECTS)
