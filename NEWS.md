@@ -1,5 +1,7 @@
 # ragg (development version)
 
+* Fix bug preventing ragg from displaying 50% transparent black
+
 # ragg 0.1.2
 
 * Fix compilation on certain Linux systems by preferring dynamic libraries over 
