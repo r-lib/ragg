@@ -1,6 +1,7 @@
 # ragg (development version)
 
 * Fix bug preventing ragg from displaying 50% transparent black
+* Another attempt at fixing compilation on mac build machines
 
 # ragg 0.1.2
 
