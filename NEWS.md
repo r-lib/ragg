@@ -1,3 +1,5 @@
+# ragg 0.1.3
+
 # ragg (development version)
 
 * Fix bug preventing ragg from displaying 50% transparent black
