@@ -1,4 +1,5 @@
-As requested by BDR this version checks for the availability of dynamic libraries before trying to use static libraries which should fix compilation on eg fedora
+This release fixes some small bugs and tries to optimise the compilation for
+the CRAN macOS builder
 
 ## Test environments
 * local OS X install, R 3.6.0
@@ -7,6 +8,4 @@ As requested by BDR this version checks for the availability of dynamic librarie
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
-
-* This is a new release.
+0 errors | 0 warnings | 0 note
