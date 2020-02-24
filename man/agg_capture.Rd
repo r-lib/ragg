@@ -4,8 +4,14 @@
 \alias{agg_capture}
 \title{Draw to a buffer that can be accessed directly}
 \usage{
-agg_capture(width = 480, height = 480, units = "px",
-  pointsize = 12, background = "white", res = 72)
+agg_capture(
+  width = 480,
+  height = 480,
+  units = "px",
+  pointsize = 12,
+  background = "white",
+  res = 72
+)
 }
 \arguments{
 \item{width}{The dimensions of the device}

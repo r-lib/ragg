@@ -4,9 +4,16 @@
 \alias{agg_png}
 \title{Draw to a PNG file}
 \usage{
-agg_png(filename = "Rplot\%03d.png", width = 480, height = 480,
-  units = "px", pointsize = 12, background = "white", res = 72,
-  bitsize = 8)
+agg_png(
+  filename = "Rplot\%03d.png",
+  width = 480,
+  height = 480,
+  units = "px",
+  pointsize = 12,
+  background = "white",
+  res = 72,
+  bitsize = 8
+)
 }
 \arguments{
 \item{filename}{The name of the file. Follows the same semantics as the file 
