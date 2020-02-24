@@ -504,6 +504,7 @@ namespace agg
             FT_Done_Face(m_faces[i]);
         }
         delete [] m_face_names;
+        delete [] m_face_indices;
         delete [] m_faces;
         delete [] m_signature;
         if(m_library_initialized) FT_Done_FreeType(m_library);
@@ -529,6 +530,7 @@ namespace agg
         m_library(0),
         m_faces(new FT_Face [max_faces]),
         m_face_names(new char* [max_faces]),
+        m_face_indices(new unsigned [max_faces]),
         m_num_faces(0),
         m_max_faces(max_faces),
         m_cur_face(0),
@@ -568,12 +570,12 @@ namespace agg
 
 
     //------------------------------------------------------------------------
-    int font_engine_freetype_base::find_face(const char* face_name) const
+    int font_engine_freetype_base::find_face(const char* face_name, unsigned face_index) const
     {
         unsigned i;
         for(i = 0; i < m_num_faces; ++i)
         {
-            if(std::strcmp(face_name, m_face_names[i]) == 0) return i;
+            if(face_index == m_face_indices[i] && std::strcmp(face_name, m_face_names[i]) == 0) return i;
         }
         return -1;
     }
@@ -613,11 +615,12 @@ namespace agg
         {
             m_last_error = 0;
 
-            int idx = find_face(font_name);
+            int idx = find_face(font_name, face_index);
             if(idx >= 0)
             {
-                m_cur_face = m_faces[idx];
-                m_name     = m_face_names[idx];
+                m_cur_face   = m_faces[idx];
+                m_name       = m_face_names[idx];
+                m_face_index = m_face_indices[idx];
             }
             else
             {
@@ -631,6 +634,9 @@ namespace agg
                     std::memcpy(m_face_names, 
                            m_face_names + 1, 
                            (m_max_faces - 1) * sizeof(char*));
+                    std::memcpy(m_face_indices, 
+                           m_face_indices + 1, 
+                           (m_max_faces - 1) * sizeof(unsigned));
                     m_num_faces = m_max_faces - 1;
                 }
 
@@ -654,15 +660,19 @@ namespace agg
                 {
                     m_face_names[m_num_faces] = new char [std::strlen(font_name) + 1];
                     std::strcpy(m_face_names[m_num_faces], font_name);
+                    m_face_indices[m_num_faces] = face_index;
                     m_cur_face = m_faces[m_num_faces];
                     m_name     = m_face_names[m_num_faces];
+                    m_face_index = face_index;
                     ++m_num_faces;
                 }
                 else
                 {
                     m_face_names[m_num_faces] = 0;
+                    m_face_indices[m_num_faces] = 0;
                     m_cur_face = 0;
                     m_name = 0;
+                    m_face_index = 0;
                 }
             }
 

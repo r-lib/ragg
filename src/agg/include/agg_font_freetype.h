@@ -109,7 +109,7 @@ namespace agg
 
         void update_char_size();
         void update_signature();
-        int  find_face(const char* face_name) const;
+        int  find_face(const char* face_name, unsigned face_index) const;
 
         bool            m_flag32;
         int             m_change_stamp;
@@ -126,7 +126,8 @@ namespace agg
         bool            m_library_initialized;
         FT_Library      m_library;    // handle to library    
         FT_Face*        m_faces;      // A pool of font faces
-        char**          m_face_names; 
+        char**          m_face_names;
+        unsigned*       m_face_indices;
         unsigned        m_num_faces;
         unsigned        m_max_faces;
         FT_Face         m_cur_face;  // handle to the current face object
