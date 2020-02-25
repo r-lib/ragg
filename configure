@@ -1,8 +1,12 @@
+#! /bin/sh
+
 # Anticonf (tm) script by Jeroen Ooms, Jim Hester (2019)
 # This script will query 'pkg-config' for the required cflags and ldflags.
 # If pkg-config is unavailable or does not find the library, try setting
 # INCLUDE_DIR and LIB_DIR manually via e.g:
 # R CMD INSTALL --configure-vars='INCLUDE_DIR=/.../include LIB_DIR=/.../lib'
+
+PLATFORM=`uname`
 
 # Library settings
 PKG_CONFIG_NAME="freetype2 libpng libtiff-4"
@@ -27,12 +31,12 @@ if [ "$INCLUDE_DIR" ] || [ "$LIB_DIR" ]; then
   echo "Found INCLUDE_DIR and/or LIB_DIR!"
   PKG_CFLAGS="-I$INCLUDE_DIR $PKG_CFLAGS"
   PKG_LIBS="-L$LIB_DIR $PKG_LIBS"
-elif [[ "$OSTYPE" == "darwin"* ]]; then
+elif [ "$PLATFORM" = "darwin" ]; then
   brew --version 2>/dev/null
   if [ $? -eq 0 ]; then
     BREWDIR=`brew --prefix`
   else
-    source tools/autobrew
+    . tools/autobrew
   fi
   PKG_CFLAGS="-I$BREWDIR/opt/freetype/include/freetype2 -I$BREWDIR/opt/libpng/include -I$BREWDIR/opt/libtiff/include"
   PKG_LIBS="-L$BREWDIR/opt/freetype/lib -L$BREWDIR/opt/libpng/lib -L$BREWDIR/opt/libtiff/lib -L$BREWDIR/opt/libjpeg/lib ${PKG_LIBS}"

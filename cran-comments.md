@@ -1,5 +1,6 @@
-This release fixes some small bugs and tries to optimise the compilation for
-the CRAN macOS builder
+This release fixes a bug in the AGG source code where the font index was not 
+considered in the freetype font manager, thus returning the wrong font when 
+using font collection files.
 
 ## Test environments
 * local OS X install, R 3.6.0
