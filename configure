@@ -34,7 +34,7 @@ elif [ "$PLATFORM" = "darwin" ]; then
   if [ $? -eq 0 ]; then
     BREWDIR=`brew --prefix`
   else
-    . tools/autobrew
+    source tools/autobrew
   fi
   PKG_CFLAGS="-I$BREWDIR/opt/freetype/include/freetype2 -I$BREWDIR/opt/libpng/include -I$BREWDIR/opt/libtiff/include"
   PKG_LIBS="-L$BREWDIR/opt/freetype/lib -L$BREWDIR/opt/libpng/lib -L$BREWDIR/opt/libtiff/lib -L$BREWDIR/opt/libjpeg/lib ${PKG_LIBS}"
