@@ -1,5 +1,7 @@
 # ragg (development version)
 
+* Fix compilation on macOS
+
 # ragg 0.1.4
 
 * Fix a bug in AGG's font manager that ignored the font index when it stored and
