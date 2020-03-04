@@ -1,6 +1,5 @@
-This release fixes a bug in the AGG source code where the font index was not 
-considered in the freetype font manager, thus returning the wrong font when 
-using font collection files.
+This release fixes the build problems on macOS that surfaced after the bashisms
+were removed from the configure script in the last release
 
 ## Test environments
 * local OS X install, R 3.6.0
