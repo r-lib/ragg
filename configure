@@ -29,12 +29,12 @@ if [ "$INCLUDE_DIR" ] || [ "$LIB_DIR" ]; then
   echo "Found INCLUDE_DIR and/or LIB_DIR!"
   PKG_CFLAGS="-I$INCLUDE_DIR $PKG_CFLAGS"
   PKG_LIBS="-L$LIB_DIR $PKG_LIBS"
-elif [ "$PLATFORM" = "darwin" ]; then
+elif [ "$PLATFORM" = "Darwin" ]; then
   brew --version 2>/dev/null
   if [ $? -eq 0 ]; then
     BREWDIR=`brew --prefix`
   else
-    source tools/autobrew
+    . tools/autobrew
   fi
   PKG_CFLAGS="-I$BREWDIR/opt/freetype/include/freetype2 -I$BREWDIR/opt/libpng/include -I$BREWDIR/opt/libtiff/include"
   PKG_LIBS="-L$BREWDIR/opt/freetype/lib -L$BREWDIR/opt/libpng/lib -L$BREWDIR/opt/libtiff/lib -L$BREWDIR/opt/libjpeg/lib ${PKG_LIBS}"
