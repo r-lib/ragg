@@ -131,7 +131,7 @@ plot_bench <- function(x, title, baseline) {
     theme_minimal() + 
     theme(panel.grid.major.y = element_blank(),
           legend.position = 'bottom') + 
-    scale_x_continuous(labels = bench::bench_time)
+    scale_x_continuous(labels = function(x) {format(bench:::as_bench_time(x))})
 }
 ```
 
