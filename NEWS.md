@@ -1,5 +1,7 @@
 # ragg (development version)
 
+* Fix compilation on R <= 3.3 by including Rdynload.h explicitly
+
 # ragg 0.1.5
 
 * Fix compilation on macOS

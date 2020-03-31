@@ -27,6 +27,21 @@ matrix:
         provider: script
         script: Rscript -e 'pkgdown::deploy_site_github()'
         skip_cleanup: true
+    - dist: xenial
+      r: 3.3
+      r_packages:
+        - knitr
+        - rmarkdown
+        - ggplot2
+        - devoid
+        - bench
+        - rlang
+        - tidyr
+        - ggridges
+        - hexbin
+        - dplyr
+        - sessioninfo
+        - magick
     - os: osx
       disable_homebrew: true
     - os: osx

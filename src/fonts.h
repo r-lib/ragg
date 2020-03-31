@@ -1,6 +1,8 @@
 #include <string>
 #include "ragg.h"
 
+#include <R_ext/Rdynload.h>
+
 #ifndef FONTS_INCLUDED
 #define FONTS_INCLUDED
 
