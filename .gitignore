@@ -13,3 +13,5 @@ src/Makevars
 .DS_Store
 inst/doc
 docs/
+configure.log
+autobrew
