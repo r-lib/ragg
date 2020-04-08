@@ -65,6 +65,7 @@ res <- bench::mark(
 )
 if (!has_xlib) {
   res <- res[-4, ]
+  attr(res$expression, 'description') <- attr(res$expression, 'description')[-4]
 }
 plot(res, type = 'ridge') + ggtitle('Open and close performance')
 ```
