@@ -114,9 +114,10 @@ all_render_bench <- function(expr, xlib = TRUE) {
     if (has_xlib && xlib) render_bench(png(file, type = "Xlib"), xlib = !!expr) else NULL
   )
   expr <- unlist(lapply(res, `[[`, 'expression'), recursive = FALSE)
-  res <- suppressWarnings(dplyr::bind_rows(res))
+  res <- do.call(rbind, res)
   res$expression <- expr
   class(res$expression) <- c('bench_expr', 'expression')
+  attr(res$expression, 'description') <- names(res$expression)
   res$Anti_aliased <- c(TRUE, FALSE, TRUE, TRUE, FALSE)[seq_len(nrow(res))]
   res
 }
