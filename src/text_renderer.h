@@ -123,23 +123,19 @@ public:
 };
 
 class TextRenderer {
-  font_engine_type feng;
-  font_manager_type fman;
   UTF_UCS converter;
   std::pair<std::string, int> last_font;
   agg::glyph_rendering last_gren;
   
 public:
   TextRenderer() :
-    feng(),
-    fman(feng),
     converter()
   {
     last_font = std::make_pair("", -1);
     last_gren = agg::glyph_ren_native_mono;
-    feng.hinting(true);
-    feng.flip_y(true);
-    feng.gamma(agg::gamma_power(1.8));
+    get_engine().hinting(true);
+    get_engine().flip_y(true);
+    get_engine().gamma(agg::gamma_power(1.8));
   }
   
   bool load_font(agg::glyph_rendering gren, const char *family, int face, 
@@ -151,15 +147,15 @@ public:
     if (!(gren == last_gren && 
         font.second == last_font.second && 
         font.first == last_font.first)) {
-      if (!feng.load_font(font.first.c_str(), font.second, gren)) {
+      if (!get_engine().load_font(font.first.c_str(), font.second, gren)) {
         Rf_warning("Unable to load font: %s", family);
         return false;
       }
       last_font = font;
       last_gren = gren;
-      feng.height(size);
-    } else if (size != feng.height()) {
-      feng.height(size);
+      get_engine().height(size);
+    } else if (size != get_engine().height()) {
+      get_engine().height(size);
     }
     return true;
   }
@@ -171,7 +167,7 @@ public:
   }
   
   void get_char_metric(int c, double *ascent, double *descent, double *width) {
-    const agg::glyph_cache* glyph = fman.glyph(c);
+    const agg::glyph_cache* glyph = get_manager().glyph(c);
     if (glyph) {
       *ascent = (double) -glyph->bounds.y1;
       *descent = (double) glyph->bounds.y2;
@@ -185,7 +181,7 @@ public:
                  renderer_solid &ren_solid) {
     agg::scanline_u8 sl;
     agg::rasterizer_scanline_aa<> ras;
-    agg::conv_curve<font_manager_type::path_adaptor_type> curves(fman.path_adaptor());
+    agg::conv_curve<font_manager_type::path_adaptor_type> curves(get_manager().path_adaptor());
     curves.approximation_scale(2.0);
     
     int size_out = 0;
@@ -196,22 +192,22 @@ public:
       rot = agg::deg2rad(-rot);
       agg::trans_affine mtx;
       mtx *= agg::trans_affine_rotation(rot);
-      feng.transform(mtx);
+      get_engine().transform(mtx);
     }
     
     x -= (width * hadj) * cos(rot);
     y -= (width * hadj) * sin(rot);
     
     while (*string_conv) {
-      const agg::glyph_cache* glyph = fman.glyph(*string_conv);
+      const agg::glyph_cache* glyph = get_manager().glyph(*string_conv);
       if (glyph) {
-        fman.add_kerning(&x, &y);
-        fman.init_embedded_adaptors(glyph, x, y);
+        get_manager().add_kerning(&x, &y);
+        get_manager().init_embedded_adaptors(glyph, x, y);
         switch(glyph->data_type) {
         default: break;
         case agg::glyph_data_gray8:
-          agg::render_scanlines(fman.gray8_adaptor(), 
-                                fman.gray8_scanline(), 
+          agg::render_scanlines(get_manager().gray8_adaptor(), 
+                                get_manager().gray8_scanline(), 
                                 ren_solid);
           break;
           
@@ -230,23 +226,33 @@ public:
     }
     
     if (rot != 0) {
-      feng.transform(agg::trans_affine());
+      get_engine().transform(agg::trans_affine());
     }
   }
 
 private:
+  inline font_engine_type& get_engine() {
+    static font_engine_type engine;
+    return engine;
+  }
+  
+  inline font_manager_type& get_manager() {
+    static font_manager_type manager(get_engine());
+    return manager;
+  }
+  
   double text_width(const uint32_t* string, int size) {
     double x = 0, y = 0, first_bearing = 0, last_bearing = 0;
     bool first = true;
     while (*string) {
-      const agg::glyph_cache* glyph = fman.glyph(*string);
+      const agg::glyph_cache* glyph = get_manager().glyph(*string);
       if (glyph) {
         if (first) {
           first_bearing = glyph->bounds.x1;
           first = false;
         }
         last_bearing = glyph->advance_x - glyph->bounds.x2;
-        fman.add_kerning(&x, &y);
+        get_manager().add_kerning(&x, &y);
         // increment pen position
         x += glyph->advance_x;
         y += glyph->advance_y;
