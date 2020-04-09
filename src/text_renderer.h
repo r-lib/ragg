@@ -29,10 +29,6 @@ typedef agg::font_cache_manager<font_engine_type> font_manager_type;
  Modified 2019 by Thomas Lin Pedersen to work with const char*
  */
 
-#ifndef u_int32_t
-typedef uint32_t u_int32_t;
-#endif
-
 static const u_int32_t offsetsFromUTF8[6] = {
   0x00000000UL, 0x00003080UL, 0x000E2080UL,
   0x03C82080UL, 0xFA082080UL, 0x82082080UL
@@ -249,6 +245,9 @@ private:
       if (glyph) {
         if (first) {
           first_bearing = glyph->bounds.x1;
+          // On windows space will be given a left bearing of MAX_INT for god 
+          // knows what reason
+          if (first_bearing > glyph->advance_x) first_bearing = 0;
           first = false;
         }
         last_bearing = glyph->advance_x - glyph->bounds.x2;
