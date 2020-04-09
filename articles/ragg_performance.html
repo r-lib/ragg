@@ -12,19 +12,20 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Ragg Performance">
-<meta property="og:description" content="">
-<meta property="og:image" content="https://ragg.r-lib.org/logo.png">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="ragg">
+<meta property="og:image" content="https://ragg.r-lib.org/logo.svg">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -37,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ragg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5.9000</span>
       </span>
     </div>
 
@@ -101,25 +102,26 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Ragg Performance</h1>
+      <h1 data-toc-skip>Ragg Performance</h1>
             
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/r-lib/ragg/blob/master/vignettes/ragg_performance.Rmd"><code>vignettes/ragg_performance.Rmd</code></a></small>
       <div class="hidden name"><code>ragg_performance.Rmd</code></div>
 
     </div>
 
     
     
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ragg)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(devoid)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</a></code></pre></div>
-<p>This document serves as a collection of benchmarks between ragg and the build-in raster devices provided by the grDevices package. As the output format is immaterial to the benchmarking, this document will only compare devices producing png images. The <code><a href="https://www.rdocumentation.org/packages/grDevices/topics/png">png()</a></code> function from grDevices can use different rendering backends, with both different quality and speed, whereas <code><a href="../reference/agg_png.html">agg_png()</a></code> from ragg only provides a single backend. All backends will be compared here to give the fullest overview.</p>
-<p>All benchmarks will also include timings of the same code with the <code><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev()</a></code> device from the devoid package. The <code><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev()</a></code> device is a very simple device that does no operations on the input it receives. Because of this it serves as a measure for the time spent on non-rendering operations.</p>
-<p>On Mac installation the <code><a href="https://www.rdocumentation.org/packages/grDevices/topics/png">png()</a></code> function also offers (and defaults to) a quartz backend. As this is not available on all systems it will not be included here. Local tests have shown it to be about as performant or slightly below ragg.</p>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ragg</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">devoid</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)</pre></body></html></div>
+<p>This document serves as a collection of benchmarks between ragg and the build-in raster devices provided by the grDevices package. As the output format is immaterial to the benchmarking, this document will only compare devices producing png images. The <code><a href="https://rdrr.io/r/grDevices/png.html">png()</a></code> function from grDevices can use different rendering backends, with both different quality and speed, whereas <code><a href="../reference/agg_png.html">agg_png()</a></code> from ragg only provides a single backend. All backends will be compared here to give the fullest overview.</p>
+<p>All benchmarks will also include timings of the same code with the <code><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev()</a></code> device from the devoid package. The <code><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev()</a></code> device is a very simple device that does no operations on the input it receives. Because of this it serves as a measure for the time spent on non-rendering operations.</p>
+<p>On Mac installation the <code><a href="https://rdrr.io/r/grDevices/png.html">png()</a></code> function also offers (and defaults to) a quartz backend. As this is not available on all systems it will not be included here. Local tests have shown it to be about as performant or slightly below ragg.</p>
 <blockquote>
 <p>The present version of this vignette has been compiled on a system without the X11 device. The benchmarkings will thus omit this device, though the text will still refer to it.</p>
 </blockquote>
@@ -127,88 +129,90 @@
 <h2 class="hasAnchor">
 <a href="#opening-and-closing" class="anchor"></a>Opening and closing</h2>
 <p>All subsequent benchmarks will not include the opening and closing of the device and instead focus on rendering performance. The most important, and potentially time-consuming, part of opening and closing a device is allocation of a buffer to write raster information to, and serialising the buffer into a file. It is also where performance differences between e.g. png and tiff will come from. As both ragg and grDevices uses the same underlying libraries to write to png files (libpng) it is not expected that there is much difference.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">file &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempfile</a></span>(<span class="dt">fileext =</span> <span class="st">'.png'</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">res &lt;-<span class="st"> </span>bench<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/bench/topics/mark">mark</a></span>(</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">  <span class="dt">ragg =</span> {<span class="kw"><a href="../reference/agg_png.html">agg_png</a></span>(file); <span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>(); <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>()},</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">  <span class="dt">cairo =</span> {<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/png">png</a></span>(file, <span class="dt">type =</span> <span class="st">'cairo'</span>); <span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>(); <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>()},</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">  <span class="dt">cairo_png =</span> {<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/png">png</a></span>(file, <span class="dt">type =</span> <span class="st">'cairo-png'</span>); <span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>(); <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>()},</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="dt">Xlib =</span> <span class="cf">if</span> (has_xlib) {<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/png">png</a></span>(file, <span class="dt">type =</span> <span class="st">'Xlib'</span>); <span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>(); <span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>()} <span class="cf">else</span> <span class="ot">NULL</span>,</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">  <span class="dt">check =</span> <span class="ot">FALSE</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">)</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="cf">if</span> (<span class="op">!</span>has_xlib) {</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">  res &lt;-<span class="st"> </span>res[<span class="op">-</span><span class="dv">4</span>, ]</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">}</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(res, <span class="dt">type =</span> <span class="st">'ridge'</span>) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">'Open and close performance'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">file</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>(<span class="kw">fileext</span> <span class="kw">=</span> <span class="st">'.png'</span>)
+<span class="no">res</span> <span class="kw">&lt;-</span> <span class="kw pkg">bench</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span>(
+  <span class="kw">ragg</span> <span class="kw">=</span> {<span class="fu"><a href="../reference/agg_png.html">agg_png</a></span>(<span class="no">file</span>); <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>(); <span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>()},
+  <span class="kw">cairo</span> <span class="kw">=</span> {<span class="fu"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span>(<span class="no">file</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">'cairo'</span>); <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>(); <span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>()},
+  <span class="kw">cairo_png</span> <span class="kw">=</span> {<span class="fu"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span>(<span class="no">file</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">'cairo-png'</span>); <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>(); <span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>()},
+  <span class="kw">Xlib</span> <span class="kw">=</span> <span class="kw">if</span> (<span class="no">has_xlib</span>) {<span class="fu"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span>(<span class="no">file</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">'Xlib'</span>); <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>(); <span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>()} <span class="kw">else</span> <span class="kw">NULL</span>,
+  <span class="kw">check</span> <span class="kw">=</span> <span class="fl">FALSE</span>
+)
+<span class="kw">if</span> (!<span class="no">has_xlib</span>) {
+  <span class="no">res</span> <span class="kw">&lt;-</span> <span class="no">res</span>[-<span class="fl">4</span>, ]
+  <span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(<span class="no">res</span>$<span class="no">expression</span>, <span class="st">'description'</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(<span class="no">res</span>$<span class="no">expression</span>, <span class="st">'description'</span>)[-<span class="fl">4</span>]
+}
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">res</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">'ridge'</span>) + <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">'Open and close performance'</span>)</pre></body></html></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
-<p>As can be seen, it is not as clear cut as it seems. ragg and cairo_png have equivalent performance, while Cairo is about twice as fast. Xlib on the other hand is even slower. Looking at the produced files we can see that ragg and cairo_png produce files of around 2Kb, whereas cairo produces files of around 300B and XLib around 6Kb. The differences can thus be ascribed to disk write speed more than anything, and is probably due to different compression and filtering settings used. ragg uses the default heuristics from libpng, and my guess is that cairo_png uses this as well. A white rectangle (as produced by <code><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new()</a></code>) is amenable to a lot of compression and it is possible that cairo has been tuned for that. It is likely that the advantage will disappear with more complex plots but it is difficult to test without inflating it with rendering speed.</p>
+<p>As can be seen, it is not as clear cut as it seems. ragg and cairo_png have equivalent performance, while Cairo is about twice as fast. Xlib on the other hand is even slower. Looking at the produced files we can see that ragg and cairo_png produce files of around 2Kb, whereas cairo produces files of around 300B and XLib around 6Kb. The differences can thus be ascribed to disk write speed more than anything, and is probably due to different compression and filtering settings used. ragg uses the default heuristics from libpng, and my guess is that cairo_png uses this as well. A white rectangle (as produced by <code><a href="https://rdrr.io/r/graphics/frame.html">plot.new()</a></code>) is amenable to a lot of compression and it is possible that cairo has been tuned for that. It is likely that the advantage will disappear with more complex plots but it is difficult to test without inflating it with rendering speed.</p>
 <div id="rendering" class="section level3">
 <h3 class="hasAnchor">
 <a href="#rendering" class="anchor"></a>Rendering</h3>
-<p>A graphic device provides a range of methods that R’s graphic engine will use when it receives plotting instructions from the user. The more performant each of these methods are, the more performant the graphic device is as a whole. The possible devices from grDevices increases here, as different anti-aliasing settings can be used (ragg, again, has no settings for this. It will always draw with subpixel antialiasing). Below is an attempt to benchmark each of the device methods by constructing as direct as possible calls to each of them. Remember, <code><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev()</a></code> provides the baseline.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">render_bench &lt;-<span class="st"> </span><span class="cf">function</span>(dev_f, ...) {</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">  dots &lt;-<span class="st"> </span>rlang<span class="op">::</span><span class="kw"><a href="https://rlang.r-lib.org/reference/quotation.html">enexprs</a></span>(...)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/force">force</a></span>(dev_f)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/on.exit">on.exit</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">  <span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">  rlang<span class="op">::</span><span class="kw"><a href="https://rlang.r-lib.org/reference/eval_tidy.html">eval_tidy</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/tidyeval.html">expr</a></span>(bench<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/bench/topics/mark">mark</a></span>(<span class="op">!!!</span>dots, <span class="dt">min_iterations =</span> <span class="dv">10</span>)))</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">}</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">all_render_bench &lt;-<span class="st"> </span><span class="cf">function</span>(expr, <span class="dt">xlib =</span> <span class="ot">TRUE</span>) {</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">  file &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempfile</a></span>()</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10">  expr &lt;-<span class="st"> </span>rlang<span class="op">::</span><span class="kw"><a href="https://rlang.r-lib.org/reference/quotation.html">enexpr</a></span>(expr)</a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">  res &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(</a>
-<a class="sourceLine" id="cb3-12" data-line-number="12">    <span class="kw">render_bench</span>(<span class="kw"><a href="../reference/agg_png.html">agg_png</a></span>(file), <span class="dt">ragg =</span> <span class="op">!!</span>expr),</a>
-<a class="sourceLine" id="cb3-13" data-line-number="13">    <span class="kw">render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/png">png</a></span>(file, <span class="dt">type =</span> <span class="st">"cairo"</span>, <span class="dt">antialias =</span> <span class="st">'none'</span>), </a>
-<a class="sourceLine" id="cb3-14" data-line-number="14">                 <span class="dt">cairo_none =</span> <span class="op">!!</span>expr),</a>
-<a class="sourceLine" id="cb3-15" data-line-number="15">    <span class="kw">render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/png">png</a></span>(file, <span class="dt">type =</span> <span class="st">"cairo"</span>, <span class="dt">antialias =</span> <span class="st">'gray'</span>), </a>
-<a class="sourceLine" id="cb3-16" data-line-number="16">                 <span class="dt">cairo_gray =</span> <span class="op">!!</span>expr),</a>
-<a class="sourceLine" id="cb3-17" data-line-number="17">    <span class="kw">render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/png">png</a></span>(file, <span class="dt">type =</span> <span class="st">"cairo"</span>, <span class="dt">antialias =</span> <span class="st">'subpixel'</span>), </a>
-<a class="sourceLine" id="cb3-18" data-line-number="18">                 <span class="dt">cairo_subpixel =</span> <span class="op">!!</span>expr),</a>
-<a class="sourceLine" id="cb3-19" data-line-number="19">    <span class="cf">if</span> (has_xlib <span class="op">&amp;&amp;</span><span class="st"> </span>xlib) <span class="kw">render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/png">png</a></span>(file, <span class="dt">type =</span> <span class="st">"Xlib"</span>), <span class="dt">xlib =</span> <span class="op">!!</span>expr) <span class="cf">else</span> <span class="ot">NULL</span></a>
-<a class="sourceLine" id="cb3-20" data-line-number="20">  )</a>
-<a class="sourceLine" id="cb3-21" data-line-number="21">  expr &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlist">unlist</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">lapply</a></span>(res, <span class="st">`</span><span class="dt">[[</span><span class="st">`</span>, <span class="st">'expression'</span>), <span class="dt">recursive =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb3-22" data-line-number="22">  res &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/warning">suppressWarnings</a></span>(dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span>(res))</a>
-<a class="sourceLine" id="cb3-23" data-line-number="23">  res<span class="op">$</span>expression &lt;-<span class="st"> </span>expr</a>
-<a class="sourceLine" id="cb3-24" data-line-number="24">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/class">class</a></span>(res<span class="op">$</span>expression) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'bench_expr'</span>, <span class="st">'expression'</span>)</a>
-<a class="sourceLine" id="cb3-25" data-line-number="25">  res<span class="op">$</span>Anti_aliased &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">TRUE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>)[<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq_len</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(res))]</a>
-<a class="sourceLine" id="cb3-26" data-line-number="26">  res</a>
-<a class="sourceLine" id="cb3-27" data-line-number="27">}</a>
-<a class="sourceLine" id="cb3-28" data-line-number="28">plot_bench &lt;-<span class="st"> </span><span class="cf">function</span>(x, title, baseline) {</a>
-<a class="sourceLine" id="cb3-29" data-line-number="29">  <span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(x, <span class="dt">type =</span> <span class="st">'ridge'</span>, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">fill =</span> Anti_aliased)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-30" data-line-number="30"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_null.html">facet_null</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb3-31" data-line-number="31"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span>(<span class="dt">xintercept =</span> baseline[<span class="st">'elapsed'</span>], <span class="dt">linetype =</span> <span class="dv">2</span>, <span class="dt">colour =</span> <span class="st">'grey'</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-32" data-line-number="32"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/annotate.html">annotate</a></span>(<span class="st">'text'</span>, <span class="dt">x =</span> baseline[<span class="st">'elapsed'</span>], <span class="dt">y =</span> <span class="op">-</span><span class="ot">Inf</span>, <span class="dt">label =</span> <span class="st">' baseline'</span>,</a>
-<a class="sourceLine" id="cb3-33" data-line-number="33">             <span class="dt">vjust =</span> <span class="dv">0</span>, <span class="dt">hjust =</span> <span class="dv">0</span>, <span class="dt">colour =</span> <span class="st">'grey'</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb3-34" data-line-number="34"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_fill_brewer</a></span>(<span class="dt">labels =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">'No'</span>, <span class="st">'Yes'</span>), <span class="dt">type =</span> <span class="st">'qual'</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb3-35" data-line-number="35"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">title =</span> title, <span class="dt">fill =</span> <span class="st">'Anti-aliased'</span>, <span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="ot">NULL</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-36" data-line-number="36"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-37" data-line-number="37"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">panel.grid.major.y =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>(),</a>
-<a class="sourceLine" id="cb3-38" data-line-number="38">          <span class="dt">legend.position =</span> <span class="st">'bottom'</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-39" data-line-number="39"><span class="st">    </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span>(<span class="dt">labels =</span> bench<span class="op">::</span>bench_time)</a>
-<a class="sourceLine" id="cb3-40" data-line-number="40">}</a></code></pre></div>
+<p>A graphic device provides a range of methods that R’s graphic engine will use when it receives plotting instructions from the user. The more performant each of these methods are, the more performant the graphic device is as a whole. The possible devices from grDevices increases here, as different anti-aliasing settings can be used (ragg, again, has no settings for this. It will always draw with subpixel antialiasing). Below is an attempt to benchmark each of the device methods by constructing as direct as possible calls to each of them. Remember, <code><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev()</a></code> provides the baseline.</p>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">render_bench</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">dev_f</span>, <span class="no">...</span>) {
+  <span class="no">dots</span> <span class="kw">&lt;-</span> <span class="kw pkg">rlang</span><span class="kw ns">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/nse-defuse.html">enexprs</a></span>(<span class="no">...</span>)
+  <span class="fu"><a href="https://rdrr.io/r/base/force.html">force</a></span>(<span class="no">dev_f</span>)
+  <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html">on.exit</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+  <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>()
+  <span class="kw pkg">rlang</span><span class="kw ns">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/eval_tidy.html">eval_tidy</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/tidyeval.html">expr</a></span>(<span class="kw pkg">bench</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span>(!!!<span class="no">dots</span>, <span class="kw">min_iterations</span> <span class="kw">=</span> <span class="fl">10</span>)))
+}
+<span class="no">all_render_bench</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">expr</span>, <span class="no">xlib</span> <span class="kw">=</span> <span class="fl">TRUE</span>) {
+  <span class="no">file</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>()
+  <span class="no">expr</span> <span class="kw">&lt;-</span> <span class="kw pkg">rlang</span><span class="kw ns">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/nse-defuse.html">enexpr</a></span>(<span class="no">expr</span>)
+  <span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
+    <span class="fu">render_bench</span>(<span class="fu"><a href="../reference/agg_png.html">agg_png</a></span>(<span class="no">file</span>), <span class="kw">ragg</span> <span class="kw">=</span> !!<span class="no">expr</span>),
+    <span class="fu">render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span>(<span class="no">file</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"cairo"</span>, <span class="kw">antialias</span> <span class="kw">=</span> <span class="st">'none'</span>),
+                 <span class="kw">cairo_none</span> <span class="kw">=</span> !!<span class="no">expr</span>),
+    <span class="fu">render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span>(<span class="no">file</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"cairo"</span>, <span class="kw">antialias</span> <span class="kw">=</span> <span class="st">'gray'</span>),
+                 <span class="kw">cairo_gray</span> <span class="kw">=</span> !!<span class="no">expr</span>),
+    <span class="fu">render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span>(<span class="no">file</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"cairo"</span>, <span class="kw">antialias</span> <span class="kw">=</span> <span class="st">'subpixel'</span>),
+                 <span class="kw">cairo_subpixel</span> <span class="kw">=</span> !!<span class="no">expr</span>),
+    <span class="kw">if</span> (<span class="no">has_xlib</span> <span class="kw">&amp;&amp;</span> <span class="no">xlib</span>) <span class="fu">render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span>(<span class="no">file</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"Xlib"</span>), <span class="kw">xlib</span> <span class="kw">=</span> !!<span class="no">expr</span>) <span class="kw">else</span> <span class="kw">NULL</span>
+  )
+  <span class="no">expr</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="no">res</span>, <span class="no">`[[`</span>, <span class="st">'expression'</span>), <span class="kw">recursive</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
+  <span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span>(<span class="no">rbind</span>, <span class="no">res</span>)
+  <span class="no">res</span>$<span class="no">expression</span> <span class="kw">&lt;-</span> <span class="no">expr</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="no">res</span>$<span class="no">expression</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'bench_expr'</span>, <span class="st">'expression'</span>)
+  <span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span>(<span class="no">res</span>$<span class="no">expression</span>, <span class="st">'description'</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">res</span>$<span class="no">expression</span>)
+  <span class="no">res</span>$<span class="no">Anti_aliased</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">TRUE</span>, <span class="fl">FALSE</span>, <span class="fl">TRUE</span>, <span class="fl">TRUE</span>, <span class="fl">FALSE</span>)[<span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">res</span>))]
+  <span class="no">res</span>
+}
+<span class="no">plot_bench</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">x</span>, <span class="no">title</span>, <span class="no">baseline</span>) {
+  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">x</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">'ridge'</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">fill</span> <span class="kw">=</span> <span class="no">Anti_aliased</span>)) +
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_null.html">facet_null</a></span>() +
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span>(<span class="kw">xintercept</span> <span class="kw">=</span> <span class="no">baseline</span>[<span class="st">'elapsed'</span>], <span class="kw">linetype</span> <span class="kw">=</span> <span class="fl">2</span>, <span class="kw">colour</span> <span class="kw">=</span> <span class="st">'grey'</span>) +
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html">annotate</a></span>(<span class="st">'text'</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="no">baseline</span>[<span class="st">'elapsed'</span>], <span class="kw">y</span> <span class="kw">=</span> -<span class="fl">Inf</span>, <span class="kw">label</span> <span class="kw">=</span> <span class="st">' baseline'</span>,
+             <span class="kw">vjust</span> <span class="kw">=</span> <span class="fl">0</span>, <span class="kw">hjust</span> <span class="kw">=</span> <span class="fl">0</span>, <span class="kw">colour</span> <span class="kw">=</span> <span class="st">'grey'</span>) +
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_fill_brewer</a></span>(<span class="kw">labels</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'No'</span>, <span class="st">'Yes'</span>), <span class="kw">type</span> <span class="kw">=</span> <span class="st">'qual'</span>) +
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="kw">title</span> <span class="kw">=</span> <span class="no">title</span>, <span class="kw">fill</span> <span class="kw">=</span> <span class="st">'Anti-aliased'</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="kw">NULL</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="kw">NULL</span>) +
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>() +
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="kw">panel.grid.major.y</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span>(),
+          <span class="kw">legend.position</span> <span class="kw">=</span> <span class="st">'bottom'</span>) +
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span>(<span class="kw">labels</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">x</span>) {<span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span>(<span class="kw pkg">bench</span><span class="kw ns">:::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/as_bench_time.html">as_bench_time</a></span>(<span class="no">x</span>))})
+}</pre></body></html></div>
 </div>
 <div id="circles" class="section level3">
 <h3 class="hasAnchor">
 <a href="#circles" class="anchor"></a>Circles</h3>
 <p>Circles can be drawn with e.g. <code>grid.circle()</code> but is often used when drawing scatter plots as the default point type. It is thus of high importance that circle drawing is as performant as possible, as it may get called thousands of times during the creation of a plot.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Uniform">runif</a></span>(<span class="dv">1000</span>)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">y &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Uniform">runif</a></span>(<span class="dv">1000</span>)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">pch &lt;-<span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
-<a class="sourceLine" id="cb4-9" data-line-number="9">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="kw">plot_bench</span>(res, <span class="st">'Unfilled circle performance'</span>, b)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">x</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="fl">1000</span>)
+<span class="no">y</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="fl">1000</span>)
+<span class="no">pch</span> <span class="kw">&lt;-</span> <span class="fl">1</span>
+
+<span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span>()
+<span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>()
+<span class="no">b</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span>(<span class="no">x</span>, <span class="no">y</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="no">pch</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+<span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu">all_render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span>(<span class="no">x</span>, <span class="no">y</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="no">pch</span>))
+<span class="fu">plot_bench</span>(<span class="no">res</span>, <span class="st">'Unfilled circle performance'</span>, <span class="no">b</span>)</pre></body></html></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">pch &lt;-<span class="st"> </span><span class="dv">19</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="kw">plot_bench</span>(res, <span class="st">'Filled circle performance'</span>, b)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">pch</span> <span class="kw">&lt;-</span> <span class="fl">19</span>
+
+<span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span>()
+<span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>()
+<span class="no">b</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span>(<span class="no">x</span>, <span class="no">y</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="no">pch</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+<span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu">all_render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span>(<span class="no">x</span>, <span class="no">y</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="no">pch</span>))
+<span class="fu">plot_bench</span>(<span class="no">res</span>, <span class="st">'Filled circle performance'</span>, <span class="no">b</span>)</pre></body></html></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
 <p>Of all of the antialiased devices it is clear that ragg is the most performant. The performance gain is most pronounced with unfilled circles due to the fact that cairo doesn’t antialias fill, only stroke and text. Xlib is by far the most performant device, but also the one rendering with the lowest quality by far (see the <em>Rendering quality</em> vignette).</p>
 </div>
@@ -216,14 +220,14 @@
 <h3 class="hasAnchor">
 <a href="#lines" class="anchor"></a>Lines</h3>
 <p>Lines is another fundamental part. It can be used to draw single line segments directly and is also the workhorse for some of the different symbol types, e.g. <code>pch = 4</code>, which we will use here.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">pch &lt;-<span class="st"> </span><span class="dv">4</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
-<a class="sourceLine" id="cb6-7" data-line-number="7">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="kw">plot_bench</span>(res, <span class="st">'Line segment performance'</span>, b)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">pch</span> <span class="kw">&lt;-</span> <span class="fl">4</span>
+
+<span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span>()
+<span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>()
+<span class="no">b</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span>(<span class="no">x</span>, <span class="no">y</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="no">pch</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+<span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu">all_render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span>(<span class="no">x</span>, <span class="no">y</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="no">pch</span>))
+<span class="fu">plot_bench</span>(<span class="no">res</span>, <span class="st">'Line segment performance'</span>, <span class="no">b</span>)</pre></body></html></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 <p>Again, we see a clear performance difference between devices using antialiasing and those that do not. ragg is once again the fastest one using anti-aliasing.</p>
 </div>
@@ -231,19 +235,19 @@
 <h3 class="hasAnchor">
 <a href="#polylines" class="anchor"></a>Polylines</h3>
 <p>Polylines are connected line segments. We should expect the same picture as for lines given that the operations are quite similar. We will also test different line patterns here to assess whether there are any differences in the efficency with which patterns are generated.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/lines">lines</a></span>(x, y))</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/lines">lines</a></span>(x, y))</a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="kw">plot_bench</span>(res, <span class="st">'Connected line performance'</span>, b)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span>()
+<span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>()
+<span class="no">b</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span>(<span class="no">x</span>, <span class="no">y</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+<span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu">all_render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span>(<span class="no">x</span>, <span class="no">y</span>))
+<span class="fu">plot_bench</span>(<span class="no">res</span>, <span class="st">'Connected line performance'</span>, <span class="no">b</span>)</pre></body></html></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/lines">lines</a></span>(x, y, <span class="dt">lty =</span> <span class="dv">4</span>))</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/lines">lines</a></span>(x, y, <span class="dt">lty =</span> <span class="dv">4</span>))</a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="kw">plot_bench</span>(res, <span class="st">'Patterned connected line performance'</span>, b)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span>()
+<span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>()
+<span class="no">b</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span>(<span class="no">x</span>, <span class="no">y</span>, <span class="kw">lty</span> <span class="kw">=</span> <span class="fl">4</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+<span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu">all_render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span>(<span class="no">x</span>, <span class="no">y</span>, <span class="kw">lty</span> <span class="kw">=</span> <span class="fl">4</span>))
+<span class="fu">plot_bench</span>(<span class="no">res</span>, <span class="st">'Patterned connected line performance'</span>, <span class="no">b</span>)</pre></body></html></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
 <p>The results here are quite surprising. While the general pattern continues, the anti-aliasing in cairo is much slower than in the other setups. For the patterned test we see that Xlib is so slow at generating patterned lines that it completely negates its otherwise solid rendering speed leadership (again, at the cost of quality).</p>
 </div>
@@ -251,23 +255,23 @@
 <h3 class="hasAnchor">
 <a href="#rectangles" class="anchor"></a>Rectangles</h3>
 <p>Rectangle is another graphic primitive that has its own method. Again, it is used when plotting certain types of points, and this is how we’ll test it:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">pch &lt;-<span class="st"> </span><span class="dv">0</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5">b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
-<a class="sourceLine" id="cb9-7" data-line-number="7">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="kw">plot_bench</span>(res, <span class="st">'Unfilled rectangle performance'</span>, b)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">pch</span> <span class="kw">&lt;-</span> <span class="fl">0</span>
+
+<span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span>()
+<span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>()
+<span class="no">b</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span>(<span class="no">x</span>, <span class="no">y</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="no">pch</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+<span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu">all_render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span>(<span class="no">x</span>, <span class="no">y</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="no">pch</span>))
+<span class="fu">plot_bench</span>(<span class="no">res</span>, <span class="st">'Unfilled rectangle performance'</span>, <span class="no">b</span>)</pre></body></html></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">pch &lt;-<span class="st"> </span><span class="dv">15</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
-<a class="sourceLine" id="cb10-7" data-line-number="7">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="kw">plot_bench</span>(res, <span class="st">'Filled rectangle performance'</span>, b)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">pch</span> <span class="kw">&lt;-</span> <span class="fl">15</span>
+
+<span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span>()
+<span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>()
+<span class="no">b</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span>(<span class="no">x</span>, <span class="no">y</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="no">pch</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+<span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu">all_render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span>(<span class="no">x</span>, <span class="no">y</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="no">pch</span>))
+<span class="fu">plot_bench</span>(<span class="no">res</span>, <span class="st">'Filled rectangle performance'</span>, <span class="no">b</span>)</pre></body></html></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
 <p>We see a new pattern with the filled rectangles, where ragg is suddenly the slow one. The reason for this is again that cairo does not apply anti-aliasing on fills and drawing a non anti-aliased filled rectangle is extremely simple.</p>
 </div>
@@ -275,28 +279,28 @@
 <h3 class="hasAnchor">
 <a href="#polygons" class="anchor"></a>Polygons</h3>
 <p>Polygons are the general case of what we’ve seen with circles and rectangles. While certain optimisations may be possible for e.g. rectanges the polygon method of device needs to handle all cases. It is used in points for e.g. triangles, but we will also test performance for bigger, more complex polygons.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">pch &lt;-<span class="st"> </span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
-<a class="sourceLine" id="cb11-5" data-line-number="5">b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
-<a class="sourceLine" id="cb11-7" data-line-number="7">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="kw">plot_bench</span>(res, <span class="st">'Simple polygon performance'</span>, b)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">pch</span> <span class="kw">&lt;-</span> <span class="fl">2</span>
+
+<span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span>()
+<span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>()
+<span class="no">b</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span>(<span class="no">x</span>, <span class="no">y</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="no">pch</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+<span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu">all_render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span>(<span class="no">x</span>, <span class="no">y</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="no">pch</span>))
+<span class="fu">plot_bench</span>(<span class="no">res</span>, <span class="st">'Simple polygon performance'</span>, <span class="no">b</span>)</pre></body></html></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3">b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/polygon">polygon</a></span>(x, y))</a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
-<a class="sourceLine" id="cb12-5" data-line-number="5">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/polygon">polygon</a></span>(x, y))</a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="kw">plot_bench</span>(res, <span class="st">'Unfilled complex polygon performance'</span>, b)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span>()
+<span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>()
+<span class="no">b</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/graphics/polygon.html">polygon</a></span>(<span class="no">x</span>, <span class="no">y</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+<span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu">all_render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/graphics/polygon.html">polygon</a></span>(<span class="no">x</span>, <span class="no">y</span>))
+<span class="fu">plot_bench</span>(<span class="no">res</span>, <span class="st">'Unfilled complex polygon performance'</span>, <span class="no">b</span>)</pre></body></html></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
-<a class="sourceLine" id="cb13-3" data-line-number="3">b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/polygon">polygon</a></span>(x, y, <span class="dt">border =</span> <span class="st">'gray'</span>, <span class="dt">col =</span> <span class="st">'black'</span>))</a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
-<a class="sourceLine" id="cb13-5" data-line-number="5">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/polygon">polygon</a></span>(x, y, <span class="dt">border =</span> <span class="st">'gray'</span>, <span class="dt">col =</span> <span class="st">'black'</span>))</a>
-<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="kw">plot_bench</span>(res, <span class="st">'Filled complex polygon performance'</span>, b)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span>()
+<span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>()
+<span class="no">b</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/graphics/polygon.html">polygon</a></span>(<span class="no">x</span>, <span class="no">y</span>, <span class="kw">border</span> <span class="kw">=</span> <span class="st">'gray'</span>, <span class="kw">col</span> <span class="kw">=</span> <span class="st">'black'</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+<span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu">all_render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/graphics/polygon.html">polygon</a></span>(<span class="no">x</span>, <span class="no">y</span>, <span class="kw">border</span> <span class="kw">=</span> <span class="st">'gray'</span>, <span class="kw">col</span> <span class="kw">=</span> <span class="st">'black'</span>))
+<span class="fu">plot_bench</span>(<span class="no">res</span>, <span class="st">'Filled complex polygon performance'</span>, <span class="no">b</span>)</pre></body></html></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
 <p>The findings here reflect what is seen above. ragg is faster when it comes to drawing the lines, but looses the advantage with fill as it is the only one performing anti-aliasing fill.</p>
 </div>
@@ -304,29 +308,29 @@
 <h3 class="hasAnchor">
 <a href="#paths" class="anchor"></a>Paths</h3>
 <p>Paths are the supercharged versions of polygons with support for holes and whatnot. It is one of the features that was added later in the lifetime of the R graphic engine and devices can thus elect not to support it. Most do, however, including cairo, but not Xlib. In ragg path rendering is implemented in the same way as polygon rendering (the polygon method being a special case of the path method), but how the other devices implement it is not something I know.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">section &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">each =</span> <span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb14-2" data-line-number="2">x_path &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlist">unlist</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">lapply</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/split">split</a></span>(x, section), <span class="cf">function</span>(x) <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(x, <span class="ot">NA</span>)))</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3">y_path &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlist">unlist</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">lapply</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/split">split</a></span>(y, section), <span class="cf">function</span>(x) <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(x, <span class="ot">NA</span>)))</a>
-<a class="sourceLine" id="cb14-4" data-line-number="4">x_path &lt;-<span class="st"> </span>x_path[<span class="op">-</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(x_path)]</a>
-<a class="sourceLine" id="cb14-5" data-line-number="5">y_path &lt;-<span class="st"> </span>y_path[<span class="op">-</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(y_path)]</a>
-<a class="sourceLine" id="cb14-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
-<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
-<a class="sourceLine" id="cb14-9" data-line-number="9">b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/polypath">polypath</a></span>(x_path, y_path, <span class="dt">rule =</span> <span class="st">'evenodd'</span>))</a>
-<a class="sourceLine" id="cb14-10" data-line-number="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
-<a class="sourceLine" id="cb14-11" data-line-number="11">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/polypath">polypath</a></span>(x_path, y_path, <span class="dt">rule =</span> <span class="st">'evenodd'</span>), </a>
-<a class="sourceLine" id="cb14-12" data-line-number="12">                        <span class="dt">xlib =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb14-13" data-line-number="13"><span class="kw">plot_bench</span>(res, <span class="st">'Unfilled path performance'</span>, b)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">section</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">1</span>:<span class="fl">10</span>, <span class="kw">each</span> <span class="kw">=</span> <span class="fl">100</span>)
+<span class="no">x_path</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/split.html">split</a></span>(<span class="no">x</span>, <span class="no">section</span>), <span class="kw">function</span>(<span class="no">x</span>) <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">x</span>, <span class="fl">NA</span>)))
+<span class="no">y_path</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/split.html">split</a></span>(<span class="no">y</span>, <span class="no">section</span>), <span class="kw">function</span>(<span class="no">x</span>) <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">x</span>, <span class="fl">NA</span>)))
+<span class="no">x_path</span> <span class="kw">&lt;-</span> <span class="no">x_path</span>[-<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">x_path</span>)]
+<span class="no">y_path</span> <span class="kw">&lt;-</span> <span class="no">y_path</span>[-<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">y_path</span>)]
+
+<span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span>()
+<span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>()
+<span class="no">b</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/graphics/polypath.html">polypath</a></span>(<span class="no">x_path</span>, <span class="no">y_path</span>, <span class="kw">rule</span> <span class="kw">=</span> <span class="st">'evenodd'</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+<span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu">all_render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/graphics/polypath.html">polypath</a></span>(<span class="no">x_path</span>, <span class="no">y_path</span>, <span class="kw">rule</span> <span class="kw">=</span> <span class="st">'evenodd'</span>),
+                        <span class="kw">xlib</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
+<span class="fu">plot_bench</span>(<span class="no">res</span>, <span class="st">'Unfilled path performance'</span>, <span class="no">b</span>)</pre></body></html></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/polypath">polypath</a></span>(x_path, y_path, <span class="dt">rule =</span> <span class="st">'evenodd'</span>, <span class="dt">border =</span> <span class="st">'gray'</span>, </a>
-<a class="sourceLine" id="cb15-4" data-line-number="4">                          <span class="dt">col =</span> <span class="st">'black'</span>))</a>
-<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
-<a class="sourceLine" id="cb15-6" data-line-number="6">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/polypath">polypath</a></span>(x_path, y_path, <span class="dt">rule =</span> <span class="st">'evenodd'</span>, </a>
-<a class="sourceLine" id="cb15-7" data-line-number="7">                                <span class="dt">border =</span> <span class="st">'gray'</span>, <span class="dt">col =</span> <span class="st">'black'</span>),</a>
-<a class="sourceLine" id="cb15-8" data-line-number="8">                        <span class="dt">xlib =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb15-9" data-line-number="9"><span class="kw">plot_bench</span>(res, <span class="st">'Filled path performance'</span>, b)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span>()
+<span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>()
+<span class="no">b</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/graphics/polypath.html">polypath</a></span>(<span class="no">x_path</span>, <span class="no">y_path</span>, <span class="kw">rule</span> <span class="kw">=</span> <span class="st">'evenodd'</span>, <span class="kw">border</span> <span class="kw">=</span> <span class="st">'gray'</span>,
+                          <span class="kw">col</span> <span class="kw">=</span> <span class="st">'black'</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+<span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu">all_render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/graphics/polypath.html">polypath</a></span>(<span class="no">x_path</span>, <span class="no">y_path</span>, <span class="kw">rule</span> <span class="kw">=</span> <span class="st">'evenodd'</span>,
+                                <span class="kw">border</span> <span class="kw">=</span> <span class="st">'gray'</span>, <span class="kw">col</span> <span class="kw">=</span> <span class="st">'black'</span>),
+                        <span class="kw">xlib</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
+<span class="fu">plot_bench</span>(<span class="no">res</span>, <span class="st">'Filled path performance'</span>, <span class="no">b</span>)</pre></body></html></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
 <p>The path performance mirrors that of the other shape rendering. ragg is faster when it comes to drawing the stroke, but the speed advantage is almost lost when the shape is filled as well as cairo do not anti-alias fill. Xlib is not present here as path rendering is unsupported.</p>
 </div>
@@ -334,49 +338,49 @@
 <h3 class="hasAnchor">
 <a href="#raster" class="anchor"></a>Raster</h3>
 <p>The ability to draw raster images is also one of the later capabilities added to the graphic engine. Again, you don’t have to support it, but all the devices we look at do. Raster images can be rotated, and they can be interpolated or not during scaling. How interpolation happens is device specific, so there’s a lot of room for quality differences which we will not look at here.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">raster &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/hcl">hcl</a></span>(<span class="dv">0</span>, <span class="dv">80</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">50</span>, <span class="dv">80</span>, <span class="dv">10</span>)), <span class="dt">nrow =</span> <span class="dv">4</span>, <span class="dt">ncol =</span> <span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb16-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
-<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
-<a class="sourceLine" id="cb16-5" data-line-number="5">b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/rasterImage">rasterImage</a></span>(raster, <span class="dt">xleft =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="fl">0.25</span>, <span class="dv">100</span>), <span class="dt">ybottom =</span> <span class="fl">0.25</span>, </a>
-<a class="sourceLine" id="cb16-6" data-line-number="6">                             <span class="dt">xright =</span> <span class="fl">0.75</span>, <span class="dt">ytop =</span> <span class="fl">0.75</span>, <span class="dt">interpolate =</span> <span class="ot">FALSE</span>))</a>
-<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
-<a class="sourceLine" id="cb16-8" data-line-number="8">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/rasterImage">rasterImage</a></span>(raster, <span class="dt">xleft =</span> <span class="fl">0.25</span>, <span class="dt">ybottom =</span> <span class="fl">0.25</span>, </a>
-<a class="sourceLine" id="cb16-9" data-line-number="9">                                    <span class="dt">xright =</span> <span class="fl">0.75</span>, <span class="dt">ytop =</span> <span class="fl">0.75</span>, </a>
-<a class="sourceLine" id="cb16-10" data-line-number="10">                                    <span class="dt">interpolate =</span> <span class="ot">FALSE</span>))</a>
-<a class="sourceLine" id="cb16-11" data-line-number="11"><span class="kw">plot_bench</span>(res, <span class="st">'Non-interpolated, non-rotated raster performance'</span>, b)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">raster</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/hcl.html">hcl</a></span>(<span class="fl">0</span>, <span class="fl">80</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">50</span>, <span class="fl">80</span>, <span class="fl">10</span>)), <span class="kw">nrow</span> <span class="kw">=</span> <span class="fl">4</span>, <span class="kw">ncol</span> <span class="kw">=</span> <span class="fl">5</span>)
+
+<span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span>()
+<span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>()
+<span class="no">b</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/graphics/rasterImage.html">rasterImage</a></span>(<span class="no">raster</span>, <span class="kw">xleft</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">0.25</span>, <span class="fl">100</span>), <span class="kw">ybottom</span> <span class="kw">=</span> <span class="fl">0.25</span>,
+                             <span class="kw">xright</span> <span class="kw">=</span> <span class="fl">0.75</span>, <span class="kw">ytop</span> <span class="kw">=</span> <span class="fl">0.75</span>, <span class="kw">interpolate</span> <span class="kw">=</span> <span class="fl">FALSE</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+<span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu">all_render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/graphics/rasterImage.html">rasterImage</a></span>(<span class="no">raster</span>, <span class="kw">xleft</span> <span class="kw">=</span> <span class="fl">0.25</span>, <span class="kw">ybottom</span> <span class="kw">=</span> <span class="fl">0.25</span>,
+                                    <span class="kw">xright</span> <span class="kw">=</span> <span class="fl">0.75</span>, <span class="kw">ytop</span> <span class="kw">=</span> <span class="fl">0.75</span>,
+                                    <span class="kw">interpolate</span> <span class="kw">=</span> <span class="fl">FALSE</span>))
+<span class="fu">plot_bench</span>(<span class="no">res</span>, <span class="st">'Non-interpolated, non-rotated raster performance'</span>, <span class="no">b</span>)</pre></body></html></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
-<a class="sourceLine" id="cb17-3" data-line-number="3">b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/rasterImage">rasterImage</a></span>(raster, <span class="dt">xleft =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="fl">0.25</span>, <span class="dv">100</span>), <span class="dt">ybottom =</span> <span class="fl">0.25</span>, </a>
-<a class="sourceLine" id="cb17-4" data-line-number="4">                             <span class="dt">xright =</span> <span class="fl">0.75</span>, <span class="dt">ytop =</span> <span class="fl">0.75</span>, <span class="dt">interpolate =</span> <span class="ot">FALSE</span>, </a>
-<a class="sourceLine" id="cb17-5" data-line-number="5">                             <span class="dt">angle =</span> <span class="dv">27</span>))</a>
-<a class="sourceLine" id="cb17-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
-<a class="sourceLine" id="cb17-7" data-line-number="7">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/rasterImage">rasterImage</a></span>(raster, <span class="dt">xleft =</span> <span class="fl">0.25</span>, <span class="dt">ybottom =</span> <span class="fl">0.25</span>, </a>
-<a class="sourceLine" id="cb17-8" data-line-number="8">                                    <span class="dt">xright =</span> <span class="fl">0.75</span>, <span class="dt">ytop =</span> <span class="fl">0.75</span>, </a>
-<a class="sourceLine" id="cb17-9" data-line-number="9">                                    <span class="dt">interpolate =</span> <span class="ot">FALSE</span>, <span class="dt">angle =</span> <span class="dv">27</span>))</a>
-<a class="sourceLine" id="cb17-10" data-line-number="10"><span class="kw">plot_bench</span>(res, <span class="st">'Non-interpolated, rotated raster performance'</span>, b)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span>()
+<span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>()
+<span class="no">b</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/graphics/rasterImage.html">rasterImage</a></span>(<span class="no">raster</span>, <span class="kw">xleft</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">0.25</span>, <span class="fl">100</span>), <span class="kw">ybottom</span> <span class="kw">=</span> <span class="fl">0.25</span>,
+                             <span class="kw">xright</span> <span class="kw">=</span> <span class="fl">0.75</span>, <span class="kw">ytop</span> <span class="kw">=</span> <span class="fl">0.75</span>, <span class="kw">interpolate</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
+                             <span class="kw">angle</span> <span class="kw">=</span> <span class="fl">27</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+<span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu">all_render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/graphics/rasterImage.html">rasterImage</a></span>(<span class="no">raster</span>, <span class="kw">xleft</span> <span class="kw">=</span> <span class="fl">0.25</span>, <span class="kw">ybottom</span> <span class="kw">=</span> <span class="fl">0.25</span>,
+                                    <span class="kw">xright</span> <span class="kw">=</span> <span class="fl">0.75</span>, <span class="kw">ytop</span> <span class="kw">=</span> <span class="fl">0.75</span>,
+                                    <span class="kw">interpolate</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">angle</span> <span class="kw">=</span> <span class="fl">27</span>))
+<span class="fu">plot_bench</span>(<span class="no">res</span>, <span class="st">'Non-interpolated, rotated raster performance'</span>, <span class="no">b</span>)</pre></body></html></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
-<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
-<a class="sourceLine" id="cb18-3" data-line-number="3">b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/rasterImage">rasterImage</a></span>(raster, <span class="dt">xleft =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="fl">0.25</span>, <span class="dv">100</span>), <span class="dt">ybottom =</span> <span class="fl">0.25</span>, </a>
-<a class="sourceLine" id="cb18-4" data-line-number="4">                             <span class="dt">xright =</span> <span class="fl">0.75</span>, <span class="dt">ytop =</span> <span class="fl">0.75</span>, <span class="dt">interpolate =</span> <span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
-<a class="sourceLine" id="cb18-6" data-line-number="6">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/rasterImage">rasterImage</a></span>(raster, <span class="dt">xleft =</span> <span class="fl">0.25</span>, <span class="dt">ybottom =</span> <span class="fl">0.25</span>, </a>
-<a class="sourceLine" id="cb18-7" data-line-number="7">                                    <span class="dt">xright =</span> <span class="fl">0.75</span>, <span class="dt">ytop =</span> <span class="fl">0.75</span>, </a>
-<a class="sourceLine" id="cb18-8" data-line-number="8">                                    <span class="dt">interpolate =</span> <span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb18-9" data-line-number="9"><span class="kw">plot_bench</span>(res, <span class="st">'Interpolated, non-rotated raster performance'</span>, b)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span>()
+<span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>()
+<span class="no">b</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/graphics/rasterImage.html">rasterImage</a></span>(<span class="no">raster</span>, <span class="kw">xleft</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">0.25</span>, <span class="fl">100</span>), <span class="kw">ybottom</span> <span class="kw">=</span> <span class="fl">0.25</span>,
+                             <span class="kw">xright</span> <span class="kw">=</span> <span class="fl">0.75</span>, <span class="kw">ytop</span> <span class="kw">=</span> <span class="fl">0.75</span>, <span class="kw">interpolate</span> <span class="kw">=</span> <span class="fl">TRUE</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+<span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu">all_render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/graphics/rasterImage.html">rasterImage</a></span>(<span class="no">raster</span>, <span class="kw">xleft</span> <span class="kw">=</span> <span class="fl">0.25</span>, <span class="kw">ybottom</span> <span class="kw">=</span> <span class="fl">0.25</span>,
+                                    <span class="kw">xright</span> <span class="kw">=</span> <span class="fl">0.75</span>, <span class="kw">ytop</span> <span class="kw">=</span> <span class="fl">0.75</span>,
+                                    <span class="kw">interpolate</span> <span class="kw">=</span> <span class="fl">TRUE</span>))
+<span class="fu">plot_bench</span>(<span class="no">res</span>, <span class="st">'Interpolated, non-rotated raster performance'</span>, <span class="no">b</span>)</pre></body></html></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
-<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
-<a class="sourceLine" id="cb19-3" data-line-number="3">b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/rasterImage">rasterImage</a></span>(raster, <span class="dt">xleft =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="fl">0.25</span>, <span class="dv">100</span>), <span class="dt">ybottom =</span> <span class="fl">0.25</span>, </a>
-<a class="sourceLine" id="cb19-4" data-line-number="4">                             <span class="dt">xright =</span> <span class="fl">0.75</span>, <span class="dt">ytop =</span> <span class="fl">0.75</span>, <span class="dt">interpolate =</span> <span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb19-5" data-line-number="5">                             <span class="dt">angle =</span> <span class="dv">27</span>))</a>
-<a class="sourceLine" id="cb19-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
-<a class="sourceLine" id="cb19-7" data-line-number="7">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/rasterImage">rasterImage</a></span>(raster, <span class="dt">xleft =</span> <span class="fl">0.25</span>, <span class="dt">ybottom =</span> <span class="fl">0.25</span>, </a>
-<a class="sourceLine" id="cb19-8" data-line-number="8">                                    <span class="dt">xright =</span> <span class="fl">0.75</span>, <span class="dt">ytop =</span> <span class="fl">0.75</span>, </a>
-<a class="sourceLine" id="cb19-9" data-line-number="9">                                    <span class="dt">interpolate =</span> <span class="ot">TRUE</span>, <span class="dt">angle =</span> <span class="dv">27</span>))</a>
-<a class="sourceLine" id="cb19-10" data-line-number="10"><span class="kw">plot_bench</span>(res, <span class="st">'Interpolated, rotated raster performance'</span>, b)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span>()
+<span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>()
+<span class="no">b</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/graphics/rasterImage.html">rasterImage</a></span>(<span class="no">raster</span>, <span class="kw">xleft</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">0.25</span>, <span class="fl">100</span>), <span class="kw">ybottom</span> <span class="kw">=</span> <span class="fl">0.25</span>,
+                             <span class="kw">xright</span> <span class="kw">=</span> <span class="fl">0.75</span>, <span class="kw">ytop</span> <span class="kw">=</span> <span class="fl">0.75</span>, <span class="kw">interpolate</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
+                             <span class="kw">angle</span> <span class="kw">=</span> <span class="fl">27</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+<span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu">all_render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/graphics/rasterImage.html">rasterImage</a></span>(<span class="no">raster</span>, <span class="kw">xleft</span> <span class="kw">=</span> <span class="fl">0.25</span>, <span class="kw">ybottom</span> <span class="kw">=</span> <span class="fl">0.25</span>,
+                                    <span class="kw">xright</span> <span class="kw">=</span> <span class="fl">0.75</span>, <span class="kw">ytop</span> <span class="kw">=</span> <span class="fl">0.75</span>,
+                                    <span class="kw">interpolate</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">angle</span> <span class="kw">=</span> <span class="fl">27</span>))
+<span class="fu">plot_bench</span>(<span class="no">res</span>, <span class="st">'Interpolated, rotated raster performance'</span>, <span class="no">b</span>)</pre></body></html></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-20-1.png" width="672"></p>
 <p>Plotting rasters is whicked fast it appears. For non-rotated rasters ragg is a tiny bit slower than cairo, maybe due to anti-aliasing of the edges. The loss is gained again when it comes to rotation, indicating a more performant affine transformation implementation. Xlib is significantly slower here, for reasons beyond me.</p>
 </div>
@@ -384,21 +388,21 @@
 <h3 class="hasAnchor">
 <a href="#text" class="anchor"></a>Text</h3>
 <p>Text in data visualisation is crucial, and one of the hardest parts when implementing a graphic device. This is reflected in e.g. the inability of the native devices to find system fonts, thus having to rely on e.g. the extrafont or showtext packages for that. Anyway, again we only look at performance in this document.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">pch &lt;-<span class="st"> "#"</span></a>
-<a class="sourceLine" id="cb20-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
-<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
-<a class="sourceLine" id="cb20-5" data-line-number="5">b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
-<a class="sourceLine" id="cb20-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
-<a class="sourceLine" id="cb20-7" data-line-number="7">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/points">points</a></span>(x, y, <span class="dt">pch =</span> pch))</a>
-<a class="sourceLine" id="cb20-8" data-line-number="8"><span class="kw">plot_bench</span>(res, <span class="st">'Single character performance'</span>, b)</a></code></pre></div>
+<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">pch</span> <span class="kw">&lt;-</span> <span class="st">"#"</span>
+
+<span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span>()
+<span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>()
+<span class="no">b</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span>(<span class="no">x</span>, <span class="no">y</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="no">pch</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+<span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu">all_render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span>(<span class="no">x</span>, <span class="no">y</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="no">pch</span>))
+<span class="fu">plot_bench</span>(<span class="no">res</span>, <span class="st">'Single character performance'</span>, <span class="no">b</span>)</pre></body></html></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-21-1.png" width="672"></p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
-<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/frame">plot.new</a></span>()</a>
-<a class="sourceLine" id="cb21-3" data-line-number="3">b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/text">text</a></span>(x, y, <span class="dt">label =</span> <span class="st">'abcdefghijk'</span>))</a>
-<a class="sourceLine" id="cb21-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
-<a class="sourceLine" id="cb21-5" data-line-number="5">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/text">text</a></span>(x, y, <span class="dt">label =</span> <span class="st">'abcdefghijk'</span>))</a>
-<a class="sourceLine" id="cb21-6" data-line-number="6"><span class="kw">plot_bench</span>(res, <span class="st">'Text string performance'</span>, b)</a></code></pre></div>
+<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span>()
+<span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span>()
+<span class="no">b</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span>(<span class="no">x</span>, <span class="no">y</span>, <span class="kw">label</span> <span class="kw">=</span> <span class="st">'abcdefghijk'</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+<span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu">all_render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span>(<span class="no">x</span>, <span class="no">y</span>, <span class="kw">label</span> <span class="kw">=</span> <span class="st">'abcdefghijk'</span>))
+<span class="fu">plot_bench</span>(<span class="no">res</span>, <span class="st">'Text string performance'</span>, <span class="no">b</span>)</pre></body></html></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
 <p>Once again Xlib surprises with a significantly slower font handling than its anti-aliased peers. ragg is slightly faster than cairo again but not by much. In general text rendering is governed as much by how quickly the code looks up glyphs in the font database as it is about rendering speed.</p>
 </div>
@@ -406,24 +410,24 @@
 <h3 class="hasAnchor">
 <a href="#complex-example" class="anchor"></a>Complex example</h3>
 <p>All of these primitives apart can be difficult to compare. In general it appears like ragg has a small but consistent lead in performance among the anti-aliased devices safe for a few areas. The last benchmark will tie it all together in a more complete graphic made using ggplot2 (don’t worry about the quality of the graphic — we are simply pilling stuff on top of each others):</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">p &lt;-<span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(diamonds, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(carat, price)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_hex.html">geom_hex</a></span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb22-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="dt">shape =</span> <span class="dv">1</span>, <span class="dt">size =</span> <span class="fl">0.05</span>, <span class="dt">colour =</span> <span class="st">'white'</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb22-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb22-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span>clarity) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb22-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">title =</span> <span class="st">'5 things you didn</span><span class="ch">\'</span><span class="st">t knew about the diamonds dataset'</span>,</a>
-<a class="sourceLine" id="cb22-7" data-line-number="7">       <span class="dt">subtitle =</span> <span class="st">'You won</span><span class="ch">\'</span><span class="st">t believe number 4'</span>,</a>
-<a class="sourceLine" id="cb22-8" data-line-number="8">       <span class="dt">caption =</span> <span class="st">'Source: The ggplot2 package'</span>)</a>
-<a class="sourceLine" id="cb22-9" data-line-number="9">p</a></code></pre></div>
+<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">diamonds</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">carat</span>, <span class="no">price</span>)) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_hex.html">geom_hex</a></span>() +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="kw">shape</span> <span class="kw">=</span> <span class="fl">1</span>, <span class="kw">size</span> <span class="kw">=</span> <span class="fl">0.05</span>, <span class="kw">colour</span> <span class="kw">=</span> <span class="st">'white'</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span>() +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(~<span class="no">clarity</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="kw">title</span> <span class="kw">=</span> <span class="st">'5 things you didn\'t knew about the diamonds dataset'</span>,
+       <span class="kw">subtitle</span> <span class="kw">=</span> <span class="st">'You won\'t believe number 4'</span>,
+       <span class="kw">caption</span> <span class="kw">=</span> <span class="st">'Source: The ggplot2 package'</span>)
+<span class="no">p</span></pre></body></html></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
 <p>We will prebuild the plot so mainly rendering will be measured</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">p &lt;-<span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplotGrob.html">ggplotGrob</a></span>(p)</a>
-<a class="sourceLine" id="cb23-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/devoid/topics/void_dev">void_dev</a></span>()</a>
-<a class="sourceLine" id="cb23-3" data-line-number="3">b &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(p))</a>
-<a class="sourceLine" id="cb23-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/invisible">invisible</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/dev">dev.off</a></span>())</a>
-<a class="sourceLine" id="cb23-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb23-6" data-line-number="6">res &lt;-<span class="st"> </span><span class="kw">all_render_bench</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(p))</a>
-<a class="sourceLine" id="cb23-7" data-line-number="7"><span class="kw">plot_bench</span>(res, <span class="st">'Complex composite performance'</span>, b)</a></code></pre></div>
+<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplotGrob.html">ggplotGrob</a></span>(<span class="no">p</span>)
+<span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span>()
+<span class="no">b</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">p</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+
+<span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu">all_render_bench</span>(<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">p</span>))
+<span class="fu">plot_bench</span>(<span class="no">res</span>, <span class="st">'Complex composite performance'</span>, <span class="no">b</span>)</pre></body></html></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-24-1.png" width="672"></p>
 <p>We see that with complex graphics the speed benefit of the non anti-aliased Xlib device disappears (probably due to its slow text rendering). Ragg is clearly the fastest anti-aliased device, but it should be noted that the example deliberately included both stroked and filled shapes. If only plotting fill the speed advantage might become smaller or disappear. Something else that we haven’t discussed here, but may affect speed in such a complex graphic is clipping speed (not drawing elements outside of the clipping region).</p>
 </div>
@@ -436,98 +440,94 @@
 <div id="session-info" class="section level2">
 <h2 class="hasAnchor">
 <a href="#session-info" class="anchor"></a>Session info</h2>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">sessioninfo<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sessioninfo/topics/session_info">session_info</a></span>()</a>
-<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="co">#&gt; ─ Session info ──────────────────────────────────────────────────────────</span></a>
-<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="co">#&gt;  setting  value                       </span></a>
-<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="co">#&gt;  version  R version 3.6.1 (2017-01-27)</span></a>
-<a class="sourceLine" id="cb24-5" data-line-number="5"><span class="co">#&gt;  os       Ubuntu 16.04.6 LTS          </span></a>
-<a class="sourceLine" id="cb24-6" data-line-number="6"><span class="co">#&gt;  system   x86_64, linux-gnu           </span></a>
-<a class="sourceLine" id="cb24-7" data-line-number="7"><span class="co">#&gt;  ui       X11                         </span></a>
-<a class="sourceLine" id="cb24-8" data-line-number="8"><span class="co">#&gt;  language en_US.UTF-8                 </span></a>
-<a class="sourceLine" id="cb24-9" data-line-number="9"><span class="co">#&gt;  collate  en_US.UTF-8                 </span></a>
-<a class="sourceLine" id="cb24-10" data-line-number="10"><span class="co">#&gt;  ctype    en_US.UTF-8                 </span></a>
-<a class="sourceLine" id="cb24-11" data-line-number="11"><span class="co">#&gt;  tz       UTC                         </span></a>
-<a class="sourceLine" id="cb24-12" data-line-number="12"><span class="co">#&gt;  date     2019-08-23                  </span></a>
-<a class="sourceLine" id="cb24-13" data-line-number="13"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb24-14" data-line-number="14"><span class="co">#&gt; ─ Packages ──────────────────────────────────────────────────────────────</span></a>
-<a class="sourceLine" id="cb24-15" data-line-number="15"><span class="co">#&gt;  package      * version    date       lib source        </span></a>
-<a class="sourceLine" id="cb24-16" data-line-number="16"><span class="co">#&gt;  assertthat     0.2.1      2019-03-21 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-17" data-line-number="17"><span class="co">#&gt;  backports      1.1.4      2019-04-10 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-18" data-line-number="18"><span class="co">#&gt;  bench          1.0.2      2019-04-29 [1] CRAN (R 3.6.1)</span></a>
-<a class="sourceLine" id="cb24-19" data-line-number="19"><span class="co">#&gt;  cli            1.1.0      2019-03-19 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-20" data-line-number="20"><span class="co">#&gt;  colorspace     1.4-1      2019-03-18 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-21" data-line-number="21"><span class="co">#&gt;  commonmark     1.7        2018-12-01 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-22" data-line-number="22"><span class="co">#&gt;  crayon         1.3.4      2017-09-16 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-23" data-line-number="23"><span class="co">#&gt;  desc           1.2.0      2018-05-01 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-24" data-line-number="24"><span class="co">#&gt;  devoid       * 0.1.0      2019-05-03 [1] CRAN (R 3.6.1)</span></a>
-<a class="sourceLine" id="cb24-25" data-line-number="25"><span class="co">#&gt;  digest         0.6.20     2019-07-04 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-26" data-line-number="26"><span class="co">#&gt;  dplyr          0.8.3      2019-07-04 [1] CRAN (R 3.6.1)</span></a>
-<a class="sourceLine" id="cb24-27" data-line-number="27"><span class="co">#&gt;  evaluate       0.14       2019-05-28 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-28" data-line-number="28"><span class="co">#&gt;  fs             1.3.1      2019-05-06 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-29" data-line-number="29"><span class="co">#&gt;  ggplot2      * 3.2.1      2019-08-10 [1] CRAN (R 3.6.1)</span></a>
-<a class="sourceLine" id="cb24-30" data-line-number="30"><span class="co">#&gt;  ggridges       0.5.1      2018-09-27 [1] CRAN (R 3.6.1)</span></a>
-<a class="sourceLine" id="cb24-31" data-line-number="31"><span class="co">#&gt;  glue           1.3.1      2019-03-12 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-32" data-line-number="32"><span class="co">#&gt;  gtable         0.3.0      2019-03-25 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-33" data-line-number="33"><span class="co">#&gt;  hexbin         1.27.3     2019-05-14 [1] CRAN (R 3.6.1)</span></a>
-<a class="sourceLine" id="cb24-34" data-line-number="34"><span class="co">#&gt;  htmltools      0.3.6      2017-04-28 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-35" data-line-number="35"><span class="co">#&gt;  knitr          1.24       2019-08-08 [1] CRAN (R 3.6.1)</span></a>
-<a class="sourceLine" id="cb24-36" data-line-number="36"><span class="co">#&gt;  labeling       0.3        2014-08-23 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-37" data-line-number="37"><span class="co">#&gt;  lattice        0.20-38    2018-11-04 [4] CRAN (R 3.6.1)</span></a>
-<a class="sourceLine" id="cb24-38" data-line-number="38"><span class="co">#&gt;  lazyeval       0.2.2      2019-03-15 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-39" data-line-number="39"><span class="co">#&gt;  magrittr       1.5        2014-11-22 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-40" data-line-number="40"><span class="co">#&gt;  MASS           7.3-51.4   2019-03-31 [4] CRAN (R 3.6.1)</span></a>
-<a class="sourceLine" id="cb24-41" data-line-number="41"><span class="co">#&gt;  Matrix         1.2-17     2019-03-22 [4] CRAN (R 3.6.1)</span></a>
-<a class="sourceLine" id="cb24-42" data-line-number="42"><span class="co">#&gt;  memoise        1.1.0      2017-04-21 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-43" data-line-number="43"><span class="co">#&gt;  mgcv           1.8-28     2019-03-21 [4] CRAN (R 3.6.1)</span></a>
-<a class="sourceLine" id="cb24-44" data-line-number="44"><span class="co">#&gt;  munsell        0.5.0      2018-06-12 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-45" data-line-number="45"><span class="co">#&gt;  nlme           3.1-140    2019-05-12 [4] CRAN (R 3.6.1)</span></a>
-<a class="sourceLine" id="cb24-46" data-line-number="46"><span class="co">#&gt;  pillar         1.4.2      2019-06-29 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-47" data-line-number="47"><span class="co">#&gt;  pkgconfig      2.0.2      2018-08-16 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-48" data-line-number="48"><span class="co">#&gt;  pkgdown        1.3.0      2018-12-07 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-49" data-line-number="49"><span class="co">#&gt;  plyr           1.8.4      2016-06-08 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-50" data-line-number="50"><span class="co">#&gt;  profmem        0.5.0      2018-01-30 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-51" data-line-number="51"><span class="co">#&gt;  purrr          0.3.2      2019-03-15 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-52" data-line-number="52"><span class="co">#&gt;  R6             2.4.0      2019-02-14 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-53" data-line-number="53"><span class="co">#&gt;  ragg         * 0.1.2.9000 2019-08-23 [1] local         </span></a>
-<a class="sourceLine" id="cb24-54" data-line-number="54"><span class="co">#&gt;  RColorBrewer   1.1-2      2014-12-07 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-55" data-line-number="55"><span class="co">#&gt;  Rcpp           1.0.2      2019-07-25 [3] CRAN (R 3.6.1)</span></a>
-<a class="sourceLine" id="cb24-56" data-line-number="56"><span class="co">#&gt;  rlang          0.4.0      2019-06-25 [1] CRAN (R 3.6.1)</span></a>
-<a class="sourceLine" id="cb24-57" data-line-number="57"><span class="co">#&gt;  rmarkdown      1.15       2019-08-21 [1] CRAN (R 3.6.1)</span></a>
-<a class="sourceLine" id="cb24-58" data-line-number="58"><span class="co">#&gt;  roxygen2       6.1.1      2018-11-07 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-59" data-line-number="59"><span class="co">#&gt;  rprojroot      1.3-2      2018-01-03 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-60" data-line-number="60"><span class="co">#&gt;  scales         1.0.0      2018-08-09 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-61" data-line-number="61"><span class="co">#&gt;  sessioninfo    1.1.1      2018-11-05 [1] CRAN (R 3.6.1)</span></a>
-<a class="sourceLine" id="cb24-62" data-line-number="62"><span class="co">#&gt;  stringi        1.4.3      2019-03-12 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-63" data-line-number="63"><span class="co">#&gt;  stringr        1.4.0      2019-02-10 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-64" data-line-number="64"><span class="co">#&gt;  systemfonts    0.1.1      2019-07-01 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-65" data-line-number="65"><span class="co">#&gt;  tibble         2.1.3      2019-06-06 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-66" data-line-number="66"><span class="co">#&gt;  tidyr          0.8.3      2019-03-01 [1] CRAN (R 3.6.1)</span></a>
-<a class="sourceLine" id="cb24-67" data-line-number="67"><span class="co">#&gt;  tidyselect     0.2.5      2018-10-11 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-68" data-line-number="68"><span class="co">#&gt;  withr          2.1.2      2018-03-15 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-69" data-line-number="69"><span class="co">#&gt;  xfun           0.8        2019-06-25 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-70" data-line-number="70"><span class="co">#&gt;  xml2           1.2.0      2018-01-24 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-71" data-line-number="71"><span class="co">#&gt;  yaml           2.2.0      2018-07-25 [1] CRAN (R 3.6.0)</span></a>
-<a class="sourceLine" id="cb24-72" data-line-number="72"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb24-73" data-line-number="73"><span class="co">#&gt; [1] /home/travis/R/Library</span></a>
-<a class="sourceLine" id="cb24-74" data-line-number="74"><span class="co">#&gt; [2] /usr/local/lib/R/site-library</span></a>
-<a class="sourceLine" id="cb24-75" data-line-number="75"><span class="co">#&gt; [3] /usr/lib/R/site-library</span></a>
-<a class="sourceLine" id="cb24-76" data-line-number="76"><span class="co">#&gt; [4] /home/travis/R-bin/lib/R/library</span></a></code></pre></div>
+<div class="sourceCode" id="cb24"><html><body><pre class="r"><span class="kw pkg">sessioninfo</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/sessioninfo/man/session_info.html">session_info</a></span>()
+<span class="co">#&gt; ─ Session info ───────────────────────────────────────────────────────────────</span>
+<span class="co">#&gt;  setting  value                       </span>
+<span class="co">#&gt;  version  R version 3.6.2 (2017-01-27)</span>
+<span class="co">#&gt;  os       Ubuntu 16.04.6 LTS          </span>
+<span class="co">#&gt;  system   x86_64, linux-gnu           </span>
+<span class="co">#&gt;  ui       X11                         </span>
+<span class="co">#&gt;  language en_US.UTF-8                 </span>
+<span class="co">#&gt;  collate  en_US.UTF-8                 </span>
+<span class="co">#&gt;  ctype    en_US.UTF-8                 </span>
+<span class="co">#&gt;  tz       UTC                         </span>
+<span class="co">#&gt;  date     2020-04-09                  </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────</span>
+<span class="co">#&gt;  package      * version    date       lib source        </span>
+<span class="co">#&gt;  assertthat     0.2.1      2019-03-21 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  backports      1.1.6      2020-04-05 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  bench          1.1.1      2020-01-13 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  cli            2.0.2      2020-02-28 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  colorspace     1.4-1      2019-03-18 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  crayon         1.3.4      2017-09-16 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  desc           1.2.0      2018-05-01 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  devoid       * 0.1.0      2019-05-03 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  digest         0.6.25     2020-02-23 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  dplyr          0.8.5      2020-03-07 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  ellipsis       0.3.0      2019-09-20 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  evaluate       0.14       2019-05-28 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  fansi          0.4.1      2020-01-08 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  farver         2.0.3      2020-01-16 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  fs             1.4.1      2020-04-04 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  ggplot2      * 3.3.0      2020-03-05 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  ggridges       0.5.2      2020-01-12 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  glue           1.4.0      2020-04-03 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  gtable         0.3.0      2019-03-25 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  hexbin         1.28.1     2020-02-03 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  htmltools      0.4.0      2019-10-04 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  knitr          1.28       2020-02-06 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  labeling       0.3        2014-08-23 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  lattice        0.20-38    2018-11-04 [4] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  lifecycle      0.2.0      2020-03-06 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  magrittr       1.5        2014-11-22 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  MASS           7.3-51.4   2019-03-31 [4] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  Matrix         1.2-18     2019-11-27 [4] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  memoise        1.1.0      2017-04-21 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  mgcv           1.8-31     2019-11-09 [4] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  munsell        0.5.0      2018-06-12 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  nlme           3.1-142    2019-11-07 [4] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  pillar         1.4.3      2019-12-20 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  pkgconfig      2.0.3      2019-09-22 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  pkgdown        1.5.1      2020-04-09 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  plyr           1.8.6      2020-03-03 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  profmem        0.5.0      2018-01-30 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  purrr          0.3.3      2019-10-18 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  R6             2.4.1      2019-11-12 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  ragg         * 0.1.5.9000 2020-04-09 [1] local         </span>
+<span class="co">#&gt;  RColorBrewer   1.1-2      2014-12-07 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  Rcpp           1.0.4.6    2020-04-09 [3] CRAN (R 3.6.3)</span>
+<span class="co">#&gt;  rlang          0.4.5      2020-03-01 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  rmarkdown      2.1        2020-01-20 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  rprojroot      1.3-2      2018-01-03 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  scales         1.1.0      2019-11-18 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  sessioninfo    1.1.1      2018-11-05 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  stringi        1.4.6      2020-02-17 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  stringr        1.4.0      2019-02-10 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  systemfonts    0.1.1      2019-07-01 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  tibble         3.0.0      2020-03-30 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  tidyr          1.0.2      2020-01-24 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  tidyselect     1.0.0      2020-01-27 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  vctrs          0.2.4      2020-03-10 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  withr          2.1.2      2018-03-15 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  xfun           0.12       2020-01-13 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt;  yaml           2.2.1      2020-02-01 [1] CRAN (R 3.6.2)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [1] /home/travis/R/Library</span>
+<span class="co">#&gt; [2] /usr/local/lib/R/site-library</span>
+<span class="co">#&gt; [3] /usr/lib/R/site-library</span>
+<span class="co">#&gt; [4] /home/travis/R-bin/lib/R/library</span></pre></body></html></div>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#opening-and-closing">Opening and closing</a></li>
-      <li><a href="#conclusion">Conclusion</a></li>
-      <li><a href="#session-info">Session info</a></li>
-      </ul>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
+
 
 
       <footer><div class="copyright">
@@ -535,12 +535,14 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>
