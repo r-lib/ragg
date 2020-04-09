@@ -1,6 +1,9 @@
 # ragg (development version)
 
 * Fix compilation on R <= 3.3 by including Rdynload.h explicitly
+* Fix a performance regression when plotting text (#33)
+* Fix erroneous width calculations of strings starting with a space on windows 
+  (#32)
 
 # ragg 0.1.5
 
