@@ -41,7 +41,9 @@ jobs:
         run: |
           install.packages("remotes")
           remotes::install_deps(dependencies = TRUE)
+          remotes::install_cran("ggplot2")
           remotes::install_cran("devoid")
+          remotes::install_cran("magick")
           remotes::install_dev("pkgdown")
         shell: Rscript {0}
 
