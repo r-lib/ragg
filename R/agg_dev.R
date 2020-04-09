@@ -44,7 +44,7 @@ agg_ppm <- function(filename = 'Rplot%03d.ppm', width = 480, height = 480,
 #' 
 #' The PNG (Portable Network Graphic) format is one of the most ubiquitous 
 #' today, due to its versatiliity 
-#' and widespread support. It supports transparancy as well as both 8 and 16 bit
+#' and widespread support. It supports transparency as well as both 8 and 16 bit
 #' colour. The device uses default compression and filtering and will not use a
 #' colour palette as this is less useful for antialiased data. This means that 
 #' it might be possible to compress the resulting image even more if size is of
