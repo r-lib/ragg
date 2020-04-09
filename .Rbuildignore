@@ -16,3 +16,5 @@
 ^CRAN-RELEASE$
 ^vignettes$
 ^configure.log$
+^codecov\.yml$
+^\.github$

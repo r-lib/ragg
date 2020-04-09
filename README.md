@@ -13,6 +13,10 @@ status](https://ci.appveyor.com/api/projects/status/github/r-lib/ragg?branch=mas
 status](https://www.r-pkg.org/badges/version/ragg)](https://cran.r-project.org/package=ragg)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Codecov test
+coverage](https://codecov.io/gh/r-lib/ragg/branch/master/graph/badge.svg)](https://codecov.io/gh/r-lib/ragg?branch=master)
+[![R build
+status](https://github.com/r-lib/ragg/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/ragg/actions)
 <!-- badges: end -->
 
 This package provides graphic devices for R based on the AGG library

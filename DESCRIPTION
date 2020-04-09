@@ -43,5 +43,6 @@ SystemRequirements:
     freetype2
     libpng
 Suggests: 
+    covr
 Imports: 
     systemfonts
