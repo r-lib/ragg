@@ -24,7 +24,7 @@ static std::pair<std::string, int> get_font_file(const char* family, int bold,
   }
   
   font_key key = std::make_tuple(std::string((char *) fontfamily), bold, italic);
-  font_map map = get_font_map();
+  font_map& map = get_font_map();
   font_map::iterator font_it = map.find(key);
   if (font_it != map.end()) {
     return font_it->second;
