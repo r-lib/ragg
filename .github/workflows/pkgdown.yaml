@@ -47,6 +47,7 @@ jobs:
           remotes::install_cran("bench")
           remotes::install_cran("tidyr")
           remotes::install_cran("ggridges")
+          remotes::install_cran("hexbin")
           remotes::install_dev("pkgdown")
         shell: Rscript {0}
 
