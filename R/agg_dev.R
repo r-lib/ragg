@@ -18,6 +18,7 @@
 #' @param res The resolution of the device. This setting will govern how device
 #'   dimensions given in inches, centimeters, or millimeters will be converted
 #'   to pixels. Further, it will be used to scale text sizes and linewidths
+#' @param bg Same as `background` for compatibility with old graphic device APIs
 #'
 #' @export
 #' 
@@ -29,12 +30,13 @@
 #' 
 agg_ppm <- function(filename = 'Rplot%03d.ppm', width = 480, height = 480, 
                     units = 'px', pointsize = 12, background = 'white', 
-                    res = 72) {
+                    res = 72, bg) {
   if (deparse(sys.call(), nlines = 1, width.cutoff = 500) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
     units <- 'in'
   }
   file <- validate_path(filename)
   dim <- get_dims(width, height, units, res)
+  background <- if (missing(bg)) background else bg
   .Call("agg_ppm_c", file, dim[1], dim[2], as.numeric(pointsize), background, 
         as.numeric(res), PACKAGE = 'ragg')
   invisible()
@@ -67,7 +69,7 @@ agg_ppm <- function(filename = 'Rplot%03d.ppm', width = 480, height = 480,
 #' 
 agg_png <- function(filename = 'Rplot%03d.png', width = 480, height = 480, 
                     units = 'px', pointsize = 12, background = 'white', 
-                    res = 72, bitsize = 8) {
+                    res = 72, bitsize = 8, bg) {
   if (deparse(sys.call(), nlines = 1, width.cutoff = 500) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
     units <- 'in'
   }
@@ -76,6 +78,7 @@ agg_png <- function(filename = 'Rplot%03d.png', width = 480, height = 480,
     stop('Only 8 and 16 bit is supported', call. = FALSE)
   }
   dim <- get_dims(width, height, units, res)
+  background <- if (missing(bg)) background else bg
   .Call("agg_png_c", file, dim[1], dim[2], as.numeric(pointsize), background, 
         as.numeric(res), as.integer(bitsize), PACKAGE = 'ragg')
   invisible()
@@ -118,7 +121,7 @@ agg_png <- function(filename = 'Rplot%03d.png', width = 480, height = 480,
 #' 
 agg_tiff <- function(filename = 'Rplot%03d.tiff', width = 480, height = 480, 
                     units = 'px', pointsize = 12, background = 'white', 
-                    res = 72, compression = 'none', bitsize = 8) {
+                    res = 72, compression = 'none', bitsize = 8, bg) {
   if (deparse(sys.call(), nlines = 1, width.cutoff = 500) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
     units <- 'in'
   }
@@ -138,6 +141,7 @@ agg_tiff <- function(filename = 'Rplot%03d.tiff', width = 480, height = 480,
     stop('Only 8 and 16 bit is supported', call. = FALSE)
   }
   dim <- get_dims(width, height, units, res)
+  background <- if (missing(bg)) background else bg
   .Call("agg_tiff_c", file, dim[1], dim[2], as.numeric(pointsize), background, 
         as.numeric(res), as.integer(bitsize), compression, encoding, 
         PACKAGE = 'ragg')
@@ -164,12 +168,14 @@ agg_tiff <- function(filename = 'Rplot%03d.tiff', width = 480, height = 480,
 #' 
 agg_supertransparent <- function(filename = 'Rplot%03d.png', width = 480, 
                                  height = 480, units = 'px', pointsize = 12, 
-                                 background = 'white', res = 72, alpha_mod = 1) {
+                                 background = 'white', res = 72, alpha_mod = 1, 
+                                 bg) {
   if (deparse(sys.call(), nlines = 1, width.cutoff = 500) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
     units <- 'in'
   }
   file <- validate_path(filename)
   dim <- get_dims(width, height, units, res)
+  background <- if (missing(bg)) background else bg
   .Call("agg_supertransparent_c", file, dim[1], dim[2], as.numeric(pointsize), 
         background, as.numeric(res), as.double(alpha_mod), PACKAGE = 'ragg')
   invisible()
@@ -210,11 +216,12 @@ agg_supertransparent <- function(filename = 'Rplot%03d.png', width = 480,
 #' plot(as.raster(raster))
 #' 
 agg_capture <- function(width = 480, height = 480, units = 'px', pointsize = 12, 
-                        background = 'white', res = 72) {
+                        background = 'white', res = 72, bg) {
   if (deparse(sys.call(), nlines = 1, width.cutoff = 500) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
     units <- 'in'
   }
   dim <- get_dims(width, height, units, res)
+  background <- if (missing(bg)) background else bg
   name <- paste0('agg_capture_', sample(.Machine$integer.max, 1))
   .Call("agg_capture_c", name, dim[1], dim[2], as.numeric(pointsize), 
         background, as.numeric(res), PACKAGE = 'ragg')

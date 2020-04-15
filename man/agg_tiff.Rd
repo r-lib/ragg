@@ -13,7 +13,8 @@ agg_tiff(
   background = "white",
   res = 72,
   compression = "none",
-  bitsize = 8
+  bitsize = 8,
+  bg
 )
 }
 \arguments{
@@ -41,6 +42,8 @@ standard options from the [grDevices::tiff()] function are available under
 the same name.}
 
 \item{bitsize}{Should the device record colour as 8 or 16bit}
+
+\item{bg}{Same as `background` for compatibility with old graphic device APIs}
 }
 \description{
 The TIFF (Tagged Image File Format) format is a very versatile raster image

@@ -11,7 +11,8 @@ agg_ppm(
   units = "px",
   pointsize = 12,
   background = "white",
-  res = 72
+  res = 72,
+  bg
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ compliant string format to name multiple plots (such as the default value)}
 \item{res}{The resolution of the device. This setting will govern how device
 dimensions given in inches, centimeters, or millimeters will be converted
 to pixels. Further, it will be used to scale text sizes and linewidths}
+
+\item{bg}{Same as `background` for compatibility with old graphic device APIs}
 }
 \description{
 The PPM (Portable Pixel Map) format defines one of the simplest storage 

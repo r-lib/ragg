@@ -10,7 +10,8 @@ agg_capture(
   units = "px",
   pointsize = 12,
   background = "white",
-  res = 72
+  res = 72,
+  bg
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ agg_capture(
 \item{res}{The resolution of the device. This setting will govern how device
 dimensions given in inches, centimeters, or millimeters will be converted
 to pixels. Further, it will be used to scale text sizes and linewidths}
+
+\item{bg}{Same as `background` for compatibility with old graphic device APIs}
 }
 \value{
 A function that when called returns the current state of the buffer.

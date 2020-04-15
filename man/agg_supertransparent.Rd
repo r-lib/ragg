@@ -12,7 +12,8 @@ agg_supertransparent(
   pointsize = 12,
   background = "white",
   res = 72,
-  alpha_mod = 1
+  alpha_mod = 1,
+  bg
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ to pixels. Further, it will be used to scale text sizes and linewidths}
 
 \item{alpha_mod}{A numeric between 0 and 1 that will be multiplied to the 
 alpha channel of all transparent colours}
+
+\item{bg}{Same as `background` for compatibility with old graphic device APIs}
 }
 \description{
 The graphic engine in R only supports 8bit colours. This is for the most part
