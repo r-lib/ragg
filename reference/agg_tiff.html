@@ -182,7 +182,8 @@ format is explicetly requested.</p>
   <span class='kw'>background</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
   <span class='kw'>res</span> <span class='kw'>=</span> <span class='fl'>72</span>,
   <span class='kw'>compression</span> <span class='kw'>=</span> <span class='st'>"none"</span>,
-  <span class='kw'>bitsize</span> <span class='kw'>=</span> <span class='fl'>8</span>
+  <span class='kw'>bitsize</span> <span class='kw'>=</span> <span class='fl'>8</span>,
+  <span class='no'>bg</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -230,6 +231,10 @@ the same name.</p></td>
     <tr>
       <th>bitsize</th>
       <td><p>Should the device record colour as 8 or 16bit</p></td>
+    </tr>
+    <tr>
+      <th>bg</th>
+      <td><p>Same as `background` for compatibility with old graphic device APIs</p></td>
     </tr>
     </table>
 

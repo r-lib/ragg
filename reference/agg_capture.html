@@ -173,7 +173,8 @@ that when called will return the current state of the buffer.</p>
   <span class='kw'>units</span> <span class='kw'>=</span> <span class='st'>"px"</span>,
   <span class='kw'>pointsize</span> <span class='kw'>=</span> <span class='fl'>12</span>,
   <span class='kw'>background</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
-  <span class='kw'>res</span> <span class='kw'>=</span> <span class='fl'>72</span>
+  <span class='kw'>res</span> <span class='kw'>=</span> <span class='fl'>72</span>,
+  <span class='no'>bg</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -205,6 +206,10 @@ that when called will return the current state of the buffer.</p>
       <td><p>The resolution of the device. This setting will govern how device
 dimensions given in inches, centimeters, or millimeters will be converted
 to pixels. Further, it will be used to scale text sizes and linewidths</p></td>
+    </tr>
+    <tr>
+      <th>bg</th>
+      <td><p>Same as `background` for compatibility with old graphic device APIs</p></td>
     </tr>
     </table>
 

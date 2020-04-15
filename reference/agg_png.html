@@ -49,7 +49,7 @@
 <meta property="og:title" content="Draw to a PNG file — agg_png" />
 <meta property="og:description" content="The PNG (Portable Network Graphic) format is one of the most ubiquitous 
 today, due to its versatiliity 
-and widespread support. It supports transparancy as well as both 8 and 16 bit
+and widespread support. It supports transparency as well as both 8 and 16 bit
 colour. The device uses default compression and filtering and will not use a
 colour palette as this is less useful for antialiased data. This means that 
 it might be possible to compress the resulting image even more if size is of
@@ -166,7 +166,7 @@ based on the `res` argument." />
     <div class="ref-description">
     <p>The PNG (Portable Network Graphic) format is one of the most ubiquitous 
 today, due to its versatiliity 
-and widespread support. It supports transparancy as well as both 8 and 16 bit
+and widespread support. It supports transparency as well as both 8 and 16 bit
 colour. The device uses default compression and filtering and will not use a
 colour palette as this is less useful for antialiased data. This means that 
 it might be possible to compress the resulting image even more if size is of
@@ -185,7 +185,8 @@ based on the `res` argument.</p>
   <span class='kw'>pointsize</span> <span class='kw'>=</span> <span class='fl'>12</span>,
   <span class='kw'>background</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
   <span class='kw'>res</span> <span class='kw'>=</span> <span class='fl'>72</span>,
-  <span class='kw'>bitsize</span> <span class='kw'>=</span> <span class='fl'>8</span>
+  <span class='kw'>bitsize</span> <span class='kw'>=</span> <span class='fl'>8</span>,
+  <span class='no'>bg</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -227,6 +228,10 @@ to pixels. Further, it will be used to scale text sizes and linewidths</p></td>
     <tr>
       <th>bitsize</th>
       <td><p>Should the device record colour as 8 or 16bit</p></td>
+    </tr>
+    <tr>
+      <th>bg</th>
+      <td><p>Same as `background` for compatibility with old graphic device APIs</p></td>
     </tr>
     </table>
 

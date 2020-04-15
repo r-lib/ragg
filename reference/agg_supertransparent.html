@@ -181,7 +181,8 @@ you pass in an opaque colour it will be left unchanged.</p>
   <span class='kw'>pointsize</span> <span class='kw'>=</span> <span class='fl'>12</span>,
   <span class='kw'>background</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
   <span class='kw'>res</span> <span class='kw'>=</span> <span class='fl'>72</span>,
-  <span class='kw'>alpha_mod</span> <span class='kw'>=</span> <span class='fl'>1</span>
+  <span class='kw'>alpha_mod</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='no'>bg</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -224,6 +225,10 @@ to pixels. Further, it will be used to scale text sizes and linewidths</p></td>
       <th>alpha_mod</th>
       <td><p>A numeric between 0 and 1 that will be multiplied to the 
 alpha channel of all transparent colours</p></td>
+    </tr>
+    <tr>
+      <th>bg</th>
+      <td><p>Same as `background` for compatibility with old graphic device APIs</p></td>
     </tr>
     </table>
 
