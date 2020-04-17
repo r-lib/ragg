@@ -65,7 +65,7 @@ public:
   // Lifecycle methods
   AggDevice(const char* fp, int w, int h, double ps, int bg, double res);
   virtual ~AggDevice();
-  void newPage();
+  void newPage(unsigned int bg);
   void close();
   virtual bool savePage();
   SEXP capture();
@@ -179,18 +179,22 @@ AggDevice<PIXFMT, R_COLOR>::~AggDevice() {
 }
 
 /* newPage() should not need to be overwritten as long the class have an 
- * appropriate savePage() method. For scrren devices it may make sense to change
+ * appropriate savePage() method. For screen devices it may make sense to change
  * it for performance
  */
 template<class PIXFMT, class R_COLOR>
-void AggDevice<PIXFMT, R_COLOR>::newPage() {
+void AggDevice<PIXFMT, R_COLOR>::newPage(unsigned int bg) {
   if (pageno != 0) {
     if (!savePage()) {
       Rf_warning("agg could not write to the given file");
     }
   }
   renderer.reset_clipping(true);
-  renderer.clear(background);
+  if (visibleColour(bg)) {
+    renderer.clear(convertColour(bg));
+  } else {
+    renderer.clear(background);
+  }
   pageno++;
 }
 template<class PIXFMT, class R_COLOR>
