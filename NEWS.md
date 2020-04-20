@@ -4,6 +4,8 @@
 * Fix a performance regression when plotting text (#33)
 * Fix erroneous width calculations of strings starting with a space on windows 
   (#32)
+* Fix a bug in `agg_capture()` where the output became mangled if device 
+  height != width
 
 # ragg 0.1.5
 

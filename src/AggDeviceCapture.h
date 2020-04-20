@@ -19,8 +19,8 @@ public:
     SEXP raster = PROTECT(Rf_allocVector(INTSXP, this->width * this->height));
     memcpy(INTEGER(raster), this->buffer, this->width * this->height * 4);
     SEXP dims = PROTECT(Rf_allocVector(INTSXP, 2));
-    INTEGER(dims)[0] = this->width;
-    INTEGER(dims)[1] = this->height;
+    INTEGER(dims)[0] = this->height;
+    INTEGER(dims)[1] = this->width;
     Rf_setAttrib(raster, R_DimSymbol, dims);
     UNPROTECT(2);
     return raster;
