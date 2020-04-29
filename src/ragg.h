@@ -6,7 +6,8 @@
 #include <utility>
 #include <unordered_map>
 
-#include <R.h>
+#define R_NO_REMAP
+
 #include <Rinternals.h>
 #include <R_ext/GraphicsEngine.h>
 
