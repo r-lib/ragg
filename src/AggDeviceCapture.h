@@ -1,3 +1,6 @@
+#ifndef AGGDEVCAPTURE_INCLUDED
+#define AGGDEVCAPTURE_INCLUDED
+
 #include "ragg.h"
 #include "AggDevice.h"
 
@@ -28,3 +31,5 @@ public:
 };
 
 typedef AggDeviceCapture<pixfmt_type_32> AggDeviceCaptureAlpha;
+
+#endif

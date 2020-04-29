@@ -1,3 +1,6 @@
+#ifndef AGGDEVPPM_INCLUDED
+#define AGGDEVPPM_INCLUDED
+
 #include "ragg.h"
 #include "AggDevice.h"
 
@@ -26,3 +29,5 @@ public:
 };
 
 typedef AggDevicePpm<pixfmt_type_24> AggDevicePpmNoAlpha;
+
+#endif

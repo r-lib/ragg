@@ -1,3 +1,6 @@
+#ifndef AGGDEV_INCLUDED
+#define AGGDEV_INCLUDED
+
 #include "ragg.h"
 #include "text_renderer.h"
 
@@ -16,9 +19,6 @@
 #include "agg_rasterizer_scanline_aa.h"
 #include "agg_scanline_p.h"
 #include "agg_scanline_u.h"
-
-#ifndef AGGDEV_INCLUDED
-#define AGGDEV_INCLUDED
 
 /* Base class for graphic device interface to AGG. See AggDevice.cpp for 
  * implementation details. 

@@ -1,7 +1,7 @@
-#include "ragg.h"
-
 #ifndef INIT_INCLUDED
 #define INIT_INCLUDED
+
+#include "ragg.h"
 
 template<class T>
 void agg_metric_info(int c, const pGEcontext gc, double* ascent,

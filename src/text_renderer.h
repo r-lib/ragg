@@ -1,3 +1,6 @@
+#ifndef TEXTREN_INCLUDED
+#define TEXTREN_INCLUDED
+
 #include <vector>
 
 #include "ragg.h"
@@ -5,8 +8,6 @@
 #include "agg_font_freetype.h"
 #include "fonts.h"
 
-#ifndef TEXTREN_INCLUDED
-#define TEXTREN_INCLUDED
 
 typedef agg::font_engine_freetype_int32 font_engine_type;
 typedef agg::font_cache_manager<font_engine_type> font_manager_type;

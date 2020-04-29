@@ -1,3 +1,6 @@
+#ifndef AGGDEV16_INCLUDED
+#define AGGDEV16_INCLUDED
+
 #include "ragg.h"
 #include "AggDevice.h"
 #include "util/agg_color_conv.h"
@@ -107,3 +110,5 @@ private:
     return new_col.premultiply();
   }
 };
+
+#endif

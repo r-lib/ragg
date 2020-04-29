@@ -1,3 +1,6 @@
+#ifndef AGGDEVTIFF_INCLUDED
+#define AGGDEVTIFF_INCLUDED
+
 #include "ragg.h"
 #include "AggDevice.h"
 #include "AggDevice16.h"
@@ -139,3 +142,4 @@ public:
 typedef AggDeviceTiff16<pixfmt_type_48> AggDeviceTiff16NoAlpha;
 typedef AggDeviceTiff16<pixfmt_type_64> AggDeviceTiff16Alpha;
 
+#endif
