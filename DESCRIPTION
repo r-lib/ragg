@@ -45,4 +45,6 @@ SystemRequirements:
 Suggests: 
     covr
 Imports: 
+    systemfonts (>= 0.2.1)
+LinkingTo: 
     systemfonts

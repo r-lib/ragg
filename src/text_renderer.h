@@ -3,12 +3,11 @@
 
 #include <vector>
 #include <cstdint>
+#include <systemfonts.h>
 
 #include "ragg.h"
 
 #include "agg_font_freetype.h"
-#include "fonts.h"
-
 
 typedef agg::font_engine_freetype_int32 font_engine_type;
 typedef agg::font_cache_manager<font_engine_type> font_manager_type;
@@ -261,6 +260,21 @@ private:
       string++;
     }
     return x - first_bearing - last_bearing;
+  }
+  
+  static std::pair<std::string, int> get_font_file(const char* family, int bold, 
+                                                   int italic, int symbol) {
+    const char* fontfamily = family;
+    if (symbol) {
+      fontfamily = "Symbol";
+    }
+    char *path = new char[PATH_MAX+1];
+    path[PATH_MAX] = '\0';
+    int index = locate_font(fontfamily, italic, bold, path, PATH_MAX);
+    std::pair<std::string, int> res {path, index};
+    delete[] path;
+    
+    return res;
   }
 };
 
