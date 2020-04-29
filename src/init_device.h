@@ -7,29 +7,46 @@ template<class T>
 void agg_metric_info(int c, const pGEcontext gc, double* ascent,
                      double* descent, double* width, pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
+  
+  BEGIN_CPP
   device->charMetric(c, gc->fontfamily, gc->fontface, gc->ps * gc->cex,
                      ascent, descent, width);
+  END_CPP
+    
   return;
 }
 
 template<class T>
 void agg_clip(double x0, double x1, double y0, double y1, pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
+  
+  BEGIN_CPP
   device->clipRect(x0, y0, x1, y1);
+  END_CPP
+  
+  return;
 }
 
 template<class T>
 void agg_new_page(const pGEcontext gc, pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
+  
+  BEGIN_CPP
   device->newPage(gc->fill);
+  END_CPP
+  
   return;
 }
 
 template<class T>
 void agg_close(pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
+  
+  BEGIN_CPP
   device->close();
   delete device;
+  END_CPP
+  
   return;
 }
 
@@ -37,7 +54,11 @@ template<class T>
 void agg_line(double x1, double y1, double x2, double y2,
               const pGEcontext gc, pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
+  
+  BEGIN_CPP
   device->drawLine(x1, y1, x2, y2, gc->col, gc->lwd, gc->lty, gc->lend);
+  END_CPP
+  
   return;
 }
 
@@ -45,8 +66,12 @@ template<class T>
 void agg_polyline(int n, double *x, double *y, const pGEcontext gc,
                   pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
+  
+  BEGIN_CPP
   device->drawPolyline(n, x, y, gc->col, gc->lwd, gc->lty, gc->lend, gc->ljoin, 
                        gc->lmitre);
+  END_CPP
+  
   return;
 }
 
@@ -54,8 +79,12 @@ template<class T>
 void agg_polygon(int n, double *x, double *y, const pGEcontext gc,
                  pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
+  
+  BEGIN_CPP
   device->drawPolygon(n, x, y, gc->fill, gc->col, gc->lwd, gc->lty, gc->lend, 
                       gc->ljoin, gc->lmitre);
+  END_CPP
+  
   return;
 }
 
@@ -63,24 +92,35 @@ template<class T>
 void agg_path(double *x, double *y, int npoly, int *nper, Rboolean winding,
               const pGEcontext gc, pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
+  
+  BEGIN_CPP
   device->drawPath(npoly, nper, x, y, gc->col, gc->fill, gc->lwd, gc->lty, 
                    gc->lend, gc->ljoin, gc->lmitre, !winding);
+  END_CPP
+  
   return;
 }
 
 template<class T>
 double agg_strwidth(const char *str, const pGEcontext gc, pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
+  
+  BEGIN_CPP
   return device->stringWidth(str, gc->fontfamily, gc->fontface, 
                              gc->ps * gc->cex);
+  END_CPP
 }
 
 template<class T>
 void agg_rect(double x0, double y0, double x1, double y1, const pGEcontext gc, 
               pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
+  
+  BEGIN_CPP
   device->drawRect(x0, y0, x1, y1, gc->fill, gc->col, gc->lwd, 
                    gc->lty, gc->lend);
+  END_CPP
+  
   return;
 }
 
@@ -88,7 +128,11 @@ template<class T>
 void agg_circle(double x, double y, double r, const pGEcontext gc, 
                 pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
+  
+  BEGIN_CPP
   device->drawCircle(x, y, r, gc->fill, gc->col, gc->lwd, gc->lty, gc->lend);
+  END_CPP
+  
   return;
 }
 
@@ -96,8 +140,12 @@ template<class T>
 void agg_text(double x, double y, const char *str, double rot, double hadj, 
               const pGEcontext gc, pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
+  
+  BEGIN_CPP
   device->drawText(x, y, str, gc->fontfamily, gc->fontface, gc->ps * gc->cex, 
                    rot, hadj, gc->col);
+  END_CPP
+  
   return;
 }
 
@@ -114,14 +162,21 @@ void agg_raster(unsigned int *raster, int w, int h, double x, double y,
                 double width, double height, double rot, Rboolean interpolate,
                 const pGEcontext gc, pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
+  
+  BEGIN_CPP
   device->drawRaster(raster, w, h, x, y, width, height, rot, interpolate);
+  END_CPP
+  
   return;
 }
 
 template<class T>
 SEXP agg_capture(pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
+  
+  BEGIN_CPP
   return device->capture();
+  END_CPP
 }
 
 template<class T>

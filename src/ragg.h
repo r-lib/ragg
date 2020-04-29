@@ -19,6 +19,15 @@
 #include "agg_renderer_base.h"
 #include "agg_renderer_scanline.h"
 
+// Define a C++ try-catch macro to guard C++ calls
+#define BEGIN_CPP try {
+
+#define END_CPP                                                                \
+}                                                                              \
+catch (std::exception & e) {                                                   \
+  Rf_error("C++ exception: %s", e.what());                                     \
+}                                                                              \
+
 #define R_USE_PROTOTYPES 1
 typedef agg::pixfmt_rgb24_pre                   pixfmt_type_24;
 typedef agg::pixfmt_rgba32_pre                  pixfmt_type_32;

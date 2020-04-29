@@ -8,6 +8,8 @@ SEXP agg_tiff_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
                 SEXP res, SEXP bit, SEXP compression, SEXP encoding) {
   bool bit8 = INTEGER(bit)[0] == 8;
   int bgCol = RGBpar(bg, 0);
+  
+  BEGIN_CPP
   if (bit8) {
     if (R_ALPHA(bgCol) == 255) { // Opaque bg... no need for alpha channel
       AggDeviceTiffNoAlpha* device = new AggDeviceTiffNoAlpha(
@@ -61,6 +63,7 @@ SEXP agg_tiff_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
       makeDevice<AggDeviceTiff16Alpha>(device, "agg_png");
     }
   }
+  END_CPP
   
   return R_NilValue;
 }
