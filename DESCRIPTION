@@ -43,8 +43,12 @@ SystemRequirements:
     freetype2
     libpng
 Suggests: 
-    covr
+    covr,
+    testthat,
+    grid
 Imports: 
     systemfonts (>= 0.2.1)
 LinkingTo: 
     systemfonts
+Remotes:
+    r-lib/systemfonts
