@@ -7,6 +7,8 @@
 
 [![R build
 status](https://github.com/r-lib/ragg/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/ragg/actions)
+[![Codecov test
+coverage](https://codecov.io/gh/r-lib/ragg/branch/master/graph/badge.svg)](https://codecov.io/gh/r-lib/ragg?branch=master)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/ragg)](https://cran.r-project.org/package=ragg)
 [![Lifecycle:
