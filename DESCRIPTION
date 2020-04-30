@@ -45,7 +45,8 @@ SystemRequirements:
 Suggests: 
     covr,
     testthat,
-    grid
+    grid,
+    graphics
 Imports: 
     systemfonts (>= 0.2.1)
 LinkingTo: 
