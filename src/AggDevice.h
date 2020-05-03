@@ -20,6 +20,8 @@
 #include "agg_scanline_p.h"
 #include "agg_scanline_u.h"
 
+#include "util/agg_color_conv.h"
+
 /* Base class for graphic device interface to AGG. See AggDevice.cpp for 
  * implementation details. 
  * 
@@ -590,6 +592,10 @@ void AggDevice<PIXFMT, R_COLOR>::drawRaster(unsigned int *raster, int w, int h,
   agg::rendering_buffer rbuf(reinterpret_cast<unsigned char*>(raster), w, h, 
                              w * 4);
   
+  unsigned char * buffer8 = new unsigned char[w * h * pixfmt_type_32::pix_width];
+  agg::rendering_buffer rbuf8(buffer8, w, h, w * pixfmt_type_32::pix_width);
+  agg::convert<pixfmt_type_32, pixfmt_r_raster>(&rbuf8, &rbuf);
+
   agg::trans_affine img_mtx;
   img_mtx *= agg::trans_affine_reflection(0);
   img_mtx *= agg::trans_affine_translation(0, h);
@@ -603,9 +609,9 @@ void AggDevice<PIXFMT, R_COLOR>::drawRaster(unsigned int *raster, int w, int h,
   typedef agg::span_interpolator_linear<> interpolator_type;
   interpolator_type interpolator(img_mtx);
   
-  typedef agg::image_accessor_clone<pixfmt_r_raster> img_source_type;
+  typedef agg::image_accessor_clone<pixfmt_type_32> img_source_type;
   
-  pixfmt_r_raster img_pixf(rbuf);
+  pixfmt_type_32 img_pixf(rbuf8);
   img_source_type img_src(img_pixf);
   agg::span_allocator<agg::rgba8> sa;
   agg::rasterizer_scanline_aa<> ras;
@@ -633,6 +639,8 @@ void AggDevice<PIXFMT, R_COLOR>::drawRaster(unsigned int *raster, int w, int h,
     
     agg::render_scanlines_aa(ras, sl, renderer, sa, sg);
   }
+
+  delete [] buffer8;
 }
 
 template<class PIXFMT, class R_COLOR>
