@@ -1,13 +1,11 @@
 #ifndef AGGDEVJPEG_INCLUDED
 #define AGGDEVJPEG_INCLUDED
 
-#define HAVE_BOOLEAN
-#if !defined(_WIN32)
-typedef Rboolean boolean;
-#endif
+#include "ragg.h"
+#define TRUE 1
+#define FALSE 0
 #include <jpeglib.h>
 
-#include "ragg.h"
 #include "AggDevice.h"
 
 template<class PIXFMT>
