@@ -70,6 +70,7 @@ public:
     }
     
     jpeg_finish_compress(&cinfo);
+    fclose(fd);
     
     return true;
   };
