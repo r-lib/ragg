@@ -71,6 +71,7 @@ public:
     
     jpeg_finish_compress(&cinfo);
     fclose(fd);
+    jpeg_destroy_compress(&cinfo);
     
     return true;
   };
