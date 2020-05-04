@@ -131,7 +131,7 @@
 <div id="use" class="section level2">
 <h2 class="hasAnchor">
 <a href="#use" class="anchor"></a>Use</h2>
-<p>ragg provides drop-in replacements for the png and tiff graphic devices provided by default from the grDevices packages and can both produce png and tiff files. Notable features, that sets itself apart from the build-in devices, includes:</p>
+<p>ragg provides drop-in replacements for the png, jpeg, and tiff graphic devices provided by default from the grDevices packages and can both produce png, jpeg and tiff files. Notable features, that sets itself apart from the build-in devices, includes:</p>
 <ul>
 <li>Faster (up to 40% faster than anti-aliased cairo device)</li>
 <li>Direct access to all system fonts</li>
@@ -140,7 +140,7 @@
 <li>Support 16-bit output</li>
 <li>System independent rendering (output from Mac, Windows, and Linux should be identical)</li>
 </ul>
-<p>You can use it like any other device. The main functions are <code><a href="reference/agg_png.html">agg_png()</a></code> and <code><a href="reference/agg_tiff.html">agg_tiff()</a></code>, both have arguments that closely match those of the <code><a href="https://rdrr.io/r/grDevices/png.html">png()</a></code> and <code><a href="https://rdrr.io/r/grDevices/png.html">tiff()</a></code> functions, so switching over should be easy.</p>
+<p>You can use it like any other device. The main functions are <code><a href="reference/agg_png.html">agg_png()</a></code>, <code><a href="reference/agg_jpeg.html">agg_jpeg()</a></code> and <code><a href="reference/agg_tiff.html">agg_tiff()</a></code>, all of which have arguments that closely match those of the <code><a href="https://rdrr.io/r/grDevices/png.html">png()</a></code>, <code><a href="https://rdrr.io/r/grDevices/png.html">jpeg()</a></code> and <code><a href="https://rdrr.io/r/grDevices/png.html">tiff()</a></code> functions, so switching over should be easy.</p>
 <div class="sourceCode" id="cb2"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ragg</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
 
@@ -159,12 +159,14 @@
 <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="no">file</span>)</pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%"></p>
 <p>Further, it provides an <code><a href="reference/agg_capture.html">agg_capture()</a></code> device that lets you access the device buffer directly from your R session.</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="no">cap</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/agg_capture.html">agg_capture</a></span>()
+<div class="sourceCode" id="cb3"><pre class="r"><span class="no">cap</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/agg_capture.html">agg_capture</a></span>(<span class="kw">width</span> <span class="kw">=</span> <span class="fl">1000</span>, <span class="kw">height</span> <span class="kw">=</span> <span class="fl">500</span>, <span class="kw">res</span> <span class="kw">=</span> <span class="fl">144</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="fl">1</span>:<span class="fl">10</span>, <span class="fl">1</span>:<span class="fl">10</span>)
 
 <span class="no">scatter</span> <span class="kw">&lt;-</span> <span class="fu">cap</span>()
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
 
+<span class="co"># Remove margins from raster plotting</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mai</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>))
 <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/as.raster.html">as.raster</a></span>(<span class="no">scatter</span>))</pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="100%"></p>
 </div>
