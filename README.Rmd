@@ -38,9 +38,9 @@ devtools::install_github('r-lib/ragg')
 ```
 
 ## Use
-ragg provides drop-in replacements for the png and tiff graphic devices
-provided by default from the grDevices packages and can both produce png and 
-tiff files. Notable features, that sets itself apart from the build-in
+ragg provides drop-in replacements for the png, jpeg, and tiff graphic devices
+provided by default from the grDevices packages and can both produce png, jpeg 
+and tiff files. Notable features, that sets itself apart from the build-in
 devices, includes:
 
 - Faster (up to 40% faster than anti-aliased cairo device)
@@ -51,9 +51,10 @@ devices, includes:
 - System independent rendering (output from Mac, Windows, and Linux should be
   identical)
 
-You can use it like any other device. The main functions are `agg_png()` and
-`agg_tiff()`, both have arguments that closely match those of the `png()` and 
-`tiff()` functions, so switching over should be easy.
+You can use it like any other device. The main functions are `agg_png()`,
+`agg_jpeg()` and `agg_tiff()`, all of which have arguments that closely match 
+those of the `png()`, `jpeg()` and `tiff()` functions, so switching over should 
+be easy.
 
 ```{r}
 library(ragg)
@@ -78,12 +79,14 @@ Further, it provides an `agg_capture()` device that lets you access the device
 buffer directly from your R session.
 
 ```{r}
-cap <- agg_capture()
+cap <- agg_capture(width = 1000, height = 500, res = 144)
 plot(1:10, 1:10)
 
 scatter <- cap()
 invisible(dev.off())
 
+# Remove margins from raster plotting
+par(mai = c(0, 0, 0, 0))
 plot(as.raster(scatter))
 ```
 
