@@ -17,6 +17,7 @@ Anti-Grain Geometry (AGG) is a high-quality and high-performance
 Useful links:
 \itemize{
   \item \url{https://ragg.r-lib.org}
+  \item \url{https://github.com/r-lib/ragg}
   \item Report bugs at \url{https://github.com/r-lib/ragg/issues}
 }
 

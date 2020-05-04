@@ -7,12 +7,12 @@
 PLATFORM=`uname`
 
 # Library settings
-PKG_CONFIG_NAME="freetype2 libpng libtiff-4"
-PKG_DEB_NAME="libfreetype6-dev, libpng-dev, libtiff5-dev"
-PKG_RPM_NAME="freetype-devel, libpng-devel, libtiff-devel"
-PKG_CSW_NAME="libfreetype_dev, libpng16_dev, libtiff_dev"
-PKG_BREW_NAME="freetype libpng libtiff zlib"
-PKG_TEST_HEADER="#include <ft2build.h>\n#include <png.h>\n#include <tiffio.h>\n"
+PKG_CONFIG_NAME="freetype2 libpng libtiff-4 libjpeg"
+PKG_DEB_NAME="libfreetype6-dev, libpng-dev, libtiff5-dev libjpeg-turbo"
+PKG_RPM_NAME="freetype-devel, libpng-devel, libtiff-devel libjpeg-turbo"
+PKG_CSW_NAME="libfreetype_dev, libpng16_dev, libtiff_dev  libjpeg-turbo"
+PKG_BREW_NAME="freetype libpng libtiff zlib libjpeg-turbo"
+PKG_TEST_HEADER="#include <ft2build.h>\n#include <png.h>\n#include <tiffio.h>\n#include <jpeglib.h>\n"
 PKG_LIBS="-lfreetype -lpng16 -ltiff -lz -ljpeg -lbz2"
 PKG_CFLAGS=""
 
@@ -37,7 +37,7 @@ elif [ "$PLATFORM" = "Darwin" ]; then
     curl -sfL "https://jeroen.github.io/autobrew/ragg" > autobrew
     . autobrew
   fi
-  PKG_CFLAGS="-I$BREWDIR/opt/freetype/include/freetype2 -I$BREWDIR/opt/libpng/include -I$BREWDIR/opt/libtiff/include"
+  PKG_CFLAGS="-I$BREWDIR/opt/freetype/include/freetype2 -I$BREWDIR/opt/libpng/include -I$BREWDIR/opt/libtiff/include -I$BREWDIR/opt/libjpeg/include"
   PKG_LIBS="-L$BREWDIR/opt/freetype/lib -L$BREWDIR/opt/libpng/lib -L$BREWDIR/opt/libtiff/lib -L$BREWDIR/opt/libjpeg/lib ${PKG_LIBS}"
 elif [ $R_HAS_PKG_CONFIG ]; then
   echo "Found pkg-config cflags and libs!"

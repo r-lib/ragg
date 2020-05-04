@@ -6,6 +6,8 @@
   (#32)
 * Fix a bug in `agg_capture()` where the output became mangled if device 
   height != width
+* Fix a bug in raster support where raster data did not get premultiplied before
+  rendering (#38, @yixuan)
 
 # ragg 0.1.5
 
