@@ -40,8 +40,10 @@ Encoding: UTF-8
 RoxygenNote: 7.1.0
 SystemRequirements: 
     C++11,
-    freetype2
-    libpng
+    freetype2,
+    libpng,
+    libtiff,
+    libjpeg
 Suggests: 
     covr,
     testthat,
@@ -51,5 +53,3 @@ Imports:
     systemfonts (>= 0.2.1)
 LinkingTo: 
     systemfonts
-Remotes:
-    r-lib/systemfonts
