@@ -41,6 +41,7 @@ reference:
       formats.
     contents:
     - agg_png
+    - agg_jpeg
     - agg_tiff
     - agg_capture
     - agg_ppm
