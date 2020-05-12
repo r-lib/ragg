@@ -786,7 +786,7 @@ namespace agg
         // Fixed-point multiply, exact over int16u.
         static AGG_INLINE value_type multiply(value_type a, value_type b) 
         {
-            calc_type t = a * b + base_MSB;
+            calc_type t = calc_type(a) * b + base_MSB;
             return value_type(((t >> base_shift) + t) >> base_shift);
         }
         

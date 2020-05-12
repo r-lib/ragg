@@ -8,6 +8,7 @@
   height != width
 * Fix a bug in raster support where raster data did not get premultiplied before
   rendering (#38, @yixuan)
+* Fix an integer overflow issue in the AGG source code
 
 # ragg 0.1.5
 
