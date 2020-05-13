@@ -7,7 +7,7 @@
 PLATFORM=`uname`
 
 # Library settings
-PKG_CONFIG_NAME="freetype2 libpng libtiff-4 libjpeg"
+PKG_CONFIG_NAME="freetype2 libpng libtiff-4"
 PKG_DEB_NAME="libfreetype6-dev, libpng-dev libtiff5-dev libjpeg-dev"
 PKG_RPM_NAME="freetype-devel libpng-devel libtiff-devel libjpeg-turbo-devel"
 PKG_CSW_NAME="libfreetype_dev libpng16_dev libtiff_dev libjpeg_dev"
@@ -43,6 +43,7 @@ elif [ $R_HAS_PKG_CONFIG ]; then
   echo "Found pkg-config cflags and libs!"
   PKG_CFLAGS=`pkg-config --cflags ${PKG_CONFIG_NAME}`
   PKG_LIBS=`pkg-config --libs ${PKG_CONFIG_NAME}`
+  PKG_LIBS="$PKG_LIBS -ljpeg"
 
   # Test configuration
   printf "$PKG_TEST_HEADER" | ${CC} ${CPPFLAGS} ${PKG_CFLAGS} ${CFLAGS} -E -xc - >/dev/null 2>&1 || R_CONFIG_ERROR=1;
