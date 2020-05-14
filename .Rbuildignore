@@ -18,3 +18,4 @@
 ^configure.log$
 ^codecov\.yml$
 ^\.github$
+^revdep$

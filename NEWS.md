@@ -1,4 +1,4 @@
-# ragg (development version)
+# ragg 0.2.0
 
 * Fix compilation on R <= 3.3 by including Rdynload.h explicitly
 * Fix a performance regression when plotting text (#33)
