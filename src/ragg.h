@@ -35,9 +35,9 @@ typedef agg::pixfmt_rgb48_pre                   pixfmt_type_48;
 typedef agg::pixfmt_rgba64_pre                  pixfmt_type_64;
 
 #ifdef __BIG_ENDIAN__ 
-typedef agg::pixfmt_abgr32                      pixfmt_r_raster;
+typedef agg::pixfmt_abgr32_plain                pixfmt_r_raster;
 #else
-typedef agg::pixfmt_rgba32                      pixfmt_r_raster;
+typedef agg::pixfmt_rgba32_plain                pixfmt_r_raster;
 #endif
 
 // pixfmt agnosting demultiplying
