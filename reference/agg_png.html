@@ -195,6 +195,7 @@ based on the `res` argument.</p>
   <span class='kw'>pointsize</span> <span class='kw'>=</span> <span class='fl'>12</span>,
   <span class='kw'>background</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
   <span class='kw'>res</span> <span class='kw'>=</span> <span class='fl'>72</span>,
+  <span class='kw'>scaling</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>bitsize</span> <span class='kw'>=</span> <span class='fl'>8</span>,
   <span class='no'>bg</span>
 )</pre>
@@ -234,6 +235,12 @@ compliant string format to name multiple plots (such as the default value)</p></
       <td><p>The resolution of the device. This setting will govern how device
 dimensions given in inches, centimeters, or millimeters will be converted
 to pixels. Further, it will be used to scale text sizes and linewidths</p></td>
+    </tr>
+    <tr>
+      <th>scaling</th>
+      <td><p>A scaling factor to apply to the rendered line width and text
+size. Useful for getting the right dimensions at the resolution that you
+need.</p></td>
     </tr>
     <tr>
       <th>bitsize</th>
