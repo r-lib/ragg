@@ -12,6 +12,7 @@ agg_supertransparent(
   pointsize = 12,
   background = "white",
   res = 72,
+  scaling = 1,
   alpha_mod = 1,
   bg
 )
@@ -35,6 +36,10 @@ compliant string format to name multiple plots (such as the default value)}
 \item{res}{The resolution of the device. This setting will govern how device
 dimensions given in inches, centimeters, or millimeters will be converted
 to pixels. Further, it will be used to scale text sizes and linewidths}
+
+\item{scaling}{A scaling factor to apply to the rendered line width and text
+size. Useful for getting the right dimensions at the resolution that you
+need.}
 
 \item{alpha_mod}{A numeric between 0 and 1 that will be multiplied to the 
 alpha channel of all transparent colours}

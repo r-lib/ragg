@@ -5,7 +5,7 @@
 
 // [[export]]
 SEXP agg_ppm_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, 
-               SEXP res) {
+               SEXP res, SEXP scaling) {
   int bgCol = RGBpar(bg, 0);
   
   BEGIN_CPP
@@ -15,7 +15,8 @@ SEXP agg_ppm_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
     INTEGER(height)[0], 
     REAL(pointsize)[0], 
     bgCol,
-    REAL(res)[0]
+    REAL(res)[0],
+    REAL(scaling)[0]
   );
   makeDevice<AggDevicePpmNoAlpha>(device, "agg_ppm");
   END_CPP

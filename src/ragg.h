@@ -57,16 +57,18 @@ inline void demultiply<pixfmt_type_64>(pixfmt_type_64* pixfmt) {
 }
 
 SEXP agg_ppm_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, 
-               SEXP res);
+               SEXP res, SEXP scaling);
 SEXP agg_png_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, 
-               SEXP res, SEXP bit);
+               SEXP res, SEXP scaling, SEXP bit);
 SEXP agg_supertransparent_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, 
-                            SEXP bg, SEXP res, SEXP alpha_mod);
+                            SEXP bg, SEXP res, SEXP scaling, SEXP alpha_mod);
 SEXP agg_tiff_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, 
-                SEXP res, SEXP bit, SEXP compression, SEXP encoding);
+                SEXP res, SEXP scaling, SEXP bit, SEXP compression, 
+                SEXP encoding);
 SEXP agg_jpeg_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, 
-                SEXP res, SEXP quality, SEXP smoothing, SEXP method);
+                SEXP res, SEXP scaling, SEXP quality, SEXP smoothing, 
+                SEXP method);
 SEXP agg_capture_c(SEXP name, SEXP width, SEXP height, SEXP pointsize, SEXP bg, 
-                   SEXP res);
+                   SEXP res, SEXP scaling);
 
 #endif

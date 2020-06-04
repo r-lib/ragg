@@ -12,6 +12,7 @@ agg_jpeg(
   pointsize = 12,
   background = "white",
   res = 72,
+  scaling = 1,
   quality = 75,
   smoothing = FALSE,
   method = "slow",
@@ -37,6 +38,10 @@ compliant string format to name multiple plots (such as the default value)}
 \item{res}{The resolution of the device. This setting will govern how device
 dimensions given in inches, centimeters, or millimeters will be converted
 to pixels. Further, it will be used to scale text sizes and linewidths}
+
+\item{scaling}{A scaling factor to apply to the rendered line width and text
+size. Useful for getting the right dimensions at the resolution that you
+need.}
 
 \item{quality}{An integer between `0` and `100` defining the quality/size 
 tradeoff. Setting this to `100` will result in no compression.}

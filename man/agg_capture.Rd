@@ -11,6 +11,7 @@ agg_capture(
   pointsize = 12,
   background = "white",
   res = 72,
+  scaling = 1,
   bg
 )
 }
@@ -29,6 +30,10 @@ agg_capture(
 \item{res}{The resolution of the device. This setting will govern how device
 dimensions given in inches, centimeters, or millimeters will be converted
 to pixels. Further, it will be used to scale text sizes and linewidths}
+
+\item{scaling}{A scaling factor to apply to the rendered line width and text
+size. Useful for getting the right dimensions at the resolution that you
+need.}
 
 \item{bg}{Same as `background` for compatibility with old graphic device APIs}
 }

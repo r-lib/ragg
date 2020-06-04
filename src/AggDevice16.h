@@ -30,8 +30,8 @@ public:
   double alpha_mod;
   
   AggDevice16(const char* fp, int w, int h, double ps, int bg, double res, 
-              double alpha_mod = 1.0) : 
-    AggDevice<PIXFMT, agg::rgba16>(fp, w, h, ps, bg, res),
+              double scaling, double alpha_mod = 1.0) : 
+    AggDevice<PIXFMT, agg::rgba16>(fp, w, h, ps, bg, res, scaling),
     alpha_mod(alpha_mod)
   {
       this->background = convertColour(this->background_int);

@@ -4,7 +4,8 @@
 #include "AggDevicePng.h"
 
 // [[export]]
-SEXP agg_png_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, SEXP res, SEXP bit) {
+SEXP agg_png_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, 
+               SEXP res, SEXP scaling, SEXP bit) {
   bool bit8 = INTEGER(bit)[0] == 8;
   int bgCol = RGBpar(bg, 0);
   
@@ -17,7 +18,8 @@ SEXP agg_png_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, SEXP
         INTEGER(height)[0], 
         REAL(pointsize)[0], 
         bgCol,
-        REAL(res)[0]
+        REAL(res)[0],
+        REAL(scaling)[0]
       );
       makeDevice<AggDevicePngNoAlpha>(device, "agg_png");
     } else {
@@ -27,7 +29,8 @@ SEXP agg_png_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, SEXP
         INTEGER(height)[0], 
         REAL(pointsize)[0], 
         bgCol,
-        REAL(res)[0]
+        REAL(res)[0],
+        REAL(scaling)[0]
       );
       makeDevice<AggDevicePngAlpha>(device, "agg_png");
     }
@@ -39,7 +42,8 @@ SEXP agg_png_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, SEXP
         INTEGER(height)[0], 
         REAL(pointsize)[0], 
         bgCol,
-        REAL(res)[0]
+        REAL(res)[0],
+        REAL(scaling)[0]
       );
       makeDevice<AggDevicePng16NoAlpha>(device, "agg_png");
     } else {
@@ -49,7 +53,8 @@ SEXP agg_png_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, SEXP
         INTEGER(height)[0], 
         REAL(pointsize)[0], 
         bgCol,
-        REAL(res)[0]
+        REAL(res)[0],
+        REAL(scaling)[0]
       );
       makeDevice<AggDevicePng16Alpha>(device, "agg_png");
     }
@@ -59,7 +64,8 @@ SEXP agg_png_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, SEXP
   return R_NilValue;
 }
 
-SEXP agg_supertransparent_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, SEXP res, SEXP alpha_mod) {
+SEXP agg_supertransparent_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, 
+                            SEXP bg, SEXP res, SEXP scaling, SEXP alpha_mod) {
   int bgCol = RGBpar(bg, 0);
   
   BEGIN_CPP
@@ -71,6 +77,7 @@ SEXP agg_supertransparent_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, 
       REAL(pointsize)[0], 
       bgCol,
       REAL(res)[0],
+      REAL(scaling)[0],
       REAL(alpha_mod)[0]
     );
     makeDevice<AggDevicePng16NoAlpha>(device, "agg_png");
@@ -82,6 +89,7 @@ SEXP agg_supertransparent_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, 
       REAL(pointsize)[0], 
       bgCol,
       REAL(res)[0],
+      REAL(scaling)[0],
       REAL(alpha_mod)[0]
     );
     makeDevice<AggDevicePng16Alpha>(device, "agg_png");

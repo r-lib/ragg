@@ -7,8 +7,8 @@
 template<class PIXFMT>
 class AggDevicePpm : public AggDevice<PIXFMT> {
 public:
-  AggDevicePpm(const char* fp, int w, int h, double ps, int bg, double res) : 
-  AggDevice<PIXFMT>(fp, w, h, ps, bg, res)
+  AggDevicePpm(const char* fp, int w, int h, double ps, int bg, double res, double scaling) : 
+  AggDevice<PIXFMT>(fp, w, h, ps, bg, res, scaling)
   {
     
   }
