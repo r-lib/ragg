@@ -180,6 +180,36 @@ SEXP agg_capture(pDevDesc dd) {
 }
 
 template<class T>
+SEXP agg_setPattern(SEXP pattern, pDevDesc dd) {
+  BEGIN_CPP
+    return R_NilValue;
+  END_CPP
+}
+
+template<class T>
+void agg_releasePattern(SEXP ref, pDevDesc dd) {} 
+
+template<class T>
+SEXP agg_setClipPath(SEXP path, SEXP ref, pDevDesc dd) {
+  BEGIN_CPP
+    return R_NilValue;
+  END_CPP
+}
+
+template<class T>
+void agg_releaseClipPath(SEXP ref, pDevDesc dd) {}
+
+template<class T>
+SEXP agg_setMask(SEXP path, SEXP ref, pDevDesc dd) {
+  BEGIN_CPP
+    return R_NilValue;
+  END_CPP
+}
+
+template<class T>
+void agg_releaseMask(SEXP ref, pDevDesc dd) {}
+
+template<class T>
 pDevDesc agg_device_new(T* device) {
   
   pDevDesc dd = (DevDesc*) calloc(1, sizeof(DevDesc));
@@ -216,7 +246,14 @@ pDevDesc agg_device_new(T* device) {
     dd->cap = NULL;
   }
   dd->raster = agg_raster<T>;
-  
+#if R_GE_version >= 13
+  dd->setPattern      = agg_setPattern<T>;
+  dd->releasePattern  = agg_releasePattern<T>;
+  dd->setClipPath     = agg_setClipPath<T>;
+  dd->releaseClipPath = agg_releaseClipPath<T>;
+  dd->setMask         = agg_setMask<T>;
+  dd->releaseMask     = agg_releaseMask<T>;
+#endif
   // UTF-8 support
   dd->wantSymbolUTF8 = (Rboolean) 1;
   dd->hasTextUTF8 = (Rboolean) 1;
@@ -250,6 +287,10 @@ pDevDesc agg_device_new(T* device) {
   dd->haveTransparentBg = 2;
   dd->useRotatedTextInContour =  (Rboolean) 1;
   
+#if R_GE_version >= 13
+  dd->deviceVersion = R_GE_definitions;
+#endif
+
   dd->deviceSpecific = device;
   
   return dd;
