@@ -3,6 +3,8 @@
 * Fix a bug when plotting partially transparent raster (#44)
 * Add a `scaling` argument to all devices allowing you to change relative 
   scaling of output.
+* Horizontal and vertical text are now snapped to the pixel grid in order to 
+  improve rendering quality.
 
 # ragg 0.2.0
 

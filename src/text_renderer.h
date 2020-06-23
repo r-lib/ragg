@@ -185,6 +185,9 @@ public:
     const uint32_t* string_conv = converter.convert(string, size_out);
     double width = text_width(string_conv, size_out);
     
+    // Snap to pixel grid for vertical or horizontal text
+    bool snap = fmod(rot, 90) < 1e-6;
+    
     if (rot != 0) {
       rot = agg::deg2rad(-rot);
       agg::trans_affine mtx;
@@ -194,6 +197,11 @@ public:
     
     x -= (width * hadj) * cos(rot);
     y -= (width * hadj) * sin(rot);
+    
+    if (snap) {
+      x = std::round(x);
+      y = std::round(y);
+    }
     
     while (*string_conv) {
       const agg::glyph_cache* glyph = get_manager().glyph(*string_conv);
