@@ -10,7 +10,7 @@ render_polygon <- function(fill, colour, linewidth, linetype, linejoin) {
   out
 }
 
-is_4plus <- packageVersion('base') > "4.0.0"
+is_4plus <- packageVersion('base') >= "4.1.0"
 
 test_that("polygon stroke works", {
   polygon <- table(render_polygon(NA, 'black', 14, 'solid', 'round'))
