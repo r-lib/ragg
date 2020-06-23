@@ -47,7 +47,7 @@ public:
     );
     
     // Write in physical dimensions
-    unsigned int ppm = this->res_mod * 72.0 / 0.0254;
+    unsigned int ppm = this->res_real / 0.0254;
     png_set_pHYs(png, info, ppm, ppm, 1);
     
     // Write prefered background, just because...
@@ -116,7 +116,7 @@ public:
     );
     
     // Write in physical dimensions
-    unsigned int ppm = this->res_mod * 72.0 / 0.0254;
+    unsigned int ppm = this->res_real / 0.0254;
     png_set_pHYs(png, info, ppm, ppm, 1);
     
     // Write prefered background, just because...

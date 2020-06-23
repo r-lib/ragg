@@ -1,6 +1,8 @@
 # ragg (development version)
 
 * Fix a bug when plotting partially transparent raster (#44)
+* Add a `scaling` argument to all devices allowing you to change relative 
+  scaling of output.
 
 # ragg 0.2.0
 

@@ -59,6 +59,7 @@ public:
   R_COLOR background;
   int background_int;
   double pointsize;
+  double res_real;
   double res_mod;
   double lwd_mod;
   
@@ -168,6 +169,7 @@ AggDevice<PIXFMT, R_COLOR>::AggDevice(const char* fp, int w, int h, double ps,
   file(fp),
   background_int(bg),
   pointsize(ps),
+  res_real(res),
   res_mod(scaling * res / 72.0),
   lwd_mod(scaling * res / 96.0),
   t_ren()

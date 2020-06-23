@@ -40,8 +40,8 @@ public:
     cinfo.image_width       = this->width;
     cinfo.image_height      = this->height;
     cinfo.density_unit      = 1;
-    cinfo.X_density         = this->res_mod * 72.0;
-    cinfo.Y_density         = this->res_mod * 72.0;
+    cinfo.X_density         = this->res_real;
+    cinfo.Y_density         = this->res_real;
     cinfo.input_components  = 3;
     cinfo.in_color_space    = JCS_RGB;
     cinfo.smoothing_factor  = this->smoothing;

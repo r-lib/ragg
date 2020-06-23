@@ -37,8 +37,8 @@ public:
     }
     TIFFSetField(out, TIFFTAG_BITSPERSAMPLE, 8);
     TIFFSetField(out, TIFFTAG_ORIENTATION, ORIENTATION_TOPLEFT);
-    TIFFSetField(out, TIFFTAG_XRESOLUTION, this->res_mod * 72.0);
-    TIFFSetField(out, TIFFTAG_YRESOLUTION, this->res_mod * 72.0);
+    TIFFSetField(out, TIFFTAG_XRESOLUTION, this->res_real);
+    TIFFSetField(out, TIFFTAG_YRESOLUTION, this->res_real);
     TIFFSetField(out, TIFFTAG_RESOLUTIONUNIT, 2); // Inches
     
     // Compression
@@ -107,8 +107,8 @@ public:
     }
     TIFFSetField(out, TIFFTAG_BITSPERSAMPLE, 16);
     TIFFSetField(out, TIFFTAG_ORIENTATION, ORIENTATION_TOPLEFT);
-    TIFFSetField(out, TIFFTAG_XRESOLUTION, this->res_mod * 72.0);
-    TIFFSetField(out, TIFFTAG_YRESOLUTION, this->res_mod * 72.0);
+    TIFFSetField(out, TIFFTAG_XRESOLUTION, this->res_real);
+    TIFFSetField(out, TIFFTAG_YRESOLUTION, this->res_real);
     TIFFSetField(out, TIFFTAG_RESOLUTIONUNIT, 2); // Inches
     
     // Compression
