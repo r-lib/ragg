@@ -13,6 +13,7 @@ render_polygon <- function(fill, colour, linewidth, linetype, linejoin) {
 is_4plus <- packageVersion('base') >= "4.1.0"
 
 test_that("polygon stroke works", {
+  skip_on_cran()
   polygon <- table(render_polygon(NA, 'black', 14, 'solid', 'round'))
   expect_equal(polygon[['white']], 217376)
   expect_equal(polygon[['black']], if (is_4plus) 9968 else 9976)
@@ -31,6 +32,7 @@ test_that("polygon stroke works", {
 })
 
 test_that("polygon fill works", {
+  skip_on_cran()
   polygon <- table(render_polygon('black', NA, 4, 'solid', 'round'))
   expect_equal(polygon[['white']], 156288)
   expect_equal(polygon[['black']], 73344)
