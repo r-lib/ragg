@@ -5,6 +5,7 @@
   scaling of output.
 * Horizontal and vertical text are now snapped to the pixel grid in order to 
   improve rendering quality.
+* Internal changes to prepare for coming updates to the graphic engine
 
 # ragg 0.2.0
 
