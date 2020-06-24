@@ -1,3 +1,5 @@
+# ragg (development version)
+
 # ragg 0.3.0
 
 * Fix a bug when plotting partially transparent raster (#44)
