@@ -95,7 +95,7 @@ that when called will return the current state of the buffer." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ragg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -177,15 +177,15 @@ the buffer. In contrast to the other devices this device returns a function,
 that when called will return the current state of the buffer.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>agg_capture</span>(
-  <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>480</span>,
-  <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>480</span>,
-  <span class='kw'>units</span> <span class='kw'>=</span> <span class='st'>"px"</span>,
-  <span class='kw'>pointsize</span> <span class='kw'>=</span> <span class='fl'>12</span>,
-  <span class='kw'>background</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
-  <span class='kw'>res</span> <span class='kw'>=</span> <span class='fl'>72</span>,
-  <span class='kw'>scaling</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='no'>bg</span>
+    <pre class="usage"><span class='fu'><a href='https://ragg.r-lib.org/reference/agg_capture.html'>agg_capture</a></span>(
+  width = <span class='fl'>480</span>,
+  height = <span class='fl'>480</span>,
+  units = <span class='st'>"px"</span>,
+  pointsize = <span class='fl'>12</span>,
+  background = <span class='st'>"white"</span>,
+  res = <span class='fl'>72</span>,
+  scaling = <span class='fl'>1</span>,
+  <span class='kw'>bg</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -238,20 +238,19 @@ The return value of the function depends on the `native` argument. If `FALSE`
 return value is a `nativeRaster` object.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cap</span> <span class='kw'>&lt;-</span> <span class='fu'>agg_capture</span>()
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>1</span>:<span class='fl'>10</span>)
+    <pre class="examples"><div class='input'><span class='kw'>cap</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://ragg.r-lib.org/reference/agg_capture.html'>agg_capture</a></span>()
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>)
 
 <span class='co'># Get the plot as a matrix</span>
-<span class='no'>raster</span> <span class='kw'>&lt;-</span> <span class='fu'>cap</span>()
+<span class='kw'>raster</span> <span class='op'>&lt;-</span> <span class='fu'>cap</span>()
 
 <span class='co'># Get the plot as a nativeRaster</span>
-<span class='no'>raster_n</span> <span class='kw'>&lt;-</span> <span class='fu'>cap</span>(<span class='kw'>native</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='kw'>raster_n</span> <span class='op'>&lt;-</span> <span class='fu'>cap</span>(native = <span class='fl'>TRUE</span>)
 
 <span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span>()</div><div class='output co'>#&gt; pdf 
 #&gt;   2 </div><div class='input'>
 <span class='co'># Look at the output</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fu'><a href='https://rdrr.io/r/grDevices/as.raster.html'>as.raster</a></span>(<span class='no'>raster</span>))</div><div class='img'><img src='agg_capture-1.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='fu'><a href='https://rdrr.io/r/grDevices/as.raster.html'>as.raster</a></span>(<span class='kw'>raster</span>))</div><div class='img'><img src='agg_capture-1.png' alt='' width='700' height='433' /></div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -98,7 +98,7 @@ format is explicetly requested." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ragg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -183,18 +183,18 @@ types produced in R. Still, TIFF has its purposes and sometimes this file
 format is explicetly requested.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>agg_tiff</span>(
-  <span class='kw'>filename</span> <span class='kw'>=</span> <span class='st'>"Rplot%03d.tiff"</span>,
-  <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>480</span>,
-  <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>480</span>,
-  <span class='kw'>units</span> <span class='kw'>=</span> <span class='st'>"px"</span>,
-  <span class='kw'>pointsize</span> <span class='kw'>=</span> <span class='fl'>12</span>,
-  <span class='kw'>background</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
-  <span class='kw'>res</span> <span class='kw'>=</span> <span class='fl'>72</span>,
-  <span class='kw'>scaling</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>compression</span> <span class='kw'>=</span> <span class='st'>"none"</span>,
-  <span class='kw'>bitsize</span> <span class='kw'>=</span> <span class='fl'>8</span>,
-  <span class='no'>bg</span>
+    <pre class="usage"><span class='fu'><a href='https://ragg.r-lib.org/reference/agg_tiff.html'>agg_tiff</a></span>(
+  filename = <span class='st'>"Rplot%03d.tiff"</span>,
+  width = <span class='fl'>480</span>,
+  height = <span class='fl'>480</span>,
+  units = <span class='st'>"px"</span>,
+  pointsize = <span class='fl'>12</span>,
+  background = <span class='st'>"white"</span>,
+  res = <span class='fl'>72</span>,
+  scaling = <span class='fl'>1</span>,
+  compression = <span class='st'>"none"</span>,
+  bitsize = <span class='fl'>8</span>,
+  <span class='kw'>bg</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -270,13 +270,12 @@ this is not always that important, but it is one of the benefits of TIFF over
 PNG so it should be noted.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>'.tiff'</span>)
+    <pre class="examples"><div class='input'><span class='kw'>file</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(fileext = <span class='st'>'.tiff'</span>)
 <span class='co'># Use jpeg compression</span>
-<span class='fu'>agg_tiff</span>(<span class='no'>file</span>, <span class='kw'>compression</span> <span class='kw'>=</span> <span class='st'>'lzw+p'</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>sin</span>, -<span class='no'>pi</span>, <span class='fl'>2</span>*<span class='no'>pi</span>)
+<span class='fu'><a href='https://ragg.r-lib.org/reference/agg_tiff.html'>agg_tiff</a></span>(<span class='kw'>file</span>, compression = <span class='st'>'lzw+p'</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>sin</span>, <span class='op'>-</span><span class='kw'>pi</span>, <span class='fl'>2</span><span class='op'>*</span><span class='kw'>pi</span>)
 <span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span>()</div><div class='output co'>#&gt; pdf 
-#&gt;   2 </div><div class='input'>
-</div></pre>
+#&gt;   2 </div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

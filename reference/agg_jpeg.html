@@ -97,7 +97,7 @@ smaller plots with very little quality degradation." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ragg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -181,19 +181,19 @@ includes a high degree of raster image rendering this device will result in
 smaller plots with very little quality degradation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>agg_jpeg</span>(
-  <span class='kw'>filename</span> <span class='kw'>=</span> <span class='st'>"Rplot%03d.jpeg"</span>,
-  <span class='kw'>width</span> <span class='kw'>=</span> <span class='fl'>480</span>,
-  <span class='kw'>height</span> <span class='kw'>=</span> <span class='fl'>480</span>,
-  <span class='kw'>units</span> <span class='kw'>=</span> <span class='st'>"px"</span>,
-  <span class='kw'>pointsize</span> <span class='kw'>=</span> <span class='fl'>12</span>,
-  <span class='kw'>background</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
-  <span class='kw'>res</span> <span class='kw'>=</span> <span class='fl'>72</span>,
-  <span class='kw'>scaling</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>quality</span> <span class='kw'>=</span> <span class='fl'>75</span>,
-  <span class='kw'>smoothing</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"slow"</span>,
-  <span class='no'>bg</span>
+    <pre class="usage"><span class='fu'><a href='https://ragg.r-lib.org/reference/agg_jpeg.html'>agg_jpeg</a></span>(
+  filename = <span class='st'>"Rplot%03d.jpeg"</span>,
+  width = <span class='fl'>480</span>,
+  height = <span class='fl'>480</span>,
+  units = <span class='st'>"px"</span>,
+  pointsize = <span class='fl'>12</span>,
+  background = <span class='st'>"white"</span>,
+  res = <span class='fl'>72</span>,
+  scaling = <span class='fl'>1</span>,
+  quality = <span class='fl'>75</span>,
+  smoothing = <span class='fl'>FALSE</span>,
+  method = <span class='st'>"slow"</span>,
+  <span class='kw'>bg</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -270,12 +270,11 @@ integers. It offers no quality benefit and is often much slower.</p></td>
 library that supports smoothing.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>'.jpeg'</span>)
-<span class='fu'>agg_jpeg</span>(<span class='no'>file</span>, <span class='kw'>quality</span> <span class='kw'>=</span> <span class='fl'>50</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>sin</span>, -<span class='no'>pi</span>, <span class='fl'>2</span>*<span class='no'>pi</span>)
+    <pre class="examples"><div class='input'><span class='kw'>file</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(fileext = <span class='st'>'.jpeg'</span>)
+<span class='fu'><a href='https://ragg.r-lib.org/reference/agg_jpeg.html'>agg_jpeg</a></span>(<span class='kw'>file</span>, quality = <span class='fl'>50</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>sin</span>, <span class='op'>-</span><span class='kw'>pi</span>, <span class='fl'>2</span><span class='op'>*</span><span class='kw'>pi</span>)
 <span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span>()</div><div class='output co'>#&gt; pdf 
-#&gt;   2 </div><div class='input'>
-</div></pre>
+#&gt;   2 </div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

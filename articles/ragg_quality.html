@@ -44,7 +44,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ragg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -109,7 +109,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="ragg_quality_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Ragg Quality</h1>
@@ -122,15 +122,17 @@
 
     
     
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ragg</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">grid</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">magick</span>)
-<span class="no">img_zoom</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">path</span>) {
-  <span class="no">img</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/editing.html">image_read</a></span>(<span class="no">path</span>)
-  <span class="no">img</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/transform.html">image_crop</a></span>(<span class="no">img</span>, <span class="st">'300x150+150+75'</span>)
-  <span class="no">img</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/transform.html">image_sample</a></span>(<span class="no">img</span>, <span class="st">'600x300'</span>)
-  <span class="no">img</span>
-}</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://ragg.r-lib.org">ragg</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">grid</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://docs.ropensci.org/magick">magick</a></span>)
+<span class="kw">img_zoom</span> <span class="op">&lt;-</span> <span class="fu">function</span>(<span class="kw">path</span>) {
+  <span class="kw">img</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/editing.html">image_read</a></span>(<span class="kw">path</span>)
+  <span class="kw">img</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/transform.html">image_crop</a></span>(<span class="kw">img</span>, <span class="st">'300x150+150+75'</span>)
+  <span class="kw">img</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/transform.html">image_sample</a></span>(<span class="kw">img</span>, <span class="st">'600x300'</span>)
+  <span class="kw">img</span>
+}
+</pre></div>
 <p>This vignette tries to compare the quality of the output of ragg, with that of cairo and, if the system supports it, Xlib (Xlib is unix only). As quality is, to a certain extend, subjective, the vignette will be short on conclusions and filled with examples.</p>
 <blockquote>
 <p>The present version of this vignette has been compiled on a system without the X11 device. The benchmarkings will thus omit this device, though the text will still refer to it.</p>
@@ -144,45 +146,55 @@
 <h2 class="hasAnchor">
 <a href="#shape-rendering" class="anchor"></a>Shape rendering</h2>
 <p>The examples here are relevant for rendering of all different types of shapes, be it lines or polygons. Lines obviously don’t have fill, so only the stroke rendering will have relevance here. We chose to use a circle for this as it provides a nice sampling of uneven edges.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">circle_quality</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">device</span>, <span class="no">name</span>, <span class="no">file</span>, <span class="no">...</span>) {
-  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/device.html">device</a></span>(<span class="no">file</span>, <span class="kw">width</span> <span class="kw">=</span> <span class="fl">600</span>, <span class="kw">height</span> <span class="kw">=</span> <span class="fl">300</span>, <span class="no">...</span>)
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="kw">circle_quality</span> <span class="op">&lt;-</span> <span class="fu">function</span>(<span class="kw">device</span>, <span class="kw">name</span>, <span class="kw">file</span>, <span class="kw">...</span>) {
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/device.html">device</a></span>(<span class="kw">file</span>, width = <span class="fl">600</span>, height = <span class="fl">300</span>, <span class="kw">...</span>)
   <span class="fu"><a href="https://rdrr.io/r/grid/grid.circle.html">grid.circle</a></span>(
-    <span class="kw">x</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.25</span>, <span class="fl">0.75</span>),
-    <span class="kw">r</span> <span class="kw">=</span> <span class="fl">0.4</span>,
-    <span class="kw">gp</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(<span class="kw">col</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'black'</span>, <span class="fl">NA</span>), <span class="kw">fill</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">NA</span>, <span class="st">'black'</span>), <span class="kw">lwd</span> <span class="kw">=</span> <span class="fl">2</span>)
+    x = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.25</span>, <span class="fl">0.75</span>), 
+    r = <span class="fl">0.4</span>, 
+    gp = <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(col = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'black'</span>, <span class="fl">NA</span>), fill = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">NA</span>, <span class="st">'black'</span>), lwd = <span class="fl">2</span>)
   )
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span>(<span class="kw">y</span> <span class="kw">=</span> <span class="fl">0.1</span>, <span class="kw">label</span> <span class="kw">=</span> <span class="no">name</span>, <span class="kw">gp</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(<span class="kw">cex</span> <span class="kw">=</span> <span class="fl">2</span>))
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span>(y = <span class="fl">0.1</span>, label = <span class="kw">name</span>, gp = <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(cex = <span class="fl">2</span>))
   <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
-}</pre></body></html></div>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">ragg_circle</span> <span class="kw">&lt;-</span> <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
+}
+</pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw">ragg_circle</span> <span class="op">&lt;-</span> <span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
 
-<span class="fu">circle_quality</span>(<span class="no">agg_png</span>, <span class="st">'ragg'</span>, <span class="no">ragg_circle</span>)
+<span class="fu">circle_quality</span>(<span class="kw">agg_png</span>, <span class="st">'ragg'</span>, <span class="kw">ragg_circle</span>)
 
-<span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="no">ragg_circle</span>)</pre></body></html></div>
+<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="kw">ragg_circle</span>)
+</pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-4-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-5-1.png"><!-- --></p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">cairo_none_circle</span> <span class="kw">&lt;-</span> <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="kw">cairo_none_circle</span> <span class="op">&lt;-</span> <span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
 
-<span class="fu">circle_quality</span>(<span class="no">png</span>, <span class="st">'cairo no AA'</span>, <span class="no">cairo_none_circle</span>,
-               <span class="kw">type</span> <span class="kw">=</span> <span class="st">'cairo'</span>, <span class="kw">antialias</span> <span class="kw">=</span> <span class="st">'none'</span>)
+<span class="fu">circle_quality</span>(<span class="kw">png</span>, <span class="st">'cairo no AA'</span>, <span class="kw">cairo_none_circle</span>, 
+               type = <span class="st">'cairo'</span>, antialias = <span class="st">'none'</span>)
 
-<span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="no">cairo_none_circle</span>)</pre></body></html></div>
+<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="kw">cairo_none_circle</span>)
+</pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-8-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-9-1.png"><!-- --></p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">cairo_gray_circle</span> <span class="kw">&lt;-</span> <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="kw">cairo_gray_circle</span> <span class="op">&lt;-</span> <span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
 
-<span class="fu">circle_quality</span>(<span class="no">png</span>, <span class="st">'cairo gray AA'</span>, <span class="no">cairo_gray_circle</span>,
-               <span class="kw">type</span> <span class="kw">=</span> <span class="st">'cairo'</span>, <span class="kw">antialias</span> <span class="kw">=</span> <span class="st">'gray'</span>)
+<span class="fu">circle_quality</span>(<span class="kw">png</span>, <span class="st">'cairo gray AA'</span>, <span class="kw">cairo_gray_circle</span>, 
+               type = <span class="st">'cairo'</span>, antialias = <span class="st">'gray'</span>)
 
-<span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="no">cairo_gray_circle</span>)</pre></body></html></div>
+<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="kw">cairo_gray_circle</span>)
+</pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-10-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-11-1.png"><!-- --></p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">cairo_subpixel_circle</span> <span class="kw">&lt;-</span> <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="kw">cairo_subpixel_circle</span> <span class="op">&lt;-</span> <span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
 
-<span class="fu">circle_quality</span>(<span class="no">png</span>, <span class="st">'cairo subpixel AA'</span>, <span class="no">cairo_subpixel_circle</span>,
-               <span class="kw">type</span> <span class="kw">=</span> <span class="st">'cairo'</span>, <span class="kw">antialias</span> <span class="kw">=</span> <span class="st">'subpixel'</span>)
+<span class="fu">circle_quality</span>(<span class="kw">png</span>, <span class="st">'cairo subpixel AA'</span>, <span class="kw">cairo_subpixel_circle</span>, 
+               type = <span class="st">'cairo'</span>, antialias = <span class="st">'subpixel'</span>)
 
-<span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="no">cairo_subpixel_circle</span>)</pre></body></html></div>
+<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="kw">cairo_subpixel_circle</span>)
+</pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-12-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-13-1.png"><!-- --></p>
 <div id="observations" class="section level3">
@@ -196,79 +208,97 @@
 <h2 class="hasAnchor">
 <a href="#text" class="anchor"></a>Text</h2>
 <p>Text is a difficult thing to handle for a graphic device, both in terms of finding system fonts, and in terms of rendering. Often the rendering is offloaded to another library (e.g. freetype), which will provide a bitmap representation to blend into the device. This approach is often good for horizontal or vertical text, but struggle with other rotations. Here we will test text rendering at different sizes and at a 27° counter-clockwise rotation. We will use the the system provided <em>serif</em> font as it provides a more complex task than a <em>sans-serif</em> one.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">text_quality</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">device</span>, <span class="no">name</span>, <span class="no">file</span>, <span class="no">rotation</span> <span class="kw">=</span> <span class="fl">0</span>, <span class="no">...</span>) {
-  <span class="no">text</span> <span class="kw">&lt;-</span> <span class="st">'The quick blue R jumped over the lazy snake'</span>
-  <span class="no">vp</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html">viewport</a></span>(<span class="kw">angle</span> <span class="kw">=</span> <span class="no">rotation</span>)
-  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/device.html">device</a></span>(<span class="no">file</span>, <span class="kw">width</span> <span class="kw">=</span> <span class="fl">600</span>, <span class="kw">height</span> <span class="kw">=</span> <span class="fl">300</span>, <span class="no">...</span>)
-  <span class="fu"><a href="https://rdrr.io/r/grid/viewports.html">pushViewport</a></span>(<span class="no">vp</span>)
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span>(<span class="no">text</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="fl">0.1</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="fl">0.2</span>, <span class="kw">just</span> <span class="kw">=</span> <span class="st">'left'</span>, <span class="kw">gp</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(<span class="kw">fontfamily</span> <span class="kw">=</span> <span class="st">'serif'</span>, <span class="kw">cex</span> <span class="kw">=</span> <span class="fl">0.5</span>))
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span>(<span class="no">text</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="fl">0.1</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="fl">0.4</span>, <span class="kw">just</span> <span class="kw">=</span> <span class="st">'left'</span>, <span class="kw">gp</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(<span class="kw">fontfamily</span> <span class="kw">=</span> <span class="st">'serif'</span>, <span class="kw">cex</span> <span class="kw">=</span> <span class="fl">1</span>))
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span>(<span class="no">text</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="fl">0.1</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="fl">0.6</span>, <span class="kw">just</span> <span class="kw">=</span> <span class="st">'left'</span>, <span class="kw">gp</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(<span class="kw">fontfamily</span> <span class="kw">=</span> <span class="st">'serif'</span>, <span class="kw">cex</span> <span class="kw">=</span> <span class="fl">1.5</span>))
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span>(<span class="no">text</span>, <span class="kw">x</span> <span class="kw">=</span> <span class="fl">0.1</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="fl">0.8</span>, <span class="kw">just</span> <span class="kw">=</span> <span class="st">'left'</span>, <span class="kw">gp</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(<span class="kw">fontfamily</span> <span class="kw">=</span> <span class="st">'serif'</span>, <span class="kw">cex</span> <span class="kw">=</span> <span class="fl">2</span>))
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="kw">text_quality</span> <span class="op">&lt;-</span> <span class="fu">function</span>(<span class="kw">device</span>, <span class="kw">name</span>, <span class="kw">file</span>, <span class="kw">rotation</span> = <span class="fl">0</span>, <span class="kw">...</span>) {
+  <span class="kw">text</span> <span class="op">&lt;-</span> <span class="st">'The quick blue R jumped over the lazy snake'</span>
+  <span class="kw">vp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html">viewport</a></span>(angle = <span class="kw">rotation</span>)
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/device.html">device</a></span>(<span class="kw">file</span>, width = <span class="fl">600</span>, height = <span class="fl">300</span>, <span class="kw">...</span>)
+  <span class="fu"><a href="https://rdrr.io/r/grid/viewports.html">pushViewport</a></span>(<span class="kw">vp</span>)
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span>(<span class="kw">text</span>, x = <span class="fl">0.1</span>, y = <span class="fl">0.2</span>, just = <span class="st">'left'</span>, gp = <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(fontfamily = <span class="st">'serif'</span>, cex = <span class="fl">0.5</span>))
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span>(<span class="kw">text</span>, x = <span class="fl">0.1</span>, y = <span class="fl">0.4</span>, just = <span class="st">'left'</span>, gp = <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(fontfamily = <span class="st">'serif'</span>, cex = <span class="fl">1</span>))
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span>(<span class="kw">text</span>, x = <span class="fl">0.1</span>, y = <span class="fl">0.6</span>, just = <span class="st">'left'</span>, gp = <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(fontfamily = <span class="st">'serif'</span>, cex = <span class="fl">1.5</span>))
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span>(<span class="kw">text</span>, x = <span class="fl">0.1</span>, y = <span class="fl">0.8</span>, just = <span class="st">'left'</span>, gp = <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(fontfamily = <span class="st">'serif'</span>, cex = <span class="fl">2</span>))
   <span class="fu"><a href="https://rdrr.io/r/grid/viewports.html">popViewport</a></span>()
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="fl">0.9</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="fl">0.1</span>, <span class="kw">label</span> <span class="kw">=</span> <span class="no">name</span>, <span class="kw">just</span> <span class="kw">=</span> <span class="st">'right'</span>, <span class="kw">gp</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(<span class="kw">cex</span> <span class="kw">=</span> <span class="fl">2</span>))
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span>(x = <span class="fl">0.9</span>, y = <span class="fl">0.1</span>, label = <span class="kw">name</span>, just = <span class="st">'right'</span>, gp = <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(cex = <span class="fl">2</span>))
   <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
-}</pre></body></html></div>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">ragg_text</span> <span class="kw">&lt;-</span> <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
+}
+</pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="kw">ragg_text</span> <span class="op">&lt;-</span> <span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
 
-<span class="fu">text_quality</span>(<span class="no">agg_png</span>, <span class="st">'ragg'</span>, <span class="no">ragg_text</span>)
+<span class="fu">text_quality</span>(<span class="kw">agg_png</span>, <span class="st">'ragg'</span>, <span class="kw">ragg_text</span>)
 
-<span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="no">ragg_text</span>)</pre></body></html></div>
+<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="kw">ragg_text</span>)
+</pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-15-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-16-1.png"><!-- --></p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">ragg_text_rot</span> <span class="kw">&lt;-</span> <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="kw">ragg_text_rot</span> <span class="op">&lt;-</span> <span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
 
-<span class="fu">text_quality</span>(<span class="no">agg_png</span>, <span class="st">'ragg'</span>, <span class="no">ragg_text_rot</span>, <span class="kw">rotation</span> <span class="kw">=</span> <span class="fl">27</span>)
+<span class="fu">text_quality</span>(<span class="kw">agg_png</span>, <span class="st">'ragg'</span>, <span class="kw">ragg_text_rot</span>, rotation = <span class="fl">27</span>)
 
-<span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="no">ragg_text_rot</span>)</pre></body></html></div>
+<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="kw">ragg_text_rot</span>)
+</pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-17-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-18-1.png"><!-- --></p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">cairo_none_text</span> <span class="kw">&lt;-</span> <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="kw">cairo_none_text</span> <span class="op">&lt;-</span> <span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
 
-<span class="fu">text_quality</span>(<span class="no">png</span>, <span class="st">'cairo no AA'</span>, <span class="no">cairo_none_text</span>,
-             <span class="kw">type</span> <span class="kw">=</span> <span class="st">'cairo'</span>, <span class="kw">antialias</span> <span class="kw">=</span> <span class="st">'none'</span>)
+<span class="fu">text_quality</span>(<span class="kw">png</span>, <span class="st">'cairo no AA'</span>, <span class="kw">cairo_none_text</span>, 
+             type = <span class="st">'cairo'</span>, antialias = <span class="st">'none'</span>)
 
-<span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="no">cairo_none_text</span>)</pre></body></html></div>
+<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="kw">cairo_none_text</span>)
+</pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-23-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-24-1.png"><!-- --></p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">cairo_none_text_rot</span> <span class="kw">&lt;-</span> <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="kw">cairo_none_text_rot</span> <span class="op">&lt;-</span> <span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
 
-<span class="fu">text_quality</span>(<span class="no">png</span>, <span class="st">'cairo no AA'</span>, <span class="no">cairo_none_text_rot</span>, <span class="kw">rotation</span> <span class="kw">=</span> <span class="fl">27</span>,
-             <span class="kw">type</span> <span class="kw">=</span> <span class="st">'cairo'</span>, <span class="kw">antialias</span> <span class="kw">=</span> <span class="st">'none'</span>)
+<span class="fu">text_quality</span>(<span class="kw">png</span>, <span class="st">'cairo no AA'</span>, <span class="kw">cairo_none_text_rot</span>, rotation = <span class="fl">27</span>, 
+             type = <span class="st">'cairo'</span>, antialias = <span class="st">'none'</span>)
 
-<span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="no">cairo_none_text_rot</span>)</pre></body></html></div>
+<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="kw">cairo_none_text_rot</span>)
+</pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-25-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-26-1.png"><!-- --></p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">cairo_gray_text</span> <span class="kw">&lt;-</span> <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
+<div class="sourceCode" id="cb12"><pre class="downlit">
+<span class="kw">cairo_gray_text</span> <span class="op">&lt;-</span> <span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
 
-<span class="fu">text_quality</span>(<span class="no">png</span>, <span class="st">'cairo gray AA'</span>, <span class="no">cairo_gray_text</span>,
-             <span class="kw">type</span> <span class="kw">=</span> <span class="st">'cairo'</span>, <span class="kw">antialias</span> <span class="kw">=</span> <span class="st">'gray'</span>)
+<span class="fu">text_quality</span>(<span class="kw">png</span>, <span class="st">'cairo gray AA'</span>, <span class="kw">cairo_gray_text</span>, 
+             type = <span class="st">'cairo'</span>, antialias = <span class="st">'gray'</span>)
 
-<span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="no">cairo_gray_text</span>)</pre></body></html></div>
+<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="kw">cairo_gray_text</span>)
+</pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-27-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-28-1.png"><!-- --></p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">cairo_gray_text_rot</span> <span class="kw">&lt;-</span> <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
+<div class="sourceCode" id="cb13"><pre class="downlit">
+<span class="kw">cairo_gray_text_rot</span> <span class="op">&lt;-</span> <span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
 
-<span class="fu">text_quality</span>(<span class="no">png</span>, <span class="st">'cairo gray AA'</span>, <span class="no">cairo_gray_text_rot</span>, <span class="kw">rotation</span> <span class="kw">=</span> <span class="fl">27</span>,
-             <span class="kw">type</span> <span class="kw">=</span> <span class="st">'cairo'</span>, <span class="kw">antialias</span> <span class="kw">=</span> <span class="st">'gray'</span>)
+<span class="fu">text_quality</span>(<span class="kw">png</span>, <span class="st">'cairo gray AA'</span>, <span class="kw">cairo_gray_text_rot</span>, rotation = <span class="fl">27</span>, 
+             type = <span class="st">'cairo'</span>, antialias = <span class="st">'gray'</span>)
 
-<span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="no">cairo_gray_text_rot</span>)</pre></body></html></div>
+<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="kw">cairo_gray_text_rot</span>)
+</pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-29-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-30-1.png"><!-- --></p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">cairo_subpixel_text</span> <span class="kw">&lt;-</span> <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
+<div class="sourceCode" id="cb14"><pre class="downlit">
+<span class="kw">cairo_subpixel_text</span> <span class="op">&lt;-</span> <span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
 
-<span class="fu">text_quality</span>(<span class="no">png</span>, <span class="st">'cairo subpixel AA'</span>, <span class="no">cairo_subpixel_text</span>,
-             <span class="kw">type</span> <span class="kw">=</span> <span class="st">'cairo'</span>, <span class="kw">antialias</span> <span class="kw">=</span> <span class="st">'subpixel'</span>)
+<span class="fu">text_quality</span>(<span class="kw">png</span>, <span class="st">'cairo subpixel AA'</span>, <span class="kw">cairo_subpixel_text</span>, 
+             type = <span class="st">'cairo'</span>, antialias = <span class="st">'subpixel'</span>)
 
-<span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="no">cairo_subpixel_text</span>)</pre></body></html></div>
+<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="kw">cairo_subpixel_text</span>)
+</pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-31-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-32-1.png"><!-- --></p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">cairo_subpixel_text_rot</span> <span class="kw">&lt;-</span> <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
+<div class="sourceCode" id="cb15"><pre class="downlit">
+<span class="kw">cairo_subpixel_text_rot</span> <span class="op">&lt;-</span> <span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
 
-<span class="fu">text_quality</span>(<span class="no">png</span>, <span class="st">'cairo subpixel AA'</span>, <span class="no">cairo_subpixel_text_rot</span>, <span class="kw">rotation</span> <span class="kw">=</span> <span class="fl">27</span>,
-             <span class="kw">type</span> <span class="kw">=</span> <span class="st">'cairo'</span>, <span class="kw">antialias</span> <span class="kw">=</span> <span class="st">'subpixel'</span>)
+<span class="fu">text_quality</span>(<span class="kw">png</span>, <span class="st">'cairo subpixel AA'</span>, <span class="kw">cairo_subpixel_text_rot</span>, rotation = <span class="fl">27</span>, 
+             type = <span class="st">'cairo'</span>, antialias = <span class="st">'subpixel'</span>)
 
-<span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="no">cairo_subpixel_text_rot</span>)</pre></body></html></div>
+<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="kw">cairo_subpixel_text_rot</span>)
+</pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-33-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-34-1.png"><!-- --></p>
 <div id="observations-1" class="section level3">
@@ -281,24 +311,30 @@
 <h2 class="hasAnchor">
 <a href="#alpha-blending" class="anchor"></a>Alpha blending</h2>
 <p>How transparent colours are combined is not necessarily equal among devices. The biggest divide is on whether to use premultiplied colours or not. With premultiplied colours the red, green, and blue intensity is wieghted by the alpha directly, instead of alpha simply being an additional value. Using premultiplied colours is the only way to get correct alpha blending. As the Xlib device doesn’t support transparent colours it will be exempt from this comparison even on systems that have it. Further, as alpha blending is not related to anti-aliasing, we will simply compare ragg against a single cairo setup.</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">blend_quality</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">device</span>, <span class="no">name</span>, <span class="no">file</span>, <span class="no">...</span>) {
-  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/device.html">device</a></span>(<span class="no">file</span>, <span class="kw">width</span> <span class="kw">=</span> <span class="fl">600</span>, <span class="kw">height</span> <span class="kw">=</span> <span class="fl">300</span>, <span class="no">...</span>)
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.rect.html">grid.rect</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="fl">0.35</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="fl">0.4</span>, <span class="kw">width</span> <span class="kw">=</span> <span class="fl">0.5</span>, <span class="kw">height</span> <span class="kw">=</span> <span class="fl">0.5</span>, <span class="kw">gp</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(<span class="kw">fill</span> <span class="kw">=</span> <span class="st">'#FF0000'</span>))
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.rect.html">grid.rect</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="fl">0.65</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="fl">0.6</span>, <span class="kw">width</span> <span class="kw">=</span> <span class="fl">0.5</span>, <span class="kw">height</span> <span class="kw">=</span> <span class="fl">0.5</span>, <span class="kw">gp</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(<span class="kw">fill</span> <span class="kw">=</span> <span class="st">'#00FF001A'</span>))
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="fl">0.9</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="fl">0.1</span>, <span class="kw">label</span> <span class="kw">=</span> <span class="no">name</span>, <span class="kw">just</span> <span class="kw">=</span> <span class="st">'right'</span>, <span class="kw">gp</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(<span class="kw">cex</span> <span class="kw">=</span> <span class="fl">2</span>))
+<div class="sourceCode" id="cb16"><pre class="downlit">
+<span class="kw">blend_quality</span> <span class="op">&lt;-</span> <span class="fu">function</span>(<span class="kw">device</span>, <span class="kw">name</span>, <span class="kw">file</span>, <span class="kw">...</span>) {
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/device.html">device</a></span>(<span class="kw">file</span>, width = <span class="fl">600</span>, height = <span class="fl">300</span>, <span class="kw">...</span>)
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.rect.html">grid.rect</a></span>(x = <span class="fl">0.35</span>, y = <span class="fl">0.4</span>, width = <span class="fl">0.5</span>, height = <span class="fl">0.5</span>, gp = <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(fill = <span class="st">'#FF0000'</span>))
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.rect.html">grid.rect</a></span>(x = <span class="fl">0.65</span>, y = <span class="fl">0.6</span>, width = <span class="fl">0.5</span>, height = <span class="fl">0.5</span>, gp = <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(fill = <span class="st">'#00FF001A'</span>))
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span>(x = <span class="fl">0.9</span>, y = <span class="fl">0.1</span>, label = <span class="kw">name</span>, just = <span class="st">'right'</span>, gp = <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(cex = <span class="fl">2</span>))
   <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
-}</pre></body></html></div>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">ragg_blend</span> <span class="kw">&lt;-</span> <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
+}
+</pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit">
+<span class="kw">ragg_blend</span> <span class="op">&lt;-</span> <span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
 
-<span class="fu">blend_quality</span>(<span class="no">agg_png</span>, <span class="st">'ragg'</span>, <span class="no">ragg_blend</span>)
+<span class="fu">blend_quality</span>(<span class="kw">agg_png</span>, <span class="st">'ragg'</span>, <span class="kw">ragg_blend</span>)
 
-<span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="no">ragg_blend</span>)</pre></body></html></div>
+<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="kw">ragg_blend</span>)
+</pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-36-1.png"><!-- --></p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="no">cairo_blend</span> <span class="kw">&lt;-</span> <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
+<div class="sourceCode" id="cb18"><pre class="downlit">
+<span class="kw">cairo_blend</span> <span class="op">&lt;-</span> <span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
 
-<span class="fu">blend_quality</span>(<span class="no">png</span>, <span class="st">'cairo'</span>, <span class="no">cairo_blend</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">'cairo'</span>)
+<span class="fu">blend_quality</span>(<span class="kw">png</span>, <span class="st">'cairo'</span>, <span class="kw">cairo_blend</span>, type = <span class="st">'cairo'</span>)
 
-<span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="no">cairo_blend</span>)</pre></body></html></div>
+<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="kw">cairo_blend</span>)
+</pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-37-1.png"><!-- --></p>
 <div id="observations-2" class="section level3">
 <h3 class="hasAnchor">
@@ -310,27 +346,33 @@
 <h2 class="hasAnchor">
 <a href="#raster" class="anchor"></a>Raster</h2>
 <p>The main way raster plotting can get influence by the device is in how the image gets interpolated during scaling, which will be briefly compared here.</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">raster_quality</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">device</span>, <span class="no">name</span>, <span class="no">file</span>, <span class="no">...</span>) {
-  <span class="no">reds</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/hcl.html">hcl</a></span>(<span class="fl">0</span>, <span class="fl">80</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">50</span>, <span class="fl">80</span>, <span class="fl">10</span>)),
-                        <span class="kw">nrow</span> <span class="kw">=</span> <span class="fl">4</span>, <span class="kw">ncol</span> <span class="kw">=</span> <span class="fl">5</span>)
-  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/device.html">device</a></span>(<span class="no">file</span>, <span class="kw">width</span> <span class="kw">=</span> <span class="fl">600</span>, <span class="kw">height</span> <span class="kw">=</span> <span class="fl">300</span>, <span class="no">...</span>)
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.raster.html">grid.raster</a></span>(<span class="no">reds</span>, <span class="kw">vp</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html">viewport</a></span>(<span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="kw">angle</span> <span class="kw">=</span> <span class="fl">27</span>))
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.raster.html">grid.raster</a></span>(<span class="no">reds</span>, <span class="kw">interpolate</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
-              <span class="kw">vp</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html">viewport</a></span>(<span class="fl">0.75</span>, <span class="fl">0.75</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="kw">angle</span> <span class="kw">=</span> <span class="fl">27</span>))
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="fl">0.9</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="fl">0.1</span>, <span class="kw">label</span> <span class="kw">=</span> <span class="no">name</span>, <span class="kw">just</span> <span class="kw">=</span> <span class="st">'right'</span>, <span class="kw">gp</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(<span class="kw">cex</span> <span class="kw">=</span> <span class="fl">2</span>))
+<div class="sourceCode" id="cb19"><pre class="downlit">
+<span class="kw">raster_quality</span> <span class="op">&lt;-</span> <span class="fu">function</span>(<span class="kw">device</span>, <span class="kw">name</span>, <span class="kw">file</span>, <span class="kw">...</span>) {
+  <span class="kw">reds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/hcl.html">hcl</a></span>(<span class="fl">0</span>, <span class="fl">80</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">50</span>, <span class="fl">80</span>, <span class="fl">10</span>)),
+                        nrow = <span class="fl">4</span>, ncol = <span class="fl">5</span>)
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/device.html">device</a></span>(<span class="kw">file</span>, width = <span class="fl">600</span>, height = <span class="fl">300</span>, <span class="kw">...</span>)
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.raster.html">grid.raster</a></span>(<span class="kw">reds</span>, vp = <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html">viewport</a></span>(<span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, angle = <span class="fl">27</span>))
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.raster.html">grid.raster</a></span>(<span class="kw">reds</span>, interpolate = <span class="fl">FALSE</span>, 
+              vp = <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html">viewport</a></span>(<span class="fl">0.75</span>, <span class="fl">0.75</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, angle = <span class="fl">27</span>))
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span>(x = <span class="fl">0.9</span>, y = <span class="fl">0.1</span>, label = <span class="kw">name</span>, just = <span class="st">'right'</span>, gp = <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span>(cex = <span class="fl">2</span>))
   <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
-}</pre></body></html></div>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">ragg_raster</span> <span class="kw">&lt;-</span> <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
+}
+</pre></div>
+<div class="sourceCode" id="cb20"><pre class="downlit">
+<span class="kw">ragg_raster</span> <span class="op">&lt;-</span> <span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
 
-<span class="fu">raster_quality</span>(<span class="no">agg_png</span>, <span class="st">'ragg'</span>, <span class="no">ragg_raster</span>)
+<span class="fu">raster_quality</span>(<span class="kw">agg_png</span>, <span class="st">'ragg'</span>, <span class="kw">ragg_raster</span>)
 
-<span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="no">ragg_raster</span>)</pre></body></html></div>
+<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="kw">ragg_raster</span>)
+</pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-39-1.png"><!-- --></p>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">cairo_raster</span> <span class="kw">&lt;-</span> <span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
+<div class="sourceCode" id="cb21"><pre class="downlit">
+<span class="kw">cairo_raster</span> <span class="op">&lt;-</span> <span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
 
-<span class="fu">raster_quality</span>(<span class="no">png</span>, <span class="st">'cairo'</span>, <span class="no">cairo_raster</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">'cairo'</span>)
+<span class="fu">raster_quality</span>(<span class="kw">png</span>, <span class="st">'cairo'</span>, <span class="kw">cairo_raster</span>, type = <span class="st">'cairo'</span>)
 
-<span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="no">cairo_raster</span>)</pre></body></html></div>
+<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="kw">cairo_raster</span>)
+</pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-41-1.png"><!-- --></p>
 <div id="observations-3" class="section level3">
 <h3 class="hasAnchor">
@@ -346,10 +388,11 @@
 <div id="session-info" class="section level2">
 <h2 class="hasAnchor">
 <a href="#session-info" class="anchor"></a>Session info</h2>
-<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="kw pkg">sessioninfo</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/sessioninfo/man/session_info.html">session_info</a></span>()
+<div class="sourceCode" id="cb22"><pre class="downlit">
+<span class="kw">sessioninfo</span>::<span class="fu"><a href="https://rdrr.io/pkg/sessioninfo/man/session_info.html">session_info</a></span>()
 <span class="co">#&gt; ─ Session info ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt;  setting  value                       </span>
-<span class="co">#&gt;  version  R version 4.0.0 (2020-04-24)</span>
+<span class="co">#&gt;  version  R version 4.0.2 (2020-06-22)</span>
 <span class="co">#&gt;  os       macOS Catalina 10.15.5      </span>
 <span class="co">#&gt;  system   x86_64, darwin17.0          </span>
 <span class="co">#&gt;  ui       X11                         </span>
@@ -357,43 +400,43 @@
 <span class="co">#&gt;  collate  en_US.UTF-8                 </span>
 <span class="co">#&gt;  ctype    en_US.UTF-8                 </span>
 <span class="co">#&gt;  tz       UTC                         </span>
-<span class="co">#&gt;  date     2020-06-04                  </span>
+<span class="co">#&gt;  date     2020-07-03                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt;  package     * version    date       lib source                        </span>
-<span class="co">#&gt;  assertthat    0.2.1      2019-03-21 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  backports     1.1.7      2020-05-13 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  cli           2.0.2      2020-02-28 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  crayon        1.3.4      2017-09-16 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  desc          1.2.0      2018-05-01 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  digest        0.6.25     2020-02-23 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  evaluate      0.14       2019-05-28 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  fansi         0.4.1      2020-01-08 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  fs            1.4.1      2020-04-04 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  glue          1.4.1      2020-05-13 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  htmltools     0.4.0      2019-10-04 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  knitr         1.28       2020-02-06 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  magick      * 2.3        2020-01-24 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  magrittr      1.5        2014-11-22 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  MASS          7.3-51.5   2019-12-20 [2] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  memoise       1.1.0      2017-04-21 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  pkgdown       1.5.1.9000 2020-06-04 [1] Github (r-lib/pkgdown@aeb1cfb)</span>
-<span class="co">#&gt;  R6            2.4.1      2019-11-12 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  ragg        * 0.2.0.9000 2020-06-04 [1] local                         </span>
-<span class="co">#&gt;  Rcpp          1.0.4.6    2020-04-09 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  rlang         0.4.6      2020-05-02 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  rmarkdown     2.2        2020-05-31 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  rprojroot     1.3-2      2018-01-03 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  sessioninfo   1.1.1      2018-11-05 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  stringi       1.4.6      2020-02-17 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  stringr       1.4.0      2019-02-10 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  systemfonts   0.2.2      2020-05-14 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  withr         2.2.0      2020-04-20 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  xfun          0.14       2020-05-20 [1] CRAN (R 4.0.0)                </span>
-<span class="co">#&gt;  yaml          2.2.1      2020-02-01 [1] CRAN (R 4.0.0)                </span>
+<span class="co">#&gt;  package     * version    date       lib source                            </span>
+<span class="co">#&gt;  assertthat    0.2.1      2019-03-21 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  backports     1.1.8      2020-06-17 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  cli           2.0.2      2020-02-28 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  crayon        1.3.4      2017-09-16 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  desc          1.2.0      2018-05-01 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  digest        0.6.25     2020-02-23 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  evaluate      0.14       2019-05-28 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  fansi         0.4.1      2020-01-08 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  fs            1.4.2      2020-06-30 [1] CRAN (R 4.0.2)                    </span>
+<span class="co">#&gt;  glue          1.4.1      2020-05-13 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  htmltools     0.5.0      2020-06-16 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  knitr         1.29       2020-06-23 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  magick      * 2.4.0      2020-06-23 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  magrittr      1.5        2014-11-22 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  memoise       1.1.0      2017-04-21 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  pkgdown       1.5.1.9000 2020-07-03 [1] Github (r-lib/pkgdown@caf7cc7)    </span>
+<span class="co">#&gt;  R6            2.4.1      2019-11-12 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  ragg        * 0.3.1      2020-07-03 [1] local                             </span>
+<span class="co">#&gt;  Rcpp          1.0.4.6    2020-04-09 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  rlang         0.4.6      2020-05-02 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  rmarkdown     2.3.2      2020-07-03 [1] Github (rstudio/rmarkdown@fe610c0)</span>
+<span class="co">#&gt;  rprojroot     1.3-2      2018-01-03 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  sessioninfo   1.1.1      2018-11-05 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  stringi       1.4.6      2020-02-17 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  stringr       1.4.0      2019-02-10 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  systemfonts   0.2.3      2020-06-09 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  withr         2.2.0      2020-04-20 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  xfun          0.15       2020-06-21 [1] CRAN (R 4.0.0)                    </span>
+<span class="co">#&gt;  yaml          2.2.1      2020-02-01 [1] CRAN (R 4.0.0)                    </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [1] /Users/runner/runners/2.263.0/work/_temp/Library</span>
-<span class="co">#&gt; [2] /Library/Frameworks/R.framework/Versions/4.0/Resources/library</span></pre></body></html></div>
+<span class="co">#&gt; [2] /Library/Frameworks/R.framework/Versions/4.0/Resources/library</span>
+</pre></div>
 </div>
   </div>
 
