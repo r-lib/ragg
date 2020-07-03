@@ -280,9 +280,10 @@ pDevDesc agg_device_new(T* device) {
   
   // Capabilities
   dd->canClip = TRUE;
-#if R_GE_version >= 13
-  dd->canClip = NA_LOGICAL;
-#endif
+// This needs to wait until the proper interface has settled
+// #if R_GE_version >= 13
+//   dd->canClip = NA_LOGICAL;
+// #endif
   dd->canHAdj = 2;
   dd->canChangeGamma = FALSE;
   dd->displayListOn = FALSE;
