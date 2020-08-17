@@ -1,5 +1,7 @@
 # ragg (development version)
 
+* Move text shaping to the new textshaping package.
+
 # ragg 0.3.1
 
 * Roll back support for new clipping options in the graphic engine as it was 

@@ -92,7 +92,8 @@ namespace agg
         const char*     font_signature() const { return m_signature;    }
         int             change_stamp()   const { return m_change_stamp; }
 
-        bool            prepare_glyph(unsigned glyph_code);
+        unsigned        get_glyph_index(unsigned glyph_code);
+        bool            prepare_glyph(unsigned glyph_index);
         unsigned        glyph_index() const { return m_glyph_index; }
         unsigned        data_size()   const { return m_data_size;   }
         glyph_data_type data_type()   const { return m_data_type;   }

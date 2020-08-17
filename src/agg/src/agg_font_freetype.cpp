@@ -906,13 +906,16 @@ namespace agg
     }
 
 
-
-
+    //------------------------------------------------------------------------
+    unsigned font_engine_freetype_base::get_glyph_index(unsigned glyph_code) 
+    {
+      return FT_Get_Char_Index(m_cur_face, glyph_code);
+    }
 
     //------------------------------------------------------------------------
-    bool font_engine_freetype_base::prepare_glyph(unsigned glyph_code)
+    bool font_engine_freetype_base::prepare_glyph(unsigned glyph_index)
     {
-        m_glyph_index = FT_Get_Char_Index(m_cur_face, glyph_code);
+        m_glyph_index = glyph_index;
         m_last_error = FT_Load_Glyph(m_cur_face, 
                                      m_glyph_index, 
                                      m_hinting ? FT_LOAD_DEFAULT : FT_LOAD_NO_HINTING);

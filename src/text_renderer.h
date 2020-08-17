@@ -4,6 +4,8 @@
 #include <vector>
 #include <cstdint>
 #include <systemfonts.h>
+#include <textshaping.h>
+
 
 #include "ragg.h"
 
@@ -123,6 +125,9 @@ class TextRenderer {
   UTF_UCS converter;
   std::pair<std::string, int> last_font;
   agg::glyph_rendering last_gren;
+  std::vector<double> x_buffer;
+  std::vector<double> y_buffer;
+  std::vector<int> id_buffer;
   
 public:
   TextRenderer() :
@@ -158,13 +163,25 @@ public:
   }
   
   double get_text_width(const char* string) {
-    int size_out = 0;
-    const uint32_t* string_conv = converter.convert(string, size_out);
-    return text_width(string_conv, size_out);
+    double width = 0.0;
+    int error = ts_string_width(
+      string, 
+      last_font.first.c_str(), 
+      last_font.second, 
+      get_engine().height(), 
+      72.0, 
+      1, 
+      &width
+    );
+    if (error) {
+      return 0.0;
+    }
+    return width;
   }
   
   void get_char_metric(int c, double *ascent, double *descent, double *width) {
-    const agg::glyph_cache* glyph = get_manager().glyph(c);
+    unsigned index = get_engine().get_glyph_index(c);
+    const agg::glyph_cache* glyph = get_manager().glyph(index);
     if (glyph) {
       *ascent = (double) -glyph->bounds.y1;
       *descent = (double) glyph->bounds.y2;
@@ -181,12 +198,34 @@ public:
     agg::conv_curve<font_manager_type::path_adaptor_type> curves(get_manager().path_adaptor());
     curves.approximation_scale(2.0);
     
-    int size_out = 0;
-    const uint32_t* string_conv = converter.convert(string, size_out);
-    double width = text_width(string_conv, size_out);
+    double width = get_text_width(string);
     
-    // Snap to pixel grid for vertical or horizontal text
-    bool snap = fmod(rot, 90) < 1e-6;
+    if (width == 0.0) {
+      return;
+    }
+    
+    int expected_max = strlen(string) * 16;
+    x_buffer.reserve(expected_max);
+    y_buffer.reserve(expected_max);
+    id_buffer.reserve(expected_max);
+    
+    int n_glyphs = 0;
+    ts_string_shape(
+      string, 
+      last_font.first.c_str(),
+      last_font.second,
+      get_engine().height(),
+      72.0,
+      x_buffer.data(),
+      y_buffer.data(),
+      id_buffer.data(),
+      &n_glyphs,
+      expected_max
+    );
+    
+    if (n_glyphs == 0) {
+      return;
+    }
     
     if (rot != 0) {
       rot = agg::deg2rad(-rot);
@@ -195,19 +234,25 @@ public:
       get_engine().transform(mtx);
     }
     
-    x -= (width * hadj) * cos(rot);
-    y -= (width * hadj) * sin(rot);
+    double cos_rot = cos(rot);
+    double sin_rot = sin(rot);
     
-    if (snap) {
-      x = std::round(x);
+    x -= (width * hadj) * cos_rot;
+    y -= (width * hadj) * sin_rot;
+    
+    // Snap to pixel grid for vertical or horizontal text
+    if (fmod(rot, 180) < 1e-6) {
       y = std::round(y);
+    } else if (fmod(rot + 90, 180) < 1e-6) {
+      x = std::round(x);
     }
     
-    while (*string_conv) {
-      const agg::glyph_cache* glyph = get_manager().glyph(*string_conv);
+    for (int i = 0; i < n_glyphs; ++i) {
+      const agg::glyph_cache* glyph = get_manager().glyph(id_buffer[i]);
       if (glyph) {
-        get_manager().add_kerning(&x, &y);
-        get_manager().init_embedded_adaptors(glyph, x, y);
+        double x_offset = x_buffer[i] * cos_rot + y_buffer[i] * sin_rot;
+        double y_offset = y_buffer[i] * cos_rot + x_buffer[i] * sin_rot;
+        get_manager().init_embedded_adaptors(glyph, x + x_offset, y + y_offset);
         switch(glyph->data_type) {
         default: break;
         case agg::glyph_data_gray8:
@@ -222,12 +267,7 @@ public:
           agg::render_scanlines(ras, sl, ren_solid);
           break;
         }
-        
-        // increment pen position
-        x += glyph->advance_x;
-        y += glyph->advance_y;
       }
-      string_conv++;
     }
     
     if (rot != 0) {
@@ -263,17 +303,15 @@ private:
   
   static std::pair<std::string, int> get_font_file(const char* family, int bold, 
                                                    int italic, int symbol) {
+    static char path[PATH_MAX+1];
+    path[PATH_MAX] = '\0';
     const char* fontfamily = family;
     if (symbol) {
       fontfamily = "Symbol";
     }
-    char *path = new char[PATH_MAX+1];
-    path[PATH_MAX] = '\0';
     int index = locate_font(fontfamily, italic, bold, path, PATH_MAX);
-    std::pair<std::string, int> res {path, index};
-    delete[] path;
     
-    return res;
+    return {path, index};
   }
 };
 
