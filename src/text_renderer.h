@@ -123,7 +123,7 @@ public:
 
 class TextRenderer {
   UTF_UCS converter;
-  std::pair<std::string, int> last_font;
+  FontSettings last_font;
   agg::glyph_rendering last_gren;
   std::vector<double> x_buffer;
   std::vector<double> y_buffer;
@@ -133,7 +133,7 @@ public:
   TextRenderer() :
     converter()
   {
-    last_font = std::make_pair("", -1);
+    last_font = {"", 0, nullptr, 0};;
     last_gren = agg::glyph_ren_native_mono;
     get_engine().hinting(true);
     get_engine().flip_y(true);
@@ -142,23 +142,23 @@ public:
   
   bool load_font(agg::glyph_rendering gren, const char *family, int face, 
                  double size) {
-    std::pair<std::string, int> font = get_font_file(family, 
-                                                     face == 2 || face == 4, 
-                                                     face == 3 || face == 4,
-                                                     face == 5);
+    FontSettings font = get_font_file(family, 
+                                      face == 2 || face == 4, 
+                                      face == 3 || face == 4,
+                                      face == 5);
     if (!(gren == last_gren && 
-        font.second == last_font.second && 
-        font.first == last_font.first)) {
-      if (!get_engine().load_font(font.first.c_str(), font.second, gren)) {
+        font.index == last_font.index &&
+        strncmp(font.file, last_font.file, PATH_MAX) == 0)) {
+      if (!get_engine().load_font(font.file, font.index, gren)) {
         Rf_warning("Unable to load font: %s", family);
         return false;
       }
-      last_font = font;
       last_gren = gren;
       get_engine().height(size);
     } else if (size != get_engine().height()) {
       get_engine().height(size);
     }
+    last_font = font;
     return true;
   }
   
@@ -166,8 +166,7 @@ public:
     double width = 0.0;
     int error = ts_string_width(
       string, 
-      last_font.first.c_str(), 
-      last_font.second, 
+      last_font, 
       get_engine().height(), 
       72.0, 
       1, 
@@ -212,13 +211,13 @@ public:
     int n_glyphs = 0;
     ts_string_shape(
       string, 
-      last_font.first.c_str(),
-      last_font.second,
+      last_font,
       get_engine().height(),
       72.0,
       x_buffer.data(),
       y_buffer.data(),
       id_buffer.data(),
+      NULL,
       &n_glyphs,
       expected_max
     );
@@ -301,17 +300,13 @@ private:
     return x;
   }
   
-  static std::pair<std::string, int> get_font_file(const char* family, int bold, 
-                                                   int italic, int symbol) {
-    static char path[PATH_MAX+1];
-    path[PATH_MAX] = '\0';
+  FontSettings get_font_file(const char* family, int bold, int italic, 
+                             int symbol) {
     const char* fontfamily = family;
     if (symbol) {
       fontfamily = "Symbol";
     }
-    int index = locate_font(fontfamily, italic, bold, path, PATH_MAX);
-    
-    return {path, index};
+    return locate_font_with_features(fontfamily, italic, bold);
   }
 };
 
