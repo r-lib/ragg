@@ -57,4 +57,4 @@ LinkingTo:
     textshaping
 Remotes:
     r-lib/systemfonts,
-    r-lib/textshaper
+    r-lib/textshaping
