@@ -133,7 +133,6 @@ public:
   TextRenderer() :
     converter()
   {
-    last_font = {"", 0, nullptr, 0};;
     last_gren = agg::glyph_ren_native_mono;
     get_engine().hinting(true);
     get_engine().flip_y(true);
