@@ -90,6 +90,18 @@ par(mai = c(0, 0, 0, 0))
 plot(as.raster(scatter))
 ```
 
+### Use ragg with knitr
+knitr supports png output from ragg by setting `dev = "ragg_png"` in the chunk
+settings or globally with `knitr::opts_chunk$set(dev = "ragg_png")`.
+
+### Use ragg in RStudio
+ragg can be used as the graphic back-end to the RStudio device 
+(for RStudio >= 1.4) by choosing *AGG* as the backend in the graphics pane in 
+general options (see screenshot)
+
+![Setting ragg as backend in RStudio](https://i.imgur.com/JwwZ15E.png)
+
+
 ## Code of Conduct
 Please note that the 'ragg' project is released with a
 [Contributor Code of Conduct](https://ragg.r-lib.org/CODE_OF_CONDUCT.html).
