@@ -55,6 +55,3 @@ Imports:
 LinkingTo: 
     systemfonts,
     textshaping
-Remotes:
-    r-lib/systemfonts,
-    r-lib/textshaping
