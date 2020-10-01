@@ -127,8 +127,7 @@
 <p>The package can be installed from CRAN with <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages('ragg')</a></code> or, if the development version is desired, directly from github:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="co"># install.packages('devtools')</span>
-<span class="kw">devtools</span>::<span class="fu">install_github</span>(<span class="st">'r-lib/ragg'</span>)
-</pre></div>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">'r-lib/ragg'</span><span class="op">)</span></pre></div>
 </div>
 <div id="use" class="section level2">
 <h2 class="hasAnchor">
@@ -144,37 +143,46 @@
 </ul>
 <p>You can use it like any other device. The main functions are <code><a href="reference/agg_png.html">agg_png()</a></code>, <code><a href="reference/agg_jpeg.html">agg_jpeg()</a></code> and <code><a href="reference/agg_tiff.html">agg_tiff()</a></code>, all of which have arguments that closely match those of the <code><a href="https://rdrr.io/r/grDevices/png.html">png()</a></code>, <code><a href="https://rdrr.io/r/grDevices/png.html">jpeg()</a></code> and <code><a href="https://rdrr.io/r/grDevices/png.html">tiff()</a></code> functions, so switching over should be easy.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://ragg.r-lib.org">ragg</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span>)
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ragg.r-lib.org">ragg</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 
-<span class="kw">file</span> <span class="op">&lt;-</span> <span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span>(<span class="st">'.png'</span>)
+<span class="va">file</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
 
-<span class="kw">on_linux</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html">tolower</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html">Sys.info</a></span>()[[<span class="st">'sysname'</span>]]) <span class="op">==</span> <span class="st">'linux'</span>
-<span class="kw">fancy_font</span> <span class="op">&lt;-</span> <span class="co">if</span> (<span class="kw">on_linux</span>) <span class="st">'URW Chancery L'</span> <span class="co">else</span> <span class="st">'Papyrus'</span>
+<span class="va">on_linux</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html">tolower</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">'sysname'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">==</span> <span class="st">'linux'</span>
+<span class="va">fancy_font</span> <span class="op">&lt;-</span> <span class="kw">if</span> <span class="op">(</span><span class="va">on_linux</span><span class="op">)</span> <span class="st">'URW Chancery L'</span> <span class="kw">else</span> <span class="st">'Papyrus'</span>
 
-<span class="fu"><a href="reference/agg_png.html">agg_png</a></span>(<span class="kw">file</span>, width = <span class="fl">1000</span>, height = <span class="fl">500</span>, res = <span class="fl">144</span>)
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw">mtcars</span>) <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">mpg</span>, <span class="kw">disp</span>, colour = <span class="kw">hp</span>)) <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(title = <span class="st">'System fonts — Oh My!'</span>) <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(text = <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span>(family = <span class="kw">fancy_font</span>))
-<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+<span class="fu"><a href="reference/agg_png.html">agg_png</a></span><span class="op">(</span><span class="va">file</span>, width <span class="op">=</span> <span class="fl">1000</span>, height <span class="op">=</span> <span class="fl">500</span>, res <span class="op">=</span> <span class="fl">144</span><span class="op">)</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">disp</span>, colour <span class="op">=</span> <span class="va">hp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">'System fonts — Oh My!'</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>family <span class="op">=</span> <span class="va">fancy_font</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
-<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span>(<span class="kw">file</span>)
-</pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%"></p>
 <p>Further, it provides an <code><a href="reference/agg_capture.html">agg_capture()</a></code> device that lets you access the device buffer directly from your R session.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">cap</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/agg_capture.html">agg_capture</a></span>(width = <span class="fl">1000</span>, height = <span class="fl">500</span>, res = <span class="fl">144</span>)
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>)
+<span class="va">cap</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/agg_capture.html">agg_capture</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">1000</span>, height <span class="op">=</span> <span class="fl">500</span>, res <span class="op">=</span> <span class="fl">144</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>
 
-<span class="kw">scatter</span> <span class="op">&lt;-</span> <span class="fu">cap</span>()
-<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>())
+<span class="va">scatter</span> <span class="op">&lt;-</span> <span class="fu">cap</span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># Remove margins from raster plotting</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(mai = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>))
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/as.raster.html">as.raster</a></span>(<span class="kw">scatter</span>))
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mai <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/as.raster.html">as.raster</a></span><span class="op">(</span><span class="va">scatter</span><span class="op">)</span><span class="op">)</span></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="100%"></p>
+<div id="use-ragg-with-knitr" class="section level3">
+<h3 class="hasAnchor">
+<a href="#use-ragg-with-knitr" class="anchor"></a>Use ragg with knitr</h3>
+<p>knitr supports png output from ragg by setting <code>dev = "ragg_png"</code> in the chunk settings or globally with <code>knitr::opts_chunk$set(dev = "ragg_png")</code>.</p>
+</div>
+<div id="use-ragg-in-rstudio" class="section level3">
+<h3 class="hasAnchor">
+<a href="#use-ragg-in-rstudio" class="anchor"></a>Use ragg in RStudio</h3>
+<p>ragg can be used as the graphic back-end to the RStudio device (for RStudio &gt;= 1.4) by choosing <em>AGG</em> as the backend in the graphics pane in general options (see screenshot)</p>
+<p><img src="https://i.imgur.com/JwwZ15E.png" alt="Setting ragg as backend in RStudio"></p>
+</div>
 </div>
 <div id="code-of-conduct" class="section level2">
 <h2 class="hasAnchor">
@@ -238,7 +246,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

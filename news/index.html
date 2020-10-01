@@ -165,10 +165,13 @@
 <h1 class="page-header" data-toc-text="development version">
 <a href="#ragg-development-version" class="anchor"></a>ragg (development version)<small> Unreleased </small>
 </h1>
+<ul>
+<li>Move text shaping to the new textshaping package.</li>
+</ul>
 </div>
     <div id="ragg-031" class="section level1">
 <h1 class="page-header" data-toc-text="0.3.1">
-<a href="#ragg-031" class="anchor"></a>ragg 0.3.1<small> Unreleased </small>
+<a href="#ragg-031" class="anchor"></a>ragg 0.3.1<small> 2020-07-03 </small>
 </h1>
 <ul>
 <li>Roll back support for new clipping options in the graphic engine as it was buggy.</li>
@@ -193,7 +196,7 @@
 <li>Fix compilation on R &lt;= 3.3 by including Rdynload.h explicitly</li>
 <li>Fix a performance regression when plotting text (<a href='https://github.com/r-lib/ragg/issues/33'>#33</a>)</li>
 <li>Fix erroneous width calculations of strings starting with a space on windows (<a href='https://github.com/r-lib/ragg/issues/32'>#32</a>)</li>
-<li>Fix a bug in <code><a href="https://ragg.r-lib.org/reference/agg_capture.html">agg_capture()</a></code> where the output became mangled if device height != width</li>
+<li>Fix a bug in <code><a href="../reference/agg_capture.html">agg_capture()</a></code> where the output became mangled if device height != width</li>
 <li>Fix a bug in raster support where raster data did not get premultiplied before rendering (<a href='https://github.com/r-lib/ragg/issues/38'>#38</a>, <a href='https://github.com/yixuan'>@yixuan</a>)</li>
 <li>Fix an integer overflow issue in the AGG source code</li>
 </ul>
@@ -270,7 +273,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
