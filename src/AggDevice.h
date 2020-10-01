@@ -267,9 +267,9 @@ template<class PIXFMT, class R_COLOR>
 void AggDevice<PIXFMT, R_COLOR>::charMetric(int c, const char *family, int face, 
                                    double size, double *ascent, double *descent, 
                                    double *width) {
-  if (c < 0) {
-    c = -c;
-  }
+  //if (c < 0) {
+  //  c = -c;
+  //}
   
   size *= res_mod;
   agg::glyph_rendering gren = agg::glyph_ren_agg_gray8;
