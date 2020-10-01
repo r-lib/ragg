@@ -255,9 +255,7 @@ pDevDesc agg_device_new(T* device) {
   dd->releaseMask     = agg_releaseMask<T>;
 #endif
   // UTF-8 support
-#if defined _WIN32
-  dd->wantSymbolUTF8 = (Rboolean) 0;
-#else
+#if !defined _WIN32
   dd->wantSymbolUTF8 = (Rboolean) 1;
 #endif
   dd->hasTextUTF8 = (Rboolean) 1;
