@@ -1,6 +1,5 @@
-This is a minor release adding a new argument to all devices as well as 
-preparing the device system for the next graphic engine version. No breaking 
-changes.
+This release moves all text layouting to the new textshaping package and 
+contains some code changes to accommodate that.
 
 ## Test environments
 * local R installation, R 4.0.1

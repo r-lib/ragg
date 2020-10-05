@@ -1,6 +1,10 @@
 # ragg (development version)
 
 * Move text shaping to the new textshaping package.
+* Fix `agg_capture()` on big endian systems (#49, @QuLogic)
+* Fix use of symbol font on Windows by moving to Segoe UI Symbol which has a 
+  Unicode charmap (#51)
+* Better compatibility with knitr and `ggplot2::ggsave()`
 
 # ragg 0.3.1
 
