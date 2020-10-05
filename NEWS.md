@@ -1,4 +1,4 @@
-# ragg (development version)
+# ragg 0.4.0
 
 * Move text shaping to the new textshaping package.
 * Fix `agg_capture()` on big endian systems (#49, @QuLogic)
