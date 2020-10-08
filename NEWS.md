@@ -1,5 +1,14 @@
 # ragg (development version)
 
+* Major version release to signify the much improved text support that includes
+  full support for right-to-left scripts and bidirectional text (mix of RtL and
+  LtR scripts). It further adds full support for OpenType features.
+* ragg now requires the Harfbuzz and Fribidi libraries to be available when 
+  installing from source due to their dependency in the textshaping package.
+* Re-exporting `register_font()` and `register_variant()` from systemfonts
+* Fixed a bug resulting in system crash on certain systems, as well as 
+  clang-ASAN error. (#59)
+  
 # ragg 0.4.0
 
 * Move text shaping to the new textshaping package.
