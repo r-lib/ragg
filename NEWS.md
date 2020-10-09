@@ -1,4 +1,4 @@
-# ragg (development version)
+# ragg 1.0.0
 
 * Major version release to signify the much improved text support that includes
   full support for right-to-left scripts and bidirectional text (mix of RtL and
