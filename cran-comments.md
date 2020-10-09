@@ -1,5 +1,9 @@
-This release moves all text layouting to the new textshaping package and 
-contains some code changes to accommodate that.
+This is a major release to signify the new text layouting pipeline. Due to the 
+more advanced layouting, this version takes on dependencies on HarfBuzz and 
+Fribidi through the textshaping package. In turn it gains support for 
+bidirectional and right-to-left text along with advanced OpenType features.
+
+This release also fixes an ASAN issue present in the last release
 
 ## Test environments
 * local R installation, R 4.0.1
