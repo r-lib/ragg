@@ -125,9 +125,11 @@ class TextRenderer {
   UTF_UCS converter;
   FontSettings last_font;
   agg::glyph_rendering last_gren;
-  std::vector<double> x_buffer;
-  std::vector<double> y_buffer;
-  std::vector<int> id_buffer;
+  std::vector<textshaping::Point> loc_buffer;
+  std::vector<uint32_t> id_buffer;
+  std::vector<int> cluster_buffer;
+  std::vector<unsigned int> font_buffer;
+  std::vector<FontSettings> fallback_buffer;
   
 public:
   TextRenderer() :
@@ -163,7 +165,7 @@ public:
   
   double get_text_width(const char* string) {
     double width = 0.0;
-    int error = ts_string_width(
+    int error = textshaping::string_width(
       string, 
       last_font, 
       get_engine().height(), 
@@ -203,23 +205,30 @@ public:
     }
     
     int expected_max = strlen(string) * 16;
-    x_buffer.resize(expected_max);
-    y_buffer.resize(expected_max);
-    id_buffer.resize(expected_max);
+    loc_buffer.reserve(expected_max);
+    id_buffer.reserve(expected_max);
+    cluster_buffer.reserve(expected_max);
+    font_buffer.reserve(expected_max);
+    fallback_buffer.reserve(expected_max);
     
-    int n_glyphs = 0;
-    ts_string_shape(
-      string, 
+    int err = textshaping::string_shape(
+      string,
       last_font,
-      get_engine().height(),
+      get_engine().height(), 
       72.0,
-      x_buffer.data(),
-      y_buffer.data(),
-      id_buffer.data(),
-      NULL,
-      &n_glyphs,
-      expected_max
+      loc_buffer,
+      id_buffer,
+      cluster_buffer,
+      font_buffer,
+      fallback_buffer
     );
+    
+    if (err != 0) {
+      Rf_warning("textshaping failed to shape the string");
+      return;
+    }
+    
+    int n_glyphs = loc_buffer.size();
     
     if (n_glyphs == 0) {
       return;
@@ -248,8 +257,8 @@ public:
     for (int i = 0; i < n_glyphs; ++i) {
       const agg::glyph_cache* glyph = get_manager().glyph(id_buffer[i]);
       if (glyph) {
-        double x_offset = x_buffer[i] * cos_rot + y_buffer[i] * sin_rot;
-        double y_offset = y_buffer[i] * cos_rot + x_buffer[i] * sin_rot;
+        double x_offset = loc_buffer[i].x * cos_rot + loc_buffer[i].y * sin_rot;
+        double y_offset = loc_buffer[i].y * cos_rot + loc_buffer[i].x * sin_rot;
         get_manager().init_embedded_adaptors(glyph, x + x_offset, y + y_offset);
         switch(glyph->data_type) {
         default: break;

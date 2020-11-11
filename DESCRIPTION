@@ -51,7 +51,7 @@ Suggests:
     graphics
 Imports: 
     systemfonts (>= 0.2.1),
-    textshaping
+    textshaping (>= 0.2.0)
 LinkingTo: 
     systemfonts,
     textshaping

@@ -1,5 +1,7 @@
 # ragg (development version)
 
+* Use new textshaping API
+
 # ragg 1.0.0
 
 * Major version release to signify the much improved text support that includes
