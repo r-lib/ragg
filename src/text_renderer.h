@@ -182,11 +182,17 @@ public:
   void get_char_metric(int c, double *ascent, double *descent, double *width) {
     unsigned index = get_engine().get_glyph_index(c);
     const agg::glyph_cache* glyph = get_manager().glyph(index);
-    if (glyph) {
+    if (glyph && !(c == 77 && index == 0)) {
       *ascent = (double) -glyph->bounds.y1;
       *descent = (double) glyph->bounds.y2;
       
       *width = glyph->advance_x;
+    } else if (c == 77) { // GE uses M (77) to figure out size
+      // Use height as a proxy - this fallback is mostly relevant for emoji
+      *ascent = get_engine().height();
+      *descent = get_engine().height();
+      
+      *width = get_engine().height();
     }
   }
   
