@@ -887,7 +887,22 @@ namespace agg
     {
         if(m_cur_face)
         {
-            if(m_resolution)
+          if(!FT_IS_SCALABLE(m_cur_face)) {
+              int best_match = 0;
+              int diff = 1e6;
+              for (int i = 0; i < m_cur_face->num_fixed_sizes; ++i)
+              {
+                  int ndiff = m_cur_face->available_sizes[i].height - (m_height >> 6);
+                  if(ndiff >= 0 && ndiff < diff) 
+                  {
+                      best_match = i;
+                      diff = ndiff;
+                  }
+              }
+              FT_Select_Size(m_cur_face, best_match);
+              m_height = m_cur_face->size->metrics.height;
+          }
+          else if(m_resolution)
             {
                 FT_Set_Char_Size(m_cur_face, 
                                  m_width,       // char_width in 1/64th of points
