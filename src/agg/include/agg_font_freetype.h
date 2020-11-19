@@ -98,6 +98,9 @@ namespace agg
         unsigned        data_size()   const { return m_data_size;   }
         glyph_data_type data_type()   const { return m_data_type;   }
         const rect_i&   bounds()      const { return m_bounds;      }
+        double          ascent()      const { return double(m_cur_face->size->metrics.ascender) / 64;}
+        double          descent()     const { return double(m_cur_face->size->metrics.descender) / 64;}
+        double          max_advance() const { return double(m_cur_face->size->metrics.max_advance) / 64;}
         double          advance_x()   const { return m_advance_x;   }
         double          advance_y()   const { return m_advance_y;   }
         void            write_glyph_to(int8u* data) const;
