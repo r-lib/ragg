@@ -109,7 +109,8 @@
 
       
 
-      </header><script src="ragg_quality_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="ragg_quality_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="ragg_quality_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="ragg_quality_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Ragg Quality</h1>
@@ -169,6 +170,12 @@
 
 <span class="fu">circle_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo no AA'</span>, <span class="va">cairo_none_circle</span>, 
                type <span class="op">=</span> <span class="st">'cairo'</span>, antialias <span class="op">=</span> <span class="st">'none'</span><span class="op">)</span>
+<span class="co">#&gt; Warning in cairoVersion(): unable to load shared object '/Library/Frameworks/R.framework/Resources/library/grDevices/libs//cairo.so':</span>
+<span class="co">#&gt;   dlopen(/Library/Frameworks/R.framework/Resources/library/grDevices/libs//cairo.so, 6): Library not loaded: /opt/X11/lib/libXrender.1.dylib</span>
+<span class="co">#&gt;   Referenced from: /Library/Frameworks/R.framework/Versions/4.0/Resources/library/grDevices/libs/cairo.so</span>
+<span class="co">#&gt;   Reason: image not found</span>
+<span class="co">#&gt; Warning in device(file, width = 600, height = 300, ...): failed to load cairo</span>
+<span class="co">#&gt; DLL</span>
 
 <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_none_circle</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-8-1.png"><!-- --></p>
@@ -178,6 +185,8 @@
 
 <span class="fu">circle_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo gray AA'</span>, <span class="va">cairo_gray_circle</span>, 
                type <span class="op">=</span> <span class="st">'cairo'</span>, antialias <span class="op">=</span> <span class="st">'gray'</span><span class="op">)</span>
+<span class="co">#&gt; Warning in device(file, width = 600, height = 300, ...): failed to load cairo</span>
+<span class="co">#&gt; DLL</span>
 
 <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_gray_circle</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-10-1.png"><!-- --></p>
@@ -187,6 +196,8 @@
 
 <span class="fu">circle_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo subpixel AA'</span>, <span class="va">cairo_subpixel_circle</span>, 
                type <span class="op">=</span> <span class="st">'cairo'</span>, antialias <span class="op">=</span> <span class="st">'subpixel'</span><span class="op">)</span>
+<span class="co">#&gt; Warning in device(file, width = 600, height = 300, ...): failed to load cairo</span>
+<span class="co">#&gt; DLL</span>
 
 <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_subpixel_circle</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-12-1.png"><!-- --></p>
@@ -237,6 +248,8 @@
 
 <span class="fu">text_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo no AA'</span>, <span class="va">cairo_none_text</span>, 
              type <span class="op">=</span> <span class="st">'cairo'</span>, antialias <span class="op">=</span> <span class="st">'none'</span><span class="op">)</span>
+<span class="co">#&gt; Warning in device(file, width = 600, height = 300, ...): failed to load cairo</span>
+<span class="co">#&gt; DLL</span>
 
 <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_none_text</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-23-1.png"><!-- --></p>
@@ -246,6 +259,8 @@
 
 <span class="fu">text_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo no AA'</span>, <span class="va">cairo_none_text_rot</span>, rotation <span class="op">=</span> <span class="fl">27</span>, 
              type <span class="op">=</span> <span class="st">'cairo'</span>, antialias <span class="op">=</span> <span class="st">'none'</span><span class="op">)</span>
+<span class="co">#&gt; Warning in device(file, width = 600, height = 300, ...): failed to load cairo</span>
+<span class="co">#&gt; DLL</span>
 
 <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_none_text_rot</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-25-1.png"><!-- --></p>
@@ -255,6 +270,8 @@
 
 <span class="fu">text_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo gray AA'</span>, <span class="va">cairo_gray_text</span>, 
              type <span class="op">=</span> <span class="st">'cairo'</span>, antialias <span class="op">=</span> <span class="st">'gray'</span><span class="op">)</span>
+<span class="co">#&gt; Warning in device(file, width = 600, height = 300, ...): failed to load cairo</span>
+<span class="co">#&gt; DLL</span>
 
 <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_gray_text</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-27-1.png"><!-- --></p>
@@ -264,6 +281,8 @@
 
 <span class="fu">text_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo gray AA'</span>, <span class="va">cairo_gray_text_rot</span>, rotation <span class="op">=</span> <span class="fl">27</span>, 
              type <span class="op">=</span> <span class="st">'cairo'</span>, antialias <span class="op">=</span> <span class="st">'gray'</span><span class="op">)</span>
+<span class="co">#&gt; Warning in device(file, width = 600, height = 300, ...): failed to load cairo</span>
+<span class="co">#&gt; DLL</span>
 
 <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_gray_text_rot</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-29-1.png"><!-- --></p>
@@ -273,6 +292,8 @@
 
 <span class="fu">text_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo subpixel AA'</span>, <span class="va">cairo_subpixel_text</span>, 
              type <span class="op">=</span> <span class="st">'cairo'</span>, antialias <span class="op">=</span> <span class="st">'subpixel'</span><span class="op">)</span>
+<span class="co">#&gt; Warning in device(file, width = 600, height = 300, ...): failed to load cairo</span>
+<span class="co">#&gt; DLL</span>
 
 <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_subpixel_text</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-31-1.png"><!-- --></p>
@@ -282,6 +303,8 @@
 
 <span class="fu">text_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo subpixel AA'</span>, <span class="va">cairo_subpixel_text_rot</span>, rotation <span class="op">=</span> <span class="fl">27</span>, 
              type <span class="op">=</span> <span class="st">'cairo'</span>, antialias <span class="op">=</span> <span class="st">'subpixel'</span><span class="op">)</span>
+<span class="co">#&gt; Warning in device(file, width = 600, height = 300, ...): failed to load cairo</span>
+<span class="co">#&gt; DLL</span>
 
 <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_subpixel_text_rot</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-33-1.png"><!-- --></p>
@@ -315,6 +338,8 @@
 <code class="sourceCode R"><span class="va">cairo_blend</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
 
 <span class="fu">blend_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo'</span>, <span class="va">cairo_blend</span>, type <span class="op">=</span> <span class="st">'cairo'</span><span class="op">)</span>
+<span class="co">#&gt; Warning in device(file, width = 600, height = 300, ...): failed to load cairo</span>
+<span class="co">#&gt; DLL</span>
 
 <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_blend</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-37-1.png"><!-- --></p>
@@ -350,6 +375,8 @@
 <code class="sourceCode R"><span class="va">cairo_raster</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
 
 <span class="fu">raster_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo'</span>, <span class="va">cairo_raster</span>, type <span class="op">=</span> <span class="st">'cairo'</span><span class="op">)</span>
+<span class="co">#&gt; Warning in device(file, width = 600, height = 300, ...): failed to load cairo</span>
+<span class="co">#&gt; DLL</span>
 
 <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_raster</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-41-1.png"><!-- --></p>
@@ -382,36 +409,36 @@
 <span class="co">#&gt;  date     2020-11-19                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt;  package     * version    date       lib source                        </span>
-<span class="co">#&gt;  assertthat    0.2.1      2019-03-21 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  cli           2.1.0      2020-10-12 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  crayon        1.3.4      2017-09-16 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  desc          1.2.0      2018-05-01 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  digest        0.6.27     2020-10-24 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  evaluate      0.14       2019-05-28 [1] CRAN (R 4.0.1)                </span>
-<span class="co">#&gt;  fansi         0.4.1      2020-01-08 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  fs            1.5.0      2020-07-31 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  glue          1.4.2      2020-08-27 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  htmltools     0.5.0      2020-06-16 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  knitr         1.30       2020-09-22 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  magick      * 2.5.2      2020-11-10 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  magrittr      2.0.1      2020-11-17 [1] CRAN (R 4.0.3)                </span>
-<span class="co">#&gt;  memoise       1.1.0      2017-04-21 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  pkgdown       1.6.1.9000 2020-11-19 [1] Github (r-lib/pkgdown@6094ac3)</span>
-<span class="co">#&gt;  R6            2.5.0      2020-10-28 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  ragg        * 1.0.0.9000 2020-11-19 [1] local                         </span>
-<span class="co">#&gt;  Rcpp          1.0.5      2020-07-06 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  rlang         0.4.8      2020-10-08 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  rmarkdown     2.5        2020-10-21 [1] CRAN (R 4.0.3)                </span>
-<span class="co">#&gt;  rprojroot     2.0.2      2020-11-15 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  sessioninfo   1.1.1      2018-11-05 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  stringi       1.5.3      2020-09-09 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  stringr       1.4.0      2019-02-10 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  systemfonts   0.3.2      2020-09-29 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  textshaping   0.2.1      2020-11-13 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  withr         2.3.0      2020-09-22 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  xfun          0.19       2020-10-30 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  yaml          2.2.1      2020-02-01 [1] CRAN (R 4.0.2)                </span>
+<span class="co">#&gt;  package     * version    date       lib source        </span>
+<span class="co">#&gt;  assertthat    0.2.1      2019-03-21 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  cli           2.1.0      2020-10-12 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  crayon        1.3.4      2017-09-16 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  desc          1.2.0      2018-05-01 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  digest        0.6.27     2020-10-24 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  evaluate      0.14       2019-05-28 [1] CRAN (R 4.0.1)</span>
+<span class="co">#&gt;  fansi         0.4.1      2020-01-08 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  fs            1.5.0      2020-07-31 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  glue          1.4.2      2020-08-27 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  htmltools     0.5.0      2020-06-16 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  knitr         1.30       2020-09-22 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  magick      * 2.5.2      2020-11-10 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  magrittr      2.0.1      2020-11-17 [1] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  memoise       1.1.0      2017-04-21 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  pkgdown       1.6.1      2020-09-12 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  R6            2.5.0      2020-10-28 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  ragg        * 1.0.0.9000 2020-11-19 [1] local         </span>
+<span class="co">#&gt;  Rcpp          1.0.5      2020-07-06 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  rlang         0.4.8      2020-10-08 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  rmarkdown     2.5        2020-10-21 [1] CRAN (R 4.0.3)</span>
+<span class="co">#&gt;  rprojroot     2.0.2      2020-11-15 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  sessioninfo   1.1.1      2018-11-05 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  stringi       1.5.3      2020-09-09 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  stringr       1.4.0      2019-02-10 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  systemfonts   0.3.2      2020-09-29 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  textshaping   0.2.1      2020-11-13 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  withr         2.3.0      2020-09-22 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  xfun          0.19       2020-10-30 [1] CRAN (R 4.0.2)</span>
+<span class="co">#&gt;  yaml          2.2.1      2020-02-01 [1] CRAN (R 4.0.2)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [1] /Users/runner/work/_temp/Library</span>
 <span class="co">#&gt; [2] /Library/Frameworks/R.framework/Versions/4.0/Resources/library</span></code></pre></div>
@@ -433,7 +460,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
