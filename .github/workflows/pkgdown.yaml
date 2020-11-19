@@ -35,6 +35,15 @@ jobs:
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
+          remotes::install_cran("ggplot2")
+          remotes::install_cran("devoid")
+          remotes::install_cran("magick")
+          remotes::install_cran("bench")
+          remotes::install_cran("tidyr")
+          remotes::install_cran("ggridges")
+          remotes::install_cran("hexbin")
+          remotes::install_cran("sessioninfo")
+          remotes::install_dev("pkgdown")
           install.packages("pkgdown", type = "binary")
         shell: Rscript {0}
 
