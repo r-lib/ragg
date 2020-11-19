@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ragg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9000</span>
       </span>
     </div>
 
@@ -165,6 +165,20 @@
 <h1 class="page-header" data-toc-text="development version">
 <a href="#ragg-development-version" class="anchor"></a>ragg (development version)<small> Unreleased </small>
 </h1>
+<ul>
+<li>Use new textshaping API</li>
+</ul>
+</div>
+    <div id="ragg-100" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.0">
+<a href="#ragg-100" class="anchor"></a>ragg 1.0.0<small> Unreleased </small>
+</h1>
+<ul>
+<li>Major version release to signify the much improved text support that includes full support for right-to-left scripts and bidirectional text (mix of RtL and LtR scripts). It further adds full support for OpenType features.</li>
+<li>ragg now requires the Harfbuzz and Fribidi libraries to be available when installing from source due to their dependency in the textshaping package.</li>
+<li>Re-exporting <code><a href="https://rdrr.io/pkg/systemfonts/man/register_font.html">register_font()</a></code> and <code><a href="https://rdrr.io/pkg/systemfonts/man/register_variant.html">register_variant()</a></code> from systemfonts</li>
+<li>Fixed a bug resulting in system crash on certain systems, as well as clang-ASAN error. (<a href='https://github.com/r-lib/ragg/issues/59'>#59</a>)</li>
+</ul>
 </div>
     <div id="ragg-040" class="section level1">
 <h1 class="page-header" data-toc-text="0.4.0">

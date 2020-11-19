@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Draw to a PPM file — agg_ppm • ragg</title>
+<title>Objects exported from other packages — reexports • ragg</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,13 +46,13 @@
 
 
 
-<meta property="og:title" content="Draw to a PPM file — agg_ppm" />
-<meta property="og:description" content="The PPM (Portable Pixel Map) format defines one of the simplest storage 
-formats available for 
-image data. It is basically a raw 8bit RGB stream with a few bytes of 
-information in the start. It goes without saying, that this file format is
-horribly inefficient and should only be used if you want to play around with
-a simple file format, or need a file-based image stream." />
+<meta property="og:title" content="Objects exported from other packages — reexports" />
+<meta property="og:description" content="These objects are imported from other packages. Follow the links
+below to see their documentation.
+
+  systemfontsregister_font, register_variant
+
+" />
 <meta property="og:image" content="https://ragg.r-lib.org/logo.svg" />
 
 
@@ -163,85 +163,23 @@ a simple file format, or need a file-based image stream." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Draw to a PPM file</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/ragg/blob/master/R/agg_dev.R'><code>R/agg_dev.R</code></a></small>
-    <div class="hidden name"><code>agg_ppm.Rd</code></div>
+    <h1>Objects exported from other packages</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/ragg/blob/master/R/aaa.R'><code>R/aaa.R</code></a></small>
+    <div class="hidden name"><code>reexports.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The PPM (Portable Pixel Map) format defines one of the simplest storage 
-formats available for 
-image data. It is basically a raw 8bit RGB stream with a few bytes of 
-information in the start. It goes without saying, that this file format is
-horribly inefficient and should only be used if you want to play around with
-a simple file format, or need a file-based image stream.</p>
+    <p>These objects are imported from other packages. Follow the links
+below to see their documentation.</p>
+<dl>
+  <dt>systemfonts</dt><dd><p><code><a href='https://rdrr.io/pkg/systemfonts/man/register_font.html'>register_font</a></code>, <code><a href='https://rdrr.io/pkg/systemfonts/man/register_variant.html'>register_variant</a></code></p></dd>
+
+</dl>
     </div>
 
-    <pre class="usage"><span class='fu'>agg_ppm</span><span class='op'>(</span>
-  filename <span class='op'>=</span> <span class='st'>"Rplot%03d.ppm"</span>,
-  width <span class='op'>=</span> <span class='fl'>480</span>,
-  height <span class='op'>=</span> <span class='fl'>480</span>,
-  units <span class='op'>=</span> <span class='st'>"px"</span>,
-  pointsize <span class='op'>=</span> <span class='fl'>12</span>,
-  background <span class='op'>=</span> <span class='st'>"white"</span>,
-  res <span class='op'>=</span> <span class='fl'>72</span>,
-  scaling <span class='op'>=</span> <span class='fl'>1</span>,
-  <span class='va'>bg</span>
-<span class='op'>)</span></pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>filename</th>
-      <td><p>The name of the file. Follows the same semantics as the file 
-naming in [grDevices::png()], meaning that you can provide a [sprintf()] 
-compliant string format to name multiple plots (such as the default value)</p></td>
-    </tr>
-    <tr>
-      <th>width, height</th>
-      <td><p>The dimensions of the device</p></td>
-    </tr>
-    <tr>
-      <th>units</th>
-      <td><p>The unit `width` and `height` is measured in, in either pixels 
-(`'px'`), inches (`'in'`), millimeters (`'mm'`), or centimeter (`'cm'`).</p></td>
-    </tr>
-    <tr>
-      <th>pointsize</th>
-      <td><p>The default pointsize of the device in pt</p></td>
-    </tr>
-    <tr>
-      <th>background</th>
-      <td><p>The background colour of the device</p></td>
-    </tr>
-    <tr>
-      <th>res</th>
-      <td><p>The resolution of the device. This setting will govern how device
-dimensions given in inches, centimeters, or millimeters will be converted
-to pixels. Further, it will be used to scale text sizes and linewidths</p></td>
-    </tr>
-    <tr>
-      <th>scaling</th>
-      <td><p>A scaling factor to apply to the rendered line width and text
-size. Useful for getting the right dimensions at the resolution that you
-need.</p></td>
-    </tr>
-    <tr>
-      <th>bg</th>
-      <td><p>Same as `background` for compatibility with old graphic device APIs</p></td>
-    </tr>
-    </table>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>file</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span>fileext <span class='op'>=</span> <span class='st'>'.ppm'</span><span class='op'>)</span>
-<span class='fu'>agg_ppm</span><span class='op'>(</span><span class='va'>file</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>sin</span>, <span class='op'>-</span><span class='va'>pi</span>, <span class='fl'>2</span><span class='op'>*</span><span class='va'>pi</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; agg_png 
-#&gt;       2 </div><div class='input'>
-</div></pre>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

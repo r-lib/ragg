@@ -44,7 +44,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ragg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9000</span>
       </span>
     </div>
 
@@ -122,10 +122,10 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ragg.r-lib.org">ragg</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ragg.r-lib.org">ragg</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-lib/devoid">devoid</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></code></pre></div>
 <p>This document serves as a collection of benchmarks between ragg and the build-in raster devices provided by the grDevices package. As the output format is immaterial to the benchmarking, this document will only compare devices producing png images. The <code><a href="https://rdrr.io/r/grDevices/png.html">png()</a></code> function from grDevices can use different rendering backends, with both different quality and speed, whereas <code><a href="../reference/agg_png.html">agg_png()</a></code> from ragg only provides a single backend. All backends will be compared here to give the fullest overview.</p>
 <p>All benchmarks will also include timings of the same code with the <code><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev()</a></code> device from the devoid package. The <code><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev()</a></code> device is a very simple device that does no operations on the input it receives. Because of this it serves as a measure for the time spent on non-rendering operations.</p>
 <p>On Mac installation the <code><a href="https://rdrr.io/r/grDevices/png.html">png()</a></code> function also offers (and defaults to) a quartz backend. As this is not available on all systems it will not be included here. Local tests have shown it to be about as performant or slightly below ragg.</p>
@@ -136,8 +136,8 @@
 <h2 class="hasAnchor">
 <a href="#opening-and-closing" class="anchor"></a>Opening and closing</h2>
 <p>All subsequent benchmarks will not include the opening and closing of the device and instead focus on rendering performance. The most important, and potentially time-consuming, part of opening and closing a device is allocation of a buffer to write raster information to, and serialising the buffer into a file. It is also where performance differences between e.g. png and tiff will come from. As both ragg and grDevices uses the same underlying libraries to write to png files (libpng) it is not expected that there is much difference.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">'.png'</span><span class="op">)</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">'.png'</span><span class="op">)</span>
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">bench</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/mark.html">mark</a></span><span class="op">(</span>
   ragg <span class="op">=</span> <span class="op">{</span><span class="fu"><a href="../reference/agg_png.html">agg_png</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span><span class="op">(</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">}</span>,
   cairo <span class="op">=</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/grDevices/png.html">png</a></span><span class="op">(</span><span class="va">file</span>, type <span class="op">=</span> <span class="st">'cairo'</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span><span class="op">(</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">}</span>,
@@ -149,15 +149,15 @@
   <span class="va">res</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">[</span><span class="op">-</span><span class="fl">4</span>, <span class="op">]</span>
   <span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">expression</span>, <span class="st">'description'</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">expression</span>, <span class="st">'description'</span><span class="op">)</span><span class="op">[</span><span class="op">-</span><span class="fl">4</span><span class="op">]</span>
 <span class="op">}</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">res</span>, type <span class="op">=</span> <span class="st">'ridge'</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">'Open and close performance'</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">res</span>, type <span class="op">=</span> <span class="st">'ridge'</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">'Open and close performance'</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
 <p>As can be seen, it is not as clear cut as it seems. ragg and cairo_png have equivalent performance, while Cairo is about twice as fast. Xlib on the other hand is even slower. Looking at the produced files we can see that ragg and cairo_png produce files of around 2Kb, whereas cairo produces files of around 300B and XLib around 6Kb. The differences can thus be ascribed to disk write speed more than anything, and is probably due to different compression and filtering settings used. ragg uses the default heuristics from libpng, and my guess is that cairo_png uses this as well. A white rectangle (as produced by <code><a href="https://rdrr.io/r/graphics/frame.html">plot.new()</a></code>) is amenable to a lot of compression and it is possible that cairo has been tuned for that. It is likely that the advantage will disappear with more complex plots but it is difficult to test without inflating it with rendering speed.</p>
 <div id="rendering" class="section level3">
 <h3 class="hasAnchor">
 <a href="#rendering" class="anchor"></a>Rendering</h3>
 <p>A graphic device provides a range of methods that R’s graphic engine will use when it receives plotting instructions from the user. The more performant each of these methods are, the more performant the graphic device is as a whole. The possible devices from grDevices increases here, as different anti-aliasing settings can be used (ragg, again, has no settings for this. It will always draw with subpixel antialiasing). Below is an attempt to benchmark each of the device methods by constructing as direct as possible calls to each of them. Remember, <code><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev()</a></code> provides the baseline.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="va">render_bench</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">dev_f</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">render_bench</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">dev_f</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">dots</span> <span class="op">&lt;-</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/nse-defuse.html">enexprs</a></span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/base/force.html">force</a></span><span class="op">(</span><span class="va">dev_f</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html">on.exit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
@@ -197,14 +197,14 @@
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>panel.grid.major.y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_blank</a></span><span class="op">(</span><span class="op">)</span>,
           legend.position <span class="op">=</span> <span class="st">'bottom'</span><span class="op">)</span> <span class="op">+</span> 
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/format.html">format</a></span><span class="op">(</span><span class="fu">bench</span><span class="fu">:::</span><span class="fu"><a href="https://rdrr.io/pkg/bench/man/as_bench_time.html">as_bench_time</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">}</span><span class="op">)</span>
-<span class="op">}</span></pre></div>
+<span class="op">}</span></code></pre></div>
 </div>
 <div id="circles" class="section level3">
 <h3 class="hasAnchor">
 <a href="#circles" class="anchor"></a>Circles</h3>
 <p>Circles can be drawn with e.g. <code>grid.circle()</code> but is often used when drawing scatter plots as the default point type. It is thus of high importance that circle drawing is as performant as possible, as it may get called thousands of times during the creation of a plot.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span>
 <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span>
 <span class="va">pch</span> <span class="op">&lt;-</span> <span class="fl">1</span>
 
@@ -213,17 +213,17 @@
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, pch <span class="op">=</span> <span class="va">pch</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">all_render_bench</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, pch <span class="op">=</span> <span class="va">pch</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Unfilled circle performance'</span>, <span class="va">b</span><span class="op">)</span></pre></div>
+<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Unfilled circle performance'</span>, <span class="va">b</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="va">pch</span> <span class="op">&lt;-</span> <span class="fl">19</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pch</span> <span class="op">&lt;-</span> <span class="fl">19</span>
 
 <span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, pch <span class="op">=</span> <span class="va">pch</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">all_render_bench</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, pch <span class="op">=</span> <span class="va">pch</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Filled circle performance'</span>, <span class="va">b</span><span class="op">)</span></pre></div>
+<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Filled circle performance'</span>, <span class="va">b</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
 <p>Of all of the antialiased devices it is clear that ragg is the most performant. The performance gain is most pronounced with unfilled circles due to the fact that cairo doesn’t antialias fill, only stroke and text. Xlib is by far the most performant device, but also the one rendering with the lowest quality by far (see the <em>Rendering quality</em> vignette).</p>
 </div>
@@ -231,15 +231,15 @@
 <h3 class="hasAnchor">
 <a href="#lines" class="anchor"></a>Lines</h3>
 <p>Lines is another fundamental part. It can be used to draw single line segments directly and is also the workhorse for some of the different symbol types, e.g. <code>pch = 4</code>, which we will use here.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="va">pch</span> <span class="op">&lt;-</span> <span class="fl">4</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pch</span> <span class="op">&lt;-</span> <span class="fl">4</span>
 
 <span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, pch <span class="op">=</span> <span class="va">pch</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">all_render_bench</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, pch <span class="op">=</span> <span class="va">pch</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Line segment performance'</span>, <span class="va">b</span><span class="op">)</span></pre></div>
+<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Line segment performance'</span>, <span class="va">b</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 <p>Again, we see a clear performance difference between devices using antialiasing and those that do not. ragg is once again the fastest one using anti-aliasing.</p>
 </div>
@@ -247,21 +247,21 @@
 <h3 class="hasAnchor">
 <a href="#polylines" class="anchor"></a>Polylines</h3>
 <p>Polylines are connected line segments. We should expect the same picture as for lines given that the operations are quite similar. We will also test different line patterns here to assess whether there are any differences in the efficency with which patterns are generated.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">all_render_bench</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Connected line performance'</span>, <span class="va">b</span><span class="op">)</span></pre></div>
+<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Connected line performance'</span>, <span class="va">b</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, lty <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">all_render_bench</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, lty <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Patterned connected line performance'</span>, <span class="va">b</span><span class="op">)</span></pre></div>
+<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Patterned connected line performance'</span>, <span class="va">b</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
 <p>The results here are quite surprising. While the general pattern continues, the anti-aliasing in cairo is much slower than in the other setups. For the patterned test we see that Xlib is so slow at generating patterned lines that it completely negates its otherwise solid rendering speed leadership (again, at the cost of quality).</p>
 </div>
@@ -269,25 +269,25 @@
 <h3 class="hasAnchor">
 <a href="#rectangles" class="anchor"></a>Rectangles</h3>
 <p>Rectangle is another graphic primitive that has its own method. Again, it is used when plotting certain types of points, and this is how we’ll test it:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="va">pch</span> <span class="op">&lt;-</span> <span class="fl">0</span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pch</span> <span class="op">&lt;-</span> <span class="fl">0</span>
 
 <span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, pch <span class="op">=</span> <span class="va">pch</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">all_render_bench</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, pch <span class="op">=</span> <span class="va">pch</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Unfilled rectangle performance'</span>, <span class="va">b</span><span class="op">)</span></pre></div>
+<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Unfilled rectangle performance'</span>, <span class="va">b</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="va">pch</span> <span class="op">&lt;-</span> <span class="fl">15</span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pch</span> <span class="op">&lt;-</span> <span class="fl">15</span>
 
 <span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, pch <span class="op">=</span> <span class="va">pch</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">all_render_bench</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, pch <span class="op">=</span> <span class="va">pch</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Filled rectangle performance'</span>, <span class="va">b</span><span class="op">)</span></pre></div>
+<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Filled rectangle performance'</span>, <span class="va">b</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
 <p>We see a new pattern with the filled rectangles, where ragg is suddenly the slow one. The reason for this is again that cairo does not apply anti-aliasing on fills and drawing a non anti-aliased filled rectangle is extremely simple.</p>
 </div>
@@ -295,31 +295,31 @@
 <h3 class="hasAnchor">
 <a href="#polygons" class="anchor"></a>Polygons</h3>
 <p>Polygons are the general case of what we’ve seen with circles and rectangles. While certain optimisations may be possible for e.g. rectanges the polygon method of device needs to handle all cases. It is used in points for e.g.  triangles, but we will also test performance for bigger, more complex polygons.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="va">pch</span> <span class="op">&lt;-</span> <span class="fl">2</span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pch</span> <span class="op">&lt;-</span> <span class="fl">2</span>
 
 <span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, pch <span class="op">=</span> <span class="va">pch</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">all_render_bench</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, pch <span class="op">=</span> <span class="va">pch</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Simple polygon performance'</span>, <span class="va">b</span><span class="op">)</span></pre></div>
+<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Simple polygon performance'</span>, <span class="va">b</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/polygon.html">polygon</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">all_render_bench</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/polygon.html">polygon</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Unfilled complex polygon performance'</span>, <span class="va">b</span><span class="op">)</span></pre></div>
+<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Unfilled complex polygon performance'</span>, <span class="va">b</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/polygon.html">polygon</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, border <span class="op">=</span> <span class="st">'gray'</span>, col <span class="op">=</span> <span class="st">'black'</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">all_render_bench</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/polygon.html">polygon</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, border <span class="op">=</span> <span class="st">'gray'</span>, col <span class="op">=</span> <span class="st">'black'</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Filled complex polygon performance'</span>, <span class="va">b</span><span class="op">)</span></pre></div>
+<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Filled complex polygon performance'</span>, <span class="va">b</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
 <p>The findings here reflect what is seen above. ragg is faster when it comes to drawing the lines, but looses the advantage with fill as it is the only one performing anti-aliasing fill.</p>
 </div>
@@ -327,8 +327,8 @@
 <h3 class="hasAnchor">
 <a href="#paths" class="anchor"></a>Paths</h3>
 <p>Paths are the supercharged versions of polygons with support for holes and whatnot. It is one of the features that was added later in the lifetime of the R graphic engine and devices can thus elect not to support it. Most do, however, including cairo, but not Xlib. In ragg path rendering is implemented in the same way as polygon rendering (the polygon method being a special case of the path method), but how the other devices implement it is not something I know.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="va">section</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, each <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">section</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, each <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
 <span class="va">x_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/split.html">split</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">section</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">x</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="va">y_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/split.html">split</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">section</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">x</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="va">x_path</span> <span class="op">&lt;-</span> <span class="va">x_path</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x_path</span><span class="op">)</span><span class="op">]</span>
@@ -340,10 +340,10 @@
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">all_render_bench</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/polypath.html">polypath</a></span><span class="op">(</span><span class="va">x_path</span>, <span class="va">y_path</span>, rule <span class="op">=</span> <span class="st">'evenodd'</span><span class="op">)</span>, 
                         xlib <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Unfilled path performance'</span>, <span class="va">b</span><span class="op">)</span></pre></div>
+<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Unfilled path performance'</span>, <span class="va">b</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/polypath.html">polypath</a></span><span class="op">(</span><span class="va">x_path</span>, <span class="va">y_path</span>, rule <span class="op">=</span> <span class="st">'evenodd'</span>, border <span class="op">=</span> <span class="st">'gray'</span>, 
                           col <span class="op">=</span> <span class="st">'black'</span><span class="op">)</span><span class="op">)</span>
@@ -351,7 +351,7 @@
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">all_render_bench</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/polypath.html">polypath</a></span><span class="op">(</span><span class="va">x_path</span>, <span class="va">y_path</span>, rule <span class="op">=</span> <span class="st">'evenodd'</span>, 
                                 border <span class="op">=</span> <span class="st">'gray'</span>, col <span class="op">=</span> <span class="st">'black'</span><span class="op">)</span>,
                         xlib <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Filled path performance'</span>, <span class="va">b</span><span class="op">)</span></pre></div>
+<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Filled path performance'</span>, <span class="va">b</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
 <p>The path performance mirrors that of the other shape rendering. ragg is faster when it comes to drawing the stroke, but the speed advantage is almost lost when the shape is filled as well as cairo do not anti-alias fill. Xlib is not present here as path rendering is unsupported.</p>
 </div>
@@ -359,8 +359,8 @@
 <h3 class="hasAnchor">
 <a href="#raster" class="anchor"></a>Raster</h3>
 <p>The ability to draw raster images is also one of the later capabilities added to the graphic engine. Again, you don’t have to support it, but all the devices we look at do. Raster images can be rotated, and they can be interpolated or not during scaling. How interpolation happens is device specific, so there’s a lot of room for quality differences which we will not look at here.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="va">raster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/hcl.html">hcl</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">80</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">80</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span>, ncol <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">raster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/hcl.html">hcl</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">80</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">80</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">4</span>, ncol <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span><span class="op">(</span><span class="op">)</span>
@@ -370,10 +370,10 @@
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">all_render_bench</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/rasterImage.html">rasterImage</a></span><span class="op">(</span><span class="va">raster</span>, xleft <span class="op">=</span> <span class="fl">0.25</span>, ybottom <span class="op">=</span> <span class="fl">0.25</span>, 
                                     xright <span class="op">=</span> <span class="fl">0.75</span>, ytop <span class="op">=</span> <span class="fl">0.75</span>, 
                                     interpolate <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Non-interpolated, non-rotated raster performance'</span>, <span class="va">b</span><span class="op">)</span></pre></div>
+<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Non-interpolated, non-rotated raster performance'</span>, <span class="va">b</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
-<div class="sourceCode" id="cb17"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/rasterImage.html">rasterImage</a></span><span class="op">(</span><span class="va">raster</span>, xleft <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">100</span><span class="op">)</span>, ybottom <span class="op">=</span> <span class="fl">0.25</span>, 
                              xright <span class="op">=</span> <span class="fl">0.75</span>, ytop <span class="op">=</span> <span class="fl">0.75</span>, interpolate <span class="op">=</span> <span class="cn">FALSE</span>, 
@@ -382,10 +382,10 @@
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">all_render_bench</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/rasterImage.html">rasterImage</a></span><span class="op">(</span><span class="va">raster</span>, xleft <span class="op">=</span> <span class="fl">0.25</span>, ybottom <span class="op">=</span> <span class="fl">0.25</span>, 
                                     xright <span class="op">=</span> <span class="fl">0.75</span>, ytop <span class="op">=</span> <span class="fl">0.75</span>, 
                                     interpolate <span class="op">=</span> <span class="cn">FALSE</span>, angle <span class="op">=</span> <span class="fl">27</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Non-interpolated, rotated raster performance'</span>, <span class="va">b</span><span class="op">)</span></pre></div>
+<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Non-interpolated, rotated raster performance'</span>, <span class="va">b</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>
-<div class="sourceCode" id="cb18"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/rasterImage.html">rasterImage</a></span><span class="op">(</span><span class="va">raster</span>, xleft <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">100</span><span class="op">)</span>, ybottom <span class="op">=</span> <span class="fl">0.25</span>, 
                              xright <span class="op">=</span> <span class="fl">0.75</span>, ytop <span class="op">=</span> <span class="fl">0.75</span>, interpolate <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
@@ -393,10 +393,10 @@
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">all_render_bench</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/rasterImage.html">rasterImage</a></span><span class="op">(</span><span class="va">raster</span>, xleft <span class="op">=</span> <span class="fl">0.25</span>, ybottom <span class="op">=</span> <span class="fl">0.25</span>, 
                                     xright <span class="op">=</span> <span class="fl">0.75</span>, ytop <span class="op">=</span> <span class="fl">0.75</span>, 
                                     interpolate <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Interpolated, non-rotated raster performance'</span>, <span class="va">b</span><span class="op">)</span></pre></div>
+<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Interpolated, non-rotated raster performance'</span>, <span class="va">b</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
-<div class="sourceCode" id="cb19"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/rasterImage.html">rasterImage</a></span><span class="op">(</span><span class="va">raster</span>, xleft <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">100</span><span class="op">)</span>, ybottom <span class="op">=</span> <span class="fl">0.25</span>, 
                              xright <span class="op">=</span> <span class="fl">0.75</span>, ytop <span class="op">=</span> <span class="fl">0.75</span>, interpolate <span class="op">=</span> <span class="cn">TRUE</span>, 
@@ -405,7 +405,7 @@
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">all_render_bench</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/rasterImage.html">rasterImage</a></span><span class="op">(</span><span class="va">raster</span>, xleft <span class="op">=</span> <span class="fl">0.25</span>, ybottom <span class="op">=</span> <span class="fl">0.25</span>, 
                                     xright <span class="op">=</span> <span class="fl">0.75</span>, ytop <span class="op">=</span> <span class="fl">0.75</span>, 
                                     interpolate <span class="op">=</span> <span class="cn">TRUE</span>, angle <span class="op">=</span> <span class="fl">27</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Interpolated, rotated raster performance'</span>, <span class="va">b</span><span class="op">)</span></pre></div>
+<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Interpolated, rotated raster performance'</span>, <span class="va">b</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-20-1.png" width="672"></p>
 <p>Plotting rasters is whicked fast it appears. For non-rotated rasters ragg is a tiny bit slower than cairo, maybe due to anti-aliasing of the edges. The loss is gained again when it comes to rotation, indicating a more performant affine transformation implementation. Xlib is significantly slower here, for reasons beyond me.</p>
 </div>
@@ -413,23 +413,23 @@
 <h3 class="hasAnchor">
 <a href="#text" class="anchor"></a>Text</h3>
 <p>Text in data visualisation is crucial, and one of the hardest parts when implementing a graphic device. This is reflected in e.g. the inability of the native devices to find system fonts, thus having to rely on e.g. the extrafont or showtext packages for that. Anyway, again we only look at performance in this document.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit">
-<span class="va">pch</span> <span class="op">&lt;-</span> <span class="st">"#"</span>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">pch</span> <span class="op">&lt;-</span> <span class="st">"#"</span>
 
 <span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, pch <span class="op">=</span> <span class="va">pch</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">all_render_bench</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, pch <span class="op">=</span> <span class="va">pch</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Single character performance'</span>, <span class="va">b</span><span class="op">)</span></pre></div>
+<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Single character performance'</span>, <span class="va">b</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-21-1.png" width="672"></p>
-<div class="sourceCode" id="cb21"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/frame.html">plot.new</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, label <span class="op">=</span> <span class="st">'abcdefghijk'</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">all_render_bench</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, label <span class="op">=</span> <span class="st">'abcdefghijk'</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Text string performance'</span>, <span class="va">b</span><span class="op">)</span></pre></div>
+<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Text string performance'</span>, <span class="va">b</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
 <p>Once again Xlib surprises with a significantly slower font handling than its anti-aliased peers. ragg is slightly faster than cairo again but not by much. In general text rendering is governed as much by how quickly the code looks up glyphs in the font database as it is about rendering speed.</p>
 </div>
@@ -437,8 +437,8 @@
 <h3 class="hasAnchor">
 <a href="#complex-example" class="anchor"></a>Complex example</h3>
 <p>All of these primitives apart can be difficult to compare. In general it appears like ragg has a small but consistent lead in performance among the anti-aliased devices safe for a few areas. The last benchmark will tie it all together in a more complete graphic made using ggplot2 (don’t worry about the quality of the graphic — we are simply pilling stuff on top of each others):</p>
-<div class="sourceCode" id="cb22"><pre class="downlit">
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">diamonds</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">carat</span>, <span class="va">price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">diamonds</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">carat</span>, <span class="va">price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_hex.html">geom_hex</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>shape <span class="op">=</span> <span class="fl">1</span>, size <span class="op">=</span> <span class="fl">0.05</span>, colour <span class="op">=</span> <span class="st">'white'</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
@@ -446,17 +446,17 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">'5 things you didn\'t knew about the diamonds dataset'</span>,
        subtitle <span class="op">=</span> <span class="st">'You won\'t believe number 4'</span>,
        caption <span class="op">=</span> <span class="st">'Source: The ggplot2 package'</span><span class="op">)</span>
-<span class="va">p</span></pre></div>
+<span class="va">p</span></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
 <p>We will prebuild the plot so mainly rendering will be measured</p>
-<div class="sourceCode" id="cb23"><pre class="downlit">
-<span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplotGrob.html">ggplotGrob</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplotGrob.html">ggplotGrob</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/devoid/man/void_dev.html">void_dev</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">all_render_bench</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Complex composite performance'</span>, <span class="va">b</span><span class="op">)</span></pre></div>
+<span class="fu">plot_bench</span><span class="op">(</span><span class="va">res</span>, <span class="st">'Complex composite performance'</span>, <span class="va">b</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_performance_files/figure-html/unnamed-chunk-24-1.png" width="672"></p>
 <p>We see that with complex graphics the speed benefit of the non anti-aliased Xlib device disappears (probably due to its slow text rendering). Ragg is clearly the fastest anti-aliased device, but it should be noted that the example deliberately included both stroked and filled shapes. If only plotting fill the speed advantage might become smaller or disappear. Something else that we haven’t discussed here, but may affect speed in such a complex graphic is clipping speed (not drawing elements outside of the clipping region).</p>
 </div>
@@ -469,11 +469,11 @@
 <div id="session-info" class="section level2">
 <h2 class="hasAnchor">
 <a href="#session-info" class="anchor"></a>Session info</h2>
-<div class="sourceCode" id="cb24"><pre class="downlit">
-<span class="fu">sessioninfo</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sessioninfo/man/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">sessioninfo</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sessioninfo/man/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; ─ Session info ───────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt;  setting  value                       </span>
-<span class="co">#&gt;  version  R version 4.0.2 (2020-06-22)</span>
+<span class="co">#&gt;  version  R version 4.0.3 (2020-10-10)</span>
 <span class="co">#&gt;  os       macOS Catalina 10.15.7      </span>
 <span class="co">#&gt;  system   x86_64, darwin17.0          </span>
 <span class="co">#&gt;  ui       X11                         </span>
@@ -481,26 +481,25 @@
 <span class="co">#&gt;  collate  en_US.UTF-8                 </span>
 <span class="co">#&gt;  ctype    en_US.UTF-8                 </span>
 <span class="co">#&gt;  tz       UTC                         </span>
-<span class="co">#&gt;  date     2020-10-08                  </span>
+<span class="co">#&gt;  date     2020-11-19                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────</span>
 <span class="co">#&gt;  package      * version    date       lib source                        </span>
 <span class="co">#&gt;  assertthat     0.2.1      2019-03-21 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  backports      1.1.10     2020-09-15 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  bench          1.1.1      2020-01-13 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  cli            2.0.2      2020-02-28 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  colorspace     1.4-1      2019-03-18 [1] CRAN (R 4.0.2)                </span>
+<span class="co">#&gt;  cli            2.1.0      2020-10-12 [1] CRAN (R 4.0.2)                </span>
+<span class="co">#&gt;  colorspace     2.0-0      2020-11-11 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  crayon         1.3.4      2017-09-16 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  desc           1.2.0      2018-05-01 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  devoid       * 0.1.1      2020-08-03 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  digest         0.6.25     2020-02-23 [1] CRAN (R 4.0.2)                </span>
+<span class="co">#&gt;  digest         0.6.27     2020-10-24 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  dplyr          1.0.2      2020-08-18 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  ellipsis       0.3.1      2020-05-15 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  evaluate       0.14       2019-05-28 [1] CRAN (R 4.0.1)                </span>
 <span class="co">#&gt;  fansi          0.4.1      2020-01-08 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  farver         2.0.3      2020-01-16 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  fs             1.5.0      2020-07-31 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  generics       0.0.2      2018-11-29 [1] CRAN (R 4.0.2)                </span>
+<span class="co">#&gt;  generics       0.1.0      2020-10-31 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  ggplot2      * 3.3.2      2020-06-19 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  ggridges       0.5.2      2020-01-12 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  glue           1.4.2      2020-08-27 [1] CRAN (R 4.0.2)                </span>
@@ -508,44 +507,44 @@
 <span class="co">#&gt;  hexbin         1.28.1     2020-02-03 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  htmltools      0.5.0      2020-06-16 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  knitr          1.30       2020-09-22 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  labeling       0.3        2014-08-23 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  lattice        0.20-41    2020-04-02 [2] CRAN (R 4.0.2)                </span>
+<span class="co">#&gt;  labeling       0.4.2      2020-10-20 [1] CRAN (R 4.0.2)                </span>
+<span class="co">#&gt;  lattice        0.20-41    2020-04-02 [2] CRAN (R 4.0.3)                </span>
 <span class="co">#&gt;  lifecycle      0.2.0      2020-03-06 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  magrittr       1.5        2014-11-22 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  Matrix         1.2-18     2019-11-27 [2] CRAN (R 4.0.2)                </span>
+<span class="co">#&gt;  magrittr       2.0.1      2020-11-17 [1] CRAN (R 4.0.3)                </span>
+<span class="co">#&gt;  Matrix         1.2-18     2019-11-27 [2] CRAN (R 4.0.3)                </span>
 <span class="co">#&gt;  memoise        1.1.0      2017-04-21 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  mgcv           1.8-31     2019-11-09 [2] CRAN (R 4.0.2)                </span>
+<span class="co">#&gt;  mgcv           1.8-33     2020-08-27 [2] CRAN (R 4.0.3)                </span>
 <span class="co">#&gt;  munsell        0.5.0      2018-06-12 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  nlme           3.1-148    2020-05-24 [2] CRAN (R 4.0.2)                </span>
+<span class="co">#&gt;  nlme           3.1-149    2020-08-23 [2] CRAN (R 4.0.3)                </span>
 <span class="co">#&gt;  pillar         1.4.6      2020-07-10 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  pkgconfig      2.0.3      2019-09-22 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  pkgdown        1.6.1.9000 2020-10-08 [1] Github (r-lib/pkgdown@e1e46f2)</span>
+<span class="co">#&gt;  pkgdown        1.6.1.9000 2020-11-19 [1] Github (r-lib/pkgdown@6094ac3)</span>
 <span class="co">#&gt;  plyr           1.8.6      2020-03-03 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  profmem        0.5.0      2018-01-30 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  purrr          0.3.4      2020-04-17 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  R6             2.4.1      2019-11-12 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  ragg         * 0.4.0.9000 2020-10-08 [1] local                         </span>
+<span class="co">#&gt;  R6             2.5.0      2020-10-28 [1] CRAN (R 4.0.2)                </span>
+<span class="co">#&gt;  ragg         * 1.0.0.9000 2020-11-19 [1] local                         </span>
 <span class="co">#&gt;  RColorBrewer   1.1-2      2014-12-07 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  Rcpp           1.0.5      2020-07-06 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  rlang          0.4.7      2020-07-09 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  rmarkdown      2.4        2020-09-30 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  rprojroot      1.3-2      2018-01-03 [1] CRAN (R 4.0.2)                </span>
+<span class="co">#&gt;  rlang          0.4.8      2020-10-08 [1] CRAN (R 4.0.2)                </span>
+<span class="co">#&gt;  rmarkdown      2.5        2020-10-21 [1] CRAN (R 4.0.3)                </span>
+<span class="co">#&gt;  rprojroot      2.0.2      2020-11-15 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  scales         1.1.1      2020-05-11 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  sessioninfo    1.1.1      2018-11-05 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  stringi        1.5.3      2020-09-09 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  stringr        1.4.0      2019-02-10 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  systemfonts    0.3.2      2020-09-29 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  textshaping    0.1.1      2020-09-29 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  tibble         3.0.3      2020-07-10 [1] CRAN (R 4.0.2)                </span>
+<span class="co">#&gt;  textshaping    0.2.1      2020-11-13 [1] CRAN (R 4.0.2)                </span>
+<span class="co">#&gt;  tibble         3.0.4      2020-10-12 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  tidyr          1.1.2      2020-08-27 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  tidyselect     1.1.0      2020-05-11 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  vctrs          0.3.4      2020-08-29 [1] CRAN (R 4.0.2)                </span>
+<span class="co">#&gt;  vctrs          0.3.5      2020-11-17 [1] CRAN (R 4.0.3)                </span>
 <span class="co">#&gt;  withr          2.3.0      2020-09-22 [1] CRAN (R 4.0.2)                </span>
-<span class="co">#&gt;  xfun           0.18       2020-09-29 [1] CRAN (R 4.0.2)                </span>
+<span class="co">#&gt;  xfun           0.19       2020-10-30 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt;  yaml           2.2.1      2020-02-01 [1] CRAN (R 4.0.2)                </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; [1] /Users/runner/work/_temp/Library</span>
-<span class="co">#&gt; [2] /Library/Frameworks/R.framework/Versions/4.0/Resources/library</span></pre></div>
+<span class="co">#&gt; [2] /Library/Frameworks/R.framework/Versions/4.0/Resources/library</span></code></pre></div>
 </div>
   </div>
 
