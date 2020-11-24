@@ -138,6 +138,8 @@ class TextRenderer {
   std::vector<int> cluster_buffer;
   std::vector<unsigned int> font_buffer;
   std::vector<FontSettings> fallback_buffer;
+  double current_font_height;
+  double current_font_size;
   
 public:
   TextRenderer() :
@@ -168,6 +170,9 @@ public:
       get_engine().height(size);
     }
     last_font = font;
+    double descent = 0;
+    double width = 0;
+    get_char_metric(77, &current_font_height, &descent, &width);
     return true;
   }
   
@@ -351,6 +356,9 @@ private:
     
     agg::trans_affine img_mtx;
     img_mtx *= agg::trans_affine_translation(0, -glyph->bounds.y1);
+    if (h > current_font_height) {
+      img_mtx *= agg::trans_affine_translation(0, (double(h) - current_font_height) / 2);
+    }
     img_mtx *= agg::trans_affine_rotation(rot);
     img_mtx *= agg::trans_affine_translation(x, y);
     agg::trans_affine src_mtx = img_mtx;
