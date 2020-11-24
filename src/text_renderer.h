@@ -343,8 +343,6 @@ private:
   void renderColourGlyph(const agg::glyph_cache* glyph, double x, double y, double rot, ren &renderer) {
     int w = glyph->bounds.x2 - glyph->bounds.x1;
     int h = glyph->bounds.y1 - glyph->bounds.y2;
-    x += glyph->bounds.x1;
-    y -= glyph->bounds.y1;
     agg::rendering_buffer rbuf(glyph->data, w, h, w * 4);
     
     unsigned char * buffer = new unsigned char[w * h * PIXFMT::pix_width];
@@ -352,6 +350,7 @@ private:
     agg::convert<PIXFMT, pixfmt_col_glyph>(&rbuf_conv, &rbuf);
     
     agg::trans_affine img_mtx;
+    img_mtx *= agg::trans_affine_translation(0, -glyph->bounds.y1);
     img_mtx *= agg::trans_affine_rotation(rot);
     img_mtx *= agg::trans_affine_translation(x, y);
     agg::trans_affine src_mtx = img_mtx;
