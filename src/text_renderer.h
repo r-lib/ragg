@@ -157,19 +157,12 @@ public:
                                       face == 2 || face == 4, 
                                       face == 3 || face == 4,
                                       face == 5);
-    if (!(gren == last_gren && 
-        font.index == last_font.index &&
-        strncmp(font.file, last_font.file, PATH_MAX) == 0)) {
-      if (!get_engine().load_font(font.file, font.index, gren)) {
-        Rf_warning("Unable to load font: %s", family);
-        return false;
-      }
-      last_gren = gren;
-      get_engine().height(size);
-    } else if (size != get_engine().height()) {
-      get_engine().height(size);
+    current_font_size = size;
+    if (!load_font_from_file(font, gren, size)) {
+      Rf_warning("Unable to load font: %s", family);
+      current_font_height = 0;
+      return false;
     }
-    last_font = font;
     double descent = 0;
     double width = 0;
     get_char_metric(77, &current_font_height, &descent, &width);
@@ -272,31 +265,39 @@ public:
     } else if (fmod(rot + 90, 180) < 1e-6) {
       x = std::round(x);
     }
-    
-    for (int i = 0; i < n_glyphs; ++i) {
-      const agg::glyph_cache* glyph = get_manager().glyph(id_buffer[i]);
-      if (glyph) {
-        double x_offset = loc_buffer[i].x * cos_rot + loc_buffer[i].y * sin_rot;
-        double y_offset = loc_buffer[i].y * cos_rot + loc_buffer[i].x * sin_rot;
-        get_manager().init_embedded_adaptors(glyph, x + x_offset, y + y_offset);
-        switch(glyph->data_type) {
-        default: break;
-        case agg::glyph_data_gray8:
-          agg::render_scanlines(get_manager().gray8_adaptor(), 
-                                get_manager().gray8_scanline(), 
-                                ren_solid);
-          break;
-          
-        case agg::glyph_data_color:
-          renderColourGlyph(glyph, x + x_offset, y + y_offset, rot, ren);
-          break;
-          
-        case agg::glyph_data_outline:
-          ras.reset();
-          ras.add_path(curves);
-          agg::render_scanlines(ras, sl, ren_solid);
-          break;
+    int text_run_start = 0;
+    for (int j = 1; j <= n_glyphs; ++j) {
+      if (j == n_glyphs || font_buffer[j] != font_buffer[j - 1]) {
+        if (fallback_buffer.size() == 0 || // To guard against old textshaping version/solaris mock
+            load_font_from_file(fallback_buffer[font_buffer[text_run_start]], last_gren, current_font_size)) {
+          for (int i = text_run_start; i < j; ++i) {
+            const agg::glyph_cache* glyph = get_manager().glyph(id_buffer[i]);
+            if (glyph) {
+              double x_offset = loc_buffer[i].x * cos_rot + loc_buffer[i].y * sin_rot;
+              double y_offset = loc_buffer[i].y * cos_rot + loc_buffer[i].x * sin_rot;
+              get_manager().init_embedded_adaptors(glyph, x + x_offset, y + y_offset);
+              switch(glyph->data_type) {
+              default: break;
+              case agg::glyph_data_gray8:
+                agg::render_scanlines(get_manager().gray8_adaptor(), 
+                                      get_manager().gray8_scanline(), 
+                                      ren_solid);
+                break;
+                
+              case agg::glyph_data_color:
+                renderColourGlyph(glyph, x + x_offset, y + y_offset, rot, ren);
+                break;
+                
+              case agg::glyph_data_outline:
+                ras.reset();
+                ras.add_path(curves);
+                agg::render_scanlines(ras, sl, ren_solid);
+                break;
+              }
+            }
+          }
         }
+        text_run_start = j;
       }
     }
     
@@ -316,21 +317,6 @@ private:
     return manager;
   }
   
-  double text_width(const uint32_t* string, int size) {
-    double x = 0, y = 0;
-    while (*string) {
-      const agg::glyph_cache* glyph = get_manager().glyph(*string);
-      if (glyph) {
-        get_manager().add_kerning(&x, &y);
-        // increment pen position
-        x += glyph->advance_x;
-        y += glyph->advance_y;
-      }
-      string++;
-    }
-    return x;
-  }
-  
   FontSettings get_font_file(const char* family, int bold, int italic, 
                              int symbol) {
     const char* fontfamily = family;
@@ -343,6 +329,22 @@ private:
     }
     return locate_font_with_features(fontfamily, italic, bold);
   }
+  
+  bool load_font_from_file(FontSettings font, agg::glyph_rendering gren, double size) {
+    if (!(gren == last_gren && 
+        font.index == last_font.index &&
+        strncmp(font.file, last_font.file, PATH_MAX) == 0)) {
+      if (!get_engine().load_font(font.file, font.index, gren)) {
+        return false;
+      }
+      last_gren = gren;
+      get_engine().height(size);
+    } else if (size != get_engine().height()) {
+      get_engine().height(size);
+    }
+    last_font = font;
+    return true;
+  } 
   
   template<typename ren>
   void renderColourGlyph(const agg::glyph_cache* glyph, double x, double y, double rot, ren &renderer) {

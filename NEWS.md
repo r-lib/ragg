@@ -1,6 +1,7 @@
 # ragg (development version)
 
-* Use new textshaping API
+* Use new textshaping API and handle font fallback correctly
+* Add support for rendering colour fonts (#1)
 
 # ragg 1.0.0
 
