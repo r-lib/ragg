@@ -203,9 +203,9 @@ public:
     }
     
     int expected_max = strlen(string) * 16;
-    x_buffer.reserve(expected_max);
-    y_buffer.reserve(expected_max);
-    id_buffer.reserve(expected_max);
+    x_buffer.resize(expected_max);
+    y_buffer.resize(expected_max);
+    id_buffer.resize(expected_max);
     
     int n_glyphs = 0;
     ts_string_shape(
