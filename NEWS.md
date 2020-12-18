@@ -1,3 +1,8 @@
+# ragg 0.4.1
+
+* Fixed an vector overflow bug during text rendering
+* Skip text tests on CRAN as no text is plottet on the CRAN solaris machine
+
 # ragg 0.4.0
 
 * Move text shaping to the new textshaping package.
