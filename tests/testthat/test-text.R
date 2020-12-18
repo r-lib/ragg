@@ -9,6 +9,7 @@ render_text <- function() {
 # We cannot test exact across systems because fonts may differ. We simply test
 # if something is drawn
 test_that("text works", {
+  skip_on_cran() # Solaris don't have any text support on CRAN
   text <- table(render_text())
   expect_gt(text[['black']], 0)
 })
