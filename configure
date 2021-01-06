@@ -33,12 +33,12 @@ elif [ "$PLATFORM" = "Darwin" ]; then
   brew --version 2>/dev/null
   if [ $? -eq 0 ]; then
     BREWDIR=`brew --prefix`
+    PKG_CFLAGS="-I$BREWDIR/include -I$BREWDIR/include/freetype2"
+    PKG_LIBS="-L$BREWDIR/lib ${PKG_LIBS}"
   else
-    curl -sfL "https://jeroen.github.io/autobrew/ragg" > autobrew
+    curl -sfL "https://autobrew.github.io/scripts/ragg" > autobrew
     . autobrew
   fi
-  PKG_CFLAGS="-I$BREWDIR/opt/freetype/include/freetype2 -I$BREWDIR/opt/libpng/include -I$BREWDIR/opt/libtiff/include -I$BREWDIR/opt/libjpeg/include"
-  PKG_LIBS="-L$BREWDIR/opt/freetype/lib -L$BREWDIR/opt/libpng/lib -L$BREWDIR/opt/libtiff/lib -L$BREWDIR/opt/libjpeg/lib ${PKG_LIBS}"
 elif [ $R_HAS_PKG_CONFIG ]; then
   echo "Found pkg-config cflags and libs!"
   PKG_CFLAGS=`pkg-config --cflags ${PKG_CONFIG_NAME}`
