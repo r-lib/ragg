@@ -11,5 +11,5 @@ render_text <- function() {
 test_that("text works", {
   skip_on_cran() # Solaris don't have any text support on CRAN
   text <- table(render_text())
-  expect_gt(text[['black']], 0)
+  expect_gt(length(text), 1) # Not only white
 })

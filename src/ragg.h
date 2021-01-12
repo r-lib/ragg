@@ -33,6 +33,7 @@ typedef agg::pixfmt_rgb24_pre                   pixfmt_type_24;
 typedef agg::pixfmt_rgba32_pre                  pixfmt_type_32;
 typedef agg::pixfmt_rgb48_pre                   pixfmt_type_48;
 typedef agg::pixfmt_rgba64_pre                  pixfmt_type_64;
+typedef agg::pixfmt_bgra32_pre                  pixfmt_col_glyph;
 
 #ifdef WORDS_BIGENDIAN
 typedef agg::pixfmt_abgr32_plain                pixfmt_r_raster;

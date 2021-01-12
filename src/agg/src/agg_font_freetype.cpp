@@ -483,8 +483,43 @@ namespace agg
     }
 
 
-
-
+    //------------------------------------------------------------------------
+    template<class Rasterizer, class Scanline, class ScanlineStorage>
+    void decompose_ft_bitmap_color(const FT_Bitmap& bitmap,
+                                   int x, int y,
+                                   bool flip_y,
+                                   Rasterizer& ras,
+                                   Scanline& sl,
+                                   ScanlineStorage& storage)
+    {
+        unsigned int i, j;
+        const int8u* buf = (const int8u*)bitmap.buffer;
+        int pitch = bitmap.pitch;
+        sl.reset(x, x + bitmap.width*4);
+        storage.prepare();
+        if(flip_y)
+        {
+            buf += bitmap.pitch * (bitmap.rows - 1);
+            y += bitmap.rows;
+            pitch = -pitch;
+        }
+        for(i = 0; i < bitmap.rows; i++)
+        {
+            sl.reset_spans();
+            const int8u* p = buf;
+            for(j = 0; j < bitmap.width*4; j++)
+            {
+                if(*p) sl.add_cell(x + j, *p);
+                ++p;
+            }
+            buf += pitch;
+            if(sl.num_spans())
+            {
+                sl.finalize(y - i - 1);
+                storage.render(sl);
+            }
+        }
+    }
 
 
 
@@ -680,49 +715,59 @@ namespace agg
             if(m_last_error == 0)
             {
                 ret = true;
-                
-                switch(ren_type)
+                if (FT_HAS_COLOR(m_cur_face))
                 {
-                case glyph_ren_native_mono:
-                    m_glyph_rendering = glyph_ren_native_mono;
-                    break;
-
-                case glyph_ren_native_gray8:
-                    m_glyph_rendering = glyph_ren_native_gray8;
-                    break;
-
-                case glyph_ren_outline:
-                    if(FT_IS_SCALABLE(m_cur_face))
+                    m_glyph_rendering = glyph_ren_native_color;
+                }
+                else
+                {
+                    switch(ren_type)
                     {
-                        m_glyph_rendering = glyph_ren_outline;
-                    }
-                    else
-                    {
-                        m_glyph_rendering = glyph_ren_native_gray8;
-                    }
-                    break;
-
-                case glyph_ren_agg_mono:
-                    if(FT_IS_SCALABLE(m_cur_face))
-                    {
-                        m_glyph_rendering = glyph_ren_agg_mono;
-                    }
-                    else
-                    {
+                    case glyph_ren_native_mono:
                         m_glyph_rendering = glyph_ren_native_mono;
-                    }
-                    break;
-
-                case glyph_ren_agg_gray8:
-                    if(FT_IS_SCALABLE(m_cur_face))
-                    {
-                        m_glyph_rendering = glyph_ren_agg_gray8;
-                    }
-                    else
-                    {
+                        break;
+                      
+                    case glyph_ren_native_gray8:
                         m_glyph_rendering = glyph_ren_native_gray8;
-                    }
-                    break;
+                        break;
+                        
+                    case glyph_ren_native_color: // Not a color font so use gray8
+                      m_glyph_rendering = glyph_ren_native_gray8;
+                      break;
+                      
+                    case glyph_ren_outline:
+                        if(FT_IS_SCALABLE(m_cur_face))
+                        {
+                            m_glyph_rendering = glyph_ren_outline;
+                        }
+                        else
+                        {
+                            m_glyph_rendering = glyph_ren_native_gray8;
+                        }
+                        break;
+                      
+                    case glyph_ren_agg_mono:
+                        if(FT_IS_SCALABLE(m_cur_face))
+                        {
+                            m_glyph_rendering = glyph_ren_agg_mono;
+                        }
+                        else
+                        {
+                            m_glyph_rendering = glyph_ren_native_mono;
+                        }
+                        break;
+                      
+                    case glyph_ren_agg_gray8:
+                        if(FT_IS_SCALABLE(m_cur_face))
+                        {
+                            m_glyph_rendering = glyph_ren_agg_gray8;
+                        }
+                        else
+                        {
+                            m_glyph_rendering = glyph_ren_native_gray8;
+                        }
+                        break;
+                    }  
                 }
                 update_signature();
             }
@@ -836,7 +881,7 @@ namespace agg
             }
 
             unsigned gamma_hash = 0;
-            if(m_glyph_rendering == glyph_ren_native_gray8 ||
+            if(m_glyph_rendering == glyph_ren_native_gray8 || m_glyph_rendering == glyph_ren_native_color ||
                m_glyph_rendering == glyph_ren_agg_mono || 
                m_glyph_rendering == glyph_ren_agg_gray8)
             {
@@ -887,7 +932,22 @@ namespace agg
     {
         if(m_cur_face)
         {
-            if(m_resolution)
+          if(!FT_IS_SCALABLE(m_cur_face)) {
+              int best_match = 0;
+              int diff = 1e6;
+              for (int i = 0; i < m_cur_face->num_fixed_sizes; ++i)
+              {
+                  int ndiff = m_cur_face->available_sizes[i].size - m_height;
+                  if(ndiff >= 0 && ndiff < diff) 
+                  {
+                      best_match = i;
+                      diff = ndiff;
+                  }
+              }
+              FT_Select_Size(m_cur_face, best_match);
+              m_height = m_cur_face->size->metrics.height;
+          }
+          else if(m_resolution)
             {
                 FT_Set_Char_Size(m_cur_face, 
                                  m_width,       // char_width in 1/64th of points
@@ -918,8 +978,7 @@ namespace agg
         m_glyph_index = glyph_index;
         m_last_error = FT_Load_Glyph(m_cur_face, 
                                      m_glyph_index, 
-                                     m_hinting ? FT_LOAD_DEFAULT : FT_LOAD_NO_HINTING);
-//                                     m_hinting ? FT_LOAD_FORCE_AUTOHINT : FT_LOAD_NO_HINTING);
+                                     m_glyph_rendering == glyph_ren_native_color ? FT_LOAD_COLOR : (m_hinting ? FT_LOAD_DEFAULT : FT_LOAD_NO_HINTING));
         if(m_last_error == 0)
         {
             switch(m_glyph_rendering)
@@ -948,6 +1007,23 @@ namespace agg
                 break;
 
 
+                
+            case glyph_ren_native_color:
+                m_last_error = FT_Render_Glyph(m_cur_face->glyph, FT_RENDER_MODE_NORMAL);
+                if(m_last_error == 0)
+                {
+                    m_bounds.x1 = m_cur_face->glyph->bitmap_left;
+                    m_bounds.y1 = m_cur_face->glyph->bitmap_top;
+                    m_bounds.x2 = m_bounds.x1 + m_cur_face->glyph->bitmap.width;
+                    m_bounds.y2 = m_bounds.y1 - m_cur_face->glyph->bitmap.rows;
+                    m_data_size = m_cur_face->glyph->bitmap.rows * m_cur_face->glyph->bitmap.pitch; 
+                    m_data_type = glyph_data_color;
+                    m_advance_x = int26p6_to_dbl(m_cur_face->glyph->advance.x);
+                    m_advance_y = int26p6_to_dbl(m_cur_face->glyph->advance.y);
+                    return true;
+                }
+                break;
+                
             case glyph_ren_native_gray8:
                 m_last_error = FT_Render_Glyph(m_cur_face->glyph, FT_RENDER_MODE_NORMAL);
                 if(m_last_error == 0)
@@ -1112,6 +1188,7 @@ namespace agg
             {
             default: return;
             case glyph_data_mono:    m_scanlines_bin.serialize(data); break;
+            case glyph_data_color:   memcpy(data, m_cur_face->glyph->bitmap.buffer, m_data_size); break;
             case glyph_data_gray8:   m_scanlines_aa.serialize(data);  break;
             case glyph_data_outline: 
                 if(m_flag32)

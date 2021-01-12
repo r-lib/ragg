@@ -1,7 +1,7 @@
 Package: ragg
 Type: Package
 Title: Graphic Devices Based on AGG
-Version: 0.4.1.9000
+Version: 1.0.0.9000
 Authors@R: 
     c(person(given = "Thomas Lin",
              family = "Pedersen",
@@ -50,8 +50,11 @@ Suggests:
     grid,
     graphics
 Imports: 
-    systemfonts (>= 0.2.1),
-    textshaping
+    systemfonts (>= 0.3.2.9000),
+    textshaping (>= 0.2.1.9000)
 LinkingTo: 
     systemfonts,
     textshaping
+Remotes:
+    r-lib/systemfonts,
+    r-lib/textshaping
