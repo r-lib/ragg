@@ -1,21 +1,23 @@
 # ragg (development version)
 
+* Major version release to signify the much improved text support that includes
+  full support for right-to-left scripts and bidirectional text (mix of RtL and
+  LtR scripts). It further adds full support for OpenType features and colour 
+  fonts.
+* Re-exporting `register_font()` and `register_variant()` from systemfonts
 * Use new textshaping API and handle font fallback correctly
 * Add support for rendering colour fonts (#1)
 
-# ragg 1.0.0
+# ragg 0.4.1
 
-* Major version release to signify the much improved text support that includes
-  full support for right-to-left scripts and bidirectional text (mix of RtL and
-  LtR scripts). It further adds full support for OpenType features.
-* ragg now requires the Harfbuzz and Fribidi libraries to be available when 
-  installing from source due to their dependency in the textshaping package.
-* Re-exporting `register_font()` and `register_variant()` from systemfonts
+* Skip text tests on CRAN as no text is plottet on the CRAN solaris machine
 * Fixed a bug resulting in system crash on certain systems, as well as 
   clang-ASAN error. (#59)
   
 # ragg 0.4.0
 
+* ragg now requires the Harfbuzz and Fribidi libraries to be available when 
+  installing from source due to their dependency in the textshaping package.
 * Move text shaping to the new textshaping package.
 * Fix `agg_capture()` on big endian systems (#49, @QuLogic)
 * Fix use of symbol font on Windows by moving to Segoe UI Symbol which has a 
