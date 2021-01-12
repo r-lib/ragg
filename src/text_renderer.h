@@ -174,7 +174,7 @@ public:
     int error = textshaping::string_width(
       string, 
       last_font, 
-      get_engine().height(), 
+      current_font_size, 
       72.0, 
       1, 
       &width
@@ -226,7 +226,7 @@ public:
     int err = textshaping::string_shape(
       string,
       last_font,
-      get_engine().height(), 
+      current_font_size, 
       72.0,
       loc_buffer,
       id_buffer,
