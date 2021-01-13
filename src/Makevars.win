@@ -1,21 +1,20 @@
-VERSION = 1.16.0
-RWINLIB = ../windows/cairo-${VERSION}
+VERSION = 2.7.4
+RWINLIB = ../windows/harfbuzz-${VERSION}
 
 AGG_OBJECTS = agg/src/agg_curves.o agg/src/agg_font_freetype.o \
 	agg/src/agg_trans_affine.o agg/src/agg_vcgen_dash.o \
 	agg/src/agg_vcgen_stroke.o
 
-PKG_CPPFLAGS = -I${RWINLIB}/include/cairo -I${RWINLIB}/include \
-  -I../windows/baselibs-3.5.0/include \
-	-I${RWINLIB}/include/freetype2 -I./agg/include \
-	-DSTRICT_R_HEADERS
+PKG_CPPFLAGS = -DSTRICT_R_HEADERS \
+	-I${RWINLIB}/include \
+	-I${RWINLIB}/include/freetype2 \
+	-I./agg/include \
 
 PKG_LIBS = -Lagg -lstatagg \
   -L${RWINLIB}/lib${R_ARCH} \
-	-lfreetype -lharfbuzz -lfreetype -lpng -lbz2 -lz -ljpeg \
-	-L../windows/baselibs-3.5.0/lib${R_ARCH} -ltiff \
-	-lgdi32 -lws2_32
-	
+	-lfreetype -lharfbuzz -lfreetype -lpng -lz -ltiff -ljpeg \
+	-lbz2 -lgdi32 -lws2_32
+
 STATLIB = agg/libstatagg.a
 
 all: clean winlibs
