@@ -188,7 +188,7 @@ public:
   void get_char_metric(int c, double *ascent, double *descent, double *width) {
     unsigned index = get_engine().get_glyph_index(c);
     const agg::glyph_cache* glyph = get_manager().glyph(index);
-    if (glyph && !(c == 77 && index == 0)) {
+    if (glyph && !(c == 77 && index == 0) && glyph->data_type != agg::glyph_data_color) {
       *ascent = (double) -glyph->bounds.y1;
       *descent = (double) glyph->bounds.y2;
       
@@ -358,9 +358,11 @@ private:
     
     agg::trans_affine img_mtx;
     img_mtx *= agg::trans_affine_translation(0, -glyph->bounds.y1);
+#if !defined(_WIN32)
     if (h > current_font_height) {
       img_mtx *= agg::trans_affine_translation(0, (double(h) - current_font_height) / 2);
     }
+#endif
     img_mtx *= agg::trans_affine_rotation(rot);
     img_mtx *= agg::trans_affine_translation(x, y);
     agg::trans_affine src_mtx = img_mtx;
