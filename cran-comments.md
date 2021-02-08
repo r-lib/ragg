@@ -1,12 +1,13 @@
-This is a small patch release on the request of cran. It reintroduces a fix to
-an overflow that was fixed in the 1.0.0 release that CRAN rolled back. It also
-skips testing text rendering on cran since not all cran machines supports it
-(solaris)
+This is a huge feature release that adds support for advanced text layouting and
+rendering of colour fonts such as emojis, along with correct font fallback for
+missing glyphs.
 
 ## Test environments
-* local R installation, R 4.0.3
-* ubuntu 16.04 (on travis-ci), R 4.0.3
-* win-builder (devel)
+
+* GitHub Actions (ubuntu-16.04): devel, release, oldrel, 3.5, 3.4, 3.3
+* GitHub Actions (windows): release, oldrel
+* GitHub Actions (macOS): release
+* win-builder: devel
 
 ## R CMD check results
 
