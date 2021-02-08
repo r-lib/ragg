@@ -599,11 +599,13 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRaster(unsigned int *raster, int w
   agg::rendering_buffer rbuf8(buffer8, w, h, w * BLNDFMT::pix_width);
   agg::convert<BLNDFMT, pixfmt_r_raster>(&rbuf8, &rbuf);
 
+  double x_scale = final_width / double(w);
+  double y_scale = final_height / double (h);
+  
   agg::trans_affine img_mtx;
   img_mtx *= agg::trans_affine_reflection(0);
   img_mtx *= agg::trans_affine_translation(0, h);
-  img_mtx *= agg::trans_affine_scaling(final_width / double(w), 
-                                       final_height / double (h));
+  img_mtx *= agg::trans_affine_scaling(x_scale, y_scale);
   img_mtx *= agg::trans_affine_rotation(-rot * agg::pi / 180.0);
   img_mtx *= agg::trans_affine_translation(x, y);
   agg::trans_affine src_mtx = img_mtx;
