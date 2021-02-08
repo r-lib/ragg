@@ -5,6 +5,7 @@
 \alias{reexports}
 \alias{register_font}
 \alias{register_variant}
+\alias{font_feature}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -12,6 +13,6 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{systemfonts}{\code{\link[systemfonts]{register_font}}, \code{\link[systemfonts]{register_variant}}}
+  \item{systemfonts}{\code{\link[systemfonts]{font_feature}}, \code{\link[systemfonts]{register_font}}, \code{\link[systemfonts]{register_variant}}}
 }}
 

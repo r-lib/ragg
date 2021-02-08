@@ -4,7 +4,8 @@
   full support for right-to-left scripts and bidirectional text (mix of RtL and
   LtR scripts). It further adds full support for OpenType features and colour 
   fonts.
-* Re-exporting `register_font()` and `register_variant()` from systemfonts
+* Re-exporting `register_font()`, `register_variant()`, and `font_feature()` 
+  from systemfonts
 * Use new textshaping API and handle font fallback correctly
 * Add support for rendering colour fonts (#1)
 
