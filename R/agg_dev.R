@@ -13,14 +13,19 @@
 #' @param width,height The dimensions of the device
 #' @param units The unit `width` and `height` is measured in, in either pixels 
 #'   (`'px'`), inches (`'in'`), millimeters (`'mm'`), or centimeter (`'cm'`).
-#' @param pointsize The default pointsize of the device in pt
+#' @param pointsize The default pointsize of the device in pt. This will in 
+#'   general not have any effect on grid graphics (including ggplot2) as text 
+#'   size is always set explicitly there.
 #' @param background The background colour of the device
 #' @param res The resolution of the device. This setting will govern how device
 #'   dimensions given in inches, centimeters, or millimeters will be converted
 #'   to pixels. Further, it will be used to scale text sizes and linewidths
 #' @param scaling A scaling factor to apply to the rendered line width and text
 #'   size. Useful for getting the right dimensions at the resolution that you
-#'   need.
+#'   need. If e.g. you need to render a plot at 4000x3000 pixels for it to fit 
+#'   into a layout, but you find that the result appears to small, you can 
+#'   increase the `scaling` argument to make everything appear bigger at the 
+#'   same resolution.
 #' @param bg Same as `background` for compatibility with old graphic device APIs
 #'
 #' @export

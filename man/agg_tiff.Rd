@@ -30,7 +30,9 @@ compliant string format to name multiple plots (such as the default value)}
 \item{units}{The unit `width` and `height` is measured in, in either pixels 
 (`'px'`), inches (`'in'`), millimeters (`'mm'`), or centimeter (`'cm'`).}
 
-\item{pointsize}{The default pointsize of the device in pt}
+\item{pointsize}{The default pointsize of the device in pt. This will in 
+general not have any effect on grid graphics (including ggplot2) as text 
+size is always set explicitly there.}
 
 \item{background}{The background colour of the device}
 
@@ -40,7 +42,10 @@ to pixels. Further, it will be used to scale text sizes and linewidths}
 
 \item{scaling}{A scaling factor to apply to the rendered line width and text
 size. Useful for getting the right dimensions at the resolution that you
-need.}
+need. If e.g. you need to render a plot at 4000x3000 pixels for it to fit 
+into a layout, but you find that the result appears to small, you can 
+increase the `scaling` argument to make everything appear bigger at the 
+same resolution.}
 
 \item{compression}{The compression type to use for the image data. The 
 standard options from the [grDevices::tiff()] function are available under 
