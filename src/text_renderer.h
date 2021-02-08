@@ -150,7 +150,7 @@ public:
     last_gren = agg::glyph_ren_native_mono;
     get_engine().hinting(true);
     get_engine().flip_y(true);
-    get_engine().gamma(agg::gamma_power(1.8));
+    get_engine().gamma(agg::gamma_power(1.6));
   }
   
   bool load_font(agg::glyph_rendering gren, const char *family, int face, 
