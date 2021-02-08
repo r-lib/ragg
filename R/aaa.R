@@ -30,3 +30,7 @@ systemfonts::register_variant
 #' @importFrom systemfonts font_feature
 #' @export
 systemfonts::font_feature
+
+#' @importFrom textshaping get_font_features
+#' @export
+textshaping::get_font_features

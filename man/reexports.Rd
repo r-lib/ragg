@@ -6,6 +6,7 @@
 \alias{register_font}
 \alias{register_variant}
 \alias{font_feature}
+\alias{get_font_features}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -14,5 +15,7 @@ below to see their documentation.
 
 \describe{
   \item{systemfonts}{\code{\link[systemfonts]{font_feature}}, \code{\link[systemfonts]{register_font}}, \code{\link[systemfonts]{register_variant}}}
+
+  \item{textshaping}{\code{\link[textshaping]{get_font_features}}}
 }}
 

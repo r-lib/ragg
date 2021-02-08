@@ -6,6 +6,7 @@
   fonts.
 * Re-exporting `register_font()`, `register_variant()`, and `font_feature()` 
   from systemfonts
+* Re-exporting `get_font_features()` from textshaping
 * Use new textshaping API and handle font fallback correctly
 * Add support for rendering colour fonts (#1)
 
