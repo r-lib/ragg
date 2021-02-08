@@ -8,7 +8,7 @@ PLATFORM=`uname`
 
 # Library settings
 PKG_CONFIG_NAME="freetype2 libpng libtiff-4"
-PKG_DEB_NAME="libfreetype6-dev, libpng-dev libtiff5-dev libjpeg-dev"
+PKG_DEB_NAME="libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev"
 PKG_RPM_NAME="freetype-devel libpng-devel libtiff-devel libjpeg-turbo-devel"
 PKG_CSW_NAME="libfreetype_dev libpng16_dev libtiff_dev libjpeg_dev"
 PKG_BREW_NAME="freetype libpng libtiff zlib libjpeg-turbo"
