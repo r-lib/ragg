@@ -12,7 +12,7 @@ coverage](https://codecov.io/gh/r-lib/ragg/branch/master/graph/badge.svg)](https
 [![CRAN
 status](https://www.r-pkg.org/badges/version/ragg)](https://cran.r-project.org/package=ragg)
 [![Lifecycle:
-maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 <!-- badges: end -->
 
 This package provides graphic devices for R based on the AGG library
@@ -41,6 +41,8 @@ apart from the build-in devices, includes:
 
   - Faster (up to 40% faster than anti-aliased cairo device)
   - Direct access to all system fonts
+  - Advanced text rendering, including support for right-to-left text,
+    emojis, and font fallback
   - High quality anti-aliasing
   - High quality rotated text
   - Support 16-bit output
@@ -64,7 +66,7 @@ fancy_font <- if (on_linux) 'URW Chancery L' else 'Papyrus'
 agg_png(file, width = 1000, height = 500, res = 144)
 ggplot(mtcars) + 
   geom_point(aes(mpg, disp, colour = hp)) + 
-  labs(title = 'System fonts — Oh My!') + 
+  labs(title = 'System fonts — Oh My! 😱') + 
   theme(text = element_text(family = fancy_font))
 invisible(dev.off())
 
@@ -88,7 +90,7 @@ par(mai = c(0, 0, 0, 0))
 plot(as.raster(scatter))
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="70%" style="margin-left: 15%;" />
 
 ### Use ragg with knitr
 
@@ -102,7 +104,7 @@ ragg can be used as the graphic back-end to the RStudio device (for
 RStudio \>= 1.4) by choosing *AGG* as the backend in the graphics pane
 in general options (see screenshot)
 
-![Setting ragg as backend in RStudio](https://i.imgur.com/JwwZ15E.png)
+![Setting ragg as backend in RStudio](https://i.imgur.com/4XgiPWy.png)
 
 ## Code of Conduct
 
