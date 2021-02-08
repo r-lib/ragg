@@ -77,6 +77,7 @@ namespace agg
         int         last_error()   const { return m_last_error; }
         unsigned    resolution()   const { return m_resolution; }
         const char* name()         const { return m_name;       }
+        const char* family()       const { return m_cur_face->family_name; }
         unsigned    num_faces()    const;
         FT_Encoding char_map()     const { return m_char_map;   }
         double      height()       const { return double(m_height) / 64.0;    }

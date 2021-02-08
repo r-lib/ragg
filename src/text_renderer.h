@@ -138,8 +138,10 @@ class TextRenderer {
   std::vector<int> cluster_buffer;
   std::vector<unsigned int> font_buffer;
   std::vector<FontSettings> fallback_buffer;
+  std::vector<double> scaling_buffer;
   double current_font_height;
   double current_font_size;
+  bool no_bearings;
   
 public:
   TextRenderer() :
@@ -163,9 +165,14 @@ public:
       current_font_height = 0;
       return false;
     }
-    double descent = 0;
-    double width = 0;
-    get_char_metric(77, &current_font_height, &descent, &width);
+    current_font_height = size;
+    no_bearings = false;
+#if defined(_WIN32)
+    // Windows emojis have weird right bearings
+    if (strcmp("Segoe UI Emoji", get_engine().family()) == 0) {
+      no_bearings = true;
+    }
+#endif
     return true;
   }
   
@@ -176,7 +183,7 @@ public:
       last_font, 
       current_font_size, 
       72.0, 
-      1, 
+      no_bearings ? 0 : 1, 
       &width
     );
     if (error) {
@@ -188,12 +195,33 @@ public:
   void get_char_metric(int c, double *ascent, double *descent, double *width) {
     unsigned index = get_engine().get_glyph_index(c);
     const agg::glyph_cache* glyph = get_manager().glyph(index);
-    if (glyph && !(c == 77 && index == 0) && glyph->data_type != agg::glyph_data_color) {
+    if (glyph->data_type == agg::glyph_data_color) {
+      double mod = current_font_height / get_engine().height();
+      if (c != 77 && glyph) {
+        *ascent = mod * (double) -glyph->bounds.y1;
+        *descent = mod * (double) glyph->bounds.y2;
+        
+        *width = mod * glyph->advance_x;
+      } else {
+        *ascent = mod * get_engine().ascent();
+        *descent = mod * get_engine().descent();
+        
+        *width = mod * get_engine().max_advance();
+      }
+      
+#if defined(__APPLE__)
+      // Apple emojis have no descender
+      double y_shift = double(glyph->bounds.y1 - glyph->bounds.y2) * 0.1;
+      *descent += y_shift;
+      *ascent += y_shift;
+#endif
+      
+    } else if (glyph && !(c == 77 && index == 0)) { // Only use 77 glyph if found
       *ascent = (double) -glyph->bounds.y1;
       *descent = (double) glyph->bounds.y2;
       
       *width = glyph->advance_x;
-    } else if (c == 77) { // GE uses M (77) to figure out size
+    } else {
       // Use global font metrics
       *ascent = get_engine().ascent();
       *descent = get_engine().descent();
@@ -222,6 +250,7 @@ public:
     cluster_buffer.reserve(expected_max);
     font_buffer.reserve(expected_max);
     fallback_buffer.reserve(expected_max);
+    scaling_buffer.reserve(expected_max);
     
     int err = textshaping::string_shape(
       string,
@@ -232,7 +261,8 @@ public:
       id_buffer,
       cluster_buffer,
       font_buffer,
-      fallback_buffer
+      fallback_buffer,
+      scaling_buffer
     );
     
     if (err != 0) {
@@ -285,7 +315,7 @@ public:
                 break;
                 
               case agg::glyph_data_color:
-                renderColourGlyph(glyph, x + x_offset, y + y_offset, rot, ren);
+                renderColourGlyph(glyph, x + x_offset, y + y_offset, rot, ren, scaling_buffer[font_buffer[text_run_start]]);
                 break;
                 
               case agg::glyph_data_outline:
@@ -347,7 +377,7 @@ private:
   } 
   
   template<typename ren>
-  void renderColourGlyph(const agg::glyph_cache* glyph, double x, double y, double rot, ren &renderer) {
+  void renderColourGlyph(const agg::glyph_cache* glyph, double x, double y, double rot, ren &renderer, double scaling) {
     int w = glyph->bounds.x2 - glyph->bounds.x1;
     int h = glyph->bounds.y1 - glyph->bounds.y2;
     agg::rendering_buffer rbuf(glyph->data, w, h, w * 4);
@@ -358,9 +388,16 @@ private:
     
     agg::trans_affine img_mtx;
     img_mtx *= agg::trans_affine_translation(0, -glyph->bounds.y1);
-#if !defined(_WIN32)
-    if (h > current_font_height) {
-      img_mtx *= agg::trans_affine_translation(0, (double(h) - current_font_height) / 2);
+    if (scaling > 0) {
+      img_mtx *= agg::trans_affine_translation(-double(w)/2, 0);
+      img_mtx *= agg::trans_affine_scaling(scaling);
+      img_mtx *= agg::trans_affine_translation(scaling * double(w)/2, 0);
+    }
+#if defined(__APPLE__)
+    // Apple emojis have no descender
+    if (strcmp("Apple Color Emoji", get_engine().family()) == 0) {
+      if (scaling < 0) scaling = 1.0; //shouldn't happen as Apple emojis are not scalable
+      img_mtx *= agg::trans_affine_translation(0, scaling * double(h) * 0.12);
     }
 #endif
     img_mtx *= agg::trans_affine_rotation(rot);
@@ -389,9 +426,20 @@ private:
     agg::conv_transform<agg::path_storage> tr(rect, src_mtx);
     ras.add_path(tr);
     
-    typedef agg::span_image_filter_rgba_bilinear<img_source_type, interpolator_type> span_gen_type;
-    span_gen_type sg(img_src, interpolator);
-    agg::render_scanlines_aa(ras, sl, renderer, sa, sg);
+    if (scaling >= 1 || scaling < 0) {
+      typedef agg::span_image_filter_rgba_bilinear<img_source_type, interpolator_type> span_gen_type;
+      span_gen_type sg(img_src, interpolator);
+      agg::render_scanlines_aa(ras, sl, renderer, sa, sg);
+    } else {
+      agg::image_filter_bilinear filter_kernel;
+      agg::image_filter_lut filter(filter_kernel, true);
+      
+      typedef agg::span_image_resample_rgba_affine<img_source_type> span_gen_type;
+      
+      span_gen_type sg(img_src, interpolator, filter);
+      sg.blur(1);
+      agg::render_scanlines_aa(ras, sl, renderer, sa, sg);
+    }
     
     delete [] buffer;
   }

@@ -2,8 +2,8 @@ VERSION = 2.7.4
 RWINLIB = ../windows/harfbuzz-${VERSION}
 
 AGG_OBJECTS = agg/src/agg_curves.o agg/src/agg_font_freetype.o \
-	agg/src/agg_trans_affine.o agg/src/agg_vcgen_dash.o \
-	agg/src/agg_vcgen_stroke.o
+	agg/src/agg_image_filters.o agg/src/agg_trans_affine.o \
+	agg/src/agg_vcgen_dash.o agg/src/agg_vcgen_stroke.o
 
 PKG_CPPFLAGS = -DSTRICT_R_HEADERS \
 	-I${RWINLIB}/include \
