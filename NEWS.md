@@ -2,8 +2,8 @@
 
 * Major version release to signify the much improved text support that includes
   full support for right-to-left scripts and bidirectional text (mix of RtL and
-  LtR scripts). It further adds full support for OpenType features and colour 
-  fonts.
+  LtR scripts). It further adds full support for OpenType features and 
+  non-scalable fonts.
 * Re-exporting `register_font()`, `register_variant()`, and `font_feature()` 
   from systemfonts
 * Re-exporting `get_font_features()` from textshaping
