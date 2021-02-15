@@ -95,7 +95,7 @@ a simple file format, or need a file-based image stream." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ragg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -103,7 +103,7 @@ a simple file format, or need a file-based image stream." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -146,7 +146,7 @@ a simple file format, or need a file-based image stream." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/ragg">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -209,7 +209,9 @@ compliant string format to name multiple plots (such as the default value)</p></
     </tr>
     <tr>
       <th>pointsize</th>
-      <td><p>The default pointsize of the device in pt</p></td>
+      <td><p>The default pointsize of the device in pt. This will in 
+general not have any effect on grid graphics (including ggplot2) as text 
+size is always set explicitly there.</p></td>
     </tr>
     <tr>
       <th>background</th>
@@ -225,7 +227,10 @@ to pixels. Further, it will be used to scale text sizes and linewidths</p></td>
       <th>scaling</th>
       <td><p>A scaling factor to apply to the rendered line width and text
 size. Useful for getting the right dimensions at the resolution that you
-need.</p></td>
+need. If e.g. you need to render a plot at 4000x3000 pixels for it to fit 
+into a layout, but you find that the result appears to small, you can 
+increase the `scaling` argument to make everything appear bigger at the 
+same resolution.</p></td>
     </tr>
     <tr>
       <th>bg</th>
