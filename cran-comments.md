@@ -1,6 +1,5 @@
-This is a huge feature release that adds support for advanced text layouting and
-rendering of colour fonts such as emojis, along with correct font fallback for
-missing glyphs.
+This is a small patch release fixing a single issue that in some rare
+circumstances can result in system crashes.
 
 ## Test environments
 

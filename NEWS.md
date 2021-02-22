@@ -1,5 +1,7 @@
 # ragg (development version)
 
+* Fix a bug in glyph dimension lookup that could cause system crashes
+
 # ragg 1.1.0
 
 * Major version release to signify the much improved text support that includes

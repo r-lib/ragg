@@ -195,38 +195,32 @@ public:
   void get_char_metric(int c, double *ascent, double *descent, double *width) {
     unsigned index = get_engine().get_glyph_index(c);
     const agg::glyph_cache* glyph = get_manager().glyph(index);
-    if (glyph->data_type == agg::glyph_data_color) {
-      double mod = current_font_height / get_engine().height();
-      if (c != 77 && glyph) {
-        *ascent = mod * (double) -glyph->bounds.y1;
-        *descent = mod * (double) glyph->bounds.y2;
-        
-        *width = mod * glyph->advance_x;
-      } else {
-        *ascent = mod * get_engine().ascent();
-        *descent = mod * get_engine().descent();
-        
-        *width = mod * get_engine().max_advance();
-      }
+    
+    // This might also be relevant to non-colour fonts that are unscalable
+    double mod = current_font_height / get_engine().height();
+    
+    // Only use 77 glyph if found and not colour font
+    // Last point is to guard against wrong line-heights based in M char in emoji fonts
+    if (glyph && !(c == 77 && (index == 0 || glyph->data_type == agg::glyph_data_color))) {
+      *ascent = mod * (double) -glyph->bounds.y1;
+      *descent = mod * (double) glyph->bounds.y2;
+      
+      *width = mod * glyph->advance_x;
       
 #if defined(__APPLE__)
       // Apple emojis have no descender
-      double y_shift = double(glyph->bounds.y1 - glyph->bounds.y2) * 0.1;
-      *descent += y_shift;
-      *ascent += y_shift;
+      if (glyph->data_type == agg::glyph_data_color && strcmp("Apple Color Emoji", get_engine().family()) == 0) {
+        double y_shift = double(glyph->bounds.y1 - glyph->bounds.y2) * 0.1;
+        *descent += y_shift;
+        *ascent += y_shift;
+      }
 #endif
-      
-    } else if (glyph && !(c == 77 && index == 0)) { // Only use 77 glyph if found
-      *ascent = (double) -glyph->bounds.y1;
-      *descent = (double) glyph->bounds.y2;
-      
-      *width = glyph->advance_x;
     } else {
       // Use global font metrics
-      *ascent = get_engine().ascent();
-      *descent = get_engine().descent();
+      *ascent = mod * get_engine().ascent();
+      *descent = mod * get_engine().descent();
       
-      *width = get_engine().max_advance();
+      *width = mod * get_engine().max_advance();
     }
   }
   
