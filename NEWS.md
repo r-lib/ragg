@@ -1,4 +1,4 @@
-# ragg (development version)
+# ragg 1.1.1
 
 * Fix a bug in glyph dimension lookup that could cause system crashes
 
