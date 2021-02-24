@@ -48,6 +48,7 @@ public:
   double clip_right;
   double clip_top;
   double clip_bottom;
+  unsigned int device_id;
   
   renbase_type renderer;
   pixfmt_type* pixf;
@@ -165,6 +166,7 @@ AggDevice<PIXFMT, R_COLOR, BLNDFMT>::AggDevice(const char* fp, int w, int h, dou
   clip_right(w),
   clip_top(0),
   clip_bottom(h),
+  device_id(0),
   pageno(0),
   file(fp),
   background_int(bg),
@@ -257,7 +259,7 @@ double AggDevice<PIXFMT, R_COLOR, BLNDFMT>::stringWidth(const char *str,
                                                double size) {
   size *= res_mod;
   agg::glyph_rendering gren = agg::glyph_ren_agg_gray8;
-  if (!t_ren.load_font(gren, family, face, size)) {
+  if (!t_ren.load_font(gren, family, face, size, device_id)) {
     return 0.0;
   }
   
@@ -273,7 +275,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::charMetric(int c, const char *family, 
   
   size *= res_mod;
   agg::glyph_rendering gren = agg::glyph_ren_agg_gray8;
-  if (!t_ren.load_font(gren, family, face, size)) {
+  if (!t_ren.load_font(gren, family, face, size, device_id)) {
     *ascent = 0.0;
     *descent = 0.0;
     *width = 0.0;
@@ -657,14 +659,14 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawText(double x, double y, const cha
   
   size *= res_mod;
   
-  if (!t_ren.load_font(gren, family, face, size)) {
+  if (!t_ren.load_font(gren, family, face, size, device_id)) {
     return;
   }
   
   renderer_solid ren_solid(renderer);
   ren_solid.color(convertColour(col));
   
-  t_ren.plot_text(x, y, str, rot, hadj, ren_solid, renderer);
+  t_ren.plot_text(x, y, str, rot, hadj, ren_solid, renderer, device_id);
 }
 
 

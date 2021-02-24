@@ -64,6 +64,7 @@ namespace agg
         void hinting(bool h);
         void flip_y(bool f);
         void transform(const trans_affine& affine);
+        void id(unsigned id) { m_cur_id = id; }
 
         // Set Gamma
         //--------------------------------------------------------------------
@@ -86,6 +87,7 @@ namespace agg
         double      descender()    const;
         bool        hinting()      const { return m_hinting;    }
         bool        flip_y()       const { return m_flip_y;     }
+        unsigned    id()           const { return m_cur_id;     }
 
 
         // Interface mandatory to implement for font_cache_manager
@@ -119,6 +121,7 @@ namespace agg
         bool            m_flag32;
         int             m_change_stamp;
         int             m_last_error;
+        unsigned        m_cur_id;
         char*           m_name;
         unsigned        m_name_len;
         unsigned        m_face_index;

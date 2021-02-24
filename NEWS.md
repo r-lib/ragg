@@ -1,6 +1,7 @@
 # ragg 1.1.1
 
 * Fix a bug in glyph dimension lookup that could cause system crashes
+* Fix bug in font caching when multiple ragg devices are used simultaneously
 
 # ragg 1.1.0
 

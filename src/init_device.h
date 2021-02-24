@@ -209,6 +209,8 @@ SEXP agg_setMask(SEXP path, SEXP ref, pDevDesc dd) {
 template<class T>
 void agg_releaseMask(SEXP ref, pDevDesc dd) {}
 
+static unsigned int DEVICE_COUNTER = 0;
+
 template<class T>
 pDevDesc agg_device_new(T* device) {
   
@@ -293,7 +295,8 @@ pDevDesc agg_device_new(T* device) {
 #if R_GE_version >= 13
   dd->deviceVersion = R_GE_definitions;
 #endif
-
+  
+  device->device_id = DEVICE_COUNTER++;
   dd->deviceSpecific = device;
   
   return dd;

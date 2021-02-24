@@ -154,13 +154,13 @@ public:
   }
   
   bool load_font(agg::glyph_rendering gren, const char *family, int face, 
-                 double size) {
+                 double size, unsigned int id = 0) {
     FontSettings font = get_font_file(family, 
                                       face == 2 || face == 4, 
                                       face == 3 || face == 4,
                                       face == 5);
     current_font_size = size;
-    if (!load_font_from_file(font, gren, size)) {
+    if (!load_font_from_file(font, gren, size, id)) {
       Rf_warning("Unable to load font: %s", family);
       current_font_height = 0;
       return false;
@@ -226,7 +226,7 @@ public:
   
   template<typename renderer_solid, typename renderer>
   void plot_text(double x, double y, const char *string, double rot, double hadj, 
-                 renderer_solid &ren_solid, renderer &ren) {
+                 renderer_solid &ren_solid, renderer &ren, unsigned int id) {
     agg::scanline_u8 sl;
     agg::rasterizer_scanline_aa<> ras;
     agg::conv_curve<font_manager_type::path_adaptor_type> curves(get_manager().path_adaptor());
@@ -293,7 +293,7 @@ public:
     for (int j = 1; j <= n_glyphs; ++j) {
       if (j == n_glyphs || font_buffer[j] != font_buffer[j - 1]) {
         if (fallback_buffer.size() == 0 || // To guard against old textshaping version/solaris mock
-            load_font_from_file(fallback_buffer[font_buffer[text_run_start]], last_gren, current_font_size)) {
+            load_font_from_file(fallback_buffer[font_buffer[text_run_start]], last_gren, current_font_size, id)) {
           for (int i = text_run_start; i < j; ++i) {
             const agg::glyph_cache* glyph = get_manager().glyph(id_buffer[i]);
             if (glyph) {
@@ -354,8 +354,10 @@ private:
     return locate_font_with_features(fontfamily, italic, bold);
   }
   
-  bool load_font_from_file(FontSettings font, agg::glyph_rendering gren, double size) {
-    if (!(gren == last_gren && 
+  bool load_font_from_file(FontSettings font, agg::glyph_rendering gren, double size,
+                           unsigned int id) {
+    if (id != get_engine().id() ||
+        !(gren == last_gren && 
         font.index == last_font.index &&
         strncmp(font.file, last_font.file, PATH_MAX) == 0)) {
       if (!get_engine().load_font(font.file, font.index, gren)) {
@@ -363,6 +365,7 @@ private:
       }
       last_gren = gren;
       get_engine().height(size);
+      get_engine().id(id);
     } else if (size != get_engine().height()) {
       get_engine().height(size);
     }
