@@ -1,5 +1,8 @@
-This is a small patch release fixing a single issue that in some rare
-circumstances can result in system crashes.
+This submission does not fix the outstanding CRAN ASAN issue as the nature of it
+is still being investigated. However, fixes a single issue that in some rare
+circumstances can result in system crashes. Because of the severity of the bug I
+urge CRAN to consider moving forward with releasing this submission while the 
+ASAN issue is being investigated.
 
 ## Test environments
 
