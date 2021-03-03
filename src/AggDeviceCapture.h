@@ -23,7 +23,7 @@ public:
     SEXP raster = PROTECT(Rf_allocVector(INTSXP, this->width * this->height));
     agg::rendering_buffer caprbuf(reinterpret_cast<agg::int8u*>(INTEGER(raster)),
                                   this->width, this->height, this->width * 4);
-    agg::convert<pixfmt_r_capture, pixfmt_type_32>(&caprbuf, &this->rbuf);
+    agg::convert<pixfmt_r_raster, pixfmt_type_32>(&caprbuf, &this->rbuf);
     SEXP dims = PROTECT(Rf_allocVector(INTSXP, 2));
     INTEGER(dims)[0] = this->height;
     INTEGER(dims)[1] = this->width;
