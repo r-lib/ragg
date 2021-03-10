@@ -1,8 +1,5 @@
-This submission does not fix the outstanding CRAN ASAN issue as the nature of it
-is still being investigated. However, fixes a single issue that in some rare
-circumstances can result in system crashes. Because of the severity of the bug I
-urge CRAN to consider moving forward with releasing this submission while the 
-ASAN issue is being investigated.
+This submission fixes a bug with agg_capture which resulted in premultiplied
+colour values being returned.
 
 ## Test environments
 
