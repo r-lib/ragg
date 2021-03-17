@@ -1,3 +1,5 @@
+# ragg (development version)
+
 # ragg 1.1.2
 
 * Fix bug in `agg_capture()` that resulted in premultiplied colour values being
