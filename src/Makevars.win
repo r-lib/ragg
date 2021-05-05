@@ -11,7 +11,7 @@ PKG_CPPFLAGS = -DSTRICT_R_HEADERS \
 	-I./agg/include \
 
 PKG_LIBS = -Lagg -lstatagg \
-  -L${RWINLIB}/lib${R_ARCH} \
+  -L${RWINLIB}/lib${R_ARCH}${CRT} \
 	-lfreetype -lharfbuzz -lfreetype -lpng -lz -ltiff -ljpeg \
 	-lbz2 -lgdi32 -lws2_32
 
