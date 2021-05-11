@@ -1,5 +1,8 @@
 # ragg (development version)
 
+* Use int32_t instead of int32 in old code
+* Prepare for UCRT
+
 # ragg 1.1.2
 
 * Fix bug in `agg_capture()` that resulted in premultiplied colour values being

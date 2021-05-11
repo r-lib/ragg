@@ -58,7 +58,7 @@ public:
     
     
     //Now writing image to the file one strip at a time
-    for (int32 row = 0; row < this->height; row++) {
+    for (int32_t row = 0; row < this->height; row++) {
       if (TIFFWriteScanline(out, buffer_rows.row_ptr(row), row, 0) < 0) {
         (void) TIFFClose(out);
         return false;
@@ -128,7 +128,7 @@ public:
     
     
     //Now writing image to the file one strip at a time
-    for (int32 row = 0; row < this->height; row++) {
+    for (int32_t row = 0; row < this->height; row++) {
       if (TIFFWriteScanline(out, buffer_rows.row_ptr(row), row, 0) < 0) {
         (void) TIFFClose(out);
         return false;
