@@ -11,7 +11,7 @@ get_dims <- function(width, height, units, res) {
   if (any(dims > max_dim)) {
     stop(
       'One or both dimensions exceed the maximum (', max_dim, 'px).\n', 
-      '- Use options(ragg.max_dim = ...) to change the max\n',
+      '- Use `options(ragg.max_dim = ...)` to change the max\n',
       '  Warning: May cause the R session to crash',
       call. = FALSE
     )
