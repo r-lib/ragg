@@ -2,6 +2,7 @@
 
 * Use int32_t instead of int32 in old code
 * Prepare for UCRT
+* Better error message when failing to allocate memory for the buffer
 
 # ragg 1.1.2
 

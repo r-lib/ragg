@@ -7,6 +7,15 @@ get_dims <- function(width, height, units, res) {
     'px' = 1,
     stop('Unknown unit. Please use either px, in, cm, or, mm', call. = FALSE)
   )
+  max_dim <- getOption('ragg.max_dim', 5e4)
+  if (any(dims > max_dim)) {
+    stop(
+      'One or both dimensions exceed the maximum (', max_dim, 'px).\n', 
+      '- Use options(ragg.max_dim = ...) to change the max\n',
+      '  Warning: May cause the R session to crash',
+      call. = FALSE
+    )
+  }
   as.integer(dims)
 }
 

@@ -24,6 +24,9 @@
 
 #define END_CPP                                                                \
 }                                                                              \
+catch (const std::bad_alloc&) {                                                \
+  Rf_error("Memory allocation error. You are likely trying to create too large an image"); \
+}                                                                              \
 catch (std::exception & e) {                                                   \
   Rf_error("C++ exception: %s", e.what());                                     \
 }                                                                              \
