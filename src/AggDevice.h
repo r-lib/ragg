@@ -22,6 +22,8 @@
 
 #include "util/agg_color_conv.h"
 
+static const int MAX_CELLS = 1 << 20;
+
 /* Base class for graphic device interface to AGG. See AggDevice.cpp for 
  * implementation details. 
  * 
@@ -309,7 +311,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawCircle(double x, double y, double 
   
   lwd *= lwd_mod;
   
-  agg::rasterizer_scanline_aa<> ras;
+  agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
   agg::scanline_p8 slp;
   agg::ellipse e1;
@@ -410,7 +412,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPolygon(int n, double *x, double *
   
   lwd *= lwd_mod;
   
-  agg::rasterizer_scanline_aa<> ras;
+  agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
   agg::scanline_p8 slp;
   agg::path_storage poly;
@@ -493,7 +495,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPolyline(int n, double* x, double*
   lwd *= lwd_mod;
   
   agg::scanline_u8 sl;
-  agg::rasterizer_scanline_aa<> ras;
+  agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
   agg::path_storage ps;
   ps.remove_all();
@@ -537,7 +539,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPath(int npoly, int* nper, double*
   
   lwd *= lwd_mod;
   
-  agg::rasterizer_scanline_aa<> ras;
+  agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
   agg::scanline_p8 slp;
   agg::path_storage path;

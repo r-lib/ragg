@@ -2,7 +2,8 @@
 
 * Use int32_t instead of int32 in old code
 * Prepare for UCRT
-* Better error message when failing to allocate memory for the buffer
+* Better error message when failing to allocate memory for the buffer (#82)
+* Increase storage size limits for paths (#80)
 
 # ragg 1.1.2
 
