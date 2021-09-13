@@ -191,13 +191,22 @@ void agg_releasePattern(SEXP ref, pDevDesc dd) {}
 
 template<class T>
 SEXP agg_setClipPath(SEXP path, SEXP ref, pDevDesc dd) {
+  T * device = (T *) dd->deviceSpecific;
+  
   BEGIN_CPP
-    return R_NilValue;
+  return device->createClipPath(path, ref);
   END_CPP
+    
+  return R_NilValue;
 }
 
 template<class T>
-void agg_releaseClipPath(SEXP ref, pDevDesc dd) {}
+void agg_releaseClipPath(SEXP ref, pDevDesc dd) {
+  T * device = (T *) dd->deviceSpecific;
+  BEGIN_CPP
+  device->removeClipPath(ref);
+  END_CPP
+}
 
 template<class T>
 SEXP agg_setMask(SEXP path, SEXP ref, pDevDesc dd) {

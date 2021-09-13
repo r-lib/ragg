@@ -2,6 +2,7 @@
 #define AGGDEV_INCLUDED
 
 #include "ragg.h"
+#include "rendering.h"
 #include "text_renderer.h"
 
 #include "agg_math_stroke.h"
@@ -19,6 +20,7 @@
 #include "agg_rasterizer_scanline_aa.h"
 #include "agg_scanline_p.h"
 #include "agg_scanline_u.h"
+#include "agg_scanline_boolean_algebra.h"
 
 #include "util/agg_color_conv.h"
 
@@ -53,6 +55,7 @@ public:
   unsigned int device_id;
   
   renbase_type renderer;
+  renderer_solid solid_renderer;
   pixfmt_type* pixf;
   agg::rendering_buffer rbuf;
   unsigned char* buffer;
@@ -67,6 +70,12 @@ public:
   double lwd_mod;
   
   TextRenderer<BLNDFMT> t_ren;
+  
+  // Caches
+  std::unordered_map<unsigned int, agg::path_storage> clip_cache;
+  unsigned int clip_cache_next_id;
+  agg::path_storage* recording_clip;
+  agg::path_storage* current_clip;
   
   // Lifecycle methods
   AggDevice(const char* fp, int w, int h, double ps, int bg, double res, 
@@ -83,6 +92,8 @@ public:
                      double size);
   void charMetric(int c, const char *family, int face, double size,
                   double *ascent, double *descent, double *width);
+  SEXP createClipPath(SEXP path, SEXP ref);
+  void removeClipPath(SEXP ref);
   
   // Drawing Methods
   void drawCircle(double x, double y, double r, int fill, int col, double lwd, 
@@ -150,6 +161,49 @@ private:
       dash_conv.add_dash(dash, gap);
     }
   }
+  template<class Raster, class Path>
+  void setStroke(Raster &ras, Path p, int lty, double lwd, R_GE_lineend lend) {
+    if (lty == LTY_SOLID) {
+      agg::conv_stroke<Path> pg(p);
+      pg.width(lwd);
+      ras.add_path(pg);
+    } else {
+      agg::conv_dash<Path> pd(p);
+      agg::conv_stroke< agg::conv_dash<Path> > pg(pd);
+      makeDash(pd, lty, lwd);
+      pg.width(lwd);
+      pg.line_cap(convertLineend(lend));
+      ras.add_path(pg);
+    }
+  }
+  template<class Raster, class Path>
+  void drawShape(Raster &ras, Raster &ras_clip, Path &path, bool draw_fill, 
+                 bool draw_stroke, int fill, int col, double lwd, 
+                 int lty, R_GE_lineend lend, bool evenodd = false) {
+    agg::scanline_p8 slp;
+    if (recording_clip != NULL) {
+      recording_clip->concat_path(path);
+      return;
+    }
+    if (current_clip != NULL) {
+      ras_clip.add_path(*current_clip);
+    }
+    
+    if (draw_fill) {
+      ras.add_path(path);
+      if (evenodd) ras.filling_rule(agg::fill_even_odd);
+      solid_renderer.color(convertColour(fill));
+      
+      render<agg::scanline_p8>(ras, ras_clip, slp, solid_renderer, current_clip != NULL);
+    }
+    if (!draw_stroke) return;
+    
+    if (evenodd) ras.filling_rule(agg::fill_non_zero);
+    agg::scanline_u8 slu;
+    setStroke(ras, path, lty, lwd, lend);
+    solid_renderer.color(convertColour(col));
+    render<agg::scanline_u8>(ras, ras_clip, slu, solid_renderer, current_clip != NULL);
+  }
 };
 
 // IMPLIMENTATION --------------------------------------------------------------
@@ -176,12 +230,16 @@ AggDevice<PIXFMT, R_COLOR, BLNDFMT>::AggDevice(const char* fp, int w, int h, dou
   res_real(res),
   res_mod(scaling * res / 72.0),
   lwd_mod(scaling * res / 96.0),
-  t_ren()
+  t_ren(),
+  clip_cache_next_id(0),
+  recording_clip(NULL),
+  current_clip(NULL)
 {
   buffer = new unsigned char[width * height * bytes_per_pixel];
   rbuf = agg::rendering_buffer(buffer, width, height, width * bytes_per_pixel);
   pixf = new pixfmt_type(rbuf);
   renderer = renbase_type(*pixf);
+  solid_renderer = renderer_solid(renderer);
   background = convertColour(background_int);
   renderer.clear(background);
 }
@@ -247,6 +305,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::clipRect(double x0, double y0, double 
   clip_top = y0;
   clip_bottom = y1;
   renderer.clip_box(x0, y0, x1, y1);
+  current_clip = NULL;
 }
 
 /* These methods funnel all operations to the text_renderer. See text_renderer.h
@@ -287,6 +346,56 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::charMetric(int c, const char *family, 
   t_ren.get_char_metric(c, ascent, descent, width);
 }
 
+template<class PIXFMT, class R_COLOR, typename BLNDFMT>
+SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createClipPath(SEXP path, SEXP ref) {
+  unsigned int key;
+  if (Rf_isNull(ref)) {
+    key = clip_cache_next_id;
+    clip_cache_next_id++;
+  } else {
+    key = INTEGER(ref)[0];
+  }
+  
+  auto clip_cache_iter = clip_cache.find(key);
+  // Check if path exists
+  if (clip_cache_iter == clip_cache.end()) {
+    // Path doesn't exist - create a new entry and get reference to it
+    agg::path_storage& new_clip = clip_cache[key];
+    
+    // Assign container pointer to device
+    recording_clip = &new_clip;
+    
+    SEXP R_fcall = PROTECT(Rf_lang1(path));
+    Rf_eval(R_fcall, R_GlobalEnv);
+    UNPROTECT(1);
+    current_clip = recording_clip;
+    
+    recording_clip = NULL;
+  } else {
+    current_clip = &(clip_cache_iter->second);
+  }
+  
+  
+  return Rf_ScalarInteger(key);
+}
+
+template<class PIXFMT, class R_COLOR, typename BLNDFMT>
+void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::removeClipPath(SEXP ref) {
+  if (Rf_isNull(ref)) {
+    return;
+  }
+    
+  unsigned int key = INTEGER(ref)[0];
+  
+  auto it = clip_cache.find(key);
+  // Check if path exists
+  if (it != clip_cache.end()) {
+    clip_cache.erase(it);
+  }
+  
+  return;
+}
+
 
 // DRAWING ---------------------------------------------------------------------
 
@@ -312,8 +421,8 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawCircle(double x, double y, double 
   lwd *= lwd_mod;
   
   agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
+  agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
-  agg::scanline_p8 slp;
   agg::ellipse e1;
   if (r < 1) {
     r = r < 0.5 ? 0.5 : r;
@@ -330,27 +439,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawCircle(double x, double y, double 
     e1.init(x, y, r, r);
   }
   
-  if (draw_fill) {
-    ras.add_path(e1);
-    agg::render_scanlines_aa_solid(ras, slp, renderer, convertColour(fill));
-  }
-  if (!draw_stroke) return;
-  
-  agg::scanline_u8 slu;
-  if (lty == LTY_SOLID) {
-    agg::conv_stroke<agg::ellipse> pg(e1);
-    pg.width(lwd);
-    ras.add_path(pg);
-    agg::render_scanlines_aa_solid(ras, slu, renderer, convertColour(col));
-  } else {
-    agg::conv_dash<agg::ellipse> pd(e1);
-    agg::conv_stroke< agg::conv_dash<agg::ellipse> > pg(pd);
-    makeDash(pd, lty, lwd);
-    pg.width(lwd);
-    pg.line_cap(convertLineend(lend));
-    ras.add_path(pg);
-    agg::render_scanlines_aa_solid(ras, slu, renderer, convertColour(col));
-  }
+  drawShape(ras, ras_clip, e1, draw_fill, draw_stroke, fill, col, lwd, lty, lend);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
@@ -365,9 +454,9 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRect(double x0, double y0, double 
   
   lwd *= lwd_mod;
   
-  agg::rasterizer_scanline_aa<> ras;
+  agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
+  agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
-  agg::scanline_p8 slp;
   agg::path_storage rect;
   rect.remove_all();
   rect.move_to(x0, y0);
@@ -376,27 +465,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRect(double x0, double y0, double 
   rect.line_to(x1, y0);
   rect.close_polygon();
   
-  if (draw_fill) {
-    ras.add_path(rect);
-    agg::render_scanlines_bin_solid(ras, slp, renderer, convertColour(fill));
-  }
-  if (!draw_stroke) return;
-  
-  agg::scanline_u8 slu;
-  if (lty == LTY_SOLID) {
-    agg::conv_stroke<agg::path_storage> pg(rect);
-    pg.width(lwd);
-    ras.add_path(pg);
-    agg::render_scanlines_aa_solid(ras, slu, renderer, convertColour(col));
-  } else {
-    agg::conv_dash<agg::path_storage> pd(rect);
-    agg::conv_stroke< agg::conv_dash<agg::path_storage> > pg(pd);
-    makeDash(pd, lty, lwd);
-    pg.width(lwd);
-    pg.line_cap(convertLineend(lend));
-    ras.add_path(pg);
-    agg::render_scanlines_aa_solid(ras, slu, renderer, convertColour(col));
-  }
+  drawShape(ras, ras_clip, rect, draw_fill, draw_stroke, fill, col, lwd, lty, lend);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
@@ -413,8 +482,8 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPolygon(int n, double *x, double *
   lwd *= lwd_mod;
   
   agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
+  agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
-  agg::scanline_p8 slp;
   agg::path_storage poly;
   poly.remove_all();
   poly.move_to(x[0], y[0]);
@@ -423,32 +492,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPolygon(int n, double *x, double *
   }
   poly.close_polygon();
   
-  if (draw_fill) {
-    ras.add_path(poly);
-    agg::render_scanlines_aa_solid(ras, slp, renderer, convertColour(fill));
-  }
-  if (!draw_stroke) return;
-  
-  agg::scanline_u8 slu;
-  if (lty == LTY_SOLID) {
-    agg::conv_stroke<agg::path_storage> pg(poly);
-    pg.width(lwd);
-    pg.line_join(convertLinejoin(ljoin));
-    pg.miter_limit(lmitre);
-    ras.add_path(pg);
-    agg::render_scanlines_aa_solid(ras, slu, renderer, convertColour(col));
-  } else {
-    agg::conv_dash<agg::path_storage> pd(poly);
-    agg::conv_stroke< agg::conv_dash<agg::path_storage> > pg(pd);
-    makeDash(pd, lty, lwd);
-    pg.width(lwd);
-    pg.line_cap(convertLineend(lend));
-    pg.line_join(convertLinejoin(ljoin));
-    pg.miter_limit(lmitre);
-    pg.line_cap(convertLineend(lend));
-    ras.add_path(pg);
-    agg::render_scanlines_aa_solid(ras, slu, renderer, convertColour(col));
-  }
+  drawShape(ras, ras_clip, poly, draw_fill, draw_stroke, fill, col, lwd, lty, lend);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
@@ -459,29 +503,15 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawLine(double x1, double y1, double 
   
   lwd *= lwd_mod;
   
-  agg::scanline_u8 sl;
-  agg::rasterizer_scanline_aa<> ras;
+  agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
+  agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
   agg::path_storage ps;
   ps.remove_all();
   ps.move_to(x1, y1);
   ps.line_to(x2, y2);
   
-  if (lty == LTY_SOLID) {
-    agg::conv_stroke<agg::path_storage> pg(ps);
-    pg.width(lwd);
-    pg.line_cap(convertLineend(lend));
-    ras.add_path(pg);
-    agg::render_scanlines_aa_solid(ras, sl, renderer, convertColour(col));
-  } else {
-    agg::conv_dash<agg::path_storage> pd(ps);
-    agg::conv_stroke< agg::conv_dash<agg::path_storage> > pg(pd);
-    makeDash(pd, lty, lwd);
-    pg.width(lwd);
-    pg.line_cap(convertLineend(lend));
-    ras.add_path(pg);
-    agg::render_scanlines_aa_solid(ras, sl, renderer, convertColour(col));
-  }
+  drawShape(ras, ras_clip, ps, false, true, 0, col, lwd, lty, lend);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
@@ -494,8 +524,8 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPolyline(int n, double* x, double*
   
   lwd *= lwd_mod;
   
-  agg::scanline_u8 sl;
   agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
+  agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
   agg::path_storage ps;
   ps.remove_all();
@@ -504,25 +534,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPolyline(int n, double* x, double*
     ps.line_to(x[i], y[i]);
   }
   
-  if (lty == LTY_SOLID) {
-    agg::conv_stroke<agg::path_storage> pg(ps);
-    pg.width(lwd);
-    pg.line_cap(convertLineend(lend));
-    pg.line_join(convertLinejoin(ljoin));
-    pg.miter_limit(lmitre);
-    ras.add_path(pg);
-    agg::render_scanlines_aa_solid(ras, sl, renderer, convertColour(col));
-  } else {
-    agg::conv_dash<agg::path_storage> pd(ps);
-    agg::conv_stroke< agg::conv_dash<agg::path_storage> > pg(pd);
-    makeDash(pd, lty, lwd);
-    pg.width(lwd);
-    pg.line_cap(convertLineend(lend));
-    pg.line_join(convertLinejoin(ljoin));
-    pg.miter_limit(lmitre);
-    ras.add_path(pg);
-    agg::render_scanlines_aa_solid(ras, sl, renderer, convertColour(col));
-  }
+  drawShape(ras, ras_clip, ps, false, true, 0, col, lwd, lty, lend);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
@@ -540,8 +552,9 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPath(int npoly, int* nper, double*
   lwd *= lwd_mod;
   
   agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
+  agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
-  agg::scanline_p8 slp;
+  agg::scanline_p8 slp, slp_clip, slp_result;
   agg::path_storage path;
   path.remove_all();
   int counter = 0;
@@ -559,35 +572,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPath(int npoly, int* nper, double*
     path.close_polygon();
   }
   
-  if (draw_fill) {
-    ras.add_path(path);
-    if (evenodd) ras.filling_rule(agg::fill_even_odd);
-    agg::render_scanlines_aa_solid(ras, slp, renderer, convertColour(fill));
-  }
-  if (!draw_stroke) return;
-  
-  agg::scanline_u8 slu;
-  if (lty == LTY_SOLID) {
-    agg::conv_stroke<agg::path_storage> pg(path);
-    pg.width(lwd);
-    pg.line_join(convertLinejoin(ljoin));
-    pg.miter_limit(lmitre);
-    ras.filling_rule(agg::fill_non_zero);
-    ras.add_path(pg);
-    agg::render_scanlines_aa_solid(ras, slu, renderer, convertColour(col));
-  } else {
-    agg::conv_dash<agg::path_storage> pd(path);
-    agg::conv_stroke< agg::conv_dash<agg::path_storage> > pg(pd);
-    makeDash(pd, lty, lwd);
-    pg.width(lwd);
-    pg.line_cap(convertLineend(lend));
-    pg.line_join(convertLinejoin(ljoin));
-    pg.miter_limit(lmitre);
-    pg.line_cap(convertLineend(lend));
-    ras.filling_rule(agg::fill_non_zero);
-    ras.add_path(pg);
-    agg::render_scanlines_aa_solid(ras, slu, renderer, convertColour(col));
-  }
+  drawShape(ras, ras_clip, path, draw_fill, draw_stroke, fill, col, lwd, lty, lend, evenodd);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
@@ -623,9 +608,9 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRaster(unsigned int *raster, int w
   BLNDFMT img_pixf(rbuf8);
   img_source_type img_src(img_pixf);
   agg::span_allocator<R_COLOR> sa;
-  agg::rasterizer_scanline_aa<> ras;
+  agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
-  agg::scanline_u8 sl;
+  agg::scanline_u8 sl, sl_clip, sl_result;
   
   agg::path_storage rect;
   rect.remove_all();
@@ -637,16 +622,23 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRaster(unsigned int *raster, int w
   agg::conv_transform<agg::path_storage> tr(rect, src_mtx);
   ras.add_path(tr);
   
+  agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
+  if (current_clip != NULL) {
+    ras_clip.add_path(*current_clip);
+  }
+  
   if (interpolate) {
     typedef agg::span_image_filter_rgba_bilinear<img_source_type, interpolator_type> span_gen_type;
     span_gen_type sg(img_src, interpolator);
+    agg::renderer_scanline_aa<renbase_type, agg::span_allocator<R_COLOR>, span_gen_type> raster_renderer(renderer, sa, sg);
     
-    agg::render_scanlines_aa(ras, sl, renderer, sa, sg);
+    render<agg::scanline_p8>(ras, ras_clip, sl, raster_renderer, current_clip != NULL);
   } else {
     typedef agg::span_image_filter_rgba_nn<img_source_type, interpolator_type> span_gen_type;
     span_gen_type sg(img_src, interpolator);
+    agg::renderer_scanline_aa<renbase_type, agg::span_allocator<R_COLOR>, span_gen_type> raster_renderer(renderer, sa, sg);
     
-    agg::render_scanlines_aa(ras, sl, renderer, sa, sg);
+    render<agg::scanline_p8>(ras, ras_clip, sl, raster_renderer, current_clip != NULL);
   }
 
   delete [] buffer8;
@@ -657,7 +649,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawText(double x, double y, const cha
                                           const char *family, int face, 
                                           double size, double rot, double hadj, 
                                           int col) {
-  agg::glyph_rendering gren = std::fmod(rot, 90) == 0.0 ? agg::glyph_ren_agg_gray8 : agg::glyph_ren_outline;
+  agg::glyph_rendering gren = std::fmod(rot, 90) == 0.0 && recording_clip == NULL ? agg::glyph_ren_agg_gray8 : agg::glyph_ren_outline;
   
   size *= res_mod;
   
@@ -665,10 +657,14 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawText(double x, double y, const cha
     return;
   }
   
-  renderer_solid ren_solid(renderer);
-  ren_solid.color(convertColour(col));
+  agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
+  if (current_clip != NULL) {
+    ras_clip.add_path(*current_clip);
+  }
   
-  t_ren.plot_text(x, y, str, rot, hadj, ren_solid, renderer, device_id);
+  solid_renderer.color(convertColour(col));
+  
+  t_ren.plot_text(x, y, str, rot, hadj, solid_renderer, renderer, device_id, ras_clip, current_clip != NULL, recording_clip);
 }
 
 
