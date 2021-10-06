@@ -5,14 +5,13 @@
 
 <!-- badges: start -->
 
-[![R build
-status](https://github.com/r-lib/ragg/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/ragg/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/r-lib/ragg/branch/master/graph/badge.svg)](https://codecov.io/gh/r-lib/ragg?branch=master)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/ragg)](https://cran.r-project.org/package=ragg)
 [![Lifecycle:
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![R-CMD-check](https://github.com/r-lib/ragg/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/ragg/actions)
 <!-- badges: end -->
 
 This package provides graphic devices for R based on the AGG library
@@ -39,14 +38,14 @@ devices provided by default from the grDevices packages and can both
 produce png, jpeg and tiff files. Notable features, that sets itself
 apart from the build-in devices, includes:
 
-  - Faster (up to 40% faster than anti-aliased cairo device)
-  - Direct access to all system fonts
-  - Advanced text rendering, including support for right-to-left text,
+-   Faster (up to 40% faster than anti-aliased cairo device)
+-   Direct access to all system fonts
+-   Advanced text rendering, including support for right-to-left text,
     emojis, and font fallback
-  - High quality anti-aliasing
-  - High quality rotated text
-  - Support 16-bit output
-  - System independent rendering (output from Mac, Windows, and Linux
+-   High quality anti-aliasing
+-   High quality rotated text
+-   Support 16-bit output
+-   System independent rendering (output from Mac, Windows, and Linux
     should be identical)
 
 You can use it like any other device. The main functions are
@@ -95,8 +94,8 @@ plot(as.raster(scatter))
 ### Use ragg with knitr
 
 knitr supports png output from ragg by setting `dev = "ragg_png"` in the
-chunk settings or globally with `knitr::opts_chunk$set(dev =
-"ragg_png")`.
+chunk settings or globally with
+`knitr::opts_chunk$set(dev = "ragg_png")`.
 
 ### Use ragg in RStudio
 

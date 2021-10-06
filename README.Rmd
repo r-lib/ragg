@@ -15,10 +15,10 @@ knitr::opts_chunk$set(
 # ragg <a href='https://ragg.r-lib.org'><img src='man/figures/logo.png' align="right" height="131.5" /></a>
 
 <!-- badges: start -->
-[![R build status](https://github.com/r-lib/ragg/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/ragg/actions)
 [![Codecov test coverage](https://codecov.io/gh/r-lib/ragg/branch/master/graph/badge.svg)](https://codecov.io/gh/r-lib/ragg?branch=master)
 [![CRAN status](https://www.r-pkg.org/badges/version/ragg)](https://cran.r-project.org/package=ragg)
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![R-CMD-check](https://github.com/r-lib/ragg/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/ragg/actions)
 <!-- badges: end -->
 
 This package provides graphic devices for R based on the AGG library developed
