@@ -349,11 +349,7 @@ private:
                              int symbol) {
     const char* fontfamily = family;
     if (symbol) {
-#if defined _WIN32
-      fontfamily = "Segoe UI Symbol";
-#else
-      fontfamily = "Symbol";
-#endif
+      fontfamily = "symbol";
     }
     return locate_font_with_features(fontfamily, italic, bold);
   }

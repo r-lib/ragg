@@ -7,6 +7,8 @@
   - Tiling patterns
 * Use white as background when passing in a fully transparent background colour
   to devices that doesn't support alpha (notably jpeg) (#91)
+* ragg now defers symbol font resolving to systemfonts which makes it possible 
+  to register alternative symbol fonts using `register_font()` (#90)
 
 # ragg 1.1.3
 
