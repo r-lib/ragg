@@ -1,5 +1,11 @@
 # ragg (development version)
 
+* Add support for new graphic engine features:
+  - Arbitrary clipping paths
+  - Alpha masks
+  - Linear and radial gradients
+  - Tiling patterns
+
 # ragg 1.1.3
 
 * Use int32_t instead of int32 in old code
