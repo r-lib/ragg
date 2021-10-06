@@ -141,7 +141,7 @@ private:
     return agg::rgba32(R_COLOR(R_RED(col), R_GREEN(col), R_BLUE(col), R_ALPHA(col))).premultiply();
   }
   inline bool visibleColour(unsigned int col) {
-    return (int) R_TRANSPARENT(col);
+    return (int) !R_TRANSPARENT(col);
   }
   inline agg::line_cap_e convertLineend(R_GE_lineend lend) {
     switch (lend) {
