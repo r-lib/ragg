@@ -1,5 +1,4 @@
-#ifndef RAGG_INCLUDED
-#define RAGG_INCLUDED
+#pragma once
 
 #include <string>
 #include <tuple>
@@ -76,5 +75,3 @@ SEXP agg_jpeg_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
                 SEXP method);
 SEXP agg_capture_c(SEXP name, SEXP width, SEXP height, SEXP pointsize, SEXP bg, 
                    SEXP res, SEXP scaling);
-
-#endif

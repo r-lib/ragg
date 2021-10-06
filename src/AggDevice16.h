@@ -1,5 +1,4 @@
-#ifndef AGGDEV16_INCLUDED
-#define AGGDEV16_INCLUDED
+#pragma once
 
 #include "ragg.h"
 #include "AggDevice.h"
@@ -52,5 +51,3 @@ private:
     return new_col.premultiply();
   }
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef INIT_INCLUDED
-#define INIT_INCLUDED
+#pragma once
 
 #include "ragg.h"
 
@@ -79,10 +78,11 @@ template<class T>
 void agg_polygon(int n, double *x, double *y, const pGEcontext gc,
                  pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
+  int pattern = gc->patternFill == R_NilValue ? -1 : INTEGER(gc->patternFill)[0];
   
   BEGIN_CPP
   device->drawPolygon(n, x, y, gc->fill, gc->col, gc->lwd, gc->lty, gc->lend, 
-                      gc->ljoin, gc->lmitre);
+                      gc->ljoin, gc->lmitre, pattern);
   END_CPP
   
   return;
@@ -92,10 +92,11 @@ template<class T>
 void agg_path(double *x, double *y, int npoly, int *nper, Rboolean winding,
               const pGEcontext gc, pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
+  int pattern = gc->patternFill == R_NilValue ? -1 : INTEGER(gc->patternFill)[0];
   
   BEGIN_CPP
   device->drawPath(npoly, nper, x, y, gc->col, gc->fill, gc->lwd, gc->lty, 
-                   gc->lend, gc->ljoin, gc->lmitre, !winding);
+                   gc->lend, gc->ljoin, gc->lmitre, !winding, pattern);
   END_CPP
   
   return;
@@ -115,10 +116,11 @@ template<class T>
 void agg_rect(double x0, double y0, double x1, double y1, const pGEcontext gc, 
               pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
+  int pattern = gc->patternFill == R_NilValue ? -1 : INTEGER(gc->patternFill)[0];
   
   BEGIN_CPP
   device->drawRect(x0, y0, x1, y1, gc->fill, gc->col, gc->lwd, 
-                   gc->lty, gc->lend);
+                   gc->lty, gc->lend, pattern);
   END_CPP
   
   return;
@@ -128,9 +130,10 @@ template<class T>
 void agg_circle(double x, double y, double r, const pGEcontext gc, 
                 pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
+  int pattern = gc->patternFill == R_NilValue ? -1 : INTEGER(gc->patternFill)[0];
   
   BEGIN_CPP
-  device->drawCircle(x, y, r, gc->fill, gc->col, gc->lwd, gc->lty, gc->lend);
+  device->drawCircle(x, y, r, gc->fill, gc->col, gc->lwd, gc->lty, gc->lend, pattern);
   END_CPP
   
   return;
@@ -149,11 +152,14 @@ void agg_text(double x, double y, const char *str, double rot, double hadj,
   return;
 }
 
-static void agg_size(double *left, double *right, double *bottom, double *top,
-              pDevDesc dd) {
+template<class T>
+static inline void agg_size(double *left, double *right, double *bottom, 
+                            double *top, pDevDesc dd) {
+  T * device = (T *) dd->deviceSpecific;
+  
   *left = dd->left;
-  *right = dd->right;
-  *bottom = dd->bottom;
+  *right = (double) device->width;
+  *bottom = (double) device->height;
   *top = dd->top;
 }
 
@@ -181,13 +187,23 @@ SEXP agg_capture(pDevDesc dd) {
 
 template<class T>
 SEXP agg_setPattern(SEXP pattern, pDevDesc dd) {
+  T * device = (T *) dd->deviceSpecific;
+  
   BEGIN_CPP
-    return R_NilValue;
+  return device->createPattern(pattern);
   END_CPP
+    
+  
+  return R_NilValue;
 }
 
 template<class T>
-void agg_releasePattern(SEXP ref, pDevDesc dd) {} 
+void agg_releasePattern(SEXP ref, pDevDesc dd) {
+  T * device = (T *) dd->deviceSpecific;
+  BEGIN_CPP
+  device->removePattern(ref);
+  END_CPP
+} 
 
 template<class T>
 SEXP agg_setClipPath(SEXP path, SEXP ref, pDevDesc dd) {
@@ -210,13 +226,22 @@ void agg_releaseClipPath(SEXP ref, pDevDesc dd) {
 
 template<class T>
 SEXP agg_setMask(SEXP path, SEXP ref, pDevDesc dd) {
+  T * device = (T *) dd->deviceSpecific;
+  
   BEGIN_CPP
-    return R_NilValue;
+  return device->createMask(path, ref);
   END_CPP
+    
+  return R_NilValue;
 }
 
 template<class T>
-void agg_releaseMask(SEXP ref, pDevDesc dd) {}
+void agg_releaseMask(SEXP ref, pDevDesc dd) {
+  T * device = (T *) dd->deviceSpecific;
+  BEGIN_CPP
+  device->removeMask(ref);
+  END_CPP
+}
 
 static unsigned int DEVICE_COUNTER = 0;
 
@@ -239,7 +264,7 @@ pDevDesc agg_device_new(T* device) {
   dd->deactivate = NULL;
   dd->close = agg_close<T>;
   dd->clip = agg_clip<T>;
-  dd->size = agg_size;
+  dd->size = agg_size<T>;
   dd->newPage = agg_new_page<T>;
   dd->line = agg_line<T>;
   dd->text = agg_text<T>;
@@ -326,5 +351,3 @@ void makeDevice(T* device, const char *name) {
     
   } END_SUSPEND_INTERRUPTS;
 }
-
-#endif

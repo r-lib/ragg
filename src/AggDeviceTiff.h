@@ -1,5 +1,4 @@
-#ifndef AGGDEVTIFF_INCLUDED
-#define AGGDEVTIFF_INCLUDED
+#pragma once
 
 #include "ragg.h"
 #include "AggDevice.h"
@@ -143,5 +142,3 @@ public:
 
 typedef AggDeviceTiff16<pixfmt_type_48> AggDeviceTiff16NoAlpha;
 typedef AggDeviceTiff16<pixfmt_type_64> AggDeviceTiff16Alpha;
-
-#endif

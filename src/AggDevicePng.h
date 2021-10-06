@@ -1,5 +1,4 @@
-#ifndef AGGDEVPNG_INCLUDED
-#define AGGDEVPNG_INCLUDED
+#pragma once
 
 extern "C" {
 #include <png.h>
@@ -146,5 +145,3 @@ public:
 
 typedef AggDevicePng16<pixfmt_type_48> AggDevicePng16NoAlpha;
 typedef AggDevicePng16<pixfmt_type_64> AggDevicePng16Alpha;
-
-#endif

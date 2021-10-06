@@ -1,5 +1,4 @@
-#ifndef AGGDEVJPEG_INCLUDED
-#define AGGDEVJPEG_INCLUDED
+#pragma once
 
 #include "ragg.h"
 #include "AggDevice.h"
@@ -78,5 +77,3 @@ public:
 };
 
 typedef AggDeviceJpeg<pixfmt_type_24> AggDeviceJpegNoAlpha;
-
-#endif
