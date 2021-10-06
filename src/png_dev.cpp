@@ -11,7 +11,7 @@ SEXP agg_png_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
   
   BEGIN_CPP
   if (bit8) {
-    if (R_ALPHA(bgCol) == 255) { // Opaque bg... no need for alpha channel
+    if (R_OPAQUE(bgCol)) { // Opaque bg... no need for alpha channel
       AggDevicePngNoAlpha* device = new AggDevicePngNoAlpha(
         CHAR(STRING_ELT(file, 0)), 
         INTEGER(width)[0], 
@@ -35,7 +35,7 @@ SEXP agg_png_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
       makeDevice<AggDevicePngAlpha>(device, "agg_png");
     }
   } else {
-    if (R_ALPHA(bgCol) == 255) { // Opaque bg... no need for alpha channel
+    if (R_OPAQUE(bgCol)) { // Opaque bg... no need for alpha channel
       AggDevicePng16NoAlpha* device = new AggDevicePng16NoAlpha(
         CHAR(STRING_ELT(file, 0)), 
         INTEGER(width)[0], 
@@ -69,7 +69,7 @@ SEXP agg_supertransparent_c(SEXP file, SEXP width, SEXP height, SEXP pointsize,
   int bgCol = RGBpar(bg, 0);
   
   BEGIN_CPP
-  if (R_ALPHA(bgCol) == 255) { // Opaque bg... no need for alpha channel
+  if (R_OPAQUE(bgCol)) { // Opaque bg... no need for alpha channel
     AggDevicePng16NoAlpha* device = new AggDevicePng16NoAlpha(
       CHAR(STRING_ELT(file, 0)), 
       INTEGER(width)[0], 
