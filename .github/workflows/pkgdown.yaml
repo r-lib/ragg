@@ -23,16 +23,16 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v1
         with:
-          extra-packages: 
-          - ggplot2
-          - devoid
-          - magick
-          - bench
-          - tidyr
-          - ggridges
-          - hexbin
-          - sessioninfo
-          - pkgdown
+          extra-packages: |
+            ggplot2
+            devoid
+            magick
+            bench
+            tidyr
+            ggridges
+            hexbin
+            sessioninfo
+            pkgdown
           needs: website
 
       - name: Deploy package
