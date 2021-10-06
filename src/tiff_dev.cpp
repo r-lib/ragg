@@ -14,7 +14,7 @@ SEXP agg_tiff_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
   if (bit8) {
     if (R_OPAQUE(bgCol)) { // Opaque bg... no need for alpha channel
       AggDeviceTiffNoAlpha* device = new AggDeviceTiffNoAlpha(
-        CHAR(STRING_ELT(file, 0)), 
+        Rf_translateCharUTF8((STRING_ELT(file, 0))), 
         INTEGER(width)[0], 
         INTEGER(height)[0], 
         REAL(pointsize)[0], 
@@ -27,7 +27,7 @@ SEXP agg_tiff_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
       makeDevice<AggDeviceTiffNoAlpha>(device, "agg_tiff");
     } else {
       AggDeviceTiffAlpha* device = new AggDeviceTiffAlpha(
-        CHAR(STRING_ELT(file, 0)), 
+        Rf_translateCharUTF8((STRING_ELT(file, 0))), 
         INTEGER(width)[0], 
         INTEGER(height)[0], 
         REAL(pointsize)[0], 
@@ -42,7 +42,7 @@ SEXP agg_tiff_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
   } else {
     if (R_OPAQUE(bgCol)) { // Opaque bg... no need for alpha channel
       AggDeviceTiff16NoAlpha* device = new AggDeviceTiff16NoAlpha(
-        CHAR(STRING_ELT(file, 0)), 
+        Rf_translateCharUTF8((STRING_ELT(file, 0))), 
         INTEGER(width)[0], 
         INTEGER(height)[0], 
         REAL(pointsize)[0], 
@@ -55,7 +55,7 @@ SEXP agg_tiff_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
       makeDevice<AggDeviceTiff16NoAlpha>(device, "agg_png");
     } else {
       AggDeviceTiff16Alpha* device = new AggDeviceTiff16Alpha(
-        CHAR(STRING_ELT(file, 0)), 
+        Rf_translateCharUTF8((STRING_ELT(file, 0))), 
         INTEGER(width)[0], 
         INTEGER(height)[0], 
         REAL(pointsize)[0], 

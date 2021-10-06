@@ -13,7 +13,7 @@ SEXP agg_ppm_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
   
   BEGIN_CPP
   AggDevicePpmNoAlpha* device = new AggDevicePpmNoAlpha(
-    CHAR(STRING_ELT(file, 0)), 
+    Rf_translateCharUTF8((STRING_ELT(file, 0))), 
     INTEGER(width)[0], 
     INTEGER(height)[0], 
     REAL(pointsize)[0], 

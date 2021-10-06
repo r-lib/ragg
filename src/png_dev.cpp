@@ -13,7 +13,7 @@ SEXP agg_png_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
   if (bit8) {
     if (R_OPAQUE(bgCol)) { // Opaque bg... no need for alpha channel
       AggDevicePngNoAlpha* device = new AggDevicePngNoAlpha(
-        CHAR(STRING_ELT(file, 0)), 
+        Rf_translateCharUTF8((STRING_ELT(file, 0))), 
         INTEGER(width)[0], 
         INTEGER(height)[0], 
         REAL(pointsize)[0], 
@@ -24,7 +24,7 @@ SEXP agg_png_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
       makeDevice<AggDevicePngNoAlpha>(device, "agg_png");
     } else {
       AggDevicePngAlpha* device = new AggDevicePngAlpha(
-        CHAR(STRING_ELT(file, 0)), 
+        Rf_translateCharUTF8((STRING_ELT(file, 0))), 
         INTEGER(width)[0], 
         INTEGER(height)[0], 
         REAL(pointsize)[0], 
@@ -37,7 +37,7 @@ SEXP agg_png_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
   } else {
     if (R_OPAQUE(bgCol)) { // Opaque bg... no need for alpha channel
       AggDevicePng16NoAlpha* device = new AggDevicePng16NoAlpha(
-        CHAR(STRING_ELT(file, 0)), 
+        Rf_translateCharUTF8((STRING_ELT(file, 0))), 
         INTEGER(width)[0], 
         INTEGER(height)[0], 
         REAL(pointsize)[0], 
@@ -48,7 +48,7 @@ SEXP agg_png_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
       makeDevice<AggDevicePng16NoAlpha>(device, "agg_png");
     } else {
       AggDevicePng16Alpha* device = new AggDevicePng16Alpha(
-        CHAR(STRING_ELT(file, 0)), 
+        Rf_translateCharUTF8((STRING_ELT(file, 0))), 
         INTEGER(width)[0], 
         INTEGER(height)[0], 
         REAL(pointsize)[0], 
@@ -71,7 +71,7 @@ SEXP agg_supertransparent_c(SEXP file, SEXP width, SEXP height, SEXP pointsize,
   BEGIN_CPP
   if (R_OPAQUE(bgCol)) { // Opaque bg... no need for alpha channel
     AggDevicePng16NoAlpha* device = new AggDevicePng16NoAlpha(
-      CHAR(STRING_ELT(file, 0)), 
+      Rf_translateCharUTF8((STRING_ELT(file, 0))), 
       INTEGER(width)[0], 
       INTEGER(height)[0], 
       REAL(pointsize)[0], 
@@ -83,7 +83,7 @@ SEXP agg_supertransparent_c(SEXP file, SEXP width, SEXP height, SEXP pointsize,
     makeDevice<AggDevicePng16NoAlpha>(device, "agg_png");
   } else {
     AggDevicePng16Alpha* device = new AggDevicePng16Alpha(
-      CHAR(STRING_ELT(file, 0)), 
+      Rf_translateCharUTF8((STRING_ELT(file, 0))), 
       INTEGER(width)[0], 
       INTEGER(height)[0], 
       REAL(pointsize)[0], 

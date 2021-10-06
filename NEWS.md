@@ -9,6 +9,7 @@
   to devices that doesn't support alpha (notably jpeg) (#91)
 * ragg now defers symbol font resolving to systemfonts which makes it possible 
   to register alternative symbol fonts using `register_font()` (#90)
+* Filenames in UTF-8 are now treated correctly on Windows (#87)
 
 # ragg 1.1.3
 
