@@ -50,7 +50,7 @@ Suggests:
     grid,
     graphics
 Imports: 
-    systemfonts (>= 1.0.0),
+    systemfonts (>= 1.0.2.9000),
     textshaping (>= 0.3.0)
 LinkingTo: 
     systemfonts,

@@ -10,6 +10,8 @@
 * ragg now defers symbol font resolving to systemfonts which makes it possible 
   to register alternative symbol fonts using `register_font()` (#90)
 * Filenames in UTF-8 are now treated correctly on Windows (#87)
+* Fix size selection of non-scalable fonts when the requested size is bigger 
+  than the available
 
 # ragg 1.1.3
 

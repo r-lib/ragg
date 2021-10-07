@@ -935,14 +935,22 @@ namespace agg
           if(!FT_IS_SCALABLE(m_cur_face)) {
               int best_match = 0;
               int diff = 1e6;
-              for (int i = 0; i < m_cur_face->num_fixed_sizes; ++i)
-              {
-                  int ndiff = m_cur_face->available_sizes[i].size - m_height;
-                  if(ndiff >= 0 && ndiff < diff) 
-                  {
-                      best_match = i;
-                      diff = ndiff;
-                  }
+              int largest_size = 0;
+              int largest_ind = -1;
+              bool found_match = false;
+              for (int i = 0; i < m_cur_face->num_fixed_sizes; ++i) {
+                if (m_cur_face->available_sizes[i].size > largest_size) {
+                  largest_ind = i;
+                }
+                int ndiff = m_cur_face->available_sizes[i].size - m_height;
+                if (ndiff >= 0 && ndiff < diff) {
+                  best_match = i;
+                  diff = ndiff;
+                  found_match = true;
+                }
+              }
+              if (!found_match && m_height >= largest_size) {
+                best_match = largest_ind;
               }
               FT_Select_Size(m_cur_face, best_match);
               m_height = m_cur_face->size->metrics.height;
