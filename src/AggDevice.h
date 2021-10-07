@@ -182,16 +182,19 @@ private:
     }
   }
   template<class Raster, class Path>
-  void setStroke(Raster &ras, Path &p, int lty, double lwd, R_GE_lineend lend) {
+  void setStroke(Raster &ras, Path &p, int lty, double lwd, R_GE_lineend lend, R_GE_linejoin ljoin) {
     if (lty == LTY_SOLID) {
       agg::conv_stroke<Path> pg(p);
       pg.width(lwd);
+      pg.line_join(convertLinejoin(ljoin));
+      pg.line_cap(convertLineend(lend));
       ras.add_path(pg);
     } else {
       agg::conv_dash<Path> pd(p);
       agg::conv_stroke< agg::conv_dash<Path> > pg(pd);
       makeDash(pd, lty, lwd);
       pg.width(lwd);
+      pg.line_join(convertLinejoin(ljoin));
       pg.line_cap(convertLineend(lend));
       ras.add_path(pg);
     }
@@ -225,7 +228,7 @@ private:
   template<class Raster, class Path>
   void drawShape(Raster &ras, Raster &ras_clip, Path &path, bool draw_fill, 
                  bool draw_stroke, int fill, int col, double lwd, 
-                 int lty, R_GE_lineend lend, int pattern = -1, bool evenodd = false) {
+                 int lty, R_GE_lineend lend, R_GE_linejoin ljoin = GE_ROUND_JOIN, int pattern = -1, bool evenodd = false) {
     agg::scanline_p8 slp;
     if (recording_clip != NULL) {
       recording_clip->concat_path(path);
@@ -273,7 +276,7 @@ private:
     
     if (evenodd) ras.filling_rule(agg::fill_non_zero);
     agg::scanline_u8 slu;
-    setStroke(ras, path, lty, lwd, lend);
+    setStroke(ras, path, lty, lwd, lend, ljoin);
     if (recording_mask == NULL && recording_pattern == NULL) {
       solid_renderer.color(convertColour(col));
       if (current_mask == NULL) {
@@ -722,7 +725,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawCircle(double x, double y, double 
     e1.init(x, y, r, r);
   }
   
-  drawShape(ras, ras_clip, e1, draw_fill, draw_stroke, fill, col, lwd, lty, lend, pattern);
+  drawShape(ras, ras_clip, e1, draw_fill, draw_stroke, fill, col, lwd, lty, lend, GE_ROUND_JOIN, pattern);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
@@ -752,7 +755,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRect(double x0, double y0, double 
   rect.line_to(x1, y0);
   rect.close_polygon();
   
-  drawShape(ras, ras_clip, rect, draw_fill, draw_stroke, fill, col, lwd, lty, lend, pattern);
+  drawShape(ras, ras_clip, rect, draw_fill, draw_stroke, fill, col, lwd, lty, lend, GE_ROUND_JOIN, pattern);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
@@ -779,7 +782,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPolygon(int n, double *x, double *
   }
   poly.close_polygon();
   
-  drawShape(ras, ras_clip, poly, draw_fill, draw_stroke, fill, col, lwd, lty, lend, pattern);
+  drawShape(ras, ras_clip, poly, draw_fill, draw_stroke, fill, col, lwd, lty, lend, ljoin, pattern);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
@@ -821,7 +824,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPolyline(int n, double* x, double*
     ps.line_to(x[i]  + x_trans, y[i] + y_trans);
   }
   
-  drawShape(ras, ras_clip, ps, false, true, 0, col, lwd, lty, lend);
+  drawShape(ras, ras_clip, ps, false, true, 0, col, lwd, lty, lend, ljoin);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
@@ -859,7 +862,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPath(int npoly, int* nper, double*
     path.close_polygon();
   }
   
-  drawShape(ras, ras_clip, path, draw_fill, draw_stroke, fill, col, lwd, lty, lend, pattern, evenodd);
+  drawShape(ras, ras_clip, path, draw_fill, draw_stroke, fill, col, lwd, lty, lend, ljoin, pattern, evenodd);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
