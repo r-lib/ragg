@@ -78,7 +78,10 @@ template<class T>
 void agg_polygon(int n, double *x, double *y, const pGEcontext gc,
                  pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
-  int pattern = gc->patternFill == R_NilValue ? -1 : INTEGER(gc->patternFill)[0];
+  int pattern = -1;
+#if R_GE_version >= 13
+  pattern = gc->patternFill == R_NilValue ? -1 : INTEGER(gc->patternFill)[0];
+#endif
   
   BEGIN_CPP
   device->drawPolygon(n, x, y, gc->fill, gc->col, gc->lwd, gc->lty, gc->lend, 
@@ -92,7 +95,10 @@ template<class T>
 void agg_path(double *x, double *y, int npoly, int *nper, Rboolean winding,
               const pGEcontext gc, pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
-  int pattern = gc->patternFill == R_NilValue ? -1 : INTEGER(gc->patternFill)[0];
+  int pattern = -1;
+#if R_GE_version >= 13
+  pattern = gc->patternFill == R_NilValue ? -1 : INTEGER(gc->patternFill)[0];
+#endif
   
   BEGIN_CPP
   device->drawPath(npoly, nper, x, y, gc->col, gc->fill, gc->lwd, gc->lty, 
@@ -116,7 +122,10 @@ template<class T>
 void agg_rect(double x0, double y0, double x1, double y1, const pGEcontext gc, 
               pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
-  int pattern = gc->patternFill == R_NilValue ? -1 : INTEGER(gc->patternFill)[0];
+  int pattern = -1;
+#if R_GE_version >= 13
+  pattern = gc->patternFill == R_NilValue ? -1 : INTEGER(gc->patternFill)[0];
+#endif
   
   BEGIN_CPP
   device->drawRect(x0, y0, x1, y1, gc->fill, gc->col, gc->lwd, 
@@ -130,7 +139,10 @@ template<class T>
 void agg_circle(double x, double y, double r, const pGEcontext gc, 
                 pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
-  int pattern = gc->patternFill == R_NilValue ? -1 : INTEGER(gc->patternFill)[0];
+  int pattern = -1;
+#if R_GE_version >= 13
+  pattern = gc->patternFill == R_NilValue ? -1 : INTEGER(gc->patternFill)[0];
+#endif
   
   BEGIN_CPP
   device->drawCircle(x, y, r, gc->fill, gc->col, gc->lwd, gc->lty, gc->lend, pattern);
