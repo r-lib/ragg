@@ -580,6 +580,7 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
   
   Pattern<BLNDFMT, R_COLOR>& new_pattern = pattern_cache[key];
   
+#if R_GE_version >= 13
   ExtendType extend;
   
   switch(R_GE_patternType(pattern)) {
@@ -666,6 +667,7 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
     recording_pattern = temp_pattern;
     break;
   }
+#endif
   
   return Rf_ScalarInteger(key);
 }
