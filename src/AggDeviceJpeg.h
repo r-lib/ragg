@@ -2,6 +2,7 @@
 
 #include "ragg.h"
 #include "AggDevice.h"
+#include "files.h"
 
 #define TRUE 1
 #define FALSE 0
@@ -26,7 +27,7 @@ public:
   bool savePage() {
     char buf[PATH_MAX+1];
     snprintf(buf, PATH_MAX, this->file.c_str(), this->pageno); buf[PATH_MAX] = '\0';
-    FILE* fd = fopen(buf, "wb");
+    FILE* fd = unicode_fopen(buf, "wb");
     if(!fd) return false;
     
     struct jpeg_compress_struct cinfo;
