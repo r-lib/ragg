@@ -165,13 +165,27 @@ private:
       render<agg::scanline_p8>(ras, ras_clip, sl, repeat_renderer, clip);
       break;
     }
-    default: {
+    case ExtendPad: {
       typedef agg::span_gradient<color, interpolator_type, linear_type, color_func_type> span_pad_type;
       
       span_pad_type span_pad(span_interpolator, 
                              linear, 
                              gradient, 
                              0, d2);
+      
+      typedef agg::renderer_scanline_aa<Render, span_allocator_type, span_pad_type> renderer_pad_type;
+      renderer_pad_type pad_renderer(renderer, sa, span_pad);
+      
+      render<agg::scanline_p8>(ras, ras_clip, sl, pad_renderer, clip);
+      break;
+    }
+    case ExtendNone: {
+      typedef agg::span_gradient<color, interpolator_type, linear_type, color_func_type> span_pad_type;
+      
+      span_pad_type span_pad(span_interpolator, 
+                             linear, 
+                             gradient, 
+                             0, d2, false);
       
       typedef agg::renderer_scanline_aa<Render, span_allocator_type, span_pad_type> renderer_pad_type;
       renderer_pad_type pad_renderer(renderer, sa, span_pad);
@@ -215,13 +229,27 @@ private:
       render<agg::scanline_p8>(ras, ras_clip, sl, repeat_renderer, clip);
       break;
     }
-    default: {
+    case ExtendPad: {
       typedef agg::span_gradient<color, interpolator_type, radial_type, color_func_type> span_pad_type;
       
       span_pad_type span_pad(span_interpolator, 
                              radial, 
                              gradient, 
                              0, d2);
+      
+      typedef agg::renderer_scanline_aa<Render, span_allocator_type, span_pad_type> renderer_pad_type;
+      renderer_pad_type pad_renderer(renderer, sa, span_pad);
+      
+      render<agg::scanline_p8>(ras, ras_clip, sl, pad_renderer, clip);
+      break;
+    }
+    case ExtendNone: {
+      typedef agg::span_gradient<color, interpolator_type, radial_type, color_func_type> span_pad_type;
+      
+      span_pad_type span_pad(span_interpolator, 
+                             radial, 
+                             gradient, 
+                             0, d2, false);
       
       typedef agg::renderer_scanline_aa<Render, span_allocator_type, span_pad_type> renderer_pad_type;
       renderer_pad_type pad_renderer(renderer, sa, span_pad);

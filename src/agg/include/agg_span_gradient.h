@@ -59,12 +59,13 @@ namespace agg
         span_gradient(interpolator_type& inter,
                       GradientF& gradient_function,
                       ColorF& color_function,
-                      double d1, double d2) : 
+                      double d1, double d2, bool pad = true) : 
             m_interpolator(&inter),
             m_gradient_function(&gradient_function),
             m_color_function(&color_function),
             m_d1(iround(d1 * gradient_subpixel_scale)),
-            m_d2(iround(d2 * gradient_subpixel_scale))
+            m_d2(iround(d2 * gradient_subpixel_scale)),
+            m_pad(pad)
         {}
 
         //--------------------------------------------------------------------
@@ -95,10 +96,16 @@ namespace agg
                 m_interpolator->coordinates(&x, &y);
                 int d = m_gradient_function->calculate(x >> downscale_shift, 
                                                        y >> downscale_shift, m_d2);
+                bool outside = false;
                 d = ((d - m_d1) * (int)m_color_function->size()) / dd;
-                if(d < 0) d = 0;
-                if(d >= (int)m_color_function->size()) d = m_color_function->size() - 1;
-                *span++ = (*m_color_function)[d];
+                if(d < 0) {
+                  d = 0;
+                  outside = true;
+                } else if(d >= (int)m_color_function->size()) {
+                  d = m_color_function->size() - 1;
+                  outside = true;
+                }
+                *span++ = m_pad || !outside ? (*m_color_function)[d] : color_type(0, 0, 0, 0);
                 ++(*m_interpolator);
             }
             while(--len);
@@ -110,6 +117,7 @@ namespace agg
         ColorF*            m_color_function;
         int                m_d1;
         int                m_d2;
+        bool               m_pad;
     };
 
 
