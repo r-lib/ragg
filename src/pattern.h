@@ -106,9 +106,9 @@ public:
   template<class Raster, class RasterClip, class Scanline, class Render>
   void draw(Raster &ras, RasterClip &ras_clip, Scanline &sl, Render &renderer, bool clip) {
     switch (type) {
-    case PatternLinearGradient: draw_linear(ras, ras_clip, sl, renderer, clip);
-    case PatternRadialGradient: draw_radial(ras, ras_clip, sl, renderer, clip);
-    case PatternTile: draw_tile(ras, ras_clip, sl, renderer, clip);
+    case PatternLinearGradient: draw_linear(ras, ras_clip, sl, renderer, clip); break;
+    case PatternRadialGradient: draw_radial(ras, ras_clip, sl, renderer, clip); break;
+    case PatternTile: draw_tile(ras, ras_clip, sl, renderer, clip); break;
     }
   };
   
