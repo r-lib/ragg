@@ -481,9 +481,14 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createClipPath(SEXP path, SEXP ref) {
     
     recording_clip = NULL;
   } else {
+    Rprintf("Reusing clippath\n");
     current_clip = &(clip_cache_iter->second);
   }
-  
+  clip_left = 0.0;
+  clip_right = width;
+  clip_top = 0.0;
+  clip_bottom = height;
+  renderer.reset_clipping(true);
   
   return Rf_ScalarInteger(key);
 }
