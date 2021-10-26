@@ -237,6 +237,9 @@ private:
     }
     if (current_clip != NULL) {
       ras_clip.add_path(*current_clip);
+      if (current_clip_rule_is_evenodd) {
+        ras_clip.filling_rule(agg::fill_even_odd);
+      }
     }
     
     if (pattern != -1) {
@@ -334,6 +337,7 @@ AggDevice<PIXFMT, R_COLOR, BLNDFMT>::AggDevice(const char* fp, int w, int h, dou
   clip_cache_next_id(0),
   recording_clip(NULL),
   current_clip(NULL),
+  current_clip_rule_is_evenodd(false),
   mask_cache_next_id(0),
   recording_mask(NULL),
   current_mask(NULL),
@@ -411,6 +415,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::clipRect(double x0, double y0, double 
   clip_bottom = y1;
   renderer.clip_box(x0, y0, x1, y1);
   current_clip = NULL;
+  current_clip_rule_is_evenodd = false;
 }
 
 /* These methods funnel all operations to the text_renderer. See text_renderer.h
@@ -474,6 +479,9 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createClipPath(SEXP path, SEXP ref) {
     std::unique_ptr<agg::path_storage> new_clip(new agg::path_storage());
     
     bool new_clip_is_even_odd = false;
+#if R_GE_version >= 15
+    new_clip_is_even_odd = R_GE_clipPathFillRule(path) == R_GE_evenOddRule;
+#endif
     
     // Assign container pointer to device
     recording_clip = new_clip.get();
@@ -919,6 +927,9 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRaster(unsigned int *raster, int w
   agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
   if (current_clip != NULL) {
     ras_clip.add_path(*current_clip);
+    if (current_clip_rule_is_evenodd) {
+      ras_clip.filling_rule(agg::fill_even_odd);
+    }
   }
   
   agg::path_storage rect;
@@ -972,6 +983,9 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawText(double x, double y, const cha
   agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
   if (current_clip != NULL) {
     ras_clip.add_path(*current_clip);
+    if (current_clip_rule_is_evenodd) {
+      ras_clip.filling_rule(agg::fill_even_odd);
+    }
   }
   
   agg::scanline_u8 slu;
