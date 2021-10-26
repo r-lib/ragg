@@ -503,6 +503,8 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createClipPath(SEXP path, SEXP ref) {
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::removeClipPath(SEXP ref) {
   if (Rf_isNull(ref)) {
+    clip_cache.clear();
+    clip_cache_next_id = 0;
     return;
   }
     
@@ -572,6 +574,8 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createMask(SEXP mask, SEXP ref) {
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::removeMask(SEXP ref) {
   if (Rf_isNull(ref)) {
+    mask_cache.clear();
+    mask_cache_next_id = 0;
     return;
   }
   
@@ -690,11 +694,12 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::removePattern(SEXP ref) {
   if (Rf_isNull(ref)) {
+    pattern_cache.clear();
+    pattern_cache_next_id = 0;
     return;
   }
   
   unsigned int key = INTEGER(ref)[0];
-  
   auto it = pattern_cache.find(key);
   // Check if path exists
   if (it != pattern_cache.end()) {
