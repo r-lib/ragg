@@ -16,15 +16,20 @@ public:
   typedef agg::renderer_base<PIXFMT> renbase_type;
   typedef agg::renderer_scanline_aa_solid<renbase_type> rensolid_type;
   
+  int width;
+  int height;
+  
 protected:
-  agg::rendering_buffer rbuf;
   unsigned char* buffer;
+  agg::rendering_buffer rbuf;
   pixfmt_type* pixf;
   renbase_type renderer;
   rensolid_type renderer_solid;
   
 public:
   RenderBuffer() :
+  width(0),
+  height(0),
   rbuf()
   {
     buffer = new unsigned char[0];
@@ -34,7 +39,9 @@ public:
     renderer_solid = rensolid_type(renderer);
   }
   template<class COLOR>
-  RenderBuffer(int width, int height, COLOR bg) : 
+  RenderBuffer(int _width, int _height, COLOR bg) : 
+  width(_width),
+  height(_height),
   rbuf()
   {
     buffer = new unsigned char[width * height * PIXFMT::pix_width];
@@ -51,9 +58,11 @@ public:
   }
   
   template<class COLOR>
-  void init(int width, int height, COLOR bg) {
+  void init(int _width, int _height, COLOR bg) {
     delete pixf;
     delete [] buffer;
+    width = _width;
+    height = _height;
     buffer = new unsigned char[width * height * PIXFMT::pix_width];
     rbuf.attach(buffer, width, height, width * PIXFMT::pix_width);
     pixf = new pixfmt_type(rbuf);
@@ -106,9 +115,11 @@ public:
     
   }
   
-  void init(int width, int height) {
+  void init(int _width, int _height) {
     delete pixf;
     delete [] buffer;
+    width = _width;
+    height = _height;
     buffer = new unsigned char[width * height * 4];
     rbuf.attach(buffer, width, height, width * 4);
     pixf = new pixfmt_type_32(rbuf);
