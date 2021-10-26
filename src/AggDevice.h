@@ -76,17 +76,18 @@ public:
   TextRenderer<BLNDFMT> t_ren;
   
   // Caches
-  std::unordered_map<unsigned int, agg::path_storage> clip_cache;
+  std::unordered_map<unsigned int, std::pair<std::unique_ptr<agg::path_storage>, bool> > clip_cache;
   unsigned int clip_cache_next_id;
   agg::path_storage* recording_clip;
   agg::path_storage* current_clip;
+  bool current_clip_rule_is_evenodd;
   
-  std::unordered_map<unsigned int, MaskBuffer> mask_cache;
+  std::unordered_map<unsigned int, std::unique_ptr<MaskBuffer> > mask_cache;
   unsigned int mask_cache_next_id;
   MaskBuffer* recording_mask;
   MaskBuffer* current_mask;
   
-  std::unordered_map<unsigned int, Pattern<BLNDFMT, R_COLOR> > pattern_cache;
+  std::unordered_map<unsigned int, std::unique_ptr<Pattern<BLNDFMT, R_COLOR> > > pattern_cache;
   unsigned int pattern_cache_next_id;
   RenderBuffer<BLNDFMT>* recording_pattern;
   
@@ -242,9 +243,10 @@ private:
       ras.add_path(path);
       if (evenodd) ras.filling_rule(agg::fill_even_odd);
       
-      Pattern<BLNDFMT, R_COLOR>& pat = pattern_cache[pattern];
-      
-      fillPattern(ras, ras_clip, pat);
+      auto pat_it = pattern_cache.find(pattern);
+      if (pat_it != pattern_cache.end()) {
+        fillPattern(ras, ras_clip, *(pat_it->second));
+      }
     } else if (draw_fill) {
       ras.add_path(path);
       if (evenodd) ras.filling_rule(agg::fill_even_odd);
@@ -469,20 +471,25 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createClipPath(SEXP path, SEXP ref) {
   // Check if path exists
   if (clip_cache_iter == clip_cache.end()) {
     // Path doesn't exist - create a new entry and get reference to it
-    agg::path_storage& new_clip = clip_cache[key];
+    std::unique_ptr<agg::path_storage> new_clip(new agg::path_storage());
+    
+    bool new_clip_is_even_odd = false;
     
     // Assign container pointer to device
-    recording_clip = &new_clip;
+    recording_clip = new_clip.get();
     
     SEXP R_fcall = PROTECT(Rf_lang1(path));
     Rf_eval(R_fcall, R_GlobalEnv);
     UNPROTECT(1);
     current_clip = recording_clip;
+    current_clip_rule_is_evenodd = new_clip_is_even_odd;
     
     recording_clip = NULL;
+    
+    clip_cache[key] = {std::move(new_clip), new_clip_is_even_odd};
   } else {
-    Rprintf("Reusing clippath\n");
-    current_clip = &(clip_cache_iter->second);
+    current_clip = clip_cache_iter->second.first.get();
+    current_clip_rule_is_evenodd = clip_cache_iter->second.second;
   }
   clip_left = 0.0;
   clip_right = width;
@@ -536,23 +543,27 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createMask(SEXP mask, SEXP ref) {
   // Check if path exists
   if (mask_cache_iter == mask_cache.end()) {
     // Mask doesn't exist - create a new entry and get reference to it
-    MaskBuffer& new_mask = mask_cache[key];
-    new_mask.init(width, height);
+    std::unique_ptr<MaskBuffer> new_mask(new MaskBuffer());
+    new_mask->init(width, height);
     
     // Assign container pointer to device
     MaskBuffer* temp_mask = recording_mask;
     RenderBuffer<BLNDFMT>* temp_pattern = recording_pattern;
-    recording_mask = &new_mask;
+    recording_mask = new_mask.get();
     recording_pattern = NULL;
     
     SEXP R_fcall = PROTECT(Rf_lang1(mask));
     Rf_eval(R_fcall, R_GlobalEnv);
     UNPROTECT(1);
+    
     current_mask = recording_mask;
     recording_pattern = temp_pattern;
     recording_mask = temp_mask;
+    
+    mask_cache[key] = std::move(new_mask);
+    
   } else {
-    current_mask = &(mask_cache_iter->second);
+    current_mask = mask_cache_iter->second.get();
   }
   
   return Rf_ScalarInteger(key);
@@ -583,7 +594,7 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
   int key = pattern_cache_next_id;
   pattern_cache_next_id++;
   
-  Pattern<BLNDFMT, R_COLOR>& new_pattern = pattern_cache[key];
+  std::unique_ptr<Pattern<BLNDFMT, R_COLOR> > new_pattern(new Pattern<BLNDFMT, R_COLOR>());
   
 #if R_GE_version >= 13
   ExtendType extend;
@@ -596,17 +607,17 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
     case R_GE_patternExtendReflect: extend = ExtendReflect; break;
     case R_GE_patternExtendRepeat: extend = ExtendRepeat; break;
     }
-    new_pattern.init_linear(R_GE_linearGradientX1(pattern) + x_trans,
-                            R_GE_linearGradientY1(pattern) + y_trans,
-                            R_GE_linearGradientX2(pattern) + x_trans,
-                            R_GE_linearGradientY2(pattern) + y_trans,
-                            extend);
+    new_pattern->init_linear(R_GE_linearGradientX1(pattern) + x_trans,
+                             R_GE_linearGradientY1(pattern) + y_trans,
+                             R_GE_linearGradientX2(pattern) + x_trans,
+                             R_GE_linearGradientY2(pattern) + y_trans,
+                             extend);
     for (int i = 0; i < R_GE_linearGradientNumStops(pattern); ++i) {
       R_COLOR col = convertColour(R_GE_linearGradientColour(pattern, i));
       double stop = R_GE_linearGradientStop(pattern, i);
-      new_pattern.add_color(stop, col);
+      new_pattern->add_color(stop, col);
     }
-    new_pattern.finish_gradient();
+    new_pattern->finish_gradient();
     break;
   case R_GE_radialGradientPattern:
     switch(R_GE_radialGradientExtend(pattern)) {
@@ -615,19 +626,19 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
     case R_GE_patternExtendReflect: extend = ExtendReflect; break;
     case R_GE_patternExtendRepeat: extend = ExtendRepeat; break;
     }
-    new_pattern.init_radial(R_GE_radialGradientCX1(pattern) + x_trans,
-                            R_GE_radialGradientCY1(pattern) + y_trans,
-                            R_GE_radialGradientR1(pattern),
-                            R_GE_radialGradientCX2(pattern) + x_trans,
-                            R_GE_radialGradientCY2(pattern) + y_trans,
-                            R_GE_radialGradientR2(pattern),
-                            extend);
+    new_pattern->init_radial(R_GE_radialGradientCX1(pattern) + x_trans,
+                             R_GE_radialGradientCY1(pattern) + y_trans,
+                             R_GE_radialGradientR1(pattern),
+                             R_GE_radialGradientCX2(pattern) + x_trans,
+                             R_GE_radialGradientCY2(pattern) + y_trans,
+                             R_GE_radialGradientR2(pattern),
+                             extend);
     for (int i = 0; i < R_GE_radialGradientNumStops(pattern); ++i) {
       R_COLOR col = convertColour(R_GE_radialGradientColour(pattern, i));
       double stop = R_GE_radialGradientStop(pattern, i);
-      new_pattern.add_color(stop, col);
+      new_pattern->add_color(stop, col);
     }
-    new_pattern.finish_gradient();
+    new_pattern->finish_gradient();
     break;
   case R_GE_tilingPattern:
     switch(R_GE_tilingPatternExtend(pattern)) {
@@ -636,26 +647,23 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
     case R_GE_patternExtendReflect: extend = ExtendReflect; break;
     case R_GE_patternExtendRepeat: extend = ExtendRepeat; break;
     }
-    new_pattern.init_tile(R_GE_tilingPatternWidth(pattern), 
-                          R_GE_tilingPatternHeight(pattern), 
-                          R_GE_tilingPatternX(pattern) + x_trans, 
-                          R_GE_tilingPatternY(pattern) + y_trans, 
-                          extend);
+    new_pattern->init_tile(R_GE_tilingPatternWidth(pattern), 
+                           R_GE_tilingPatternHeight(pattern), 
+                           R_GE_tilingPatternX(pattern) + x_trans, 
+                           R_GE_tilingPatternY(pattern) + y_trans, 
+                           extend);
     
-    double temp_x_trans = x_trans;
-    double temp_y_trans = y_trans;
     MaskBuffer* temp_mask = recording_mask;
     RenderBuffer<BLNDFMT>* temp_pattern = recording_pattern;
     
-    x_trans = new_pattern.x_trans;
-    y_trans = new_pattern.y_trans;
+    x_trans += new_pattern->x_trans;
+    y_trans += new_pattern->y_trans;
     recording_mask = NULL;
-    recording_pattern = &(new_pattern.buffer);
-    
     clip_left += x_trans;
     clip_right += x_trans;
     clip_top += y_trans;
     clip_bottom += y_trans;
+    recording_pattern = &(new_pattern->buffer);
     
     SEXP R_fcall = PROTECT(Rf_lang1(R_GE_tilingPatternFunction(pattern)));
     Rf_eval(R_fcall, R_GlobalEnv);
@@ -666,13 +674,15 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
     clip_top -= y_trans;
     clip_bottom -= y_trans;
     
-    x_trans = temp_x_trans;
-    y_trans = temp_y_trans;
+    x_trans -= new_pattern->x_trans;
+    y_trans -= new_pattern->y_trans;
     recording_mask = temp_mask;
     recording_pattern = temp_pattern;
     break;
   }
 #endif
+  
+  pattern_cache[key] = std::move(new_pattern);
   
   return Rf_ScalarInteger(key);
 }
