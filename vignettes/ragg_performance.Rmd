@@ -489,6 +489,116 @@ Because of this, ragg has chosen to simply always use anti-aliasing. At worst,
 it makes it only as performant as the cairo counterpart, at best it is faster 
 and with a higher quality output.
 
+## Advanced features
+The graphic engine has lately seen a lot of exciting development, with support 
+for more advanced rendering features such as gradients, pattern fills, arbitrary
+clipping paths etc. Support for this is depending on the device and is mainly
+supported by Cairo and PDF in the base installation (Xlib will do nothing and
+thus appear to be very fast). ragg will strive to keep up with the new features 
+and though it may lack behind a bit as development takes time.
+
+Most of these new features are only available through grid so we can't avoid a 
+bit of overhead when measuring the performance of these.
+
+### Clipping paths
+Clipping paths allows you to define an arbitrary clipping region based on any
+complex grob you may define. Passing this grob to the clip argument of the 
+viewport will use the grob as a clipping region.
+
+```{r, message=FALSE, eval=getRversion() >= "4.1.0"}
+library(grid)
+clip <- pointsGrob(runif(500), runif(500), default.units = 'npc')
+segments <- segmentsGrob(runif(100), runif(100), runif(100), runif(100), 
+                         vp = viewport(clip = clip))
+
+void_dev()
+plot.new()
+b <- system.time(grid.draw(segments))
+invisible(dev.off())
+res <- all_render_bench(grid.draw(segments))
+plot_bench(res, 'Complex clip path performance', b)
+```
+
+We can see that ragg has fares much better than cairo when it comes to rendering
+with arbitrary clipping paths. I can't comment on how the cairo implementation 
+works, but ragg is able to perform the clipping at the rasterisation level 
+rather than performing boolean operations on the geometries which makes it very
+efficient as it basically surmounts to rasterising the clipping path in those 
+areas where the main graphic is getting rendered.
+
+### Masks
+Masks allows you to define the alpha level of a layer based on information from
+another layer - as such it can perform the same things as clipping paths and 
+then some but the underlying idea is very different - it also requires you to 
+render to a whole new canvas when creating the mask so it has some overhead not
+present in clipping paths depending on the resolution of the device.
+
+```{r, message=FALSE, eval=getRversion() >= "4.1.0"}
+mask <- pointsGrob(runif(2000), runif(2000), default.units = 'npc', pch = 16, 
+                   gp = gpar(col = '#00000077'))
+segments <- segmentsGrob(runif(100), runif(100), runif(100), runif(100), 
+                         vp = viewport(mask = mask))
+
+void_dev()
+plot.new()
+b <- system.time(grid.draw(segments))
+invisible(dev.off())
+res <- all_render_bench(grid.draw(segments))
+plot_bench(res, 'Complex mask performance', b)
+```
+
+We see that, at least at the resolutions these tests are performed at, alpha 
+masks are much faster than clipping paths for both ragg and cairo - ragg is 
+still quite a bit faster, but cairos mask performance is faster than raggs 
+clipping path performance.
+
+### Gradients
+Gradients allow you to produce a smooth transition between a range of colours,
+either along a line or in a radial manner.
+
+```{r, message=FALSE, eval=getRversion() >= "4.1.0"}
+circles <- circleGrob(runif(2000), runif(2000), r = unit(0.5, 'char'), 
+                      gp = gpar(fill = linearGradient(c('black', 'transparent', 'blue'))))
+
+void_dev()
+plot.new()
+b <- system.time(grid.draw(circles))
+invisible(dev.off())
+res <- all_render_bench(grid.draw(circles))
+plot_bench(res, 'Gradient performance', b)
+```
+Gradients are performing about on par between ragg and cairo. Beware that gradients
+cannot be defined in a vectorised manner so all the elements in your grob will 
+have to share the same gradient. This means that drawing 2000 circles with 
+separate gradients for each will be much slower than drawing them with a shared
+gradient as you have to create and draw a grob for each.
+
+### Patterns
+Patterns are another fill type alongside gradients. They can take any grob which 
+will be rendered to a separate canvas and then used as fill with different 
+extend modes (repeat, reflect, pad, etc.)
+
+```{r, message=FALSE, eval=getRversion() >= "4.1.0"}
+segments <- segmentsGrob(runif(1000), runif(1000), runif(1000), runif(1000), 
+                         gp = gpar(col = sample(palette(), 1000, TRUE)))
+pat <- pattern(segments, width = 0.1, height = 0.1, extend = 'reflect')
+
+circles <- circleGrob(runif(1000), runif(1000), r = unit(1, 'char'), 
+                      gp = gpar(fill = pat))
+
+void_dev()
+plot.new()
+b <- system.time(grid.draw(circles))
+invisible(dev.off())
+res <- all_render_bench(grid.draw(circles))
+plot_bench(res, 'Pattern performance', b)
+```
+
+We see once again a clear performance upper-hand with ragg. The same caveats 
+that apply to gradients are there for patterns unfortunately so using multiple
+different patterns will have considerable overheads as multiple grobs needs to 
+be created.
+
 ## Session info
 ```{r}
 sessioninfo::session_info()
