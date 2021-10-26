@@ -680,6 +680,7 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
     double temp_clip_bottom = clip_bottom;
     
     MaskBuffer* temp_mask = recording_mask;
+    MaskBuffer* temp_current_mask = current_mask;
     RenderBuffer<BLNDFMT>* temp_pattern = recording_pattern;
     
     x_trans += new_pattern->x_trans;
@@ -690,6 +691,7 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
     clip_bottom = R_GE_tilingPatternHeight(pattern);
     if (clip_bottom < 0) clip_bottom = -clip_bottom;
     recording_mask = NULL;
+    current_mask = NULL;
     recording_pattern = &(new_pattern->buffer);
     
     SEXP R_fcall = PROTECT(Rf_lang1(R_GE_tilingPatternFunction(pattern)));
@@ -704,6 +706,7 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
     x_trans -= new_pattern->x_trans;
     y_trans -= new_pattern->y_trans;
     recording_mask = temp_mask;
+    current_mask = temp_current_mask;
     recording_pattern = temp_pattern;
     break;
   }
