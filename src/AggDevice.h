@@ -25,6 +25,8 @@
 
 #include "util/agg_color_conv.h"
 
+#include <memory>
+
 static const int MAX_CELLS = 1 << 20;
 
 /* Base class for graphic device interface to AGG. See AggDevice.cpp for 
