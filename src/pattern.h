@@ -31,8 +31,8 @@ public:
   typedef agg::gradient_radial_focus radial_type;
   typedef agg::span_interpolator_linear<> interpolator_type;
   typedef agg::span_allocator<color> span_allocator_type;
-  typedef agg::gradient_lut< agg::color_interpolator<color> > color_func_type;
-  typedef agg::gradient_lut< agg::color_interpolator<agg::rgba8> > color_func_type_mask;
+  typedef agg::gradient_lut< agg::color_interpolator<color>, 512 > color_func_type;
+  typedef agg::gradient_lut< agg::color_interpolator<agg::rgba8>, 512 > color_func_type_mask;
   
   PatternType type;
   ExtendType extend;
