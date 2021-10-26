@@ -409,11 +409,20 @@ bool AggDevice<PIXFMT, R_COLOR, BLNDFMT>::savePage() {
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::clipRect(double x0, double y0, double x1, 
                                           double y1) {
-  clip_left = x0;
-  clip_right = x1;
-  clip_top = y0;
-  clip_bottom = y1;
-  renderer.clip_box(x0, y0, x1, y1);
+  if (recording_pattern != NULL && x0 == 0.0 && y0 == height && x1 == width && y1 == 0.0) {
+    // resetting clipping while recording a pattern
+    // I hate this heuristic
+    clip_left = 0.0;
+    clip_right = recording_pattern->width;
+    clip_top = 0.0;
+    clip_bottom = recording_pattern->height;
+    return;
+  }
+  clip_left = x0 + x_trans;
+  clip_right = x1 + x_trans;
+  clip_top = y0 + y_trans;
+  clip_bottom = y1 + y_trans;
+  renderer.clip_box(clip_left, clip_top, clip_right, clip_bottom);
   current_clip = NULL;
   current_clip_rule_is_evenodd = false;
 }
@@ -665,26 +674,32 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
                            R_GE_tilingPatternY(pattern) + y_trans, 
                            extend);
     
+    double temp_clip_left = clip_left;
+    double temp_clip_right = clip_right;
+    double temp_clip_top = clip_top;
+    double temp_clip_bottom = clip_bottom;
+    
     MaskBuffer* temp_mask = recording_mask;
     RenderBuffer<BLNDFMT>* temp_pattern = recording_pattern;
     
     x_trans += new_pattern->x_trans;
     y_trans += new_pattern->y_trans;
+    clip_left = 0.0;
+    clip_right = R_GE_tilingPatternWidth(pattern);
+    clip_top = 0.0;
+    clip_bottom = R_GE_tilingPatternHeight(pattern);
+    if (clip_bottom < 0) clip_bottom = -clip_bottom;
     recording_mask = NULL;
-    clip_left += x_trans;
-    clip_right += x_trans;
-    clip_top += y_trans;
-    clip_bottom += y_trans;
     recording_pattern = &(new_pattern->buffer);
     
     SEXP R_fcall = PROTECT(Rf_lang1(R_GE_tilingPatternFunction(pattern)));
     Rf_eval(R_fcall, R_GlobalEnv);
     UNPROTECT(1);
     
-    clip_left -= x_trans;
-    clip_right -= x_trans;
-    clip_top -= y_trans;
-    clip_bottom -= y_trans;
+    clip_left = temp_clip_left;
+    clip_right = temp_clip_right;
+    clip_top = temp_clip_top;
+    clip_bottom = temp_clip_bottom;
     
     x_trans -= new_pattern->x_trans;
     y_trans -= new_pattern->y_trans;
