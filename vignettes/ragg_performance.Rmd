@@ -493,9 +493,10 @@ and with a higher quality output.
 The graphic engine has lately seen a lot of exciting development, with support 
 for more advanced rendering features such as gradients, pattern fills, arbitrary
 clipping paths etc. Support for this is depending on the device and is mainly
-supported by Cairo and PDF in the base installation (Xlib will do nothing and
-thus appear to be very fast). ragg will strive to keep up with the new features 
-and though it may lack behind a bit as development takes time.
+supported by Cairo and PDF in the base installation
+`r if (has_xlib) ' (Xlib will do nothing and thus appear to be very fast)' else ''`. 
+ragg will strive to keep up with the new features though it may lack behind a 
+bit as development takes time.
 
 Most of these new features are only available through grid so we can't avoid a 
 bit of overhead when measuring the performance of these.
@@ -519,7 +520,7 @@ res <- all_render_bench(grid.draw(segments))
 plot_bench(res, 'Complex clip path performance', b)
 ```
 
-We can see that ragg has fares much better than cairo when it comes to rendering
+We can see that ragg fares much better than cairo when it comes to rendering
 with arbitrary clipping paths. I can't comment on how the cairo implementation 
 works, but ragg is able to perform the clipping at the rasterisation level 
 rather than performing boolean operations on the geometries which makes it very
