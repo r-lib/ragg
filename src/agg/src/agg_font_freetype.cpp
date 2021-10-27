@@ -935,7 +935,7 @@ namespace agg
           if(!FT_IS_SCALABLE(m_cur_face)) {
               int best_match = 0;
               int diff = 1e6;
-              int largest_size = 0;
+              unsigned largest_size = 0;
               int largest_ind = -1;
               bool found_match = false;
               for (int i = 0; i < m_cur_face->num_fixed_sizes; ++i) {
