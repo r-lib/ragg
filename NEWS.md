@@ -1,4 +1,4 @@
-# ragg (development version)
+# ragg 1.2.0
 
 * Add support for new graphic engine features:
   - Arbitrary clipping paths
