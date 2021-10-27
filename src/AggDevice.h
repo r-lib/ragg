@@ -620,7 +620,7 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
   std::unique_ptr<Pattern<BLNDFMT, R_COLOR> > new_pattern(new Pattern<BLNDFMT, R_COLOR>());
   
 #if R_GE_version >= 13
-  ExtendType extend;
+  ExtendType extend = ExtendNone;
   
   switch(R_GE_patternType(pattern)) {
   case R_GE_linearGradientPattern: 
