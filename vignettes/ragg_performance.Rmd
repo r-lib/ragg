@@ -493,7 +493,8 @@ and with a higher quality output.
 The graphic engine has lately seen a lot of exciting development, with support 
 for more advanced rendering features such as gradients, pattern fills, arbitrary
 clipping paths etc. Support for this is depending on the device and is mainly
-supported by Cairo and PDF in the base installation`r if (has_xlib) ' (Xlib will do nothing and thus appear to be very fast)' else ''`. 
+supported by Cairo and PDF in the base 
+installation`r if (has_xlib) ' (Xlib will do nothing and thus appear to be very fast)' else ''`. 
 ragg will strive to keep up with the new features though it may lack behind a 
 bit as development takes time.
 
