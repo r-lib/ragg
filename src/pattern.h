@@ -55,7 +55,7 @@ public:
     gradient.remove_all();
     gradient_mask.remove_all();
     mtx.reset();
-  };
+  }
   
   void init_linear(double x1, double y1, double x2, double y2, ExtendType e) {
     type = PatternLinearGradient;
@@ -66,7 +66,7 @@ public:
     mtx *= agg::trans_affine_rotation(atan2(dy, dx));
     mtx *= agg::trans_affine_translation(x1, y1);
     mtx.invert();
-  };
+  }
   
   void init_radial(double x1, double y1, double r1, double x2, double y2, double r2, ExtendType e) {
     type = PatternRadialGradient;
@@ -75,7 +75,7 @@ public:
     mtx *= agg::trans_affine_translation(x2, y2);
     mtx.invert();
     radial.init(r2, x1 - x2, y1 - y2);
-  };
+  }
   
   void init_tile(int w, int h, double x, double y, ExtendType e) {
     type = PatternTile;
@@ -88,20 +88,21 @@ public:
     mtx.invert();
     x_trans = -x;
     y_trans = -y + height;
-  };
+  }
   
   bool is_gradient() {
     return type != PatternTile;
-  };
+  }
   
   void add_color(double at, color &col) {
     gradient.add_color(at, col);
     gradient_mask.add_color(at, col);
-  };
+  }
+  
   void finish_gradient() {
     gradient.build_lut();
     gradient_mask.build_lut();
-  };
+  }
   
   template<class Raster, class RasterClip, class Scanline, class Render>
   void draw(Raster &ras, RasterClip &ras_clip, Scanline &sl, Render &renderer, bool clip) {
@@ -110,7 +111,7 @@ public:
     case PatternRadialGradient: draw_radial(ras, ras_clip, sl, renderer, clip); break;
     case PatternTile: draw_tile(ras, ras_clip, sl, renderer, clip); break;
     }
-  };
+  }
   
   Pattern<pixfmt_type_32, agg::rgba8> convert_for_mask() {
     Pattern<pixfmt_type_32, agg::rgba8> new_pattern;
@@ -128,7 +129,7 @@ public:
     new_pattern.mtx = mtx;
     
     return new_pattern;
-  };
+  }
   
 private:
   template<class Raster, class RasterClip, class Scanline, class Render>
@@ -194,7 +195,8 @@ private:
       break;
     }
     }
-  };
+  }
+  
   template<class Raster, class RasterClip, class Scanline, class Render>
   void draw_radial(Raster &ras, RasterClip &ras_clip, Scanline &sl, Render &renderer, bool clip) {
     interpolator_type span_interpolator(mtx);
@@ -258,7 +260,8 @@ private:
       break;
     }
     }
-  };
+  }
+  
   template<class Raster, class RasterClip, class Scanline, class Render>
   void draw_tile(Raster &ras, RasterClip &ras_clip, Scanline &sl, Render &renderer, bool clip) {
     interpolator_type span_interpolator(mtx);
@@ -303,5 +306,5 @@ private:
       break;
     }
     }
-  };
+  }
 };
