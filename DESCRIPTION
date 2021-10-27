@@ -50,10 +50,8 @@ Suggests:
     grid,
     graphics
 Imports: 
-    systemfonts (>= 1.0.2.9000),
+    systemfonts (>= 1.0.3),
     textshaping (>= 0.3.0)
 LinkingTo: 
     systemfonts,
     textshaping
-Remotes:
-    r-lib/systemfonts
