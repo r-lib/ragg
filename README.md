@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![Codecov test
-coverage](https://codecov.io/gh/r-lib/ragg/branch/master/graph/badge.svg)](https://app.codecov.io/gh/r-lib/ragg?branch=master)
+coverage](https://codecov.io/gh/r-lib/ragg/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/ragg?branch=main)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/ragg)](https://cran.r-project.org/package=ragg)
 [![Lifecycle:
