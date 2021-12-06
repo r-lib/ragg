@@ -1,3 +1,8 @@
+# ragg (development version)
+
+* Fix bug that caused R to crash when writing tiff files with transparent 
+  background (#97)
+
 # ragg 1.2.0
 
 * Add support for new graphic engine features:
