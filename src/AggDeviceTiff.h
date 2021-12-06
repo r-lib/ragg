@@ -32,7 +32,8 @@ public:
     TIFFSetField(out, TIFFTAG_IMAGELENGTH, this->height);
     TIFFSetField(out, TIFFTAG_SAMPLESPERPIXEL, PIXFMT::num_components);
     if (PIXFMT::num_components == 4) {
-      TIFFSetField(out, TIFFTAG_EXTRASAMPLES, EXTRASAMPLE_ASSOCALPHA);
+      short extras[] = {EXTRASAMPLE_ASSOCALPHA};
+      TIFFSetField(out, TIFFTAG_EXTRASAMPLES, 1, extras);
     }
     TIFFSetField(out, TIFFTAG_BITSPERSAMPLE, 8);
     TIFFSetField(out, TIFFTAG_ORIENTATION, ORIENTATION_TOPLEFT);
