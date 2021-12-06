@@ -798,6 +798,12 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRect(double x0, double y0, double 
   x1 += x_trans;
   y0 += y_trans;
   y1 += y_trans;
+  if (draw_fill && !draw_stroke) {
+    x0 = std::round(x0);
+    x1 = std::round(x1);
+    y0 = std::round(y0);
+    y1 = std::round(y1);
+  }
   rect.remove_all();
   rect.move_to(x0, y0);
   rect.line_to(x0, y1);
