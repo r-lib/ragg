@@ -35,6 +35,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -47,7 +49,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">ragg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -86,13 +88,14 @@
   <ul class="dropdown-menu" role="menu">
 <li class="dropdown-header">Release notes</li>
     <li>
-      <a href="https://www.tidyverse.org/blog/2021/02/modern-text-features/">Version 1.1.0</a>
+      <a href="https://www.tidyverse.org/blog/2021/02/modern-text-features/" class="external-link">Version 1.1.0</a>
     </li>
     <li>
-      <a href="https://www.tidyverse.org/articles/2019/07/ragg-0-1-0/">Version 0.1.0</a>
+      <a href="https://www.tidyverse.org/articles/2019/07/ragg-0-1-0/" class="external-link">Version 0.1.0</a>
     </li>
     <li class="divider">
-    <li>
+    </li>
+<li>
       <a href="news/index.html">Change log</a>
     </li>
   </ul>
@@ -100,7 +103,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/r-lib/ragg">
+  <a href="https://github.com/r-lib/ragg" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -117,24 +120,24 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="ragg-" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#ragg-" class="anchor"></a>ragg <a href="https://ragg.r-lib.org"><img src="reference/figures/logo.png" align="right" height="131.5"></a>
+<div class="section level1">
+<div class="page-header"><h1 id="ragg-">ragg <a href="https://ragg.r-lib.org"><img src="reference/figures/logo.png" align="right" height="131.5"></a>
+<a class="anchor" aria-label="anchor" href="#ragg-"></a>
 </h1></div>
 <!-- badges: start -->
 
 <p>This package provides graphic devices for R based on the AGG library developed by the late Maxim Shemanarev. AGG provides both higher performance and higher quality than the standard raster devices provided by grDevices. For a comparison with the default devices, see the <a href="https://ragg.r-lib.org/articles/ragg_performance.html">performance</a> and <a href="https://ragg.r-lib.org/articles/ragg_quality.html">quality</a> vignettes.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>The package can be installed from CRAN with <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages('ragg')</a></code> or, if the development version is desired, directly from github:</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>The package can be installed from CRAN with <code>install.packages('ragg')</code> or, if the development version is desired, directly from github:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages('devtools')</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">'r-lib/ragg'</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="use" class="section level2">
-<h2 class="hasAnchor">
-<a href="#use" class="anchor"></a>Use</h2>
+<div class="section level2">
+<h2 id="use">Use<a class="anchor" aria-label="anchor" href="#use"></a>
+</h2>
 <p>ragg provides drop-in replacements for the png, jpeg, and tiff graphic devices provided by default from the grDevices packages and can both produce png, jpeg and tiff files. Notable features, that sets itself apart from the build-in devices, includes:</p>
 <ul>
 <li>Faster (up to 40% faster than anti-aliased cairo device)</li>
@@ -145,52 +148,54 @@
 <li>Support 16-bit output</li>
 <li>System independent rendering (output from Mac, Windows, and Linux should be identical)</li>
 </ul>
-<p>You can use it like any other device. The main functions are <code><a href="reference/agg_png.html">agg_png()</a></code>, <code><a href="reference/agg_jpeg.html">agg_jpeg()</a></code> and <code><a href="reference/agg_tiff.html">agg_tiff()</a></code>, all of which have arguments that closely match those of the <code><a href="https://rdrr.io/r/grDevices/png.html">png()</a></code>, <code><a href="https://rdrr.io/r/grDevices/png.html">jpeg()</a></code> and <code><a href="https://rdrr.io/r/grDevices/png.html">tiff()</a></code> functions, so switching over should be easy.</p>
+<p>You can use it like any other device. The main functions are <code><a href="reference/agg_png.html">agg_png()</a></code>, <code><a href="reference/agg_jpeg.html">agg_jpeg()</a></code> and <code><a href="reference/agg_tiff.html">agg_tiff()</a></code>, all of which have arguments that closely match those of the <code><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">png()</a></code>, <code><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">jpeg()</a></code> and <code><a href="https://rdrr.io/r/grDevices/png.html" class="external-link">tiff()</a></code> functions, so switching over should be easy.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ragg.r-lib.org">ragg</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ragg.r-lib.org">ragg</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
 
-<span class="va">file</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
+<span class="va">file</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
 
-<span class="va">on_linux</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html">tolower</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">'sysname'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">==</span> <span class="st">'linux'</span>
+<span class="va">on_linux</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/chartr.html" class="external-link">tolower</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html" class="external-link">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">'sysname'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">==</span> <span class="st">'linux'</span>
 <span class="va">fancy_font</span> <span class="op">&lt;-</span> <span class="kw">if</span> <span class="op">(</span><span class="va">on_linux</span><span class="op">)</span> <span class="st">'URW Chancery L'</span> <span class="kw">else</span> <span class="st">'Papyrus'</span>
 
 <span class="fu"><a href="reference/agg_png.html">agg_png</a></span><span class="op">(</span><span class="va">file</span>, width <span class="op">=</span> <span class="fl">1000</span>, height <span class="op">=</span> <span class="fl">500</span>, res <span class="op">=</span> <span class="fl">144</span><span class="op">)</span>
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">disp</span>, colour <span class="op">=</span> <span class="va">hp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">'System fonts — Oh My! 😱'</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>family <span class="op">=</span> <span class="va">fancy_font</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="va">disp</span>, colour <span class="op">=</span> <span class="va">hp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">'System fonts — Oh My! 😱'</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>family <span class="op">=</span> <span class="va">fancy_font</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%"></p>
 <p>Further, it provides an <code><a href="reference/agg_capture.html">agg_capture()</a></code> device that lets you access the device buffer directly from your R session.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cap</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/agg_capture.html">agg_capture</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">1000</span>, height <span class="op">=</span> <span class="fl">500</span>, res <span class="op">=</span> <span class="fl">144</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>
 
 <span class="va">scatter</span> <span class="op">&lt;-</span> <span class="fu">cap</span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># Remove margins from raster plotting</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mai <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/as.raster.html">as.raster</a></span><span class="op">(</span><span class="va">scatter</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mai <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/as.raster.html" class="external-link">as.raster</a></span><span class="op">(</span><span class="va">scatter</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="70%" style="margin-left: 15%;"></p>
-<div id="use-ragg-with-knitr" class="section level3">
-<h3 class="hasAnchor">
-<a href="#use-ragg-with-knitr" class="anchor"></a>Use ragg with knitr</h3>
+<div class="section level3">
+<h3 id="use-ragg-with-knitr">Use ragg with knitr<a class="anchor" aria-label="anchor" href="#use-ragg-with-knitr"></a>
+</h3>
 <p>knitr supports png output from ragg by setting <code>dev = "ragg_png"</code> in the chunk settings or globally with <code>knitr::opts_chunk$set(dev = "ragg_png")</code>.</p>
 </div>
-<div id="use-ragg-in-rstudio" class="section level3">
-<h3 class="hasAnchor">
-<a href="#use-ragg-in-rstudio" class="anchor"></a>Use ragg in RStudio</h3>
+<div class="section level3">
+<h3 id="use-ragg-in-rstudio">Use ragg in RStudio<a class="anchor" aria-label="anchor" href="#use-ragg-in-rstudio"></a>
+</h3>
 <p>ragg can be used as the graphic back-end to the RStudio device (for RStudio &gt;= 1.4) by choosing <em>AGG</em> as the backend in the graphics pane in general options (see screenshot)</p>
-<p><img src="https://i.imgur.com/4XgiPWy.png" alt="Setting ragg as backend in RStudio"></p>
+<div class="figure">
+<img src="https://i.imgur.com/4XgiPWy.png" alt=""><p class="caption">Setting ragg as backend in RStudio</p>
 </div>
 </div>
-<div id="code-of-conduct" class="section level2">
-<h2 class="hasAnchor">
-<a href="#code-of-conduct" class="anchor"></a>Code of Conduct</h2>
+</div>
+<div class="section level2">
+<h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
+</h2>
 <p>Please note that the ‘ragg’ project is released with a <a href="https://ragg.r-lib.org/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 </div>
@@ -198,59 +203,68 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=ragg">https://​cloud.r-project.org/​package=ragg</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/r-lib/ragg/">https://​github.com/​r-lib/​ragg/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/r-lib/ragg/issues">https://​github.com/​r-lib/​ragg/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=ragg" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/r-lib/ragg/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/r-lib/ragg/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+
 <div class="community">
-<h2>Community</h2>
+<h2 data-toc-skip>Community</h2>
 <ul class="list-unstyled">
 <li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
 </ul>
 </div>
-<div class="developers">
-<h2>Developers</h2>
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li>
-<a href="https://data-imaginist.com">Thomas Lin Pedersen</a> <br><small class="roles"> Maintainer, author </small> <a href="https://orcid.org/0000-0002-5147-4711" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Maxim Shemanarev <br><small class="roles"> Author, copyright holder </small>  <br><small>(Author of AGG)</small>
-</li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="authors.html#citation">Citing ragg</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li><a href="https://codecov.io/gh/r-lib/ragg?branch=master"><img src="https://codecov.io/gh/r-lib/ragg/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://cran.r-project.org/package=ragg"><img src="https://www.r-pkg.org/badges/version/ragg" alt="CRAN status"></a></li>
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></li>
-<li><a href="https://github.com/r-lib/ragg/actions"><img src="https://github.com/r-lib/ragg/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li>
+<a href="https://data-imaginist.com" class="external-link">Thomas Lin Pedersen</a> <br><small class="roles"> Maintainer, author </small> <a href="https://orcid.org/0000-0002-5147-4711" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Maxim Shemanarev <br><small class="roles"> Author, copyright holder </small>  </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://app.codecov.io/gh/r-lib/ragg?branch=main" class="external-link"><img src="https://codecov.io/gh/r-lib/ragg/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://cran.r-project.org/package=ragg" class="external-link"><img src="https://www.r-pkg.org/badges/version/ragg" alt="CRAN status"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></li>
+<li><a href="https://github.com/r-lib/ragg/actions" class="external-link"><img src="https://github.com/r-lib/ragg/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+</ul>
 </div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://data-imaginist.com">Thomas Lin Pedersen</a>, Maxim Shemanarev.</p>
+  <p></p>
+<p>Developed by <a href="https://data-imaginist.com" class="external-link">Thomas Lin Pedersen</a>, Maxim Shemanarev.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -258,6 +272,8 @@
 
   
 
+
+  
 
   </body>
 </html>

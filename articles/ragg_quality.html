@@ -32,6 +32,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -44,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ragg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -83,13 +85,14 @@
   <ul class="dropdown-menu" role="menu">
 <li class="dropdown-header">Release notes</li>
     <li>
-      <a href="https://www.tidyverse.org/blog/2021/02/modern-text-features/">Version 1.1.0</a>
+      <a href="https://www.tidyverse.org/blog/2021/02/modern-text-features/" class="external-link">Version 1.1.0</a>
     </li>
     <li>
-      <a href="https://www.tidyverse.org/articles/2019/07/ragg-0-1-0/">Version 0.1.0</a>
+      <a href="https://www.tidyverse.org/articles/2019/07/ragg-0-1-0/" class="external-link">Version 0.1.0</a>
     </li>
     <li class="divider">
-    <li>
+    </li>
+<li>
       <a href="../news/index.html">Change log</a>
     </li>
   </ul>
@@ -97,7 +100,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/r-lib/ragg">
+  <a href="https://github.com/r-lib/ragg" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -118,7 +121,7 @@
       <h1 data-toc-skip>Ragg Quality</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/r-lib/ragg/blob/master/vignettes/ragg_quality.Rmd"><code>vignettes/ragg_quality.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-lib/ragg/blob/HEAD/vignettes/ragg_quality.Rmd" class="external-link"><code>vignettes/ragg_quality.Rmd</code></a></small>
       <div class="hidden name"><code>ragg_quality.Rmd</code></div>
 
     </div>
@@ -126,298 +129,307 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ragg.r-lib.org">ragg</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/magick/">magick</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ragg.r-lib.org">ragg</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/magick/" class="external-link">magick</a></span><span class="op">)</span>
 <span class="va">img_zoom</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">path</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">img</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/editing.html">image_read</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span>
-  <span class="va">img</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/transform.html">image_crop</a></span><span class="op">(</span><span class="va">img</span>, <span class="st">'300x150+150+75'</span><span class="op">)</span>
-  <span class="va">img</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/transform.html">image_sample</a></span><span class="op">(</span><span class="va">img</span>, <span class="st">'600x300'</span><span class="op">)</span>
+  <span class="va">img</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/editing.html" class="external-link">image_read</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span>
+  <span class="va">img</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/transform.html" class="external-link">image_crop</a></span><span class="op">(</span><span class="va">img</span>, <span class="st">'300x150+150+75'</span><span class="op">)</span>
+  <span class="va">img</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/magick/reference/transform.html" class="external-link">image_sample</a></span><span class="op">(</span><span class="va">img</span>, <span class="st">'600x300'</span><span class="op">)</span>
   <span class="va">img</span>
 <span class="op">}</span></code></pre></div>
 <p>This vignette tries to compare the quality of the output of ragg, with that of cairo and, if the system supports it, Xlib (Xlib is unix only). As quality is, to a certain extend, subjective, the vignette will be short on conclusions and filled with examples.</p>
 <blockquote>
 <p>The present version of this vignette has been compiled on a system without the X11 device. The benchmarkings will thus omit this device, though the text will still refer to it.</p>
 </blockquote>
-<div id="scope" class="section level2">
-<h2 class="hasAnchor">
-<a href="#scope" class="anchor"></a>Scope</h2>
+<div class="section level2">
+<h2 id="scope">Scope<a class="anchor" aria-label="anchor" href="#scope"></a>
+</h2>
 <p>There are mainly two areas of high importance when discussing graphic device quality: Shape rendering (fill and stroke) and text rendering. Both of these are highly dependent on the quality of anti-aliasing if any. Apart from that we will also look into alpha blending and raster interpolation.</p>
 </div>
-<div id="shape-rendering" class="section level2">
-<h2 class="hasAnchor">
-<a href="#shape-rendering" class="anchor"></a>Shape rendering</h2>
+<div class="section level2">
+<h2 id="shape-rendering">Shape rendering<a class="anchor" aria-label="anchor" href="#shape-rendering"></a>
+</h2>
 <p>The examples here are relevant for rendering of all different types of shapes, be it lines or polygons. Lines obviously don’t have fill, so only the stroke rendering will have relevance here. We chose to use a circle for this as it provides a nice sampling of uneven edges.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">circle_quality</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">device</span>, <span class="va">name</span>, <span class="va">file</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/device.html">device</a></span><span class="op">(</span><span class="va">file</span>, width <span class="op">=</span> <span class="fl">600</span>, height <span class="op">=</span> <span class="fl">300</span>, <span class="va">...</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.circle.html">grid.circle</a></span><span class="op">(</span>
-    x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">0.75</span><span class="op">)</span>, 
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/device.html" class="external-link">device</a></span><span class="op">(</span><span class="va">file</span>, width <span class="op">=</span> <span class="fl">600</span>, height <span class="op">=</span> <span class="fl">300</span>, <span class="va">...</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.circle.html" class="external-link">grid.circle</a></span><span class="op">(</span>
+    x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">0.75</span><span class="op">)</span>, 
     r <span class="op">=</span> <span class="fl">0.4</span>, 
-    gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span><span class="op">(</span>col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'black'</span>, <span class="cn">NA</span><span class="op">)</span>, fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">'black'</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+    gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'black'</span>, <span class="cn">NA</span><span class="op">)</span>, fill <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">'black'</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
   <span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fl">0.1</span>, label <span class="op">=</span> <span class="va">name</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span><span class="op">(</span>cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html" class="external-link">grid.text</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fl">0.1</span>, label <span class="op">=</span> <span class="va">name</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ragg_circle</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">ragg_circle</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
 
 <span class="fu">circle_quality</span><span class="op">(</span><span class="va">agg_png</span>, <span class="st">'ragg'</span>, <span class="va">ragg_circle</span><span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">ragg_circle</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">ragg_circle</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-4-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-5-1.png"><!-- --></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cairo_none_circle</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">cairo_none_circle</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
 
 <span class="fu">circle_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo no AA'</span>, <span class="va">cairo_none_circle</span>, 
                type <span class="op">=</span> <span class="st">'cairo'</span>, antialias <span class="op">=</span> <span class="st">'none'</span><span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_none_circle</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">cairo_none_circle</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-8-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-9-1.png"><!-- --></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cairo_gray_circle</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">cairo_gray_circle</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
 
 <span class="fu">circle_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo gray AA'</span>, <span class="va">cairo_gray_circle</span>, 
                type <span class="op">=</span> <span class="st">'cairo'</span>, antialias <span class="op">=</span> <span class="st">'gray'</span><span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_gray_circle</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">cairo_gray_circle</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-10-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-11-1.png"><!-- --></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cairo_subpixel_circle</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">cairo_subpixel_circle</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
 
 <span class="fu">circle_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo subpixel AA'</span>, <span class="va">cairo_subpixel_circle</span>, 
                type <span class="op">=</span> <span class="st">'cairo'</span>, antialias <span class="op">=</span> <span class="st">'subpixel'</span><span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_subpixel_circle</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">cairo_subpixel_circle</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-12-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-13-1.png"><!-- --></p>
-<div id="observations" class="section level3">
-<h3 class="hasAnchor">
-<a href="#observations" class="anchor"></a>Observations</h3>
+<div class="section level3">
+<h3 id="observations">Observations<a class="anchor" aria-label="anchor" href="#observations"></a>
+</h3>
 <p>ragg is the only device that provides anti-aliasing of fill, which results in obvious quality differences. The reason for not doing so in cairo is presumably to avoid artefacts when shapes are touching each other where anti-aliasing can result in a thin edge between the two shapes instead of a contiguous colour. This is a real issue, but I personally don’t agree that it should be allowed to degrade the overall quality of the device, hence the reason for not following this approach in ragg.</p>
 <p>Xlib (if that is available on your system), provides completely non anti-aliased output and so does cairo with <code>antialias = 'none'</code>. It is surprising that Xlib appears to have a better stroke rendering than cairo without anti-aliasing. Further, the difference between <code>'gray'</code> and <code>'subpixel'</code> antialiasing is not visible to the naked eye, nor with a 2x zoom.</p>
 </div>
 </div>
-<div id="text" class="section level2">
-<h2 class="hasAnchor">
-<a href="#text" class="anchor"></a>Text</h2>
+<div class="section level2">
+<h2 id="text">Text<a class="anchor" aria-label="anchor" href="#text"></a>
+</h2>
 <p>Text is a difficult thing to handle for a graphic device, both in terms of finding system fonts, and in terms of rendering. Often the rendering is offloaded to another library (e.g. freetype), which will provide a bitmap representation to blend into the device. This approach is often good for horizontal or vertical text, but struggle with other rotations. Here we will test text rendering at different sizes and at a 27° counter-clockwise rotation. We will use the the system provided <em>serif</em> font as it provides a more complex task than a <em>sans-serif</em> one.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">text_quality</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">device</span>, <span class="va">name</span>, <span class="va">file</span>, <span class="va">rotation</span> <span class="op">=</span> <span class="fl">0</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">text</span> <span class="op">&lt;-</span> <span class="st">'The quick blue R jumped over the lazy snake'</span>
-  <span class="va">vp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html">viewport</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="va">rotation</span><span class="op">)</span>
-  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/device.html">device</a></span><span class="op">(</span><span class="va">file</span>, width <span class="op">=</span> <span class="fl">600</span>, height <span class="op">=</span> <span class="fl">300</span>, <span class="va">...</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/grid/viewports.html">pushViewport</a></span><span class="op">(</span><span class="va">vp</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span><span class="op">(</span><span class="va">text</span>, x <span class="op">=</span> <span class="fl">0.1</span>, y <span class="op">=</span> <span class="fl">0.2</span>, just <span class="op">=</span> <span class="st">'left'</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="st">'serif'</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span><span class="op">(</span><span class="va">text</span>, x <span class="op">=</span> <span class="fl">0.1</span>, y <span class="op">=</span> <span class="fl">0.4</span>, just <span class="op">=</span> <span class="st">'left'</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="st">'serif'</span>, cex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span><span class="op">(</span><span class="va">text</span>, x <span class="op">=</span> <span class="fl">0.1</span>, y <span class="op">=</span> <span class="fl">0.6</span>, just <span class="op">=</span> <span class="st">'left'</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="st">'serif'</span>, cex <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span><span class="op">(</span><span class="va">text</span>, x <span class="op">=</span> <span class="fl">0.1</span>, y <span class="op">=</span> <span class="fl">0.8</span>, just <span class="op">=</span> <span class="st">'left'</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="st">'serif'</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/grid/viewports.html">popViewport</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0.9</span>, y <span class="op">=</span> <span class="fl">0.1</span>, label <span class="op">=</span> <span class="va">name</span>, just <span class="op">=</span> <span class="st">'right'</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span><span class="op">(</span>cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">vp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="va">rotation</span><span class="op">)</span>
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/device.html" class="external-link">device</a></span><span class="op">(</span><span class="va">file</span>, width <span class="op">=</span> <span class="fl">600</span>, height <span class="op">=</span> <span class="fl">300</span>, <span class="va">...</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">pushViewport</a></span><span class="op">(</span><span class="va">vp</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html" class="external-link">grid.text</a></span><span class="op">(</span><span class="va">text</span>, x <span class="op">=</span> <span class="fl">0.1</span>, y <span class="op">=</span> <span class="fl">0.2</span>, just <span class="op">=</span> <span class="st">'left'</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="st">'serif'</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html" class="external-link">grid.text</a></span><span class="op">(</span><span class="va">text</span>, x <span class="op">=</span> <span class="fl">0.1</span>, y <span class="op">=</span> <span class="fl">0.4</span>, just <span class="op">=</span> <span class="st">'left'</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="st">'serif'</span>, cex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html" class="external-link">grid.text</a></span><span class="op">(</span><span class="va">text</span>, x <span class="op">=</span> <span class="fl">0.1</span>, y <span class="op">=</span> <span class="fl">0.6</span>, just <span class="op">=</span> <span class="st">'left'</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="st">'serif'</span>, cex <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html" class="external-link">grid.text</a></span><span class="op">(</span><span class="va">text</span>, x <span class="op">=</span> <span class="fl">0.1</span>, y <span class="op">=</span> <span class="fl">0.8</span>, just <span class="op">=</span> <span class="st">'left'</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>fontfamily <span class="op">=</span> <span class="st">'serif'</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/grid/viewports.html" class="external-link">popViewport</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html" class="external-link">grid.text</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0.9</span>, y <span class="op">=</span> <span class="fl">0.1</span>, label <span class="op">=</span> <span class="va">name</span>, just <span class="op">=</span> <span class="st">'right'</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ragg_text</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">ragg_text</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
 
 <span class="fu">text_quality</span><span class="op">(</span><span class="va">agg_png</span>, <span class="st">'ragg'</span>, <span class="va">ragg_text</span><span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">ragg_text</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">ragg_text</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-15-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-16-1.png"><!-- --></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ragg_text_rot</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">ragg_text_rot</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
 
 <span class="fu">text_quality</span><span class="op">(</span><span class="va">agg_png</span>, <span class="st">'ragg'</span>, <span class="va">ragg_text_rot</span>, rotation <span class="op">=</span> <span class="fl">27</span><span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">ragg_text_rot</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">ragg_text_rot</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-17-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-18-1.png"><!-- --></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cairo_none_text</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">cairo_none_text</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
 
 <span class="fu">text_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo no AA'</span>, <span class="va">cairo_none_text</span>, 
              type <span class="op">=</span> <span class="st">'cairo'</span>, antialias <span class="op">=</span> <span class="st">'none'</span><span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_none_text</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">cairo_none_text</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-23-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-24-1.png"><!-- --></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cairo_none_text_rot</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">cairo_none_text_rot</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
 
 <span class="fu">text_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo no AA'</span>, <span class="va">cairo_none_text_rot</span>, rotation <span class="op">=</span> <span class="fl">27</span>, 
              type <span class="op">=</span> <span class="st">'cairo'</span>, antialias <span class="op">=</span> <span class="st">'none'</span><span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_none_text_rot</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">cairo_none_text_rot</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-25-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-26-1.png"><!-- --></p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cairo_gray_text</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">cairo_gray_text</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
 
 <span class="fu">text_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo gray AA'</span>, <span class="va">cairo_gray_text</span>, 
              type <span class="op">=</span> <span class="st">'cairo'</span>, antialias <span class="op">=</span> <span class="st">'gray'</span><span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_gray_text</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">cairo_gray_text</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-27-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-28-1.png"><!-- --></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cairo_gray_text_rot</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">cairo_gray_text_rot</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
 
 <span class="fu">text_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo gray AA'</span>, <span class="va">cairo_gray_text_rot</span>, rotation <span class="op">=</span> <span class="fl">27</span>, 
              type <span class="op">=</span> <span class="st">'cairo'</span>, antialias <span class="op">=</span> <span class="st">'gray'</span><span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_gray_text_rot</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">cairo_gray_text_rot</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-29-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-30-1.png"><!-- --></p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cairo_subpixel_text</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">cairo_subpixel_text</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
 
 <span class="fu">text_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo subpixel AA'</span>, <span class="va">cairo_subpixel_text</span>, 
              type <span class="op">=</span> <span class="st">'cairo'</span>, antialias <span class="op">=</span> <span class="st">'subpixel'</span><span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_subpixel_text</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">cairo_subpixel_text</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-31-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-32-1.png"><!-- --></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cairo_subpixel_text_rot</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">cairo_subpixel_text_rot</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
 
 <span class="fu">text_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo subpixel AA'</span>, <span class="va">cairo_subpixel_text_rot</span>, rotation <span class="op">=</span> <span class="fl">27</span>, 
              type <span class="op">=</span> <span class="st">'cairo'</span>, antialias <span class="op">=</span> <span class="st">'subpixel'</span><span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_subpixel_text_rot</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">cairo_subpixel_text_rot</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-33-1.png"><!-- --></p>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-34-1.png"><!-- --></p>
-<div id="observations-1" class="section level3">
-<h3 class="hasAnchor">
-<a href="#observations-1" class="anchor"></a>Observations</h3>
+<div class="section level3">
+<h3 id="observations-1">Observations<a class="anchor" aria-label="anchor" href="#observations-1"></a>
+</h3>
 <p>Font handling is hard… Setting the font to <code>'serif'</code> means different things to different devices and being more specific results in some devices not being able to find the font. ragg exclusively uses the system fonts so whatever your OS defines as the base serif type it will pick up. Cairo goes through the internal R database to pick a slightly different font. Xlib… well I can’t comment on what it is doing, but it appears to pick something completely different from the X11 system. Regarding quality, I don’t think I have to be mean and mention Xlib, so let’s look at ragg and cairo. Ignoring for a fact that they have used two different fonts, we can see some differences and some interesting stuff. First, cairo don’t care about the anti-alias setting when it renders fonts. My guess is that it will always ask for an 8bit pixelmap from the font engine (probably freetype) and use that. This ensures high quality fonts no matter the settings. The text appears quite heavy, which (unless this is a feature of the font) indicates that cairo does not gamma-correct the pixelmap before blending it into the image. Correct gamma correction of font is quite important, so if that is the case it is quite sad. Another thing we notice is that cairo uses the pixelmaps even for rotated text. This result in jagged baseline and uneven kerning when plotting rotated text. ragg only uses pixelmaps when plotting axis-aligned text. For rotated text it will convert the glyphs to polygons and render them using the built-in rasterizer ensuring an even baseline and kerning. This means plotting rotated text is slightly less performant, at the cost of looking good — I can live with that trade-off.</p>
 </div>
 </div>
-<div id="alpha-blending" class="section level2">
-<h2 class="hasAnchor">
-<a href="#alpha-blending" class="anchor"></a>Alpha blending</h2>
+<div class="section level2">
+<h2 id="alpha-blending">Alpha blending<a class="anchor" aria-label="anchor" href="#alpha-blending"></a>
+</h2>
 <p>How transparent colours are combined is not necessarily equal among devices. The biggest divide is on whether to use premultiplied colours or not. With premultiplied colours the red, green, and blue intensity is wieghted by the alpha directly, instead of alpha simply being an additional value. Using premultiplied colours is the only way to get correct alpha blending. As the Xlib device doesn’t support transparent colours it will be exempt from this comparison even on systems that have it. Further, as alpha blending is not related to anti-aliasing, we will simply compare ragg against a single cairo setup.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">blend_quality</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">device</span>, <span class="va">name</span>, <span class="va">file</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/device.html">device</a></span><span class="op">(</span><span class="va">file</span>, width <span class="op">=</span> <span class="fl">600</span>, height <span class="op">=</span> <span class="fl">300</span>, <span class="va">...</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.rect.html">grid.rect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0.35</span>, y <span class="op">=</span> <span class="fl">0.4</span>, width <span class="op">=</span> <span class="fl">0.5</span>, height <span class="op">=</span> <span class="fl">0.5</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">'#FF0000'</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.rect.html">grid.rect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0.65</span>, y <span class="op">=</span> <span class="fl">0.6</span>, width <span class="op">=</span> <span class="fl">0.5</span>, height <span class="op">=</span> <span class="fl">0.5</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">'#00FF001A'</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0.9</span>, y <span class="op">=</span> <span class="fl">0.1</span>, label <span class="op">=</span> <span class="va">name</span>, just <span class="op">=</span> <span class="st">'right'</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span><span class="op">(</span>cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/device.html" class="external-link">device</a></span><span class="op">(</span><span class="va">file</span>, width <span class="op">=</span> <span class="fl">600</span>, height <span class="op">=</span> <span class="fl">300</span>, <span class="va">...</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.rect.html" class="external-link">grid.rect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0.35</span>, y <span class="op">=</span> <span class="fl">0.4</span>, width <span class="op">=</span> <span class="fl">0.5</span>, height <span class="op">=</span> <span class="fl">0.5</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">'#FF0000'</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.rect.html" class="external-link">grid.rect</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0.65</span>, y <span class="op">=</span> <span class="fl">0.6</span>, width <span class="op">=</span> <span class="fl">0.5</span>, height <span class="op">=</span> <span class="fl">0.5</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">'#00FF001A'</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html" class="external-link">grid.text</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0.9</span>, y <span class="op">=</span> <span class="fl">0.1</span>, label <span class="op">=</span> <span class="va">name</span>, just <span class="op">=</span> <span class="st">'right'</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ragg_blend</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">ragg_blend</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
 
 <span class="fu">blend_quality</span><span class="op">(</span><span class="va">agg_png</span>, <span class="st">'ragg'</span>, <span class="va">ragg_blend</span><span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">ragg_blend</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">ragg_blend</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-36-1.png"><!-- --></p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cairo_blend</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">cairo_blend</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
 
 <span class="fu">blend_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo'</span>, <span class="va">cairo_blend</span>, type <span class="op">=</span> <span class="st">'cairo'</span><span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_blend</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">cairo_blend</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-37-1.png"><!-- --></p>
-<div id="observations-2" class="section level3">
-<h3 class="hasAnchor">
-<a href="#observations-2" class="anchor"></a>Observations</h3>
-<p>Nothing much to say — both devices handles alpha blending correctly (see <a href="https://developer.nvidia.com/content/alpha-blending-pre-or-not-pre">here</a> to understand what this test was about)</p>
+<div class="section level3">
+<h3 id="observations-2">Observations<a class="anchor" aria-label="anchor" href="#observations-2"></a>
+</h3>
+<p>Nothing much to say — both devices handles alpha blending correctly (see <a href="https://developer.nvidia.com/content/alpha-blending-pre-or-not-pre" class="external-link">here</a> to understand what this test was about)</p>
 </div>
 </div>
-<div id="raster" class="section level2">
-<h2 class="hasAnchor">
-<a href="#raster" class="anchor"></a>Raster</h2>
+<div class="section level2">
+<h2 id="raster">Raster<a class="anchor" aria-label="anchor" href="#raster"></a>
+</h2>
 <p>The main way raster plotting can get influence by the device is in how the image gets interpolated during scaling, which will be briefly compared here.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">raster_quality</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">device</span>, <span class="va">name</span>, <span class="va">file</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">reds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/hcl.html">hcl</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">80</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">80</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>,
+  <span class="va">reds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/hcl.html" class="external-link">hcl</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">80</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">80</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>,
                         nrow <span class="op">=</span> <span class="fl">4</span>, ncol <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
-  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/device.html">device</a></span><span class="op">(</span><span class="va">file</span>, width <span class="op">=</span> <span class="fl">600</span>, height <span class="op">=</span> <span class="fl">300</span>, <span class="va">...</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.raster.html">grid.raster</a></span><span class="op">(</span><span class="va">reds</span>, vp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html">viewport</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, angle <span class="op">=</span> <span class="fl">27</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.raster.html">grid.raster</a></span><span class="op">(</span><span class="va">reds</span>, interpolate <span class="op">=</span> <span class="cn">FALSE</span>, 
-              vp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html">viewport</a></span><span class="op">(</span><span class="fl">0.75</span>, <span class="fl">0.75</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, angle <span class="op">=</span> <span class="fl">27</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html">grid.text</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0.9</span>, y <span class="op">=</span> <span class="fl">0.1</span>, label <span class="op">=</span> <span class="va">name</span>, just <span class="op">=</span> <span class="st">'right'</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html">gpar</a></span><span class="op">(</span>cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://docs.ropensci.org/magick/reference/device.html" class="external-link">device</a></span><span class="op">(</span><span class="va">file</span>, width <span class="op">=</span> <span class="fl">600</span>, height <span class="op">=</span> <span class="fl">300</span>, <span class="va">...</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.raster.html" class="external-link">grid.raster</a></span><span class="op">(</span><span class="va">reds</span>, vp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, angle <span class="op">=</span> <span class="fl">27</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.raster.html" class="external-link">grid.raster</a></span><span class="op">(</span><span class="va">reds</span>, interpolate <span class="op">=</span> <span class="cn">FALSE</span>, 
+              vp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/viewport.html" class="external-link">viewport</a></span><span class="op">(</span><span class="fl">0.75</span>, <span class="fl">0.75</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, angle <span class="op">=</span> <span class="fl">27</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/grid/grid.text.html" class="external-link">grid.text</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0.9</span>, y <span class="op">=</span> <span class="fl">0.1</span>, label <span class="op">=</span> <span class="va">name</span>, just <span class="op">=</span> <span class="st">'right'</span>, gp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/gpar.html" class="external-link">gpar</a></span><span class="op">(</span>cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ragg_raster</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">ragg_raster</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
 
 <span class="fu">raster_quality</span><span class="op">(</span><span class="va">agg_png</span>, <span class="st">'ragg'</span>, <span class="va">ragg_raster</span><span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">ragg_raster</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">ragg_raster</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-39-1.png"><!-- --></p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cairo_raster</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">cairo_raster</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span>
 
 <span class="fu">raster_quality</span><span class="op">(</span><span class="va">png</span>, <span class="st">'cairo'</span>, <span class="va">cairo_raster</span>, type <span class="op">=</span> <span class="st">'cairo'</span><span class="op">)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="va">cairo_raster</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">cairo_raster</span><span class="op">)</span></code></pre></div>
 <p><img src="ragg_quality_files/figure-html/unnamed-chunk-41-1.png"><!-- --></p>
-<div id="observations-3" class="section level3">
-<h3 class="hasAnchor">
-<a href="#observations-3" class="anchor"></a>Observations</h3>
+<div class="section level3">
+<h3 id="observations-3">Observations<a class="anchor" aria-label="anchor" href="#observations-3"></a>
+</h3>
 <p>As with blending there is nothing much to see here. All devices perform equally and correctly.</p>
 </div>
 </div>
-<div id="conclusion" class="section level2">
-<h2 class="hasAnchor">
-<a href="#conclusion" class="anchor"></a>Conclusion</h2>
+<div class="section level2">
+<h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
+</h2>
 <p>When it comes to raster quality there is only really the two contenders are obviously ragg and anti-aliased cairo, as lack of anti-aliasing has clear detrimental effect on output quality. As there appear to be no real difference in quality between cairo’s two anti-aliasing modes the question basically boils down to cairo vs ragg. While for the most part the two rendering systems provide comparable output, there are two areas where ragg takes the lead, quality-wise: rendering of fill, and rendering of rotated text. If these areas are of interest to you then ragg will be the obvious choice.</p>
 </div>
-<div id="session-info" class="section level2">
-<h2 class="hasAnchor">
-<a href="#session-info" class="anchor"></a>Session info</h2>
+<div class="section level2">
+<h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
+</h2>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">sessioninfo</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sessioninfo/man/session_info.html">session_info</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; ─ Session info ───────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt;  setting  value                       </span>
-<span class="co">#&gt;  version  R version 4.1.1 (2021-08-10)</span>
-<span class="co">#&gt;  os       Ubuntu 20.04.3 LTS          </span>
-<span class="co">#&gt;  system   x86_64, linux-gnu           </span>
-<span class="co">#&gt;  ui       X11                         </span>
-<span class="co">#&gt;  language (EN)                        </span>
-<span class="co">#&gt;  collate  C.UTF-8                     </span>
-<span class="co">#&gt;  ctype    C.UTF-8                     </span>
-<span class="co">#&gt;  tz       UTC                         </span>
-<span class="co">#&gt;  date     2021-10-27                  </span>
+<code class="sourceCode R"><span class="fu">sessioninfo</span><span class="fu">::</span><span class="fu"><a href="https://r-lib.github.io/sessioninfo/reference/session_info.html" class="external-link">session_info</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Session info  ──────────────────────────────────────────────────────────────</span></span>
+<span class="co">#&gt;  hash: pool 8 ball, flag: Nauru, man scientist: light skin tone</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; ─ Packages ───────────────────────────────────────────────────────────────────</span>
-<span class="co">#&gt;  package     * version    date       lib source                            </span>
-<span class="co">#&gt;  cachem        1.0.6      2021-08-19 [1] standard (@1.0.6)                 </span>
-<span class="co">#&gt;  cli           3.0.1      2021-07-17 [1] standard (@3.0.1)                 </span>
-<span class="co">#&gt;  crayon        1.4.1      2021-02-08 [1] standard (@1.4.1)                 </span>
-<span class="co">#&gt;  desc          1.4.0      2021-09-28 [1] standard (@1.4.0)                 </span>
-<span class="co">#&gt;  digest        0.6.28     2021-09-23 [1] standard (@0.6.28)                </span>
-<span class="co">#&gt;  evaluate      0.14       2019-05-28 [1] standard (@0.14)                  </span>
-<span class="co">#&gt;  fastmap       1.1.0      2021-01-25 [1] standard (@1.1.0)                 </span>
-<span class="co">#&gt;  fs            1.5.0      2020-07-31 [1] standard (@1.5.0)                 </span>
-<span class="co">#&gt;  highr         0.9        2021-04-16 [1] standard (@0.9)                   </span>
-<span class="co">#&gt;  htmltools     0.5.2      2021-08-25 [1] standard (@0.5.2)                 </span>
-<span class="co">#&gt;  knitr         1.36       2021-09-29 [1] standard (@1.36)                  </span>
-<span class="co">#&gt;  magick      * 2.7.3      2021-08-18 [1] standard (@2.7.3)                 </span>
-<span class="co">#&gt;  magrittr      2.0.1      2020-11-17 [1] standard (@2.0.1)                 </span>
-<span class="co">#&gt;  memoise       2.0.0      2021-01-26 [1] standard (@2.0.0)                 </span>
-<span class="co">#&gt;  pkgdown       1.6.1      2020-09-12 [1] standard (@1.6.1)                 </span>
-<span class="co">#&gt;  R6            2.5.1      2021-08-19 [1] standard (@2.5.1)                 </span>
-<span class="co">#&gt;  ragg        * 1.1.3.9000 2021-10-27 [1] local                             </span>
-<span class="co">#&gt;  Rcpp          1.0.7      2021-07-07 [1] standard (@1.0.7)                 </span>
-<span class="co">#&gt;  rlang         0.4.12     2021-10-18 [1] standard (@0.4.12)                </span>
-<span class="co">#&gt;  rmarkdown     2.11       2021-09-14 [1] standard (@2.11)                  </span>
-<span class="co">#&gt;  rprojroot     2.0.2      2020-11-15 [1] standard (@2.0.2)                 </span>
-<span class="co">#&gt;  sessioninfo   1.1.1      2018-11-05 [1] standard (@1.1.1)                 </span>
-<span class="co">#&gt;  stringi       1.7.5      2021-10-04 [1] standard (@1.7.5)                 </span>
-<span class="co">#&gt;  stringr       1.4.0      2019-02-10 [1] standard (@1.4.0)                 </span>
-<span class="co">#&gt;  systemfonts   1.0.3.9000 2021-10-26 [1] Github (r-lib/systemfonts@881a674)</span>
-<span class="co">#&gt;  textshaping   0.3.6      2021-10-13 [1] standard (@0.3.6)                 </span>
-<span class="co">#&gt;  withr         2.4.2      2021-04-18 [1] standard (@2.4.2)                 </span>
-<span class="co">#&gt;  xfun          0.27       2021-10-18 [1] standard (@0.27)                  </span>
-<span class="co">#&gt;  yaml          2.2.1      2020-02-01 [1] standard (@2.2.1)                 </span>
+<span class="co">#&gt;  <span style="color: #555555; font-style: italic;">setting </span> <span style="color: #555555; font-style: italic;">value</span></span>
+<span class="co">#&gt;  version  R version 4.1.2 (2021-11-01)</span>
+<span class="co">#&gt;  os       Ubuntu 20.04.3 LTS</span>
+<span class="co">#&gt;  system   x86_64, linux-gnu</span>
+<span class="co">#&gt;  ui       X11</span>
+<span class="co">#&gt;  language en</span>
+<span class="co">#&gt;  collate  C.UTF-8</span>
+<span class="co">#&gt;  ctype    C.UTF-8</span>
+<span class="co">#&gt;  tz       UTC</span>
+<span class="co">#&gt;  date     2021-12-06</span>
+<span class="co">#&gt;  pandoc   2.7.3 @ /usr/bin/ (via rmarkdown)</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; [1] /home/runner/work/_temp/Library</span>
-<span class="co">#&gt; [2] /opt/R/4.1.1/lib/R/library</span></code></pre></div>
+<span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────</span></span>
+<span class="co">#&gt;  <span style="color: #555555; font-style: italic;">package    </span> <span style="color: #555555; font-style: italic;">*</span> <span style="color: #555555; font-style: italic;">version</span> <span style="color: #555555; font-style: italic;">date (UTC)</span> <span style="color: #555555; font-style: italic;">lib</span> <span style="color: #555555; font-style: italic;">source</span></span>
+<span class="co">#&gt;  bslib         0.3.1   <span style="color: #555555;">2021-10-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  cachem        1.0.6   <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  cli           3.1.0   <span style="color: #555555;">2021-10-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  crayon        1.4.2   <span style="color: #555555;">2021-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  desc          1.4.0   <span style="color: #555555;">2021-09-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  digest        0.6.29  <span style="color: #555555;">2021-12-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  evaluate      0.14    <span style="color: #555555;">2019-05-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  fastmap       1.1.0   <span style="color: #555555;">2021-01-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  fs            1.5.1   <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  highr         0.9     <span style="color: #555555;">2021-04-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  htmltools     0.5.2   <span style="color: #555555;">2021-08-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  jquerylib     0.1.4   <span style="color: #555555;">2021-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  jsonlite      1.7.2   <span style="color: #555555;">2020-12-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  knitr         1.36    <span style="color: #555555;">2021-09-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  magick      * 2.7.3   <span style="color: #555555;">2021-08-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  magrittr      2.0.1   <span style="color: #555555;">2020-11-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  memoise       2.0.1   <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  pkgdown       2.0.1   <span style="color: #555555;">2021-12-03</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
+<span class="co">#&gt;  purrr         0.3.4   <span style="color: #555555;">2020-04-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  R6            2.5.1   <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  ragg        * 1.2.0   <span style="color: #555555;">2021-12-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span>
+<span class="co">#&gt;  Rcpp          1.0.7   <span style="color: #555555;">2021-07-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  rlang         0.4.12  <span style="color: #555555;">2021-10-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  rmarkdown     2.11    <span style="color: #555555;">2021-09-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  rprojroot     2.0.2   <span style="color: #555555;">2020-11-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  sass          0.4.0   <span style="color: #555555;">2021-05-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  sessioninfo   1.2.1   <span style="color: #555555;">2021-11-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  stringi       1.7.6   <span style="color: #555555;">2021-11-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  stringr       1.4.0   <span style="color: #555555;">2019-02-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  systemfonts   1.0.3   <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  textshaping   0.3.6   <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  xfun          0.28    <span style="color: #555555;">2021-11-04</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt;  yaml          2.2.1   <span style="color: #555555;">2020-02-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">Custom</span></span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; <span style="color: #555555;"> [1] /home/runner/work/_temp/Library</span></span>
+<span class="co">#&gt; <span style="color: #555555;"> [2] /opt/R/4.1.2/lib/R/library</span></span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">──────────────────────────────────────────────────────────────────────────────</span></span></code></pre></div>
 </div>
   </div>
 
@@ -432,11 +444,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://data-imaginist.com">Thomas Lin Pedersen</a>, Maxim Shemanarev.</p>
+  <p></p>
+<p>Developed by <a href="https://data-imaginist.com" class="external-link">Thomas Lin Pedersen</a>, Maxim Shemanarev.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -444,6 +458,8 @@
 
   
 
+
+  
 
   </body>
 </html>
