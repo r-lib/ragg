@@ -305,13 +305,13 @@ X11 system. Regarding quality, I don't think I have to be mean and mention Xlib,
 so let's look at ragg and cairo. Ignoring for a fact that they have used two 
 different fonts, we can see some differences and some interesting stuff. First,
 cairo don't care about the anti-alias setting when it renders fonts. My guess is
-that it will always ask for an 8bit pixelmap from the font engine (probably 
+that it will always ask for an 8-bit pixelmap from the font engine (probably 
 freetype) and use that. This ensures high quality fonts no matter the settings.
 The text appears quite heavy, which (unless this is a feature of the font) 
 indicates that cairo does not gamma-correct the pixelmap before blending it into
 the image. Correct gamma correction of font is quite important, so if that is 
 the case it is quite sad. Another thing we notice is that cairo uses the 
-pixelmaps even for rotated text. This result in jagged baseline and uneven 
+pixelmaps even for rotated text. This results in jagged baseline and uneven 
 kerning when plotting rotated text. ragg only uses pixelmaps when plotting 
 axis-aligned text. For rotated text it will convert the glyphs to polygons and
 render them using the built-in rasterizer ensuring an even baseline and kerning.
@@ -321,7 +321,7 @@ looking good — I can live with that trade-off.
 ## Alpha blending
 How transparent colours are combined is not necessarily equal among devices. The
 biggest divide is on whether to use premultiplied colours or not. With 
-premultiplied colours the red, green, and blue intensity is wieghted by the 
+premultiplied colours the red, green, and blue intensity is weighted by the 
 alpha directly, instead of alpha simply being an additional value. Using 
 premultiplied colours is the only way to get correct alpha blending. As the Xlib
 device doesn't support transparent colours it will be exempt from this 
@@ -356,8 +356,8 @@ knitr::include_graphics(cairo_blend)
 ```
 
 ### Observations
-Nothing much to say — both devices handles alpha blending correctly (see  [here](https://developer.nvidia.com/content/alpha-blending-pre-or-not-pre) to
-understand what this test was about)
+Nothing much to say — both devices handle alpha blending correctly (see  [here](https://developer.nvidia.com/content/alpha-blending-pre-or-not-pre) to
+understand what this test was about).
 
 ## Raster
 The main way raster plotting can get influence by the device is in how the image
@@ -405,10 +405,10 @@ As with blending there is nothing much to see here. All devices perform equally
 and correctly.
 
 ## Conclusion
-When it comes to raster quality there is only really the two contenders are 
-obviously ragg and anti-aliased cairo, as lack of anti-aliasing has clear 
-detrimental effect on output quality. As there appear to be no real difference 
-in quality between cairo's two anti-aliasing modes the question basically boils
+When it comes to raster quality, the only real contenders are 
+ragg and anti-aliased cairo, as lack of anti-aliasing has clear 
+detrimental effect on output quality. As there appears to be no real difference 
+in quality between cairo's two anti-aliasing modes, the question basically boils
 down to cairo vs ragg. While for the most part the two rendering systems provide
 comparable output, there are two areas where ragg takes the lead, quality-wise:
 rendering of fill, and rendering of rotated text. If these areas are of interest 
