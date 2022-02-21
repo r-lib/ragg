@@ -295,13 +295,13 @@
 <div class="section level3">
 <h3 id="observations-1">Observations<a class="anchor" aria-label="anchor" href="#observations-1"></a>
 </h3>
-<p>Font handling is hard… Setting the font to <code>'serif'</code> means different things to different devices and being more specific results in some devices not being able to find the font. ragg exclusively uses the system fonts so whatever your OS defines as the base serif type it will pick up. Cairo goes through the internal R database to pick a slightly different font. Xlib… well I can’t comment on what it is doing, but it appears to pick something completely different from the X11 system. Regarding quality, I don’t think I have to be mean and mention Xlib, so let’s look at ragg and cairo. Ignoring for a fact that they have used two different fonts, we can see some differences and some interesting stuff. First, cairo don’t care about the anti-alias setting when it renders fonts. My guess is that it will always ask for an 8bit pixelmap from the font engine (probably freetype) and use that. This ensures high quality fonts no matter the settings. The text appears quite heavy, which (unless this is a feature of the font) indicates that cairo does not gamma-correct the pixelmap before blending it into the image. Correct gamma correction of font is quite important, so if that is the case it is quite sad. Another thing we notice is that cairo uses the pixelmaps even for rotated text. This result in jagged baseline and uneven kerning when plotting rotated text. ragg only uses pixelmaps when plotting axis-aligned text. For rotated text it will convert the glyphs to polygons and render them using the built-in rasterizer ensuring an even baseline and kerning. This means plotting rotated text is slightly less performant, at the cost of looking good — I can live with that trade-off.</p>
+<p>Font handling is hard… Setting the font to <code>'serif'</code> means different things to different devices and being more specific results in some devices not being able to find the font. ragg exclusively uses the system fonts so whatever your OS defines as the base serif type it will pick up. Cairo goes through the internal R database to pick a slightly different font. Xlib… well I can’t comment on what it is doing, but it appears to pick something completely different from the X11 system. Regarding quality, I don’t think I have to be mean and mention Xlib, so let’s look at ragg and cairo. Ignoring for a fact that they have used two different fonts, we can see some differences and some interesting stuff. First, cairo don’t care about the anti-alias setting when it renders fonts. My guess is that it will always ask for an 8-bit pixelmap from the font engine (probably freetype) and use that. This ensures high quality fonts no matter the settings. The text appears quite heavy, which (unless this is a feature of the font) indicates that cairo does not gamma-correct the pixelmap before blending it into the image. Correct gamma correction of font is quite important, so if that is the case it is quite sad. Another thing we notice is that cairo uses the pixelmaps even for rotated text. This results in jagged baseline and uneven kerning when plotting rotated text. ragg only uses pixelmaps when plotting axis-aligned text. For rotated text it will convert the glyphs to polygons and render them using the built-in rasterizer ensuring an even baseline and kerning. This means plotting rotated text is slightly less performant, at the cost of looking good — I can live with that trade-off.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="alpha-blending">Alpha blending<a class="anchor" aria-label="anchor" href="#alpha-blending"></a>
 </h2>
-<p>How transparent colours are combined is not necessarily equal among devices. The biggest divide is on whether to use premultiplied colours or not. With premultiplied colours the red, green, and blue intensity is wieghted by the alpha directly, instead of alpha simply being an additional value. Using premultiplied colours is the only way to get correct alpha blending. As the Xlib device doesn’t support transparent colours it will be exempt from this comparison even on systems that have it. Further, as alpha blending is not related to anti-aliasing, we will simply compare ragg against a single cairo setup.</p>
+<p>How transparent colours are combined is not necessarily equal among devices. The biggest divide is on whether to use premultiplied colours or not. With premultiplied colours the red, green, and blue intensity is weighted by the alpha directly, instead of alpha simply being an additional value. Using premultiplied colours is the only way to get correct alpha blending. As the Xlib device doesn’t support transparent colours it will be exempt from this comparison even on systems that have it. Further, as alpha blending is not related to anti-aliasing, we will simply compare ragg against a single cairo setup.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">blend_quality</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">device</span>, <span class="va">name</span>, <span class="va">file</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="https://docs.ropensci.org/magick/reference/device.html" class="external-link">device</a></span><span class="op">(</span><span class="va">file</span>, width <span class="op">=</span> <span class="fl">600</span>, height <span class="op">=</span> <span class="fl">300</span>, <span class="va">...</span><span class="op">)</span>
@@ -327,7 +327,7 @@
 <div class="section level3">
 <h3 id="observations-2">Observations<a class="anchor" aria-label="anchor" href="#observations-2"></a>
 </h3>
-<p>Nothing much to say — both devices handles alpha blending correctly (see <a href="https://developer.nvidia.com/content/alpha-blending-pre-or-not-pre" class="external-link">here</a> to understand what this test was about)</p>
+<p>Nothing much to say — both devices handle alpha blending correctly (see <a href="https://developer.nvidia.com/content/alpha-blending-pre-or-not-pre" class="external-link">here</a> to understand what this test was about).</p>
 </div>
 </div>
 <div class="section level2">
@@ -368,7 +368,7 @@
 <div class="section level2">
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h2>
-<p>When it comes to raster quality there is only really the two contenders are obviously ragg and anti-aliased cairo, as lack of anti-aliasing has clear detrimental effect on output quality. As there appear to be no real difference in quality between cairo’s two anti-aliasing modes the question basically boils down to cairo vs ragg. While for the most part the two rendering systems provide comparable output, there are two areas where ragg takes the lead, quality-wise: rendering of fill, and rendering of rotated text. If these areas are of interest to you then ragg will be the obvious choice.</p>
+<p>When it comes to raster quality, the only real contenders are ragg and anti-aliased cairo, as lack of anti-aliasing has clear detrimental effect on output quality. As there appears to be no real difference in quality between cairo’s two anti-aliasing modes, the question basically boils down to cairo vs ragg. While for the most part the two rendering systems provide comparable output, there are two areas where ragg takes the lead, quality-wise: rendering of fill, and rendering of rotated text. If these areas are of interest to you then ragg will be the obvious choice.</p>
 </div>
 <div class="section level2">
 <h2 id="session-info">Session info<a class="anchor" aria-label="anchor" href="#session-info"></a>
@@ -385,44 +385,44 @@
 <span class="co">#&gt;  collate  C.UTF-8</span>
 <span class="co">#&gt;  ctype    C.UTF-8</span>
 <span class="co">#&gt;  tz       UTC</span>
-<span class="co">#&gt;  date     2021-12-08</span>
+<span class="co">#&gt;  date     2022-02-21</span>
 <span class="co">#&gt;  pandoc   2.7.3 @ /usr/bin/ (via rmarkdown)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────</span></span>
 <span class="co">#&gt;  <span style="color: #555555; font-style: italic;">package    </span> <span style="color: #555555; font-style: italic;">*</span> <span style="color: #555555; font-style: italic;">version   </span> <span style="color: #555555; font-style: italic;">date (UTC)</span> <span style="color: #555555; font-style: italic;">lib</span> <span style="color: #555555; font-style: italic;">source</span></span>
 <span class="co">#&gt;  bslib         0.3.1      <span style="color: #555555;">2021-10-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  cachem        1.0.6      <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
-<span class="co">#&gt;  cli           3.1.0      <span style="color: #555555;">2021-10-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
-<span class="co">#&gt;  crayon        1.4.2      <span style="color: #555555;">2021-10-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  cli           3.2.0      <span style="color: #555555;">2022-02-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  crayon        1.5.0      <span style="color: #555555;">2022-02-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  desc          1.4.0      <span style="color: #555555;">2021-09-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  digest        0.6.29     <span style="color: #555555;">2021-12-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
-<span class="co">#&gt;  evaluate      0.14       <span style="color: #555555;">2019-05-28</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  evaluate      0.15       <span style="color: #555555;">2022-02-18</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt;  fastmap       1.1.0      <span style="color: #555555;">2021-01-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
-<span class="co">#&gt;  fs            1.5.1      <span style="color: #555555;">2021-11-30</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  fs            1.5.2      <span style="color: #555555;">2021-12-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  highr         0.9        <span style="color: #555555;">2021-04-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  htmltools     0.5.2      <span style="color: #555555;">2021-08-25</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  jquerylib     0.1.4      <span style="color: #555555;">2021-04-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
-<span class="co">#&gt;  jsonlite      1.7.2      <span style="color: #555555;">2020-12-09</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
-<span class="co">#&gt;  knitr         1.36       <span style="color: #555555;">2021-09-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  jsonlite      1.7.3      <span style="color: #555555;">2022-01-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  knitr         1.37       <span style="color: #555555;">2021-12-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  magick      * 2.7.3      <span style="color: #555555;">2021-08-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
-<span class="co">#&gt;  magrittr      2.0.1      <span style="color: #555555;">2020-11-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  magrittr      2.0.2      <span style="color: #555555;">2022-01-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  memoise       2.0.1      <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
-<span class="co">#&gt;  pkgdown       2.0.1      <span style="color: #555555;">2021-12-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  pkgdown       2.0.2      <span style="color: #555555;">2022-01-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  purrr         0.3.4      <span style="color: #555555;">2020-04-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  R6            2.5.1      <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
-<span class="co">#&gt;  ragg        * <span style="color: #BB00BB; font-weight: bold;">1.2.1.9000</span> <span style="color: #555555;">2021-12-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span>
-<span class="co">#&gt;  Rcpp          1.0.7      <span style="color: #555555;">2021-07-07</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
-<span class="co">#&gt;  rlang         0.4.12     <span style="color: #555555;">2021-10-18</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  ragg        * <span style="color: #BB00BB; font-weight: bold;">1.2.1.9000</span> <span style="color: #555555;">2022-02-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">local</span></span>
+<span class="co">#&gt;  Rcpp          1.0.8      <span style="color: #555555;">2022-01-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  rlang         1.0.1      <span style="color: #555555;">2022-02-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  rmarkdown     2.11       <span style="color: #555555;">2021-09-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  rprojroot     2.0.2      <span style="color: #555555;">2020-11-15</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  sass          0.4.0      <span style="color: #555555;">2021-05-12</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  sessioninfo   1.2.2      <span style="color: #555555;">2021-12-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  stringi       1.7.6      <span style="color: #555555;">2021-11-29</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  stringr       1.4.0      <span style="color: #555555;">2019-02-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
-<span class="co">#&gt;  systemfonts   1.0.3      <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  systemfonts   1.0.4      <span style="color: #555555;">2022-02-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
 <span class="co">#&gt;  textshaping   0.3.6      <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
-<span class="co">#&gt;  xfun          0.28       <span style="color: #555555;">2021-11-04</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
-<span class="co">#&gt;  yaml          2.2.1      <span style="color: #555555;">2020-02-01</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  xfun          0.29       <span style="color: #555555;">2021-12-14</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM</span></span>
+<span class="co">#&gt;  yaml          2.3.4      <span style="color: #555555;">2022-02-17</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.1.2)</span></span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; <span style="color: #555555;"> [1] /home/runner/work/_temp/Library</span></span>
 <span class="co">#&gt; <span style="color: #555555;"> [2] /opt/R/4.1.2/lib/R/library</span></span>
@@ -448,7 +448,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
