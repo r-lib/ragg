@@ -1,3 +1,5 @@
+# ragg (development version)
+
 # ragg 1.2.2
 
 * MacOS: configure script now uses the local system dependencies provided by 
