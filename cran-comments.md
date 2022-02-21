@@ -1,5 +1,4 @@
-This release adds support for the latest graphic engine features. In addition it
-contains a couple of bug fixes related to font rendering and encoding.
+This patch changes the configure script at the request of CRAN
 
 ## revdepcheck results
 

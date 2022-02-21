@@ -1,4 +1,4 @@
-# ragg (development version)
+# ragg 1.2.2
 
 * MacOS: configure script now uses the local system dependencies provided by 
   CRAN via pkg-config. Autobrew libs are used as fallback on non-cran servers only.
