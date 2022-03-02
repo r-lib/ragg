@@ -13,7 +13,7 @@ Authors@R: c(
            comment = "Contributor to AGG"),
     person("Spencer", "Garrett", role = "ctb",
            comment = "Contributor to AGG"),
-    person("RStudio", role = "cph")
+    person("RStudio", role = c("cph", "fnd"))
   )
 Maintainer: Thomas Lin Pedersen <thomas.pedersen@rstudio.com>
 Description: Anti-Grain Geometry (AGG) is a high-quality and
