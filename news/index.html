@@ -60,7 +60,9 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="ragg-development-version">ragg (development version)<a class="anchor" aria-label="anchor" href="#ragg-development-version"></a></h2>
-<ul><li>Second attempt at rendering jpegs with transparent background. Now, the buffer is filled with solid white before any drawing happens.</li></ul></div>
+<ul><li>Second attempt at rendering jpegs with transparent background. Now, the buffer is filled with solid white before any drawing happens.</li>
+<li>Fixed a bug that resulted in newlines being rendered as missing glyphs on some Linux versions (<a href="https://github.com/r-lib/ragg/issues/111" class="external-link">#111</a>)</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.2.2" id="ragg-122">ragg 1.2.2<a class="anchor" aria-label="anchor" href="#ragg-122"></a></h2><p class="text-muted">CRAN release: 2022-02-21</p>
 <ul><li>MacOS: configure script now uses the local system dependencies provided by CRAN via pkg-config. Autobrew libs are used as fallback on non-cran servers only.</li></ul></div>
