@@ -239,6 +239,10 @@ public:
     }
     
     int expected_max = strlen(string) * 16;
+    if (expected_max == 0) {
+      return;
+    }
+    
     loc_buffer.reserve(expected_max);
     id_buffer.reserve(expected_max);
     cluster_buffer.reserve(expected_max);
