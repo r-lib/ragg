@@ -97,7 +97,7 @@ public:
   AggDevice(const char* fp, int w, int h, double ps, int bg, double res, 
             double scaling);
   virtual ~AggDevice();
-  void newPage(unsigned int bg);
+  virtual void newPage(unsigned int bg);
   void close();
   virtual bool savePage();
   SEXP capture();
@@ -136,7 +136,7 @@ public:
   void drawText(double x, double y, const char *str, const char *family, 
                 int face, double size, double rot, double hadj, int col);
   
-private:
+protected:
   virtual inline R_COLOR convertColour(unsigned int col) {
     return R_COLOR(R_RED(col), R_GREEN(col), R_BLUE(col), R_ALPHA(col)).premultiply();
   }
