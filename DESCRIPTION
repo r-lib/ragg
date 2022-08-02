@@ -1,57 +1,41 @@
-Package: ragg
 Type: Package
+Package: ragg
 Title: Graphic Devices Based on AGG
 Version: 1.2.2.9000
-Authors@R: 
-    c(person(given = "Thomas Lin",
-             family = "Pedersen",
-             role = c("cre", "aut"),
-             email = "thomas.pedersen@rstudio.com",
-             comment = c(ORCID = "0000-0002-5147-4711")),
-      person(given = "Maxim",
-             family = "Shemanarev",
-             role = c("aut", "cph"),
-             comment = "Author of AGG"),
-      person(given = "Tony",
-             family = "Juricic",
-             role = c("ctb", "cph"),
-             email = "tonygeek@yahoo.com",
-             comment = "Contributor to AGG"),
-      person(given = "Milan",
-             family = "Marusinec",
-             role = c("ctb", "cph"),
-             email = "milan@marusinec.sk",
-             comment = "Contributor to AGG"),
-      person(given = "Spencer",
-             family = "Garrett",
-             role = "ctb",
-             comment = "Contributor to AGG"),
-      person(given = "RStudio",
-             role = "cph"))
+Authors@R: c(
+    person("Thomas Lin", "Pedersen", , "thomas.pedersen@rstudio.com", role = c("cre", "aut"),
+           comment = c(ORCID = "0000-0002-5147-4711")),
+    person("Maxim", "Shemanarev", role = c("aut", "cph"),
+           comment = "Author of AGG"),
+    person("Tony", "Juricic", , "tonygeek@yahoo.com", role = c("ctb", "cph"),
+           comment = "Contributor to AGG"),
+    person("Milan", "Marusinec", , "milan@marusinec.sk", role = c("ctb", "cph"),
+           comment = "Contributor to AGG"),
+    person("Spencer", "Garrett", role = "ctb",
+           comment = "Contributor to AGG"),
+    person("RStudio", role = c("cph", "fnd"))
+  )
 Maintainer: Thomas Lin Pedersen <thomas.pedersen@rstudio.com>
-Description: Anti-Grain Geometry (AGG) is a high-quality and high-performance
-    2D drawing library. The 'ragg' package provides a set of graphic devices 
-    based on AGG to use as alternative to the raster devices provided through
-    the 'grDevices' package.
+Description: Anti-Grain Geometry (AGG) is a high-quality and
+    high-performance 2D drawing library. The 'ragg' package provides a set
+    of graphic devices based on AGG to use as alternative to the raster
+    devices provided through the 'grDevices' package.
 License: MIT + file LICENSE
 URL: https://ragg.r-lib.org, https://github.com/r-lib/ragg
 BugReports: https://github.com/r-lib/ragg/issues
-Encoding: UTF-8
-RoxygenNote: 7.1.1
-SystemRequirements: 
-    C++11,
-    freetype2,
-    libpng,
-    libtiff,
-    libjpeg
-Suggests: 
-    covr,
-    testthat,
-    grid,
-    graphics
 Imports: 
     systemfonts (>= 1.0.3),
     textshaping (>= 0.3.0)
+Suggests: 
+    covr,
+    graphics,
+    grid,
+    testthat
 LinkingTo: 
     systemfonts,
     textshaping
+Config/Needs/website: ggplot2, devoid, magick, bench, tidyr, ggridges,
+    hexbin, sessioninfo, pkgdown, tidyverse/tidytemplate
+Encoding: UTF-8
+RoxygenNote: 7.1.1
+SystemRequirements: C++11, freetype2, libpng, libtiff, libjpeg

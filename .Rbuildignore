@@ -20,3 +20,4 @@
 ^\.github$
 ^revdep$
 ^CRAN-SUBMISSION$
+^ragg\.Rproj$
