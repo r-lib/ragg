@@ -2,6 +2,8 @@
 
 * Second attempt at rendering jpegs with transparent background. Now, the buffer
   is filled with solid white before any drawing happens.
+* Fixed a bug that resulted in newlines being rendered as missing glyphs on some
+  Linux versions (#111)
 
 # ragg 1.2.2
 
