@@ -159,7 +159,7 @@ public:
                                       face == 2 || face == 4, 
                                       face == 3 || face == 4,
                                       face == 5);
-    Rprintf("Loading %s\n", family);
+    Rprintf("Loading %s\n", font.file);
     current_font_size = size;
     if (!load_font_from_file(font, gren, size, id)) {
       Rf_warning("Unable to load font: %s", family);
