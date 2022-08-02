@@ -7,7 +7,7 @@ alpha, which may end up accumulating to fully opaque at some point. This
 device allows you to create a 16bit device that modifies the alpha level of 
 all incomming colours by a fixed multiplier, thus allowing for much more 
 translucent colours. The device will only modify transparent colour, so if
-you pass in an opaque colour it will be left unchanged."><title>Draw to a PNG file, modifying transparency on the fly — agg_supertransparent • ragg</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><link href="../deps/_Source%20Sans%20Pro-0.4.0/font.css" rel="stylesheet"><link href="../deps/_Source%20Code%20Pro-0.4.0/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Draw to a PNG file, modifying transparency on the fly — agg_supertransparent"><meta property="og:description" content="The graphic engine in R only supports 8bit colours. This is for the most part
+you pass in an opaque colour it will be left unchanged."><title>Draw to a PNG file, modifying transparency on the fly — agg_supertransparent • ragg</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.2/font.css" rel="stylesheet"><link href="../deps/Source_Code_Pro-0.4.2/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Draw to a PNG file, modifying transparency on the fly — agg_supertransparent"><meta property="og:description" content="The graphic engine in R only supports 8bit colours. This is for the most part
 fine, as 8bit gives all the fidelity needed for most graphing needs. However,
 this may become a limitation if you need to plot thousands of very 
 translucent shapes on top of each other. 8bit only afford a minimum of 1/255
@@ -89,18 +89,18 @@ you pass in an opaque colour it will be left unchanged.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">agg_supertransparent</span><span class="op">(</span>
-  filename <span class="op">=</span> <span class="st">"Rplot%03d.png"</span>,
-  width <span class="op">=</span> <span class="fl">480</span>,
-  height <span class="op">=</span> <span class="fl">480</span>,
-  units <span class="op">=</span> <span class="st">"px"</span>,
-  pointsize <span class="op">=</span> <span class="fl">12</span>,
-  background <span class="op">=</span> <span class="st">"white"</span>,
-  res <span class="op">=</span> <span class="fl">72</span>,
-  scaling <span class="op">=</span> <span class="fl">1</span>,
-  alpha_mod <span class="op">=</span> <span class="fl">1</span>,
-  <span class="va">bg</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">agg_supertransparent</span><span class="op">(</span></span>
+<span>  filename <span class="op">=</span> <span class="st">"Rplot%03d.png"</span>,</span>
+<span>  width <span class="op">=</span> <span class="fl">480</span>,</span>
+<span>  height <span class="op">=</span> <span class="fl">480</span>,</span>
+<span>  units <span class="op">=</span> <span class="st">"px"</span>,</span>
+<span>  pointsize <span class="op">=</span> <span class="fl">12</span>,</span>
+<span>  background <span class="op">=</span> <span class="st">"white"</span>,</span>
+<span>  res <span class="op">=</span> <span class="fl">72</span>,</span>
+<span>  scaling <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  alpha_mod <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  <span class="va">bg</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -109,23 +109,37 @@ you pass in an opaque colour it will be left unchanged.</p>
 <dd><p>The name of the file. Follows the same semantics as the file 
 naming in [grDevices::png()], meaning that you can provide a [sprintf()] 
 compliant string format to name multiple plots (such as the default value)</p></dd>
+
+
 <dt>width</dt>
 <dd><p>The dimensions of the device</p></dd>
+
+
 <dt>height</dt>
 <dd><p>The dimensions of the device</p></dd>
+
+
 <dt>units</dt>
 <dd><p>The unit `width` and `height` is measured in, in either pixels 
 (`'px'`), inches (`'in'`), millimeters (`'mm'`), or centimeter (`'cm'`).</p></dd>
+
+
 <dt>pointsize</dt>
 <dd><p>The default pointsize of the device in pt. This will in 
 general not have any effect on grid graphics (including ggplot2) as text 
 size is always set explicitly there.</p></dd>
+
+
 <dt>background</dt>
 <dd><p>The background colour of the device</p></dd>
+
+
 <dt>res</dt>
 <dd><p>The resolution of the device. This setting will govern how device
 dimensions given in inches, centimeters, or millimeters will be converted
 to pixels. Further, it will be used to scale text sizes and linewidths</p></dd>
+
+
 <dt>scaling</dt>
 <dd><p>A scaling factor to apply to the rendered line width and text
 size. Useful for getting the right dimensions at the resolution that you
@@ -133,11 +147,16 @@ need. If e.g. you need to render a plot at 4000x3000 pixels for it to fit
 into a layout, but you find that the result appears to small, you can 
 increase the `scaling` argument to make everything appear bigger at the 
 same resolution.</p></dd>
+
+
 <dt>alpha_mod</dt>
 <dd><p>A numeric between 0 and 1 that will be multiplied to the 
 alpha channel of all transparent colours</p></dd>
+
+
 <dt>bg</dt>
 <dd><p>Same as `background` for compatibility with old graphic device APIs</p></dd>
+
 </dl></div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -151,7 +170,7 @@ alpha channel of all transparent colours</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
   </div></footer></body></html>

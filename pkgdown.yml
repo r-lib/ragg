@@ -1,10 +1,10 @@
 pandoc: 2.14.2
-pkgdown: 2.0.2
+pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   ragg_performance: ragg_performance.html
   ragg_quality: ragg_quality.html
-last_built: 2022-03-03T09:46Z
+last_built: 2022-08-02T08:05Z
 urls:
   reference: https://ragg.r-lib.org/reference
   article: https://ragg.r-lib.org/articles
