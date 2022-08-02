@@ -228,7 +228,7 @@ public:
   void plot_text(double x, double y, const char *string, double rot, double hadj, 
                  renderer_solid &ren_solid, renderer &ren, scanline &sl, unsigned int id,
                  raster &ras_clip, bool clip, agg::path_storage* recording_clip) {
-    Rprintf(string);
+    Rprintf("length in: %i", strlen(string));
     agg::rasterizer_scanline_aa<> ras;
     agg::conv_curve<font_manager_type::path_adaptor_type> curves(get_manager().path_adaptor());
     curves.approximation_scale(2.0);
@@ -270,7 +270,7 @@ public:
     if (n_glyphs == 0) {
       return;
     }
-    
+    Rprintf(" length out: %i\n", n_glyphs);
     if (rot != 0) {
       rot = agg::deg2rad(-rot);
       agg::trans_affine mtx;
