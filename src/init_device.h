@@ -255,6 +255,41 @@ void agg_releaseMask(SEXP ref, pDevDesc dd) {
   END_CPP
 }
 
+template<class T>
+SEXP agg_defineGroup(SEXP source, int op, SEXP destination, pDevDesc dd) {
+  return R_NilValue;
+}
+
+template<class T>
+void agg_useGroup(SEXP ref, SEXP trans, pDevDesc dd) {
+  
+}
+
+template<class T>
+void agg_releaseGroup(SEXP ref, pDevDesc dd) {
+  
+}
+
+template<class T>
+void agg_stroke(SEXP path, const pGEcontext gc, pDevDesc dd) {
+  
+}
+
+template<class T>
+void agg_fill(SEXP path, int rule, const pGEcontext gc, pDevDesc dd) {
+  
+}
+
+template<class T>
+void agg_fillStroke(SEXP path, int rule, const pGEcontext gc, pDevDesc dd) {
+  
+}
+
+template<class T>
+SEXP agg_capabilities(SEXP capabilities) {
+  return capabilities;
+}
+
 static unsigned int DEVICE_COUNTER = 0;
 
 template<class T>
@@ -301,6 +336,13 @@ pDevDesc agg_device_new(T* device) {
   dd->releaseClipPath = agg_releaseClipPath<T>;
   dd->setMask         = agg_setMask<T>;
   dd->releaseMask     = agg_releaseMask<T>;
+  dd->defineGroup     = agg_defineGroup<T>;
+  dd->useGroup        = agg_useGroup<T>;
+  dd->releaseGroup    = agg_releaseGroup<T>;
+  dd->stroke          = agg_stroke<T>;
+  dd->fill            = agg_fill<T>;
+  dd->fillStroke      = agg_fillStroke<T>;
+  dd->capabilities    = agg_capabilities<T>;
 #endif
   // UTF-8 support
   dd->wantSymbolUTF8 = (Rboolean) 1;
@@ -339,7 +381,7 @@ pDevDesc agg_device_new(T* device) {
   dd->useRotatedTextInContour =  (Rboolean) 1;
   
 #if R_GE_version >= 13
-  dd->deviceVersion = R_GE_definitions;
+  dd->deviceVersion = R_GE_group;
 #endif
   
   device->device_id = DEVICE_COUNTER++;
