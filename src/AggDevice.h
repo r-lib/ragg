@@ -210,7 +210,11 @@ protected:
       if (current_mask == NULL) {
         pattern.draw(ras, ras_clip, sl, renderer, clip);
       } else {
-        pattern.draw(ras, ras_clip, current_mask->get_masked_scanline(), renderer, clip);
+        if (current_mask->use_luminance()) {
+          pattern.draw(ras, ras_clip, current_mask->get_masked_scanline_l(), renderer, clip);
+        } else {
+          pattern.draw(ras, ras_clip, current_mask->get_masked_scanline_a(), renderer, clip);
+        }
       }
     } else if (recording_pattern == NULL) {
       Pattern<pixfmt_type_32, agg::rgba8> mask_pattern = pattern.convert_for_mask();
@@ -218,13 +222,21 @@ protected:
       if (current_mask == NULL) {
         mask_pattern.draw(ras, ras_clip, sl, recording_mask->get_renderer(), clip);
       } else {
-        mask_pattern.draw(ras, ras_clip, current_mask->get_masked_scanline(), recording_mask->get_renderer(), clip);
+        if (current_mask->use_luminance()) {
+          mask_pattern.draw(ras, ras_clip, current_mask->get_masked_scanline_l(), recording_mask->get_renderer(), clip);
+        } else {
+          mask_pattern.draw(ras, ras_clip, current_mask->get_masked_scanline_a(), recording_mask->get_renderer(), clip);
+        }
       }
     } else {
       if (current_mask == NULL) {
         pattern.draw(ras, ras_clip, sl, recording_pattern->get_renderer(), clip);
       } else {
-        pattern.draw(ras, ras_clip, current_mask->get_masked_scanline(), recording_pattern->get_renderer(), clip);
+        if (current_mask->use_luminance()) {
+          pattern.draw(ras, ras_clip, current_mask->get_masked_scanline_l(), recording_pattern->get_renderer(), clip);
+        } else {
+          pattern.draw(ras, ras_clip, current_mask->get_masked_scanline_a(), recording_pattern->get_renderer(), clip);
+        }
       }
     }
   }
@@ -261,21 +273,33 @@ protected:
         if (current_mask == NULL) {
           render<agg::scanline_p8>(ras, ras_clip, slp, solid_renderer, current_clip != NULL);
         } else {
-          render<agg::scanline_p8>(ras, ras_clip, current_mask->get_masked_scanline(), solid_renderer, current_clip != NULL);
+          if (current_mask->use_luminance()) {
+            render<agg::scanline_p8>(ras, ras_clip, current_mask->get_masked_scanline_l(), solid_renderer, current_clip != NULL);
+          } else {
+            render<agg::scanline_p8>(ras, ras_clip, current_mask->get_masked_scanline_a(), solid_renderer, current_clip != NULL);
+          }
         }
       } else if (recording_pattern == NULL) {
         recording_mask->set_colour(convertMaskCol(fill));
         if (current_mask == NULL) {
           render<agg::scanline_p8>(ras, ras_clip, slp, recording_mask->get_solid_renderer(), current_clip != NULL);
         } else {
-          render<agg::scanline_p8>(ras, ras_clip, current_mask->get_masked_scanline(), recording_mask->get_solid_renderer(), current_clip != NULL);
+          if (current_mask->use_luminance()) {
+            render<agg::scanline_p8>(ras, ras_clip, current_mask->get_masked_scanline_l(), recording_mask->get_solid_renderer(), current_clip != NULL);
+          } else {
+            render<agg::scanline_p8>(ras, ras_clip, current_mask->get_masked_scanline_a(), recording_mask->get_solid_renderer(), current_clip != NULL);
+          }
         }
       } else {
         recording_pattern->set_colour(convertColour(fill));
         if (current_mask == NULL) {
           render<agg::scanline_p8>(ras, ras_clip, slp, recording_pattern->get_solid_renderer(), current_clip != NULL);
         } else {
-          render<agg::scanline_p8>(ras, ras_clip, current_mask->get_masked_scanline(), recording_pattern->get_solid_renderer(), current_clip != NULL);
+          if (current_mask->use_luminance()) {
+            render<agg::scanline_p8>(ras, ras_clip, current_mask->get_masked_scanline_l(), recording_pattern->get_solid_renderer(), current_clip != NULL);
+          } else {
+            render<agg::scanline_p8>(ras, ras_clip, current_mask->get_masked_scanline_a(), recording_pattern->get_solid_renderer(), current_clip != NULL);
+          }
         }
       }
     }
@@ -289,21 +313,33 @@ protected:
       if (current_mask == NULL) {
         render<agg::scanline_u8>(ras, ras_clip, slu, solid_renderer, current_clip != NULL);
       } else {
-        render<agg::scanline_u8>(ras, ras_clip, current_mask->get_masked_scanline(), solid_renderer, current_clip != NULL);
+        if (current_mask->use_luminance()) {
+          render<agg::scanline_u8>(ras, ras_clip, current_mask->get_masked_scanline_l(), solid_renderer, current_clip != NULL);
+        } else {
+          render<agg::scanline_u8>(ras, ras_clip, current_mask->get_masked_scanline_a(), solid_renderer, current_clip != NULL);
+        }
       }
     } else if (recording_pattern == NULL) {
       recording_mask->set_colour(convertMaskCol(col));
       if (current_mask == NULL) {
         render<agg::scanline_u8>(ras, ras_clip, slu, recording_mask->get_solid_renderer(), current_clip != NULL);
       } else {
-        render<agg::scanline_u8>(ras, ras_clip, current_mask->get_masked_scanline(), recording_mask->get_solid_renderer(), current_clip != NULL);
+        if (current_mask->use_luminance()) {
+          render<agg::scanline_u8>(ras, ras_clip, current_mask->get_masked_scanline_l(), recording_mask->get_solid_renderer(), current_clip != NULL);
+        } else {
+          render<agg::scanline_u8>(ras, ras_clip, current_mask->get_masked_scanline_a(), recording_mask->get_solid_renderer(), current_clip != NULL);
+        }
       }
     } else {
       recording_pattern->set_colour(convertMaskCol(col));
       if (current_mask == NULL) {
         render<agg::scanline_u8>(ras, ras_clip, slu, recording_pattern->get_solid_renderer(), current_clip != NULL);
       } else {
-        render<agg::scanline_u8>(ras, ras_clip, current_mask->get_masked_scanline(), recording_pattern->get_solid_renderer(), current_clip != NULL);
+        if (current_mask->use_luminance()) {
+          render<agg::scanline_u8>(ras, ras_clip, current_mask->get_masked_scanline_l(), recording_pattern->get_solid_renderer(), current_clip != NULL);
+        } else {
+          render<agg::scanline_u8>(ras, ras_clip, current_mask->get_masked_scanline_a(), recording_pattern->get_solid_renderer(), current_clip != NULL);
+        }
       }
     }
   }
@@ -565,7 +601,11 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createMask(SEXP mask, SEXP ref) {
   if (mask_cache_iter == mask_cache.end()) {
     // Mask doesn't exist - create a new entry and get reference to it
     std::unique_ptr<MaskBuffer> new_mask(new MaskBuffer());
-    new_mask->init(width, height);
+    bool luminance = false;
+#if R_GE_version >= R_GE_group
+    luminance = R_GE_maskType(mask) == R_GE_luminanceMask;
+#endif
+    new_mask->init(width, height, luminance);
     
     // Assign container pointer to device
     MaskBuffer* temp_mask = recording_mask;
@@ -966,20 +1006,32 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRaster(unsigned int *raster, int w
   if (recording_mask == NULL && recording_pattern == NULL) {
     if (current_mask == NULL) {
       render_raster<pixfmt_r_raster, BLNDFMT>(rbuf, w, h, ras, ras_clip, slu, interpolator, renderer, interpolate, current_clip != NULL, false);
-    } else{
-      render_raster<pixfmt_r_raster, BLNDFMT>(rbuf, w, h, ras, ras_clip, current_mask->get_masked_scanline(), interpolator, renderer, interpolate, current_clip != NULL, false);
+    } else {
+      if (current_mask->use_luminance()) {
+        render_raster<pixfmt_r_raster, BLNDFMT>(rbuf, w, h, ras, ras_clip, current_mask->get_masked_scanline_l(), interpolator, renderer, interpolate, current_clip != NULL, false);
+      } else {
+        render_raster<pixfmt_r_raster, BLNDFMT>(rbuf, w, h, ras, ras_clip, current_mask->get_masked_scanline_a(), interpolator, renderer, interpolate, current_clip != NULL, false);
+      }
     }
   } else if (recording_pattern == NULL) {
     if (current_mask == NULL) {
       render_raster<pixfmt_r_raster, pixfmt_type_32>(rbuf, w, h, ras, ras_clip, slu, interpolator, recording_mask->get_renderer(), interpolate, current_clip != NULL, false);
     } else {
-      render_raster<pixfmt_r_raster, pixfmt_type_32>(rbuf, w, h, ras, ras_clip, current_mask->get_masked_scanline(), interpolator, recording_mask->get_renderer(), interpolate, current_clip != NULL, false);
+      if (current_mask->use_luminance()) {
+        render_raster<pixfmt_r_raster, pixfmt_type_32>(rbuf, w, h, ras, ras_clip, current_mask->get_masked_scanline_l(), interpolator, recording_mask->get_renderer(), interpolate, current_clip != NULL, false);
+      } else {
+        render_raster<pixfmt_r_raster, pixfmt_type_32>(rbuf, w, h, ras, ras_clip, current_mask->get_masked_scanline_a(), interpolator, recording_mask->get_renderer(), interpolate, current_clip != NULL, false);
+      }
     }
   } else {
     if (current_mask == NULL) {
       render_raster<pixfmt_r_raster, BLNDFMT>(rbuf, w, h, ras, ras_clip, slu, interpolator, recording_pattern->get_renderer(), interpolate, current_clip != NULL, false);
     } else {
-      render_raster<pixfmt_r_raster, BLNDFMT>(rbuf, w, h, ras, ras_clip, current_mask->get_masked_scanline(), interpolator, recording_pattern->get_renderer(), interpolate, current_clip != NULL, false);
+      if (current_mask->use_luminance()) {
+        render_raster<pixfmt_r_raster, BLNDFMT>(rbuf, w, h, ras, ras_clip, current_mask->get_masked_scanline_l(), interpolator, recording_pattern->get_renderer(), interpolate, current_clip != NULL, false);
+      } else {
+        render_raster<pixfmt_r_raster, BLNDFMT>(rbuf, w, h, ras, ras_clip, current_mask->get_masked_scanline_a(), interpolator, recording_pattern->get_renderer(), interpolate, current_clip != NULL, false);
+      }
     }
   }
 }
@@ -1014,21 +1066,33 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawText(double x, double y, const cha
     if (current_mask == NULL) {
       t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, solid_renderer, renderer, slu, device_id, ras_clip, current_clip != NULL, recording_clip);
     } else {
-      t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, solid_renderer, renderer, current_mask->get_masked_scanline(), device_id, ras_clip, current_clip != NULL, recording_clip);
+      if (current_mask->use_luminance()) {
+        t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, solid_renderer, renderer, current_mask->get_masked_scanline_l(), device_id, ras_clip, current_clip != NULL, recording_clip);
+      } else {
+        t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, solid_renderer, renderer, current_mask->get_masked_scanline_a(), device_id, ras_clip, current_clip != NULL, recording_clip);
+      }
     }
   } else if (recording_pattern == NULL) {
     recording_mask->set_colour(convertMaskCol(col));
     if (current_mask == NULL) {
       t_ren.template plot_text<pixfmt_type_32>(x, y, str, rot, hadj, recording_mask->get_solid_renderer(), recording_mask->get_renderer(), slu, device_id, ras_clip, current_clip != NULL, recording_clip);
     } else {
-      t_ren.template plot_text<pixfmt_type_32>(x, y, str, rot, hadj, recording_mask->get_solid_renderer(), recording_mask->get_renderer(), current_mask->get_masked_scanline(), device_id, ras_clip, current_clip != NULL, recording_clip);
+      if (current_mask->use_luminance()) {
+        t_ren.template plot_text<pixfmt_type_32>(x, y, str, rot, hadj, recording_mask->get_solid_renderer(), recording_mask->get_renderer(), current_mask->get_masked_scanline_l(), device_id, ras_clip, current_clip != NULL, recording_clip);
+      } else {
+        t_ren.template plot_text<pixfmt_type_32>(x, y, str, rot, hadj, recording_mask->get_solid_renderer(), recording_mask->get_renderer(), current_mask->get_masked_scanline_a(), device_id, ras_clip, current_clip != NULL, recording_clip);
+      }
     }
   } else {
     recording_pattern->set_colour(convertColour(col));
     if (current_mask == NULL) {
       t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, recording_pattern->get_solid_renderer(), recording_pattern->get_renderer(), slu, device_id, ras_clip, current_clip != NULL, recording_clip);
     } else {
-      t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, recording_pattern->get_solid_renderer(), recording_pattern->get_renderer(), current_mask->get_masked_scanline(), device_id, ras_clip, current_clip != NULL, recording_clip);
+      if (current_mask->use_luminance()) {
+        t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, recording_pattern->get_solid_renderer(), recording_pattern->get_renderer(), current_mask->get_masked_scanline_l(), device_id, ras_clip, current_clip != NULL, recording_clip);
+      } else {
+        t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, recording_pattern->get_solid_renderer(), recording_pattern->get_renderer(), current_mask->get_masked_scanline_a(), device_id, ras_clip, current_clip != NULL, recording_clip);
+      }
     }
   }
 }

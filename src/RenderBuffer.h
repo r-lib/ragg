@@ -93,33 +93,44 @@ public:
 
 class MaskBuffer : public RenderBuffer<pixfmt_type_32> {
 public:
-  typedef agg::scanline_u8_am<agg::alpha_mask_rgba32a> scanline_type;
+  typedef agg::scanline_u8_am<agg::alpha_mask_rgba32a> scanline_type_a;
+  typedef agg::scanline_u8_am<agg::alpha_mask_rgba32gray> scanline_type_l;
   
 private:
   agg::alpha_mask_rgba32a alpha_mask;
-  scanline_type scanline;
+  agg::alpha_mask_rgba32gray luminance_mask;
+  scanline_type_a scanline_a;
+  scanline_type_l scanline_l;
+  bool luminance;
   
 public:
   MaskBuffer() :
   RenderBuffer<pixfmt_type_32>(),
   alpha_mask(rbuf),
-  scanline(alpha_mask)
+  luminance_mask(rbuf),
+  scanline_a(alpha_mask),
+  scanline_l(luminance_mask),
+  luminance(false)
   {
     
   }
-  MaskBuffer(int width, int height) :
+  MaskBuffer(int width, int height, bool lumin) :
   RenderBuffer<pixfmt_type_32>(width, height, agg::rgba8(0, 0, 0, 0)),
   alpha_mask(rbuf),
-  scanline(alpha_mask)
+  luminance_mask(rbuf),
+  scanline_a(alpha_mask),
+  scanline_l(luminance_mask),
+  luminance(lumin)
   {
     
   }
   
-  void init(int _width, int _height) {
+  void init(int _width, int _height, bool lumin) {
     delete pixf;
     delete [] buffer;
     width = _width;
     height = _height;
+    luminance = lumin;
     buffer = new unsigned char[width * height * 4];
     rbuf.attach(buffer, width, height, width * 4);
     pixf = new pixfmt_type_32(rbuf);
@@ -129,7 +140,11 @@ public:
     renderer.clear(agg::rgba8(0, 0, 0, 0));
   }
   
-  scanline_type& get_masked_scanline() {
-    return scanline;
+  scanline_type_a& get_masked_scanline_a() {
+    return scanline_a;
   }
+  scanline_type_l& get_masked_scanline_l() {
+    return scanline_l;
+  }
+  bool use_luminance() {return luminance;}
 };
