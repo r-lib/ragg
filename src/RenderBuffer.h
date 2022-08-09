@@ -15,9 +15,14 @@ public:
   typedef PIXFMT pixfmt_type;
   typedef agg::renderer_base<PIXFMT> renbase_type;
   typedef agg::renderer_scanline_aa_solid<renbase_type> rensolid_type;
+  typedef agg::comp_op_adaptor_rgba_pre<typename pixfmt_type::color_type, typename pixfmt_type::order_type> blender_type;
+  typedef agg::pixfmt_custom_blend_rgba<blender_type, agg::rendering_buffer> blend_pixfmt_type;
+  typedef agg::renderer_base<blend_pixfmt_type> blend_renbase_type;
+  typedef agg::renderer_scanline_aa_solid<blend_renbase_type> blend_rensolid_type;
   
   int width;
   int height;
+  bool custom_blend;
   
 protected:
   unsigned char* buffer;
@@ -25,11 +30,15 @@ protected:
   pixfmt_type* pixf;
   renbase_type renderer;
   rensolid_type renderer_solid;
+  blend_pixfmt_type* blend_pixf;
+  blend_renbase_type blend_renderer;
+  blend_rensolid_type blend_renderer_solid;
   
 public:
   RenderBuffer() :
   width(0),
   height(0),
+  custom_blend(false),
   rbuf()
   {
     buffer = new unsigned char[0];
@@ -37,11 +46,16 @@ public:
     pixf = new pixfmt_type(rbuf);
     renderer = renbase_type(*pixf);
     renderer_solid = rensolid_type(renderer);
+    
+    blend_pixf = new blend_pixfmt_type(rbuf);
+    blend_renderer = blend_renbase_type(*blend_pixf);
+    blend_renderer_solid = blend_rensolid_type(blend_renderer);
   }
   template<class COLOR>
   RenderBuffer(int _width, int _height, COLOR bg) : 
   width(_width),
   height(_height),
+  custom_blend(false),
   rbuf()
   {
     buffer = new unsigned char[width * height * PIXFMT::pix_width];
@@ -50,16 +64,22 @@ public:
     renderer = renbase_type(*pixf);
     renderer_solid = rensolid_type(renderer);
     
+    blend_pixf = new blend_pixfmt_type(rbuf);
+    blend_renderer = blend_renbase_type(*blend_pixf);
+    blend_renderer_solid = blend_rensolid_type(blend_renderer);
+    
     renderer.clear(bg);
   }
   ~RenderBuffer() {
     delete pixf;
+    delete blend_pixf;
     delete [] buffer;
   }
   
   template<class COLOR>
   void init(int _width, int _height, COLOR bg) {
     delete pixf;
+    delete blend_pixf;
     delete [] buffer;
     width = _width;
     height = _height;
@@ -69,14 +89,29 @@ public:
     renderer = renbase_type(*pixf);
     renderer_solid = rensolid_type(renderer);
     
+    blend_pixf = new blend_pixfmt_type(rbuf);
+    blend_renderer = blend_renbase_type(*blend_pixf);
+    blend_renderer_solid = blend_rensolid_type(blend_renderer);
+    
     renderer.clear(bg);
   }
   
+  void set_comp(agg::comp_op_e op) {
+    if (op == agg::comp_op_src_over) return;
+    blend_pixf->comp_op(op);
+    custom_blend = true;
+  }
   renbase_type& get_renderer() {
     return renderer;
   }
   rensolid_type& get_solid_renderer() {
     return renderer_solid;
+  }
+  blend_renbase_type& get_renderer_blend() {
+    return blend_renderer;
+  }
+  blend_rensolid_type& get_solid_renderer_blend() {
+    return blend_renderer_solid;
   }
   agg::rendering_buffer& get_buffer() {
     return rbuf;
@@ -127,6 +162,7 @@ public:
   
   void init(int _width, int _height, bool lumin) {
     delete pixf;
+    delete blend_pixf;
     delete [] buffer;
     width = _width;
     height = _height;
@@ -136,6 +172,10 @@ public:
     pixf = new pixfmt_type_32(rbuf);
     renderer = renbase_type(*pixf);
     renderer_solid = rensolid_type(renderer);
+    
+    blend_pixf = new blend_pixfmt_type(rbuf);
+    blend_renderer = blend_renbase_type(*blend_pixf);
+    blend_renderer_solid = blend_rensolid_type(blend_renderer);
     
     renderer.clear(agg::rgba8(0, 0, 0, 0));
   }
