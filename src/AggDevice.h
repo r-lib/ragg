@@ -135,6 +135,7 @@ public:
                   bool interpolate);
   void drawText(double x, double y, const char *str, const char *family, 
                 int face, double size, double rot, double hadj, int col);
+  void typesetText(SEXP span, double x, double y);
   
 protected:
   virtual inline R_COLOR convertColour(unsigned int col) {
@@ -997,6 +998,82 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawText(double x, double y, const cha
   size *= res_mod;
   
   if (!t_ren.load_font(gren, family, face, size, device_id)) {
+    return;
+  }
+  
+  agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
+  if (current_clip != NULL) {
+    ras_clip.add_path(*current_clip);
+    if (current_clip_rule_is_evenodd) {
+      ras_clip.filling_rule(agg::fill_even_odd);
+    }
+  }
+  
+  agg::scanline_u8 slu;
+  if (recording_mask == NULL && recording_pattern == NULL) {
+    solid_renderer.color(convertColour(col));
+    if (current_mask == NULL) {
+      t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, solid_renderer, renderer, slu, device_id, ras_clip, current_clip != NULL, recording_clip);
+    } else {
+      t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, solid_renderer, renderer, current_mask->get_masked_scanline(), device_id, ras_clip, current_clip != NULL, recording_clip);
+    }
+  } else if (recording_pattern == NULL) {
+    recording_mask->set_colour(convertMaskCol(col));
+    if (current_mask == NULL) {
+      t_ren.template plot_text<pixfmt_type_32>(x, y, str, rot, hadj, recording_mask->get_solid_renderer(), recording_mask->get_renderer(), slu, device_id, ras_clip, current_clip != NULL, recording_clip);
+    } else {
+      t_ren.template plot_text<pixfmt_type_32>(x, y, str, rot, hadj, recording_mask->get_solid_renderer(), recording_mask->get_renderer(), current_mask->get_masked_scanline(), device_id, ras_clip, current_clip != NULL, recording_clip);
+    }
+  } else {
+    recording_pattern->set_colour(convertColour(col));
+    if (current_mask == NULL) {
+      t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, recording_pattern->get_solid_renderer(), recording_pattern->get_renderer(), slu, device_id, ras_clip, current_clip != NULL, recording_clip);
+    } else {
+      t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, recording_pattern->get_solid_renderer(), recording_pattern->get_renderer(), current_mask->get_masked_scanline(), device_id, ras_clip, current_clip != NULL, recording_clip);
+    }
+  }
+}
+
+template<class PIXFMT, class R_COLOR, typename BLNDFMT>
+void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::typesetText(SEXP span, 
+                                                      double x, double y) {
+  double rot = 0.0;
+  double size = 12.0;
+  double hadj = 0;
+  int col = R_GE_str2col("black");
+
+  agg::glyph_rendering gren = std::fmod(rot, 90) == 0.0 && recording_clip == NULL ? agg::glyph_ren_agg_gray8 : agg::glyph_ren_outline;
+  
+  x += x_trans;
+  y += y_trans;
+  
+  size *= res_mod;
+  
+  SEXP text, family, weight, style;
+  PROTECT(text = R_GE_spanText(span));
+  PROTECT(family = R_GE_spanFamily(span));
+  PROTECT(weight = R_GE_spanWeight(span));
+  PROTECT(style = R_GE_spanStyle(span));
+
+  const char *str = CHAR(STRING_ELT(text, 0));
+
+  int face;
+  if (REAL(weight)[0] != 400) {
+      if (INTEGER(style)[0] != R_GE_text_style_normal) {
+          face = 4;
+      } else {
+          face = 2;
+      }
+  } else {
+      if (INTEGER(style)[0] != R_GE_text_style_normal) {
+          face = 3;
+      } else {
+          face = 1;
+      }      
+  }
+
+  if (!t_ren.load_font(gren, CHAR(STRING_ELT(family, 0)), 
+                       face, size, device_id)) {
     return;
   }
   

@@ -255,6 +255,14 @@ void agg_releaseMask(SEXP ref, pDevDesc dd) {
   END_CPP
 }
 
+template<class T>
+void agg_typeset(SEXP span, double x, double y, pDevDesc dd) {
+  T * device = (T *) dd->deviceSpecific;
+  BEGIN_CPP
+  device->typesetText(span, x, y);
+  END_CPP
+}
+
 static unsigned int DEVICE_COUNTER = 0;
 
 template<class T>
@@ -301,6 +309,8 @@ pDevDesc agg_device_new(T* device) {
   dd->releaseClipPath = agg_releaseClipPath<T>;
   dd->setMask         = agg_setMask<T>;
   dd->releaseMask     = agg_releaseMask<T>;
+
+  dd->typeset         = agg_typeset<T>;
 #endif
   // UTF-8 support
   dd->wantSymbolUTF8 = (Rboolean) 1;
@@ -339,7 +349,9 @@ pDevDesc agg_device_new(T* device) {
   dd->useRotatedTextInContour =  (Rboolean) 1;
   
 #if R_GE_version >= 13
-  dd->deviceVersion = R_GE_definitions;
+  // Very dangerous because we have skipped over R_GE_Group
+  // so we are vulnerable to being called by, e.g., dev->stroke()
+  dd->deviceVersion = R_GE_typeset;
 #endif
   
   device->device_id = DEVICE_COUNTER++;
