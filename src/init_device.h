@@ -263,6 +263,14 @@ void agg_typeset(SEXP span, double x, double y, pDevDesc dd) {
   END_CPP
 }
 
+template<class T>
+void agg_renderText(SEXP glyph, double x, double y, pDevDesc dd) {
+  T * device = (T *) dd->deviceSpecific;
+  BEGIN_CPP
+  device->renderText(glyph, x, y);
+  END_CPP
+}
+
 static unsigned int DEVICE_COUNTER = 0;
 
 template<class T>
@@ -311,6 +319,7 @@ pDevDesc agg_device_new(T* device) {
   dd->releaseMask     = agg_releaseMask<T>;
 
   dd->typeset         = agg_typeset<T>;
+  dd->renderText      = agg_renderText<T>;
 #endif
   // UTF-8 support
   dd->wantSymbolUTF8 = (Rboolean) 1;

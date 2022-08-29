@@ -386,7 +386,8 @@ public:
         }
     }
 
-    /* Call R function from 'textshaping' for now */
+    /* Call R function from 'textshaping' for now 
+     * (this should become call to 'textshaping' C API) */
     SEXP s, t, result;
     t = s = PROTECT(Rf_allocList(6));
     SET_TYPEOF(s, LANGSXP);
@@ -445,6 +446,126 @@ public:
         std::string font1 = fonts[j].file;
         std::string font2 = fonts[j - 1].file;
         if (j == n_glyphs || font1 != font2) {
+            /* There is something going on here:  need to both load_font()
+             * and load_font_from_file() to get my test example to work,
+             * but not sure why */
+            if (!load_font(gren, families[text_run_start].c_str(), 
+                           faces[text_run_start], size, id)) 
+                return;
+            if (load_font_from_file(fonts[text_run_start], 
+                                    last_gren, size, id)) {
+                for (int i = text_run_start; i < j; ++i) {
+                    const agg::glyph_cache* 
+                        glyph = get_manager().glyph(INTEGER(glyph_id)[i]);
+                    if (glyph) {
+                        double x_off = REAL(x_offset)[i];
+                        double y_off = REAL(y_offset)[i];
+                        get_manager().init_embedded_adaptors(glyph, 
+                                                             x + x_off, 
+                                                             y + y_off);
+                        switch(glyph->data_type) {
+                        default: break;
+                        case agg::glyph_data_gray8:
+                            render<agg::scanline_u8>(get_manager().gray8_adaptor(), 
+                                                     ras_clip, sl, ren_solid, 
+                                                     clip);
+                            break;
+                
+                        case agg::glyph_data_color:
+                            renderColourGlyph<TARGET>(glyph, 
+                                                      x + x_off, y + y_off, 
+                                                      0.0, // rot
+                                                      ren, sl, 
+                                                      1.0, // scaling
+                                                      ras_clip, clip);
+                            break;
+                
+                        case agg::glyph_data_outline:
+                            if (recording_clip != NULL) {
+                                recording_clip->concat_path(curves);
+                                break;
+                            }
+                            ras.reset();
+                            ras.add_path(curves);
+                            render<agg::scanline_u8>(ras, ras_clip, sl, 
+                                                     ren_solid, clip);
+                            break;
+                        }
+                    }
+                }
+            }
+            text_run_start = j;
+        }
+    }
+    UNPROTECT(1);  /* result */
+    
+  }
+
+  template<typename TARGET, typename renderer_solid, typename renderer, typename raster, typename scanline>
+  void render_glyphs(double x, double y, SEXP glyph,
+                     renderer_solid &ren_solid, renderer &ren, 
+                     scanline &sl, unsigned int id,
+                     raster &ras_clip, bool clip, 
+                     agg::path_storage* recording_clip) {
+
+    double rot = 0.0;
+
+    /* Shifted from renderText() because more than one load_font()
+     * to do, so that happens here rather than in typesetText() */
+    agg::glyph_rendering gren = std::fmod(rot, 90) == 0.0 && recording_clip == NULL ? agg::glyph_ren_agg_gray8 : agg::glyph_ren_outline;
+
+    agg::rasterizer_scanline_aa<> ras;
+    agg::conv_curve<font_manager_type::path_adaptor_type> curves(get_manager().path_adaptor());
+    curves.approximation_scale(2.0);
+
+    SEXP character = R_GE_glyphGlyph(glyph); 
+    SEXP font = R_GE_glyphFont(glyph);
+    SEXP glyph_id = R_GE_glyphIndex(glyph);
+    SEXP x_offset = R_GE_glyphXOffset(glyph);
+    SEXP y_offset = R_GE_glyphYOffset(glyph);
+    double size = 12;
+
+    int n_glyphs = LENGTH(character);
+    int i;
+    
+    /* Generate vectors of font info */
+    std::vector<FontSettings> fonts;
+    std::vector<std::string> families;
+    std::vector<int> faces;
+    for (i=0; i<n_glyphs; i++) {
+        SEXP f = VECTOR_ELT(font, i);
+        SEXP family = R_GE_fontFamily(f);
+        SEXP weight = R_GE_fontWeight(f);
+        SEXP style = R_GE_fontStyle(f);
+        families.push_back(CHAR(STRING_ELT(family, 0)));
+        if (REAL(weight)[0] > 400) {
+            if (INTEGER(style)[0] != R_GE_text_style_normal) {
+                faces.push_back(4);
+            } else {
+                faces.push_back(2);
+            }
+        } else {
+            if (INTEGER(style)[0] != R_GE_text_style_normal) {
+                faces.push_back(3);
+            } else {
+                faces.push_back(1);
+            }      
+        }
+        fonts.push_back(locate_font_with_features(families[i].c_str(), 
+                                                  faces[i] == 2 || 
+                                                  faces[i] == 4, 
+                                                  faces[i] == 3 || 
+                                                  faces[i] == 4));
+    }
+
+    int text_run_start = 0;
+    for (int j = 1; j <= n_glyphs; ++j) {
+        std::string font1 = fonts[j].file;
+        std::string font2 = fonts[j - 1].file;
+        if (j == n_glyphs || font1 != font2) {
+            /* There is something going on here:  need to both load_font()
+             * and load_font_from_file() to get my test example to work,
+             * but not sure why */
             if (!load_font(gren, families[text_run_start].c_str(), 
                            faces[text_run_start], size, id)) 
                 return;
