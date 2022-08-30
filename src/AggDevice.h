@@ -136,7 +136,7 @@ public:
   void drawText(double x, double y, const char *str, const char *family, 
                 int face, double size, double rot, double hadj, int col);
   void typesetText(SEXP span, double x, double y);
-  void renderText(SEXP glyph, double x, double y);
+  void drawGlyph(SEXP glyph, double x, double y);
   
 protected:
   virtual inline R_COLOR convertColour(unsigned int col) {
@@ -1116,8 +1116,8 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::typesetText(SEXP span,
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
-void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::renderText(SEXP glyph, 
-                                                     double x, double y) {
+void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(SEXP glyph, 
+                                                    double x, double y) {
   double size = 12.0;
   int col = R_GE_str2col("black");
 
