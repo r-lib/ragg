@@ -135,7 +135,7 @@ public:
                   bool interpolate);
   void drawText(double x, double y, const char *str, const char *family, 
                 int face, double size, double rot, double hadj, int col);
-  void typesetText(SEXP span, double x, double y);
+  void typesetText(SEXP span, double x, double y, double w);
   void drawGlyph(SEXP glyph, double x, double y);
   
 protected:
@@ -1037,7 +1037,8 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawText(double x, double y, const cha
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::typesetText(SEXP span, 
-                                                      double x, double y) {
+                                                      double x, double y,
+                                                      double w) {
 
   double size = 12.0;
   int col = R_GE_str2col("black");
@@ -1063,13 +1064,13 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::typesetText(SEXP span,
   if (recording_mask == NULL && recording_pattern == NULL) {
     solid_renderer.color(convertColour(col));
     if (current_mask == NULL) {
-      t_ren.template layout_text<BLNDFMT>(x, y, span, 
+      t_ren.template layout_text<BLNDFMT>(x, y, span, w,
                                           solid_renderer, renderer, 
                                           slu, device_id, 
                                           ras_clip, current_clip != NULL,
                                           recording_clip);
     } else {
-      t_ren.template layout_text<BLNDFMT>(x, y, span, 
+      t_ren.template layout_text<BLNDFMT>(x, y, span, w,
                                           solid_renderer, renderer, 
                                           current_mask->get_masked_scanline(), 
                                           device_id, 
@@ -1079,14 +1080,14 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::typesetText(SEXP span,
   } else if (recording_pattern == NULL) {
     recording_mask->set_colour(convertMaskCol(col));
     if (current_mask == NULL) {
-      t_ren.template layout_text<pixfmt_type_32>(x, y, span, 
+      t_ren.template layout_text<pixfmt_type_32>(x, y, span, w,
                                                  recording_mask->get_solid_renderer(), 
                                                  recording_mask->get_renderer(),
                                                  slu, device_id, 
                                                  ras_clip, current_clip != NULL,
                                                  recording_clip);
     } else {
-      t_ren.template layout_text<pixfmt_type_32>(x, y, span, 
+      t_ren.template layout_text<pixfmt_type_32>(x, y, span, w,
                                                  recording_mask->get_solid_renderer(), 
                                                  recording_mask->get_renderer(),
                                                  current_mask->get_masked_scanline(), 
@@ -1097,14 +1098,14 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::typesetText(SEXP span,
   } else {
     recording_pattern->set_colour(convertColour(col));
     if (current_mask == NULL) {
-      t_ren.template layout_text<BLNDFMT>(x, y, span, 
+      t_ren.template layout_text<BLNDFMT>(x, y, span, w,
                                           recording_pattern->get_solid_renderer(), 
                                           recording_pattern->get_renderer(), 
                                           slu, device_id, 
                                           ras_clip, current_clip != NULL,
                                           recording_clip);
     } else {
-      t_ren.template layout_text<BLNDFMT>(x, y, span, 
+      t_ren.template layout_text<BLNDFMT>(x, y, span, w,
                                           recording_pattern->get_solid_renderer(), 
                                           recording_pattern->get_renderer(), 
                                           current_mask->get_masked_scanline(), 

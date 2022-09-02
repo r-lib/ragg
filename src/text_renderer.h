@@ -339,7 +339,7 @@ public:
   }
 
   template<typename TARGET, typename renderer_solid, typename renderer, typename raster, typename scanline>
-  void layout_text(double x, double y, SEXP span,
+  void layout_text(double x, double y, SEXP span, double w,
                    renderer_solid &ren_solid, renderer &ren, 
                    scanline &sl, unsigned int id,
                    raster &ras_clip, bool clip, 
@@ -386,10 +386,14 @@ public:
         }
     }
 
+    /* 'width' arg */
+    SEXP width = PROTECT(Rf_allocVector(REALSXP, 1));
+    REAL(width)[0] = w;
+
     /* Call R function from 'textshaping' for now 
      * (this should become call to 'textshaping' C API) */
     SEXP s, t, result;
-    t = s = PROTECT(Rf_allocList(6));
+    t = s = PROTECT(Rf_allocList(7));
     SET_TYPEOF(s, LANGSXP);
     SETCAR(t, Rf_install("shape_text")); t = CDR(t);
     SETCAR(t, text); t = CDR(t);
@@ -397,17 +401,21 @@ public:
     SETCAR(t, family); t = CDR(t);
     SETCAR(t, italic); t = CDR(t);
     SETCAR(t, bold); t = CDR(t);
+    SETCAR(t, width); SET_TAG(t, Rf_install("width"));
     result = PROTECT(Rf_eval(s, R_GlobalEnv));
     UNPROTECT(1); /* t/s */
       
     /* No longer need args (just need result) */
-    UNPROTECT(3);
+    UNPROTECT(4);
     
     SEXP info = VECTOR_ELT(result, 0);
     SEXP x_offset = VECTOR_ELT(info, 4);
     SEXP y_offset = VECTOR_ELT(info, 5);
     SEXP glyph_id = VECTOR_ELT(info, 1);
     SEXP string_id = VECTOR_ELT(info, 3);
+
+    SEXP metric = VECTOR_ELT(result, 1);
+    SEXP height = VECTOR_ELT(metric, 8);
     
     int n_glyphs = LENGTH(VECTOR_ELT(info, 0));
     if (n_glyphs == 0) {
@@ -460,9 +468,10 @@ public:
                     if (glyph) {
                         double x_off = REAL(x_offset)[i];
                         double y_off = REAL(y_offset)[i];
+                        double h = REAL(height)[0];
                         get_manager().init_embedded_adaptors(glyph, 
                                                              x + x_off, 
-                                                             y + y_off);
+                                                             y + h - y_off);
                         switch(glyph->data_type) {
                         default: break;
                         case agg::glyph_data_gray8:
@@ -473,7 +482,8 @@ public:
                 
                         case agg::glyph_data_color:
                             renderColourGlyph<TARGET>(glyph, 
-                                                      x + x_off, y + y_off, 
+                                                      x + x_off, 
+                                                      y + h - y_off, 
                                                       0.0, // rot
                                                       ren, sl, 
                                                       1.0, // scaling

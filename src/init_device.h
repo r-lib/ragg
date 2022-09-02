@@ -256,10 +256,10 @@ void agg_releaseMask(SEXP ref, pDevDesc dd) {
 }
 
 template<class T>
-void agg_typeset(SEXP span, double x, double y, pDevDesc dd) {
+void agg_typeset(SEXP span, double x, double y, double w, pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
   BEGIN_CPP
-  device->typesetText(span, x, y);
+  device->typesetText(span, x, y, w);
   END_CPP
 }
 
