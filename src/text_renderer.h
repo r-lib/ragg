@@ -533,7 +533,6 @@ public:
     SEXP glyph_id = R_GE_glyphIndex(glyph);
     SEXP x_offset = R_GE_glyphXOffset(glyph);
     SEXP y_offset = R_GE_glyphYOffset(glyph);
-    double size = 12;
 
     int n_glyphs = LENGTH(character);
     int i;
@@ -542,11 +541,13 @@ public:
     std::vector<FontSettings> fonts;
     std::vector<std::string> families;
     std::vector<int> faces;
+    std::vector<double> sizes;
     for (i=0; i<n_glyphs; i++) {
         SEXP f = VECTOR_ELT(font, i);
         SEXP family = R_GE_fontFamily(f);
         SEXP weight = R_GE_fontWeight(f);
         SEXP style = R_GE_fontStyle(f);
+        SEXP size = R_GE_fontSize(f);
         families.push_back(CHAR(STRING_ELT(family, 0)));
         if (REAL(weight)[0] > 400) {
             if (INTEGER(style)[0] != R_GE_text_style_normal) {
@@ -566,6 +567,7 @@ public:
                                                   faces[i] == 4, 
                                                   faces[i] == 3 || 
                                                   faces[i] == 4));
+        sizes.push_back(REAL(size)[0]);
     }
 
     int text_run_start = 0;
@@ -577,10 +579,10 @@ public:
              * and load_font_from_file() to get my test example to work,
              * but not sure why */
             if (!load_font(gren, families[text_run_start].c_str(), 
-                           faces[text_run_start], size, id)) 
+                           faces[text_run_start], sizes[text_run_start], id)) 
                 return;
             if (load_font_from_file(fonts[text_run_start], 
-                                    last_gren, size, id)) {
+                                    last_gren, sizes[text_run_start], id)) {
                 for (int i = text_run_start; i < j; ++i) {
                     const agg::glyph_cache* 
                         glyph = get_manager().glyph(INTEGER(glyph_id)[i]);
