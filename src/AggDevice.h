@@ -1124,16 +1124,16 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
                                                     SEXP font) {
   double size = 12.0;
   int col = R_GE_str2col("black");
-
+  
   /* 'gren' and 't_ren.load_font()' shifted to layout_text() 
-   * because there may be more than one font
+   * so extraction of font info happens once.
    */
 
   xoff += x_trans;
   yoff += y_trans;
   
   size *= res_mod;
-
+  
   agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
   if (current_clip != NULL) {
     ras_clip.add_path(*current_clip);

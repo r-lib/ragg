@@ -521,8 +521,8 @@ public:
 
     double rot = 0.0;
 
-    /* Shifted from renderText() because more than one load_font()
-     * to do, so that happens here rather than in typesetText() */
+    /* Shifted from renderText(), so that all font info extraction 
+     * happens here (rather than in typesetText() as well) */
     agg::glyph_rendering gren = std::fmod(rot, 90) == 0.0 && recording_clip == NULL ? agg::glyph_ren_agg_gray8 : agg::glyph_ren_outline;
 
     agg::rasterizer_scanline_aa<> ras;
@@ -568,7 +568,7 @@ public:
             if (glyph) {
                 get_manager().init_embedded_adaptors(glyph, 
                                                      x[i] + xoff, 
-                                                     y[i] + yoff);
+                                                     y[i] - yoff);
                 switch(glyph->data_type) {
                 default: break;
                 case agg::glyph_data_gray8:
@@ -579,7 +579,7 @@ public:
                 
                 case agg::glyph_data_color:
                     renderColourGlyph<TARGET>(glyph, 
-                                              x[i] + xoff, y[i] + yoff, 
+                                              x[i] + xoff, y[i] - yoff, 
                                               0.0, // rot
                                               ren, sl, 
                                               1.0, // scaling
