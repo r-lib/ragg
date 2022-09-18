@@ -567,8 +567,8 @@ public:
                 glyph = get_manager().glyph(glyphs[i]);
             if (glyph) {
                 get_manager().init_embedded_adaptors(glyph, 
-                                                     x[i] + xoff, 
-                                                     y[i] - yoff);
+                                                     xoff + x[i], 
+                                                     yoff + y[i]);
                 switch(glyph->data_type) {
                 default: break;
                 case agg::glyph_data_gray8:
@@ -579,7 +579,8 @@ public:
                 
                 case agg::glyph_data_color:
                     renderColourGlyph<TARGET>(glyph, 
-                                              x[i] + xoff, y[i] - yoff, 
+                                              xoff + x[i], 
+                                              yoff + y[i],
                                               0.0, // rot
                                               ren, sl, 
                                               1.0, // scaling
