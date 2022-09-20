@@ -512,8 +512,7 @@ public:
   }
 
   template<typename TARGET, typename renderer_solid, typename renderer, typename raster, typename scanline>
-  void render_glyphs(int n, int *glyphs, double *x, double *y,
-                     double xoff, double yoff, SEXP font,
+  void render_glyphs(int n, int *glyphs, double *x, double *y, SEXP font,
                      renderer_solid &ren_solid, renderer &ren, 
                      scanline &sl, unsigned int id,
                      raster &ras_clip, bool clip, 
@@ -566,9 +565,7 @@ public:
             const agg::glyph_cache* 
                 glyph = get_manager().glyph(glyphs[i]);
             if (glyph) {
-                get_manager().init_embedded_adaptors(glyph, 
-                                                     xoff + x[i], 
-                                                     yoff + y[i]);
+                get_manager().init_embedded_adaptors(glyph, x[i], y[i]);
                 switch(glyph->data_type) {
                 default: break;
                 case agg::glyph_data_gray8:
@@ -578,9 +575,7 @@ public:
                     break;
                 
                 case agg::glyph_data_color:
-                    renderColourGlyph<TARGET>(glyph, 
-                                              xoff + x[i], 
-                                              yoff + y[i],
+                    renderColourGlyph<TARGET>(glyph, x[i], y[i],
                                               0.0, // rot
                                               ren, sl, 
                                               1.0, // scaling
