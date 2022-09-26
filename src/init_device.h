@@ -264,11 +264,14 @@ void agg_typeset(SEXP span, double x, double y, double w, pDevDesc dd) {
 }
 
 template<class T>
-void agg_glyph(int n, int *glyphs, double *x, double *y, SEXP font, 
+void agg_glyph(int n, int *glyphs, double *x, double *y, 
+               const char* family, double weight, int style,
+               const char* file, int index, double size,
                pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
   BEGIN_CPP
-  device->drawGlyph(n, glyphs, x, y, font);
+  device->drawGlyph(n, glyphs, x, y, 
+                    family, weight, style, file, index, size);
   END_CPP
 }
 

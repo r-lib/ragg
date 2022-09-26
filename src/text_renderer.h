@@ -512,7 +512,9 @@ public:
   }
 
   template<typename TARGET, typename renderer_solid, typename renderer, typename raster, typename scanline>
-  void render_glyphs(int n, int *glyphs, double *x, double *y, SEXP font,
+  void render_glyphs(int n, int *glyphs, double *x, double *y, 
+                     const char* family, double weight, int style,
+                     const char* file, int index, double size,
                      renderer_solid &ren_solid, renderer &ren, 
                      scanline &sl, unsigned int id,
                      raster &ras_clip, bool clip, 
@@ -530,35 +532,29 @@ public:
 
     int i;
     
-    SEXP family = R_GE_fontFamily(font);
-    SEXP weight = R_GE_fontWeight(font);
-    SEXP style = R_GE_fontStyle(font);
-    SEXP size = R_GE_fontSize(font);
-
     FontSettings f;
-    std::string familyname = CHAR(STRING_ELT(family, 0));
     int face;
-    if (REAL(weight)[0] > 400) {
-        if (INTEGER(style)[0] != R_GE_text_style_normal) {
+    if (weight > 400) {
+        if (style != R_GE_text_style_normal) {
             face = 4;
         } else {
             face = 2;
         }
     } else {
-        if (INTEGER(style)[0] != R_GE_text_style_normal) {
+        if (style != R_GE_text_style_normal) {
             face = 3;
         } else {
             face = 1;
         }      
     }
-    f = locate_font_with_features(familyname.c_str(), 
+    f = locate_font_with_features(family, 
                                   face == 2 || 
                                   face == 4, 
                                   face == 3 || 
                                   face == 4);
-    double ps = REAL(size)[0];
+    double ps = size;
     
-    if (!load_font(gren, familyname.c_str(), face, ps, id)) 
+    if (!load_font(gren, family, face, ps, id)) 
                 return;
     if (load_font_from_file(f, last_gren, ps, id)) {
         for (i = 0; i < n; i++) {

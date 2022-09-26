@@ -136,7 +136,9 @@ public:
   void drawText(double x, double y, const char *str, const char *family, 
                 int face, double size, double rot, double hadj, int col);
   void typesetText(SEXP span, double x, double y, double w);
-  void drawGlyph(int n, int *glyphs, double *x, double *y, SEXP font);
+  void drawGlyph(int n, int *glyphs, double *x, double *y, 
+                 const char* family, double weight, int style,
+                 const char* file, int index, double size);
   
 protected:
   virtual inline R_COLOR convertColour(unsigned int col) {
@@ -1118,9 +1120,11 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::typesetText(SEXP span,
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs, 
-                                                    double *x, double *y,
-                                                    SEXP font) {
-  double size = 12.0;
+                                                    double *x, double *y, 
+                                                    const char* family, 
+                                                    double weight, int style,
+                                                    const char* file, 
+                                                    int index, double size) {
   int col = R_GE_str2col("black");
   
   /* 'gren' and 't_ren.load_font()' shifted to layout_text() 
@@ -1147,13 +1151,17 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
   if (recording_mask == NULL && recording_pattern == NULL) {
     solid_renderer.color(convertColour(col));
     if (current_mask == NULL) {
-      t_ren.template render_glyphs<BLNDFMT>(n, glyphs, x, y, font, 
+      t_ren.template render_glyphs<BLNDFMT>(n, glyphs, x, y, 
+                                            family, weight, style,
+                                            file, index, size,
                                             solid_renderer, renderer, 
                                             slu, device_id, 
                                             ras_clip, current_clip != NULL,
                                             recording_clip);
     } else {
-      t_ren.template render_glyphs<BLNDFMT>(n, glyphs, x, y, font, 
+      t_ren.template render_glyphs<BLNDFMT>(n, glyphs, x, y,  
+                                            family, weight, style,
+                                            file, index, size,
                                             solid_renderer, renderer, 
                                             current_mask->get_masked_scanline(),
                                             device_id, 
@@ -1163,7 +1171,9 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
   } else if (recording_pattern == NULL) {
     recording_mask->set_colour(convertMaskCol(col));
     if (current_mask == NULL) {
-      t_ren.template render_glyphs<pixfmt_type_32>(n, glyphs, x, y, font, 
+      t_ren.template render_glyphs<pixfmt_type_32>(n, glyphs, x, y,
+                                                   family, weight, style,
+                                                   file, index, size,
                                                    recording_mask->get_solid_renderer(), 
                                                    recording_mask->get_renderer(),
                                                    slu, device_id, 
@@ -1171,7 +1181,9 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
                                                    current_clip != NULL,
                                                    recording_clip);
     } else {
-      t_ren.template render_glyphs<pixfmt_type_32>(n, glyphs, x, y, font, 
+      t_ren.template render_glyphs<pixfmt_type_32>(n, glyphs, x, y,
+                                                   family, weight, style,
+                                                   file, index, size,
                                                    recording_mask->get_solid_renderer(), 
                                                    recording_mask->get_renderer(),
                                                    current_mask->get_masked_scanline(), 
@@ -1183,14 +1195,18 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
   } else {
     recording_pattern->set_colour(convertColour(col));
     if (current_mask == NULL) {
-      t_ren.template render_glyphs<BLNDFMT>(n, glyphs, x, y, font, 
+      t_ren.template render_glyphs<BLNDFMT>(n, glyphs, x, y,
+                                            family, weight, style,
+                                            file, index, size,
                                             recording_pattern->get_solid_renderer(), 
                                             recording_pattern->get_renderer(), 
                                             slu, device_id, 
                                             ras_clip, current_clip != NULL,
                                             recording_clip);
     } else {
-      t_ren.template render_glyphs<BLNDFMT>(n, glyphs, x, y, font, 
+      t_ren.template render_glyphs<BLNDFMT>(n, glyphs, x, y, 
+                                            family, weight, style,
+                                            file, index, size,
                                             recording_pattern->get_solid_renderer(), 
                                             recording_pattern->get_renderer(), 
                                             current_mask->get_masked_scanline(), 
