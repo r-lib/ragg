@@ -256,14 +256,6 @@ void agg_releaseMask(SEXP ref, pDevDesc dd) {
 }
 
 template<class T>
-void agg_typeset(SEXP span, double x, double y, double w, pDevDesc dd) {
-  T * device = (T *) dd->deviceSpecific;
-  BEGIN_CPP
-  device->typesetText(span, x, y, w);
-  END_CPP
-}
-
-template<class T>
 void agg_glyph(int n, int *glyphs, double *x, double *y, 
                const char* family, double weight, int style,
                const char* file, int index, double size,
@@ -322,7 +314,6 @@ pDevDesc agg_device_new(T* device) {
   dd->setMask         = agg_setMask<T>;
   dd->releaseMask     = agg_releaseMask<T>;
 
-  dd->typeset         = agg_typeset<T>;
   dd->glyph           = agg_glyph<T>;
 #endif
   // UTF-8 support
