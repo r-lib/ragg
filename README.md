@@ -38,15 +38,15 @@ devices provided by default from the grDevices packages and can both
 produce png, jpeg and tiff files. Notable features, that sets itself
 apart from the build-in devices, includes:
 
--   Faster (up to 40% faster than anti-aliased cairo device)
--   Direct access to all system fonts
--   Advanced text rendering, including support for right-to-left text,
-    emojis, and font fallback
--   High quality anti-aliasing
--   High quality rotated text
--   Support 16-bit output
--   System independent rendering (output from Mac, Windows, and Linux
-    should be identical)
+- Faster (up to 40% faster than anti-aliased cairo device)
+- Direct access to all system fonts
+- Advanced text rendering, including support for right-to-left text,
+  emojis, and font fallback
+- High quality anti-aliasing
+- High quality rotated text
+- Support 16-bit output
+- System independent rendering (output from Mac, Windows, and Linux
+  should be identical)
 
 You can use it like any other device. The main functions are
 `agg_png()`, `agg_jpeg()` and `agg_tiff()`, all of which have arguments
