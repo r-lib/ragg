@@ -1,4 +1,4 @@
-# ragg (development version)
+# ragg 1.2.3
 
 * Second attempt at rendering jpegs with transparent background. Now, the buffer
   is filled with solid white before any drawing happens.
