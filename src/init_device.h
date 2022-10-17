@@ -258,12 +258,12 @@ void agg_releaseMask(SEXP ref, pDevDesc dd) {
 template<class T>
 void agg_glyph(int n, int *glyphs, double *x, double *y, 
                const char* family, double weight, int style,
-               const char* file, int index, double size,
+               const char* file, int index, double size, int colour,
                pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
   BEGIN_CPP
   device->drawGlyph(n, glyphs, x, y, 
-                    family, weight, style, file, index, size);
+                    family, weight, style, file, index, size, colour);
   END_CPP
 }
 
