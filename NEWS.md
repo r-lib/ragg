@@ -1,3 +1,5 @@
+# ragg (development version)
+
 # ragg 1.2.4
 
 * Fixed a regression that turned off line mitre support (#119)
