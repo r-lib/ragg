@@ -1,5 +1,9 @@
 # ragg (development version)
 
+# ragg 1.2.4
+
+* Fixed a regression that turned off line mitre support (#119)
+
 # ragg 1.2.3
 
 * Second attempt at rendering jpegs with transparent background. Now, the buffer

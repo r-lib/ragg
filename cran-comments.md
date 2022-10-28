@@ -1,4 +1,4 @@
-Small patch release with a bunch of bug fixes
+Small patch release fixing a regression removing line mitre support
 
 ## revdepcheck results
 
