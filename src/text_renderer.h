@@ -176,6 +176,25 @@ public:
     return true;
   }
   
+  bool load_font_from_file(FontSettings font, agg::glyph_rendering gren, double size,
+                           unsigned int id) {
+    if (id != get_engine().id() ||
+        !(gren == last_gren && 
+        font.index == last_font.index &&
+        strncmp(font.file, last_font.file, PATH_MAX) == 0)) {
+      if (!get_engine().load_font(font.file, font.index, gren)) {
+        return false;
+      }
+      last_gren = gren;
+      get_engine().height(size);
+      get_engine().id(id);
+    } else if (size != get_engine().height()) {
+      get_engine().height(size);
+    }
+    last_font = font;
+    return true;
+  } 
+  
   double get_text_width(const char* string) {
     double width = 0.0;
     int error = textshaping::string_width(
@@ -341,85 +360,68 @@ public:
   template<typename TARGET, typename renderer_solid, typename renderer, typename raster, typename scanline>
   void render_glyphs(int n, int *glyphs, double *x, double *y, 
                      const char* family, double weight, int style,
-                     const char* file, int index, double size,
+                     const char* file, int index, double size, double rot,
                      renderer_solid &ren_solid, renderer &ren, 
                      scanline &sl, unsigned int id,
                      raster &ras_clip, bool clip, 
                      agg::path_storage* recording_clip) {
-
-    double rot = 0.0;
-
-    /* Shifted from renderText(), so that all font info extraction 
-     * happens here (rather than in typesetText() as well) */
-    agg::glyph_rendering gren = std::fmod(rot, 90) == 0.0 && recording_clip == NULL ? agg::glyph_ren_agg_gray8 : agg::glyph_ren_outline;
 
     agg::rasterizer_scanline_aa<> ras;
     agg::conv_curve<font_manager_type::path_adaptor_type> curves(get_manager().path_adaptor());
     curves.approximation_scale(2.0);
 
     int i;
-    
-    FontSettings f;
-    int face;
-    if (weight > 400) {
-        if (style != R_GE_text_style_normal) {
-            face = 4;
-        } else {
-            face = 2;
-        }
-    } else {
-        if (style != R_GE_text_style_normal) {
-            face = 3;
-        } else {
-            face = 1;
-        }      
+
+    agg::trans_affine mtx;
+    if (rot != 0) {
+        rot = agg::deg2rad(-rot);
+        mtx *= agg::trans_affine_rotation(rot);
     }
-    f = locate_font_with_features(family, 
-                                  face == 2 || 
-                                  face == 4, 
-                                  face == 3 || 
-                                  face == 4);
-    double ps = size;
     
-    if (!load_font(gren, family, face, ps, id)) 
-                return;
-    if (load_font_from_file(f, last_gren, ps, id)) {
-        for (i = 0; i < n; i++) {
-            const agg::glyph_cache* 
-                glyph = get_manager().glyph(glyphs[i]);
-            if (glyph) {
-                get_manager().init_embedded_adaptors(glyph, x[i], y[i]);
-                switch(glyph->data_type) {
-                default: break;
-                case agg::glyph_data_gray8:
-                    render<agg::scanline_u8>(get_manager().gray8_adaptor(), 
-                                             ras_clip, sl, ren_solid, 
-                                             clip);
-                    break;
+    for (i = 0; i < n; i++) {
+        if (rot != 0) {
+            agg::trans_affine mtx2;
+            mtx2 *= mtx;
+            get_engine().transform(mtx2);
+        }
+        
+        const agg::glyph_cache* 
+            glyph = get_manager().glyph(glyphs[i]);
+        if (glyph) {
+            
+            get_manager().init_embedded_adaptors(glyph, x[i], y[i]);
+            switch(glyph->data_type) {
+            default: break;
+            case agg::glyph_data_gray8:
+                render<agg::scanline_u8>(get_manager().gray8_adaptor(), 
+                                         ras_clip, sl, ren_solid, 
+                                         clip);
+                break;
                 
-                case agg::glyph_data_color:
-                    renderColourGlyph<TARGET>(glyph, x[i], y[i],
-                                              0.0, // rot
-                                              ren, sl, 
-                                              1.0, // scaling
-                                              ras_clip, clip);
-                    break;
-                    
-                case agg::glyph_data_outline:
-                    if (recording_clip != NULL) {
-                        recording_clip->concat_path(curves);
-                        break;
-                    }
-                    ras.reset();
-                    ras.add_path(curves);
-                    render<agg::scanline_u8>(ras, ras_clip, sl, 
-                                             ren_solid, clip);
+            case agg::glyph_data_color:
+                renderColourGlyph<TARGET>(glyph, x[i], y[i],
+                                          0.0, // rot
+                                          ren, sl, 
+                                          1.0, // scaling
+                                          ras_clip, clip);
+                break;
+                
+            case agg::glyph_data_outline:
+                if (recording_clip != NULL) {
+                    recording_clip->concat_path(curves);
                     break;
                 }
+                ras.reset();
+                ras.add_path(curves);
+                render<agg::scanline_u8>(ras, ras_clip, sl, 
+                                         ren_solid, clip);
+                break;
             }
         }
+        if (rot != 0) {
+            get_engine().transform(agg::trans_affine());
+        }
     }
-    
   }
 
 private:
@@ -441,25 +443,6 @@ private:
     }
     return locate_font_with_features(fontfamily, italic, bold);
   }
-  
-  bool load_font_from_file(FontSettings font, agg::glyph_rendering gren, double size,
-                           unsigned int id) {
-    if (id != get_engine().id() ||
-        !(gren == last_gren && 
-        font.index == last_font.index &&
-        strncmp(font.file, last_font.file, PATH_MAX) == 0)) {
-      if (!get_engine().load_font(font.file, font.index, gren)) {
-        return false;
-      }
-      last_gren = gren;
-      get_engine().height(size);
-      get_engine().id(id);
-    } else if (size != get_engine().height()) {
-      get_engine().height(size);
-    }
-    last_font = font;
-    return true;
-  } 
   
   template<typename TARGET, typename ren, typename raster, typename scanline>
   void renderColourGlyph(const agg::glyph_cache* glyph, double x, double y, 

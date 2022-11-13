@@ -137,7 +137,8 @@ public:
                 int face, double size, double rot, double hadj, int col);
   void drawGlyph(int n, int *glyphs, double *x, double *y, 
                  const char* family, double weight, int style,
-                 const char* file, int index, double size, int colour);
+                 const char* file, int index, double size, 
+                 int colour, double rot);
   
 protected:
   virtual inline R_COLOR convertColour(unsigned int col) {
@@ -1046,10 +1047,8 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
                                                     double weight, int style,
                                                     const char* file, 
                                                     int index, double size,
-                                                    int colour) {
-  /* 'gren' and 't_ren.load_font()' shifted to layout_text() 
-   * so extraction of font info happens once.
-   */
+                                                    int colour, double rot) {
+  agg::glyph_rendering gren = std::fmod(rot, 90) == 0.0 && recording_clip == NULL ? agg::glyph_ren_agg_gray8 : agg::glyph_ren_outline;
 
   int i;
   for (i=0; i<n; i++) {
@@ -1059,6 +1058,36 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
   
   size *= res_mod;
   
+    FontSettings f;
+    strncpy(f.file, file, 500);
+    f.index = index;
+    f.features = NULL;
+    f.n_features = 0;
+
+    if (!t_ren.load_font_from_file(f, gren, size, device_id)) {
+        int face;
+        if (weight > 400) {
+            if (style != R_GE_text_style_normal) {
+                face = 4;
+            } else {
+                face = 2;
+            }
+        } else {
+            if (style != R_GE_text_style_normal) {
+                face = 3;
+            } else {
+                face = 1;
+            }      
+        }
+        f = locate_font_with_features(family, 
+                                      face == 2 || 
+                                      face == 4, 
+                                      face == 3 || 
+                                      face == 4);
+        if (!t_ren.load_font(gren, family, face, size, device_id)) 
+            return;
+    }
+
   agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
   if (current_clip != NULL) {
     ras_clip.add_path(*current_clip);
@@ -1073,7 +1102,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
     if (current_mask == NULL) {
       t_ren.template render_glyphs<BLNDFMT>(n, glyphs, x, y, 
                                             family, weight, style,
-                                            file, index, size,
+                                            file, index, size, rot,
                                             solid_renderer, renderer, 
                                             slu, device_id, 
                                             ras_clip, current_clip != NULL,
@@ -1081,7 +1110,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
     } else {
       t_ren.template render_glyphs<BLNDFMT>(n, glyphs, x, y,  
                                             family, weight, style,
-                                            file, index, size,
+                                            file, index, size, rot,
                                             solid_renderer, renderer, 
                                             current_mask->get_masked_scanline(),
                                             device_id, 
@@ -1093,7 +1122,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
     if (current_mask == NULL) {
       t_ren.template render_glyphs<pixfmt_type_32>(n, glyphs, x, y,
                                                    family, weight, style,
-                                                   file, index, size,
+                                                   file, index, size, rot,
                                                    recording_mask->get_solid_renderer(), 
                                                    recording_mask->get_renderer(),
                                                    slu, device_id, 
@@ -1103,7 +1132,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
     } else {
       t_ren.template render_glyphs<pixfmt_type_32>(n, glyphs, x, y,
                                                    family, weight, style,
-                                                   file, index, size,
+                                                   file, index, size, rot,
                                                    recording_mask->get_solid_renderer(), 
                                                    recording_mask->get_renderer(),
                                                    current_mask->get_masked_scanline(), 
@@ -1117,7 +1146,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
     if (current_mask == NULL) {
       t_ren.template render_glyphs<BLNDFMT>(n, glyphs, x, y,
                                             family, weight, style,
-                                            file, index, size,
+                                            file, index, size, rot,
                                             recording_pattern->get_solid_renderer(), 
                                             recording_pattern->get_renderer(), 
                                             slu, device_id, 
@@ -1126,7 +1155,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
     } else {
       t_ren.template render_glyphs<BLNDFMT>(n, glyphs, x, y, 
                                             family, weight, style,
-                                            file, index, size,
+                                            file, index, size, rot,
                                             recording_pattern->get_solid_renderer(), 
                                             recording_pattern->get_renderer(), 
                                             current_mask->get_masked_scanline(), 

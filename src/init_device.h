@@ -256,14 +256,35 @@ void agg_releaseMask(SEXP ref, pDevDesc dd) {
 }
 
 template<class T>
+SEXP agg_defineGroup(SEXP source, int op, SEXP destination, pDevDesc dd) {
+    return R_NilValue;
+}
+
+template<class T>
+void agg_useGroup(SEXP ref, SEXP trans, pDevDesc dd) {}
+
+template<class T>
+void agg_releaseGroup(SEXP ref, pDevDesc dd) {}
+
+template<class T>
+void agg_stroke(SEXP path, const pGEcontext gc, pDevDesc dd) {}
+
+template<class T>
+void agg_fill(SEXP path, int rule, const pGEcontext gc, pDevDesc dd) {}
+
+template<class T>
+void agg_fillStroke(SEXP path, int rule, const pGEcontext gc, pDevDesc dd) {}
+
+template<class T>
 void agg_glyph(int n, int *glyphs, double *x, double *y, 
                const char* family, double weight, int style,
-               const char* file, int index, double size, int colour,
+               const char* file, int index, double size, 
+               int colour, double rot,
                pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
   BEGIN_CPP
   device->drawGlyph(n, glyphs, x, y, 
-                    family, weight, style, file, index, size, colour);
+                    family, weight, style, file, index, size, colour, rot);
   END_CPP
 }
 
@@ -313,6 +334,12 @@ pDevDesc agg_device_new(T* device) {
   dd->releaseClipPath = agg_releaseClipPath<T>;
   dd->setMask         = agg_setMask<T>;
   dd->releaseMask     = agg_releaseMask<T>;
+  dd->defineGroup     = agg_defineGroup<T>;
+  dd->useGroup        = agg_useGroup<T>;
+  dd->releaseGroup    = agg_releaseGroup<T>;
+  dd->stroke          = agg_stroke<T>;
+  dd->fill            = agg_fill<T>;
+  dd->fillStroke      = agg_fillStroke<T>;
 
   dd->glyph           = agg_glyph<T>;
 #endif
@@ -355,7 +382,7 @@ pDevDesc agg_device_new(T* device) {
 #if R_GE_version >= 13
   // Very dangerous because we have skipped over R_GE_Group
   // so we are vulnerable to being called by, e.g., dev->stroke()
-  dd->deviceVersion = R_GE_typeset;
+  dd->deviceVersion = R_GE_glyphs;
 #endif
   
   device->device_id = DEVICE_COUNTER++;
