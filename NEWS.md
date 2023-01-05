@@ -1,5 +1,8 @@
 # ragg (development version)
 
+* Move `sprintf()` to `snprintf()` in the AGG source code to comply with Arm64
+  deprecation
+
 # ragg 1.2.4
 
 * Fixed a regression that turned off line mitre support (#119)
