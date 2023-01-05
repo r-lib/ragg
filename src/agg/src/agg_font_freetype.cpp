@@ -894,7 +894,7 @@ namespace agg
                 gamma_hash = calc_crc32(gamma_table, sizeof(gamma_table));
             }
 
-            std::snprintf(m_signature, sizeof(m_signature),
+            int err = std::snprintf(m_signature, sizeof(m_signature),
                     "%s,%u,%d,%d,%d:%dx%d,%d,%d,%08X", 
                     m_name,
                     m_char_map,
@@ -906,6 +906,8 @@ namespace agg
                     int(m_hinting),
                     int(m_flip_y),
                     gamma_hash);
+            // Needed to avoid [-Wformat-truncation=] warning
+            if (err < 0) return;
             if(m_glyph_rendering == glyph_ren_outline ||
                m_glyph_rendering == glyph_ren_agg_mono ||
                m_glyph_rendering == glyph_ren_agg_gray8)
@@ -913,13 +915,14 @@ namespace agg
                 double mtx[6];
                 char buf[100];
                 m_affine.store_to(mtx);
-                std::snprintf(buf, sizeof(buf), ",%08X%08X%08X%08X%08X%08X", 
+                err = std::snprintf(buf, sizeof(buf), ",%08X%08X%08X%08X%08X%08X", 
                     dbl_to_plain_fx(mtx[0]), 
                     dbl_to_plain_fx(mtx[1]), 
                     dbl_to_plain_fx(mtx[2]), 
                     dbl_to_plain_fx(mtx[3]), 
                     dbl_to_plain_fx(mtx[4]), 
                     dbl_to_plain_fx(mtx[5]));
+                if (err < 0) return;
                 std::strcat(m_signature, buf);
             }
             ++m_change_stamp;
