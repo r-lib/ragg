@@ -2,6 +2,7 @@
 
 * Move `sprintf()` to `snprintf()` in the AGG source code to comply with Arm64
   deprecation
+* Better guard against bad input (#116)
 
 # ragg 1.2.4
 
