@@ -384,6 +384,11 @@ private:
   void renderColourGlyph(const agg::glyph_cache* glyph, double x, double y, 
                          double rot, ren &renderer, scanline &sl, double scaling, raster &ras_clip, 
                          bool clip) {
+    if (get_engine().is_color_pixel()) {
+      Rprintf("Pixel mode is BGRA");
+    } else {
+      Rprintf("Color mode is gray-ish");
+    }
     int w = glyph->bounds.x2 - glyph->bounds.x1;
     int h = glyph->bounds.y1 - glyph->bounds.y2;
     agg::rendering_buffer rbuf(glyph->data, w, h, w * 4);
