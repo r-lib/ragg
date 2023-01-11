@@ -307,16 +307,19 @@ public:
               switch(glyph->data_type) {
               default: break;
               case agg::glyph_data_gray8:
+                Rprintf("Render gray\n");
                 render<agg::scanline_u8>(get_manager().gray8_adaptor(), ras_clip, 
                                          sl, ren_solid, 
                                          clip);
                 break;
                 
               case agg::glyph_data_color:
+                Rprintf("Render colour\n");
                 renderColourGlyph<TARGET>(glyph, x + x_offset, y + y_offset, rot, ren, sl, scaling_buffer[font_buffer[text_run_start]], ras_clip, clip);
                 break;
                 
               case agg::glyph_data_outline:
+                Rprintf("Render outline\n");
                 if (recording_clip != NULL) {
                   recording_clip->concat_path(curves);
                   break;
