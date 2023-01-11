@@ -1028,6 +1028,7 @@ namespace agg
                     m_data_type = glyph_data_color;
                     m_advance_x = int26p6_to_dbl(m_cur_face->glyph->advance.x);
                     m_advance_y = int26p6_to_dbl(m_cur_face->glyph->advance.y);
+                    printf("Pixel Mode: %i\n", m_cur_face->glyph->bitmap.pixel_mode);
                     return true;
                 }
                 break;
