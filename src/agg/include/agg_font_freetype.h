@@ -88,6 +88,7 @@ namespace agg
         bool        hinting()      const { return m_hinting;    }
         bool        flip_y()       const { return m_flip_y;     }
         unsigned    id()           const { return m_cur_id;     }
+        bool        is_color_pixel() const { return m_cur_face->glyph->bitmap.pixel_mode == FT_PIXEL_MODE_BGRA; }
 
 
         // Interface mandatory to implement for font_cache_manager
