@@ -1,4 +1,4 @@
-# ragg (development version)
+# ragg 1.2.5
 
 * Fix a bug when rendering glyphs from a colour font that also provide greyscale
   glyphs (#105)
