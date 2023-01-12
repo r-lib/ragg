@@ -3,7 +3,7 @@ Package: ragg
 Title: Graphic Devices Based on AGG
 Version: 1.2.4.9000
 Authors@R: c(
-    person("Thomas Lin", "Pedersen", , "thomas.pedersen@rstudio.com", role = c("cre", "aut"),
+    person("Thomas Lin", "Pedersen", , "thomas.pedersen@posit.co", role = c("cre", "aut"),
            comment = c(ORCID = "0000-0002-5147-4711")),
     person("Maxim", "Shemanarev", role = c("aut", "cph"),
            comment = "Author of AGG"),
@@ -15,7 +15,7 @@ Authors@R: c(
            comment = "Contributor to AGG"),
     person("RStudio", role = c("cph", "fnd"))
   )
-Maintainer: Thomas Lin Pedersen <thomas.pedersen@rstudio.com>
+Maintainer: Thomas Lin Pedersen <thomas.pedersen@posit.co>
 Description: Anti-Grain Geometry (AGG) is a high-quality and
     high-performance 2D drawing library. The 'ragg' package provides a set
     of graphic devices based on AGG to use as alternative to the raster
