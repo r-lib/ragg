@@ -1018,19 +1018,23 @@ namespace agg
                 
             case glyph_ren_native_color:
                 m_last_error = FT_Render_Glyph(m_cur_face->glyph, FT_RENDER_MODE_NORMAL);
-                if(m_last_error == 0)
+              
+                if(m_cur_face->glyph->bitmap.pixel_mode == FT_PIXEL_MODE_BGRA) // will fall through to grey render otherwise
                 {
-                    m_bounds.x1 = m_cur_face->glyph->bitmap_left;
-                    m_bounds.y1 = m_cur_face->glyph->bitmap_top;
-                    m_bounds.x2 = m_bounds.x1 + m_cur_face->glyph->bitmap.width;
-                    m_bounds.y2 = m_bounds.y1 - m_cur_face->glyph->bitmap.rows;
-                    m_data_size = m_cur_face->glyph->bitmap.rows * m_cur_face->glyph->bitmap.pitch; 
-                    m_data_type = glyph_data_color;
-                    m_advance_x = int26p6_to_dbl(m_cur_face->glyph->advance.x);
-                    m_advance_y = int26p6_to_dbl(m_cur_face->glyph->advance.y);
-                    return true;
+                    if(m_last_error == 0)
+                    {
+                        m_bounds.x1 = m_cur_face->glyph->bitmap_left;
+                        m_bounds.y1 = m_cur_face->glyph->bitmap_top;
+                        m_bounds.x2 = m_bounds.x1 + m_cur_face->glyph->bitmap.width;
+                        m_bounds.y2 = m_bounds.y1 - m_cur_face->glyph->bitmap.rows;
+                        m_data_size = m_cur_face->glyph->bitmap.rows * m_cur_face->glyph->bitmap.pitch; 
+                        m_data_type = glyph_data_color;
+                        m_advance_x = int26p6_to_dbl(m_cur_face->glyph->advance.x);
+                        m_advance_y = int26p6_to_dbl(m_cur_face->glyph->advance.y);
+                        return true;
+                    }
+                    break;
                 }
-                break;
                 
             case glyph_ren_native_gray8:
                 m_last_error = FT_Render_Glyph(m_cur_face->glyph, FT_RENDER_MODE_NORMAL);

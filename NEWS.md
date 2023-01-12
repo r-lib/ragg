@@ -1,5 +1,7 @@
 # ragg (development version)
 
+* Fix a bug when rendering glyphs from a colour font that also provide greyscale
+  glyphs (#105)
 * Move `sprintf()` to `snprintf()` in the AGG source code to comply with Arm64
   deprecation
 * Better guard against bad input (#116)
