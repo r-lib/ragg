@@ -894,7 +894,7 @@ namespace agg
                 gamma_hash = calc_crc32(gamma_table, sizeof(gamma_table));
             }
 
-            std::sprintf(m_signature, 
+            std::snprintf(m_signature, sizeof(*m_signature) * (m_name_len + 256),
                     "%s,%u,%d,%d,%d:%dx%d,%d,%d,%08X", 
                     m_name,
                     m_char_map,
@@ -913,7 +913,7 @@ namespace agg
                 double mtx[6];
                 char buf[100];
                 m_affine.store_to(mtx);
-                std::sprintf(buf, ",%08X%08X%08X%08X%08X%08X", 
+                std::snprintf(buf, sizeof(buf), ",%08X%08X%08X%08X%08X%08X", 
                     dbl_to_plain_fx(mtx[0]), 
                     dbl_to_plain_fx(mtx[1]), 
                     dbl_to_plain_fx(mtx[2]), 
