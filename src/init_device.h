@@ -277,15 +277,12 @@ void agg_fillStroke(SEXP path, int rule, const pGEcontext gc, pDevDesc dd) {}
 
 template<class T>
 void agg_glyph(int n, int *glyphs, double *x, double *y, 
-               const char* family, double weight, int style,
-               const char* file, int index, 
-               const char* PSname, 
-               double size, int colour, double rot,
+               SEXP font, double size, 
+               int colour, double rot,
                pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
   BEGIN_CPP
-  device->drawGlyph(n, glyphs, x, y, 
-                    family, weight, style, file, index, size, colour, rot);
+  device->drawGlyph(n, glyphs, x, y, font, size, colour, rot);
   END_CPP
 }
 

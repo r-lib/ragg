@@ -136,8 +136,7 @@ public:
   void drawText(double x, double y, const char *str, const char *family, 
                 int face, double size, double rot, double hadj, int col);
   void drawGlyph(int n, int *glyphs, double *x, double *y, 
-                 const char* family, double weight, int style,
-                 const char* file, int index, double size, 
+                 SEXP font, double size, 
                  int colour, double rot);
   
 protected:
@@ -1043,10 +1042,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawText(double x, double y, const cha
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs, 
                                                     double *x, double *y, 
-                                                    const char* family, 
-                                                    double weight, int style,
-                                                    const char* file, 
-                                                    int index, double size,
+                                                    SEXP font, double size,
                                                     int colour, double rot) {
   agg::glyph_rendering gren = std::fmod(rot, 90) == 0.0 && recording_clip == NULL ? agg::glyph_ren_agg_gray8 : agg::glyph_ren_outline;
 
@@ -1058,6 +1054,15 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
   
   size *= res_mod;
   
+  char file[501];
+  strncpy(file, R_GE_glyphFontFile(font), 500);
+  int index = R_GE_glyphFontIndex(font);
+  char family[201];
+  strncpy(family, R_GE_glyphFontFamily(font), 
+          200);
+  double weight = R_GE_glyphFontWeight(font);
+  int style = R_GE_glyphFontStyle(font);
+
     FontSettings f;
     strncpy(f.file, file, 500);
     f.index = index;
