@@ -15,10 +15,10 @@ knitr::opts_chunk$set(
 # ragg <a href='https://ragg.r-lib.org'><img src='man/figures/logo.png' align="right" height="131.5" /></a>
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/r-lib/ragg/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/ragg/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/r-lib/ragg/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/ragg?branch=main)
 [![CRAN status](https://www.r-pkg.org/badges/version/ragg)](https://cran.r-project.org/package=ragg)
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
-[![R-CMD-check](https://github.com/r-lib/ragg/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/ragg/actions)
 <!-- badges: end -->
 
 This package provides graphic devices for R based on the AGG library developed
@@ -33,8 +33,8 @@ The package can be installed from CRAN with `install.packages('ragg')` or, if
 the development version is desired, directly from github:
 
 ```{r, eval=FALSE}
-# install.packages('devtools')
-devtools::install_github('r-lib/ragg')
+# install.packages('pak')
+pak::pak('r-lib/ragg')
 ```
 
 ## Use
@@ -58,7 +58,7 @@ You can use it like any other device. The main functions are `agg_png()`,
 those of the `png()`, `jpeg()` and `tiff()` functions, so switching over should 
 be easy.
 
-```{r}
+```{r, fig.alt="A scatterplot created with ggplot2 using a fancy non-standard font and mixing in emojis with text"}
 library(ragg)
 library(ggplot2)
 
@@ -80,7 +80,7 @@ knitr::include_graphics(file)
 Further, it provides an `agg_capture()` device that lets you access the device
 buffer directly from your R session.
 
-```{r, fig.asp=0.5, out.width="70%", out.extra='style="margin-left: 15%;"'}
+```{r, fig.asp=0.5, out.width="70%", out.extra='style="margin-left: 15%;"', fig.alt="A very simple scatterplot captured as raster data and then drawn again"}
 cap <- agg_capture(width = 1000, height = 500, res = 144)
 plot(1:10, 1:10)
 
@@ -101,7 +101,9 @@ ragg can be used as the graphic back-end to the RStudio device
 (for RStudio >= 1.4) by choosing *AGG* as the backend in the graphics pane in 
 general options (see screenshot)
 
-![Setting ragg as backend in RStudio](https://i.imgur.com/4XgiPWy.png)
+```{r, echo=FALSE, fig.cap="Setting ragg as backend in RStudio", fig.alt="A screenshot showing the RStudio Global Options window with focus on the General pane and the Graphics tab. Here it shows AGG is selected as Backend in order to tell RStudio to use ragg"}
+knitr::include_graphics("https://i.imgur.com/4XgiPWy.png") 
+```
 
 ## Code of Conduct
 Please note that the 'ragg' project is released with a

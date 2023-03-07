@@ -13,7 +13,7 @@ Authors@R: c(
            comment = "Contributor to AGG"),
     person("Spencer", "Garrett", role = "ctb",
            comment = "Contributor to AGG"),
-    person("RStudio", role = c("cph", "fnd"))
+    person("Posit, PBC", role = c("cph", "fnd"))
   )
 Maintainer: Thomas Lin Pedersen <thomas.pedersen@posit.co>
 Description: Anti-Grain Geometry (AGG) is a high-quality and
@@ -30,7 +30,7 @@ Suggests:
     covr,
     graphics,
     grid,
-    testthat
+    testthat (>= 3.0.0)
 LinkingTo: 
     systemfonts,
     textshaping
@@ -39,3 +39,4 @@ Config/Needs/website: ggplot2, devoid, magick, bench, tidyr, ggridges,
 Encoding: UTF-8
 RoxygenNote: 7.2.1
 SystemRequirements: C++11, freetype2, libpng, libtiff, libjpeg
+Config/testthat/edition: 3
