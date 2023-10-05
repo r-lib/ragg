@@ -39,6 +39,7 @@ static const int MAX_CELLS = 1 << 20;
  */
 template<class PIXFMT, class R_COLOR = agg::rgba8, typename BLNDFMT = pixfmt_type_32>
 class AggDevice {
+  UTF_UCS converter;
 public:
   typedef PIXFMT pixfmt_type;
   typedef agg::renderer_base<pixfmt_type> renbase_type;
@@ -322,6 +323,7 @@ protected:
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 AggDevice<PIXFMT, R_COLOR, BLNDFMT>::AggDevice(const char* fp, int w, int h, double ps, 
                                                int bg, double res, double scaling) : 
+  converter(),
   width(w),
   height(h),
   clip_left(0),
@@ -442,6 +444,10 @@ template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 double AggDevice<PIXFMT, R_COLOR, BLNDFMT>::stringWidth(const char *str, 
                                                const char *family, int face, 
                                                double size) {
+  if (face == 5) {
+    const char* str2 = Rf_utf8Toutf8NoPUA(str);
+    str = str2;
+  }
   size *= res_mod;
   agg::glyph_rendering gren = agg::glyph_ren_agg_gray8;
   if (!t_ren.load_font(gren, family, face, size, device_id)) {
@@ -456,6 +462,14 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::charMetric(int c, const char *family, 
                                    double *width) {
   if (c < 0) {
     c = -c;
+    if (face == 5) {
+      char str[16];
+      Rf_ucstoutf8(str, (unsigned int) c);
+      const char* str2 = Rf_utf8Toutf8NoPUA(str);
+      int n = 0;
+      uint32_t* res = converter.convert(str2, n);
+      if (n > 0) c = res[0];
+    }
   }
   
   size *= res_mod;
@@ -992,6 +1006,11 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawText(double x, double y, const cha
                                           const char *family, int face, 
                                           double size, double rot, double hadj, 
                                           int col) {
+  if (face == 5) {
+    const char* str2 = Rf_utf8Toutf8NoPUA(str);
+    str = str2;
+  }
+  
   agg::glyph_rendering gren = std::fmod(rot, 90) == 0.0 && recording_clip == NULL ? agg::glyph_ren_agg_gray8 : agg::glyph_ren_outline;
   
   x += x_trans;

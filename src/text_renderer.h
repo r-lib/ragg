@@ -130,7 +130,6 @@ public:
 
 template<typename PIXFMT>
 class TextRenderer {
-  UTF_UCS converter;
   FontSettings last_font;
   agg::glyph_rendering last_gren;
   std::vector<textshaping::Point> loc_buffer;
@@ -144,9 +143,7 @@ class TextRenderer {
   bool no_bearings;
   
 public:
-  TextRenderer() :
-    converter()
-  {
+  TextRenderer() {
     last_gren = agg::glyph_ren_native_mono;
     get_engine().hinting(true);
     get_engine().flip_y(true);
@@ -195,6 +192,8 @@ public:
   void get_char_metric(int c, double *ascent, double *descent, double *width) {
     unsigned index = get_engine().get_glyph_index(c);
     const agg::glyph_cache* glyph = get_manager().glyph(index);
+    
+    Rprintf("c: %i - index: %i\n", c, index);
     
     // This might also be relevant to non-colour fonts that are unscalable
     double mod = current_font_height / get_engine().height();
@@ -367,6 +366,9 @@ private:
       if (!get_engine().load_font(font.file, font.index, gren)) {
         return false;
       }
+      
+      Rprintf("%s\n", font.file);
+      
       last_gren = gren;
       get_engine().height(size);
       get_engine().id(id);
