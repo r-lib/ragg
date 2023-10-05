@@ -444,10 +444,13 @@ template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 double AggDevice<PIXFMT, R_COLOR, BLNDFMT>::stringWidth(const char *str, 
                                                const char *family, int face, 
                                                double size) {
+#if R_MAJOR > 3
   if (face == 5) {
     const char* str2 = Rf_utf8Toutf8NoPUA(str);
     str = str2;
   }
+#endif
+  
   size *= res_mod;
   agg::glyph_rendering gren = agg::glyph_ren_agg_gray8;
   if (!t_ren.load_font(gren, family, face, size, device_id)) {
@@ -462,6 +465,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::charMetric(int c, const char *family, 
                                    double *width) {
   if (c < 0) {
     c = -c;
+#if R_MAJOR > 3
     if (face == 5) {
       char str[16];
       Rf_ucstoutf8(str, (unsigned int) c);
@@ -470,6 +474,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::charMetric(int c, const char *family, 
       uint32_t* res = converter.convert(str2, n);
       if (n > 0) c = res[0];
     }
+#endif
   }
   
   size *= res_mod;
@@ -1006,10 +1011,12 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawText(double x, double y, const cha
                                           const char *family, int face, 
                                           double size, double rot, double hadj, 
                                           int col) {
+#if R_MAJOR > 3
   if (face == 5) {
     const char* str2 = Rf_utf8Toutf8NoPUA(str);
     str = str2;
   }
+#endif
   
   agg::glyph_rendering gren = std::fmod(rot, 90) == 0.0 && recording_clip == NULL ? agg::glyph_ren_agg_gray8 : agg::glyph_ren_outline;
   
