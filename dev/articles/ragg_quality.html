@@ -148,8 +148,6 @@ circle for this as it provides a nice sampling of uneven edges.</p>
 <code class="sourceCode R"><span><span class="va">ragg_circle</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">circle_quality</span><span class="op">(</span><span class="va">agg_png</span>, <span class="st">'ragg'</span>, <span class="va">ragg_circle</span><span class="op">)</span></span>
-<span><span class="co">#&gt; /usr/share/fonts/truetype/dejavu/DejaVuSans.ttf</span></span>
-<span><span class="co">#&gt; c: 77 - index: 48</span></span>
 <span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">ragg_circle</span><span class="op">)</span></span></code></pre></div>
 <p><img src="../docs/dev/articles/ragg_quality_files/figure-html/unnamed-chunk-4-1.png"><!-- --></p>
@@ -231,13 +229,6 @@ rotations. Here we will test text rendering at different sizes and at a
 <code class="sourceCode R"><span><span class="va">ragg_text</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">text_quality</span><span class="op">(</span><span class="va">agg_png</span>, <span class="st">'ragg'</span>, <span class="va">ragg_text</span><span class="op">)</span></span>
-<span><span class="co">#&gt; /usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf</span></span>
-<span><span class="co">#&gt; c: 77 - index: 48</span></span>
-<span><span class="co">#&gt; c: 77 - index: 48</span></span>
-<span><span class="co">#&gt; c: 77 - index: 48</span></span>
-<span><span class="co">#&gt; c: 77 - index: 48</span></span>
-<span><span class="co">#&gt; /usr/share/fonts/truetype/dejavu/DejaVuSans.ttf</span></span>
-<span><span class="co">#&gt; c: 77 - index: 48</span></span>
 <span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">ragg_text</span><span class="op">)</span></span></code></pre></div>
 <p><img src="../docs/dev/articles/ragg_quality_files/figure-html/unnamed-chunk-15-1.png"><!-- --></p>
@@ -246,20 +237,6 @@ rotations. Here we will test text rendering at different sizes and at a
 <code class="sourceCode R"><span><span class="va">ragg_text_rot</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">text_quality</span><span class="op">(</span><span class="va">agg_png</span>, <span class="st">'ragg'</span>, <span class="va">ragg_text_rot</span>, rotation <span class="op">=</span> <span class="fl">27</span><span class="op">)</span></span>
-<span><span class="co">#&gt; /usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf</span></span>
-<span><span class="co">#&gt; c: 77 - index: 48</span></span>
-<span><span class="co">#&gt; /usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf</span></span>
-<span><span class="co">#&gt; /usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf</span></span>
-<span><span class="co">#&gt; c: 77 - index: 48</span></span>
-<span><span class="co">#&gt; /usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf</span></span>
-<span><span class="co">#&gt; /usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf</span></span>
-<span><span class="co">#&gt; c: 77 - index: 48</span></span>
-<span><span class="co">#&gt; /usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf</span></span>
-<span><span class="co">#&gt; /usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf</span></span>
-<span><span class="co">#&gt; c: 77 - index: 48</span></span>
-<span><span class="co">#&gt; /usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf</span></span>
-<span><span class="co">#&gt; /usr/share/fonts/truetype/dejavu/DejaVuSans.ttf</span></span>
-<span><span class="co">#&gt; c: 77 - index: 48</span></span>
 <span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">ragg_text_rot</span><span class="op">)</span></span></code></pre></div>
 <p><img src="../docs/dev/articles/ragg_quality_files/figure-html/unnamed-chunk-17-1.png"><!-- --></p>
@@ -372,8 +349,6 @@ simply compare ragg against a single cairo setup.</p>
 <code class="sourceCode R"><span><span class="va">ragg_blend</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">blend_quality</span><span class="op">(</span><span class="va">agg_png</span>, <span class="st">'ragg'</span>, <span class="va">ragg_blend</span><span class="op">)</span></span>
-<span><span class="co">#&gt; /usr/share/fonts/truetype/dejavu/DejaVuSans.ttf</span></span>
-<span><span class="co">#&gt; c: 77 - index: 48</span></span>
 <span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">ragg_blend</span><span class="op">)</span></span></code></pre></div>
 <p><img src="../docs/dev/articles/ragg_quality_files/figure-html/unnamed-chunk-36-1.png"><!-- --></p>
@@ -413,8 +388,6 @@ compared here.</p>
 <code class="sourceCode R"><span><span class="va">ragg_raster</span> <span class="op">&lt;-</span> <span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/fig_path.html" class="external-link">fig_path</a></span><span class="op">(</span><span class="st">'.png'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">raster_quality</span><span class="op">(</span><span class="va">agg_png</span>, <span class="st">'ragg'</span>, <span class="va">ragg_raster</span><span class="op">)</span></span>
-<span><span class="co">#&gt; /usr/share/fonts/truetype/dejavu/DejaVuSans.ttf</span></span>
-<span><span class="co">#&gt; c: 77 - index: 48</span></span>
 <span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">ragg_raster</span><span class="op">)</span></span></code></pre></div>
 <p><img src="../docs/dev/articles/ragg_quality_files/figure-html/unnamed-chunk-39-1.png"><!-- --></p>
