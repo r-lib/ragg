@@ -27,6 +27,8 @@
 
 #include <memory>
 
+#include <Rversion.h>
+
 static const int MAX_CELLS = 1 << 20;
 
 /* Base class for graphic device interface to AGG. See AggDevice.cpp for 
@@ -444,7 +446,7 @@ template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 double AggDevice<PIXFMT, R_COLOR, BLNDFMT>::stringWidth(const char *str, 
                                                const char *family, int face, 
                                                double size) {
-#if R_MAJOR > 3
+#if R_VERSION >= R_Version(4, 0, 0)
   if (face == 5) {
     const char* str2 = Rf_utf8Toutf8NoPUA(str);
     str = str2;
@@ -465,7 +467,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::charMetric(int c, const char *family, 
                                    double *width) {
   if (c < 0) {
     c = -c;
-#if R_MAJOR > 3
+#if R_VERSION >= R_Version(4, 0, 0)
     if (face == 5) {
       char str[16];
       Rf_ucstoutf8(str, (unsigned int) c);
@@ -1011,7 +1013,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawText(double x, double y, const cha
                                           const char *family, int face, 
                                           double size, double rot, double hadj, 
                                           int col) {
-#if R_MAJOR > 3
+#if R_VERSION >= R_Version(4, 0, 0)
   if (face == 5) {
     const char* str2 = Rf_utf8Toutf8NoPUA(str);
     str = str2;
