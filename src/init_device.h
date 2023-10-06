@@ -257,7 +257,7 @@ void agg_releaseMask(SEXP ref, pDevDesc dd) {
 
 template<class T>
 SEXP agg_capabilities(SEXP capabilities) {
-#if R_GE_version > R_GE_group
+#if R_GE_version >= 15
   // Pattern support
   SEXP pat = PROTECT(Rf_allocVector(INTSXP, 3));
   INTEGER(pat)[0] = R_GE_linearGradientPattern;
