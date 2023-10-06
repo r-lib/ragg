@@ -255,6 +255,40 @@ void agg_releaseMask(SEXP ref, pDevDesc dd) {
   END_CPP
 }
 
+template<class T>
+SEXP agg_capabilities(SEXP capabilities) {
+  
+  // Pattern support
+  SEXP pat = PROTECT(Rf_allocVector(INTSXP, 3));
+  INTEGER(pat)[0] = R_GE_linearGradientPattern;
+  INTEGER(pat)[1] = R_GE_radialGradientPattern;
+  INTEGER(pat)[2] = R_GE_tilingPattern;
+  SET_VECTOR_ELT(capabilities, R_GE_capability_patterns, pat);
+  UNPROTECT(1);
+  
+  // Clipping path support
+  SET_VECTOR_ELT(capabilities, R_GE_capability_clippingPaths, Rf_ScalarInteger(1));
+  
+  // Mask support
+  SEXP masks = PROTECT(Rf_allocVector(INTSXP, 2));
+  INTEGER(masks)[0] = R_GE_alphaMask;
+  INTEGER(masks)[1] = R_GE_luminanceMask;
+  SET_VECTOR_ELT(capabilities, R_GE_capability_masks, masks);
+  UNPROTECT(1);
+  
+  // Group composition
+  SET_VECTOR_ELT(capabilities, R_GE_capability_compositing, Rf_ScalarInteger(0));
+  UNPROTECT(1);
+  
+  // Group transformation
+  SET_VECTOR_ELT(capabilities, R_GE_capability_transformations, Rf_ScalarInteger(0));
+  
+  // Path stroking and filling
+  SET_VECTOR_ELT(capabilities, R_GE_capability_paths, Rf_ScalarInteger(0));
+  
+  return capabilities;
+}
+
 static unsigned int DEVICE_COUNTER = 0;
 
 template<class T>
@@ -327,6 +361,9 @@ pDevDesc agg_device_new(T* device) {
   dd->ipr[1] = 1.0 / (72 * device->res_mod);
   
   // Capabilities
+#if R_GE_version >= 15
+  dd->capabilities = agg_capabilities<T>;
+#endif
   dd->canClip = TRUE;
 #if R_GE_version >= 14
   dd->deviceClip = TRUE;
@@ -339,7 +376,7 @@ pDevDesc agg_device_new(T* device) {
   dd->useRotatedTextInContour =  (Rboolean) 1;
   
 #if R_GE_version >= 13
-  dd->deviceVersion = R_GE_definitions;
+  dd->deviceVersion = R_GE_group;
 #endif
   
   device->device_id = DEVICE_COUNTER++;

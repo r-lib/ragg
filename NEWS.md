@@ -1,6 +1,7 @@
 # ragg (development version)
 
 * Fix symbol rendering bug on windows (#132)
+* Add support for `dev.capabilities()` (#105)
 
 # ragg 1.2.5
 
