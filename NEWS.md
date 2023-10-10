@@ -1,3 +1,5 @@
+# ragg (development version)
+
 # ragg 1.2.6
 
 * Fix symbol rendering bug on windows (#132)

@@ -1,7 +1,7 @@
 Type: Package
 Package: ragg
 Title: Graphic Devices Based on AGG
-Version: 1.2.6
+Version: 1.2.6.9000
 Authors@R: c(
     person("Thomas Lin", "Pedersen", , "thomas.pedersen@posit.co", role = c("cre", "aut"),
            comment = c(ORCID = "0000-0002-5147-4711")),
