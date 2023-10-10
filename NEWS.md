@@ -2,6 +2,7 @@
 
 * Fix symbol rendering bug on windows (#132)
 * Add support for `dev.capabilities()` (#105)
+* Prepare for Arm Windows
 
 # ragg 1.2.5
 

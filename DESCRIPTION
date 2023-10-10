@@ -37,6 +37,6 @@ LinkingTo:
 Config/Needs/website: ggplot2, devoid, magick, bench, tidyr, ggridges,
     hexbin, sessioninfo, pkgdown, tidyverse/tidytemplate
 Encoding: UTF-8
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 SystemRequirements: freetype2, libpng, libtiff, libjpeg
 Config/testthat/edition: 3

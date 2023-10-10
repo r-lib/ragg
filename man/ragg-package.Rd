@@ -20,7 +20,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Thomas Lin Pedersen \email{thomas.pedersen@rstudio.com} (\href{https://orcid.org/0000-0002-5147-4711}{ORCID})
+\strong{Maintainer}: Thomas Lin Pedersen \email{thomas.pedersen@posit.co} (\href{https://orcid.org/0000-0002-5147-4711}{ORCID})
 
 Authors:
 \itemize{
@@ -32,7 +32,7 @@ Other contributors:
   \item Tony Juricic \email{tonygeek@yahoo.com} (Contributor to AGG) [contributor, copyright holder]
   \item Milan Marusinec \email{milan@marusinec.sk} (Contributor to AGG) [contributor, copyright holder]
   \item Spencer Garrett (Contributor to AGG) [contributor]
-  \item RStudio [copyright holder, funder]
+  \item Posit, PBC [copyright holder, funder]
 }
 
 }
