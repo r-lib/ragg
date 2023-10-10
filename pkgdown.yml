@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   ragg_performance: ragg_performance.html
   ragg_quality: ragg_quality.html
-last_built: 2023-01-12T10:39Z
+last_built: 2023-10-10T08:25Z
 urls:
   reference: https://ragg.r-lib.org/reference
   article: https://ragg.r-lib.org/articles
