@@ -45,7 +45,7 @@ elif [ `uname` = "Darwin" ]; then
     PKG_LIBS="-L$BREWDIR/lib ${PKG_LIBS}"
   else
     curl -sfL "https://autobrew.github.io/scripts/ragg" > autobrew
-    . autobrew
+    . ./autobrew
   fi
 fi
 
