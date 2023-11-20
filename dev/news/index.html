@@ -62,7 +62,7 @@
 <h2 class="pkg-version" data-toc-text="development version" id="ragg-development-version">ragg (development version)<a class="anchor" aria-label="anchor" href="#ragg-development-version"></a></h2>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.2.6" id="ragg-126">ragg 1.2.6<a class="anchor" aria-label="anchor" href="#ragg-126"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.2.6" id="ragg-126">ragg 1.2.6<a class="anchor" aria-label="anchor" href="#ragg-126"></a></h2><p class="text-muted">CRAN release: 2023-10-10</p>
 <ul><li>Fix symbol rendering bug on windows (<a href="https://github.com/r-lib/ragg/issues/132" class="external-link">#132</a>)</li>
 <li>Add support for <code><a href="https://rdrr.io/r/grDevices/dev.capabilities.html" class="external-link">dev.capabilities()</a></code> (<a href="https://github.com/r-lib/ragg/issues/105" class="external-link">#105</a>)</li>
 <li>Prepare for Arm Windows</li>
@@ -99,7 +99,7 @@
 <li>Tiling patterns</li>
 </ul></li>
 <li>Use white as background when passing in a fully transparent background colour to devices that doesn’t support alpha (notably jpeg) (<a href="https://github.com/r-lib/ragg/issues/91" class="external-link">#91</a>)</li>
-<li>ragg now defers symbol font resolving to systemfonts which makes it possible to register alternative symbol fonts using <code><a href="https://rdrr.io/pkg/systemfonts/man/register_font.html" class="external-link">register_font()</a></code> (<a href="https://github.com/r-lib/ragg/issues/90" class="external-link">#90</a>)</li>
+<li>ragg now defers symbol font resolving to systemfonts which makes it possible to register alternative symbol fonts using <code><a href="https://systemfonts.r-lib.org/reference/register_font.html" class="external-link">register_font()</a></code> (<a href="https://github.com/r-lib/ragg/issues/90" class="external-link">#90</a>)</li>
 <li>Filenames in UTF-8 are now treated correctly on Windows (<a href="https://github.com/r-lib/ragg/issues/87" class="external-link">#87</a>)</li>
 <li>Fix size selection of non-scalable fonts when the requested size is bigger than the available</li>
 </ul></div>
@@ -122,7 +122,7 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.1.0" id="ragg-110">ragg 1.1.0<a class="anchor" aria-label="anchor" href="#ragg-110"></a></h2><p class="text-muted">CRAN release: 2021-02-15</p>
 <ul><li>Major version release to signify the much improved text support that includes full support for right-to-left scripts and bidirectional text (mix of RtL and LtR scripts). It further adds full support for OpenType features and non-scalable fonts.</li>
-<li>Re-exporting <code><a href="https://rdrr.io/pkg/systemfonts/man/register_font.html" class="external-link">register_font()</a></code>, <code><a href="https://rdrr.io/pkg/systemfonts/man/register_variant.html" class="external-link">register_variant()</a></code>, and <code><a href="https://rdrr.io/pkg/systemfonts/man/font_feature.html" class="external-link">font_feature()</a></code> from systemfonts</li>
+<li>Re-exporting <code><a href="https://systemfonts.r-lib.org/reference/register_font.html" class="external-link">register_font()</a></code>, <code><a href="https://systemfonts.r-lib.org/reference/register_variant.html" class="external-link">register_variant()</a></code>, and <code><a href="https://systemfonts.r-lib.org/reference/font_feature.html" class="external-link">font_feature()</a></code> from systemfonts</li>
 <li>Re-exporting <code><a href="https://rdrr.io/pkg/textshaping/man/get_font_features.html" class="external-link">get_font_features()</a></code> from textshaping</li>
 <li>Use new textshaping API and handle font fallback correctly</li>
 <li>Add support for rendering colour fonts (<a href="https://github.com/r-lib/ragg/issues/1" class="external-link">#1</a>)</li>
