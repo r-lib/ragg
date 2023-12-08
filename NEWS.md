@@ -1,4 +1,4 @@
-# ragg (development version)
+# ragg 1.2.7
 
 * Fix a stack imbalance bug
 
