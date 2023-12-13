@@ -49,6 +49,9 @@ elif [ `uname` = "Darwin" ]; then
   fi
 fi
 
+# Ensure that lib link flags are unique
+PKG_LIBS=$(echo ${PKG_LIBS} | xargs -n1 | sort -u | xargs)
+
 # For debugging
 echo "Using PKG_CFLAGS=$PKG_CFLAGS"
 echo "Using PKG_LIBS=$PKG_LIBS"
