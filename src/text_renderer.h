@@ -244,7 +244,7 @@ public:
     id_buffer.reserve(expected_max);
     cluster_buffer.reserve(expected_max);
     font_buffer.reserve(expected_max);
-    fallback_buffer.reserve(expected_max);
+    fallback_buffer.reserve(expected_max*20);
     scaling_buffer.reserve(expected_max);
     
     int err = textshaping::string_shape(
