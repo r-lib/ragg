@@ -240,12 +240,12 @@ public:
       return;
     }
     
-    loc_buffer.reserve(expected_max);
-    id_buffer.reserve(expected_max);
-    cluster_buffer.reserve(expected_max);
-    font_buffer.reserve(expected_max);
-    fallback_buffer.reserve(expected_max*20);
-    scaling_buffer.reserve(expected_max);
+    loc_buffer.reserve(expected_max+100);
+    id_buffer.reserve(expected_max+100);
+    cluster_buffer.reserve(expected_max+100);
+    font_buffer.reserve(expected_max+100);
+    fallback_buffer.reserve(expected_max+100);
+    scaling_buffer.reserve(expected_max+100);
     
     int err = textshaping::string_shape(
       string,
