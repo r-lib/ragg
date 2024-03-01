@@ -1,5 +1,7 @@
 # ragg (development version)
 
+* Silence a bug in clang-ASAN that incorrectly reported sanitiser issues
+
 # ragg 1.2.7
 
 * Fix a stack imbalance bug

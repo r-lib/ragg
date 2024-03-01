@@ -239,13 +239,13 @@ public:
     if (expected_max == 0) {
       return;
     }
-    
-    loc_buffer.reserve(expected_max);
-    id_buffer.reserve(expected_max);
-    cluster_buffer.reserve(expected_max);
-    font_buffer.reserve(expected_max);
-    fallback_buffer.reserve(expected_max);
-    scaling_buffer.reserve(expected_max);
+
+    loc_buffer.resize(expected_max);
+    id_buffer.resize(expected_max);
+    cluster_buffer.resize(expected_max);
+    font_buffer.resize(expected_max);
+    fallback_buffer.resize(expected_max);
+    scaling_buffer.resize(expected_max);
     
     int err = textshaping::string_shape(
       string,
