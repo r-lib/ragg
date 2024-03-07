@@ -1,19 +1,17 @@
-VERSION = 2.7.4
-RWINLIB = ../windows/harfbuzz-${VERSION}
+RWINLIB = ../windows/harfbuzz
 
 AGG_OBJECTS = agg/src/agg_curves.o agg/src/agg_font_freetype.o \
 	agg/src/agg_image_filters.o agg/src/agg_trans_affine.o \
 	agg/src/agg_vcgen_dash.o agg/src/agg_vcgen_stroke.o
 
 PKG_CPPFLAGS = -DSTRICT_R_HEADERS \
-	-I${RWINLIB}/include \
-	-I${RWINLIB}/include/freetype2 \
+	-I$(RWINLIB)/include -I$(RWINLIB)/include/freetype2 \
 	-I./agg/include \
 
 PKG_LIBS = -Lagg -lstatagg \
-  -L${RWINLIB}/lib${R_ARCH}${CRT} \
+	-L$(RWINLIB)/lib$(R_ARCH) -L$(RWINLIB)/lib \
 	-lfreetype -lharfbuzz -lfreetype -lpng -lz -ltiff -ljpeg \
-	-lbz2 -lgdi32 -lws2_32
+	-lbz2 -lrpcrt4 -lgdi32 -lws2_32
 
 STATLIB = agg/libstatagg.a
 
@@ -24,7 +22,7 @@ $(SHLIB): $(STATLIB)
 $(STATLIB): $(AGG_OBJECTS)
 
 winlibs:
-	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R" ${VERSION}
+	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R"
 
 clean:
 	rm -f $(OBJECTS) $(STATLIB) $(SHLIB) $(AGG_OBJECTS)

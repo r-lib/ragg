@@ -5,9 +5,9 @@
 # R CMD INSTALL --configure-vars='INCLUDE_DIR=/.../include LIB_DIR=/.../lib'
 
 # Library settings
-PKG_CONFIG_NAME="freetype2 libpng libtiff-4"
+PKG_CONFIG_NAME="freetype2 libpng libtiff-4 libjpeg"
 PKG_DEB_NAME="libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev"
-PKG_RPM_NAME="freetype-devel libpng-devel libtiff-devel libjpeg-turbo-devel"
+PKG_RPM_NAME="freetype-devel libpng-devel libtiff-devel libjpeg-devel"
 PKG_CSW_NAME="libfreetype_dev libpng16_dev libtiff_dev libjpeg_dev"
 PKG_BREW_NAME="freetype libpng libtiff zlib libjpeg-turbo"
 PKG_TEST_HEADER="#include <ft2build.h>\n#include <png.h>\n#include <tiffio.h>\n#include <jpeglib.h>\n"
@@ -36,7 +36,7 @@ if [ "$INCLUDE_DIR" ] || [ "$LIB_DIR" ]; then
 elif [ "$PKGCONFIG_LIBS" ]; then
   echo "Found pkg-config cflags and libs!"
   PKG_CFLAGS=${PKGCONFIG_CFLAGS}
-  PKG_LIBS="${PKGCONFIG_LIBS} -ljpeg"
+  PKG_LIBS="${PKGCONFIG_LIBS}"
 elif [ `uname` = "Darwin" ]; then
   test ! "$CI" && brew --version 2>/dev/null
   if [ $? -eq 0 ]; then
@@ -45,7 +45,7 @@ elif [ `uname` = "Darwin" ]; then
     PKG_LIBS="-L$BREWDIR/lib ${PKG_LIBS}"
   else
     curl -sfL "https://autobrew.github.io/scripts/ragg" > autobrew
-    . autobrew
+    . ./autobrew
   fi
 fi
 

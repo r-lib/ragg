@@ -333,8 +333,7 @@ void agg_fillStroke(SEXP path, int rule, const pGEcontext gc, pDevDesc dd) {
 
 template<class T>
 SEXP agg_capabilities(SEXP capabilities) {
-  SEXP transforms, paths;
-  
+#if R_GE_version >= 15
   // Pattern support
   SEXP pat = PROTECT(Rf_allocVector(INTSXP, 3));
   INTEGER(pat)[0] = R_GE_linearGradientPattern;
@@ -387,7 +386,9 @@ SEXP agg_capabilities(SEXP capabilities) {
   
   // Path stroking and filling
   SET_VECTOR_ELT(capabilities, R_GE_capability_paths, Rf_ScalarInteger(1));
-  
+
+#endif
+
   return capabilities;
 }
 
@@ -470,6 +471,9 @@ pDevDesc agg_device_new(T* device) {
   dd->ipr[1] = 1.0 / (72 * device->res_mod);
   
   // Capabilities
+#if R_GE_version >= 15
+  dd->capabilities = agg_capabilities<T>;
+#endif
   dd->canClip = TRUE;
 #if R_GE_version >= 14
   dd->deviceClip = TRUE;
@@ -482,7 +486,7 @@ pDevDesc agg_device_new(T* device) {
   dd->useRotatedTextInContour =  (Rboolean) 1;
   
 #if R_GE_version >= 13
-  dd->deviceVersion = R_GE_group;
+  dd->deviceVersion = 15; //R_GE_group;
 #endif
   
   device->device_id = DEVICE_COUNTER++;

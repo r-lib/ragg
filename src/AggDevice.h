@@ -28,6 +28,8 @@
 
 #include <memory>
 
+#include <Rversion.h>
+
 static const int MAX_CELLS = 1 << 20;
 
 /* Base class for graphic device interface to AGG. See AggDevice.cpp for 
@@ -40,6 +42,7 @@ static const int MAX_CELLS = 1 << 20;
  */
 template<class PIXFMT, class R_COLOR = agg::rgba8, typename BLNDFMT = pixfmt_type_32>
 class AggDevice {
+  UTF_UCS converter;
 public:
   typedef PIXFMT pixfmt_type;
   typedef agg::renderer_base<pixfmt_type> renbase_type;
@@ -196,11 +199,12 @@ protected:
     }
   }
   template<class Raster, class Path>
-  void setStroke(Raster &ras, Path &p, int lty, double lwd, R_GE_lineend lend, R_GE_linejoin ljoin) {
+  void setStroke(Raster &ras, Path &p, int lty, double lwd, R_GE_lineend lend, R_GE_linejoin ljoin, double lmitre) {
     if (lty == LTY_SOLID) {
       agg::conv_stroke<Path> pg(p);
       pg.width(lwd);
       pg.line_join(convertLinejoin(ljoin));
+      pg.miter_limit(lmitre);
       pg.line_cap(convertLineend(lend));
       ras.add_path(pg);
     } else {
@@ -209,6 +213,7 @@ protected:
       makeDash(pd, lty, lwd);
       pg.width(lwd);
       pg.line_join(convertLinejoin(ljoin));
+      pg.miter_limit(lmitre);
       pg.line_cap(convertLineend(lend));
       ras.add_path(pg);
     }
@@ -299,7 +304,8 @@ protected:
   template<class Raster, class Path>
   void drawShape(Raster &ras, Raster &ras_clip, Path &path, bool draw_fill, 
                  bool draw_stroke, int fill, int col, double lwd, 
-                 int lty, R_GE_lineend lend, R_GE_linejoin ljoin = GE_ROUND_JOIN, int pattern = -1, bool evenodd = false) {
+                 int lty, R_GE_lineend lend, R_GE_linejoin ljoin = GE_ROUND_JOIN, 
+                 double lmitre = 1.0, int pattern = -1, bool evenodd = false) {
     agg::scanline_p8 slp;
     if (recording_path != NULL) {
       recording_path->concat_path(path);
@@ -375,7 +381,7 @@ protected:
     
     if (evenodd) ras.filling_rule(agg::fill_non_zero);
     agg::scanline_u8 slu;
-    setStroke(ras, path, lty, lwd, lend, ljoin);
+    setStroke(ras, path, lty, lwd, lend, ljoin, lmitre);
     if (recording_mask == NULL && recording_raster == NULL) {
       solid_renderer.color(convertColour(col));
       if (current_mask == NULL) {
@@ -435,6 +441,7 @@ protected:
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 AggDevice<PIXFMT, R_COLOR, BLNDFMT>::AggDevice(const char* fp, int w, int h, double ps, 
                                                int bg, double res, double scaling) : 
+  converter(),
   width(w),
   height(h),
   clip_left(0),
@@ -555,6 +562,13 @@ template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 double AggDevice<PIXFMT, R_COLOR, BLNDFMT>::stringWidth(const char *str, 
                                                const char *family, int face, 
                                                double size) {
+#if R_VERSION >= R_Version(4, 0, 0)
+  if (face == 5) {
+    const char* str2 = Rf_utf8Toutf8NoPUA(str);
+    str = str2;
+  }
+#endif
+  
   size *= res_mod;
   agg::glyph_rendering gren = agg::glyph_ren_agg_gray8;
   if (!t_ren.load_font(gren, family, face, size, device_id)) {
@@ -569,6 +583,16 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::charMetric(int c, const char *family, 
                                    double *width) {
   if (c < 0) {
     c = -c;
+#if R_VERSION >= R_Version(4, 0, 0)
+    if (face == 5) {
+      char str[16];
+      Rf_ucstoutf8(str, (unsigned int) c);
+      const char* str2 = Rf_utf8Toutf8NoPUA(str);
+      int n = 0;
+      uint32_t* res = converter.convert(str2, n);
+      if (n > 0) c = res[0];
+    }
+#endif
   }
   
   size *= res_mod;
@@ -1067,7 +1091,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawCircle(double x, double y, double 
     e1.init(x, y, r, r);
   }
   
-  drawShape(ras, ras_clip, e1, draw_fill, draw_stroke, fill, col, lwd, lty, lend, GE_ROUND_JOIN, pattern);
+  drawShape(ras, ras_clip, e1, draw_fill, draw_stroke, fill, col, lwd, lty, lend, GE_ROUND_JOIN, 1.0, pattern);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
@@ -1097,7 +1121,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRect(double x0, double y0, double 
   rect.line_to(x1, y0);
   rect.close_polygon();
   
-  drawShape(ras, ras_clip, rect, draw_fill, draw_stroke, fill, col, lwd, lty, lend, GE_ROUND_JOIN, pattern);
+  drawShape(ras, ras_clip, rect, draw_fill, draw_stroke, fill, col, lwd, lty, lend, GE_ROUND_JOIN, 1.0, pattern);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
@@ -1124,7 +1148,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPolygon(int n, double *x, double *
   }
   poly.close_polygon();
   
-  drawShape(ras, ras_clip, poly, draw_fill, draw_stroke, fill, col, lwd, lty, lend, ljoin, pattern);
+  drawShape(ras, ras_clip, poly, draw_fill, draw_stroke, fill, col, lwd, lty, lend, ljoin, lmitre, pattern);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
@@ -1166,7 +1190,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPolyline(int n, double* x, double*
     ps.line_to(x[i]  + x_trans, y[i] + y_trans);
   }
   
-  drawShape(ras, ras_clip, ps, false, true, 0, col, lwd, lty, lend, ljoin);
+  drawShape(ras, ras_clip, ps, false, true, 0, col, lwd, lty, lend, ljoin, lmitre);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
@@ -1203,7 +1227,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPath(int npoly, int* nper, double*
     path.close_polygon();
   }
   
-  drawShape(ras, ras_clip, path, draw_fill, draw_stroke, fill, col, lwd, lty, lend, ljoin, pattern, evenodd);
+  drawShape(ras, ras_clip, path, draw_fill, draw_stroke, fill, col, lwd, lty, lend, ljoin, lmitre, pattern, evenodd);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
@@ -1326,6 +1350,13 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawText(double x, double y, const cha
                                           const char *family, int face, 
                                           double size, double rot, double hadj, 
                                           int col) {
+#if R_VERSION >= R_Version(4, 0, 0)
+  if (face == 5) {
+    const char* str2 = Rf_utf8Toutf8NoPUA(str);
+    str = str2;
+  }
+#endif
+  
   agg::glyph_rendering gren = std::fmod(rot, 90) == 0.0 && recording_path == NULL ? agg::glyph_ren_agg_gray8 : agg::glyph_ren_outline;
   
   x += x_trans;

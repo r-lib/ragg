@@ -1,5 +1,31 @@
 # ragg (development version)
 
+* Silence a bug in clang-ASAN that incorrectly reported sanitiser issues
+
+# ragg 1.2.7
+
+* Fix a stack imbalance bug
+
+# ragg 1.2.6
+
+* Fix symbol rendering bug on windows (#132)
+* Add support for `dev.capabilities()` (#105)
+* Prepare for Arm Windows
+
+# ragg 1.2.5
+
+* Fix a bug when rendering glyphs from a colour font that also provide greyscale
+  glyphs (#105)
+* Move `sprintf()` to `snprintf()` in the AGG source code to comply with Arm64
+  deprecation
+* Better guard against bad input (#116)
+
+# ragg 1.2.4
+
+* Fixed a regression that turned off line mitre support (#119)
+
+# ragg 1.2.3
+
 * Second attempt at rendering jpegs with transparent background. Now, the buffer
   is filled with solid white before any drawing happens.
 * Fixed a bug that resulted in newlines being rendered as missing glyphs on some

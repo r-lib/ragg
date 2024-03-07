@@ -1,4 +1,13 @@
+check_numeric_scalar <- function(x, name) {
+  if (length(x) != 1 || !is.numeric(x) || !is.finite(x)) {
+    stop(paste0(name, " must be a numeric scalar"))
+  }
+}
+
 get_dims <- function(width, height, units, res) {
+  check_numeric_scalar(width, "width")
+  check_numeric_scalar(height, "height")
+  check_numeric_scalar(res, "res")
   dims <- c(width, height) * switch(
     units,
     'in' = res,

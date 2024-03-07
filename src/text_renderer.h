@@ -130,7 +130,6 @@ public:
 
 template<typename PIXFMT>
 class TextRenderer {
-  UTF_UCS converter;
   FontSettings last_font;
   agg::glyph_rendering last_gren;
   std::vector<textshaping::Point> loc_buffer;
@@ -144,9 +143,7 @@ class TextRenderer {
   bool no_bearings;
   
 public:
-  TextRenderer() :
-    converter()
-  {
+  TextRenderer() {
     last_gren = agg::glyph_ren_native_mono;
     get_engine().hinting(true);
     get_engine().flip_y(true);
@@ -242,13 +239,13 @@ public:
     if (expected_max == 0) {
       return;
     }
-    
-    loc_buffer.reserve(expected_max);
-    id_buffer.reserve(expected_max);
-    cluster_buffer.reserve(expected_max);
-    font_buffer.reserve(expected_max);
-    fallback_buffer.reserve(expected_max);
-    scaling_buffer.reserve(expected_max);
+
+    loc_buffer.resize(expected_max);
+    id_buffer.resize(expected_max);
+    cluster_buffer.resize(expected_max);
+    font_buffer.resize(expected_max);
+    fallback_buffer.resize(expected_max);
+    scaling_buffer.resize(expected_max);
     
     int err = textshaping::string_shape(
       string,
@@ -367,6 +364,7 @@ private:
       if (!get_engine().load_font(font.file, font.index, gren)) {
         return false;
       }
+      
       last_gren = gren;
       get_engine().height(size);
       get_engine().id(id);
