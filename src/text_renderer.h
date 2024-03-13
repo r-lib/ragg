@@ -214,7 +214,8 @@ public:
     const agg::glyph_cache* glyph = get_manager().glyph(index);
     
     // This might also be relevant to non-colour fonts that are unscalable
-    double mod = current_font_height / get_engine().height();
+    double h = get_engine().height();
+    double mod = h == 0.0 ? 1.0 : current_font_height / h;
     
     // Only use 77 glyph if found and not colour font
     // Last point is to guard against wrong line-heights based in M char in emoji fonts
