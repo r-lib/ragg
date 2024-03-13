@@ -400,6 +400,11 @@ SEXP agg_capabilities(SEXP capabilities) {
 
 #endif
 
+#if R_GE_version >= 16
+  // Glyph rendering
+  SET_VECTOR_ELT(capabilities, R_GE_capability_glyphs, Rf_ScalarInteger(1));
+#endif
+
   return capabilities;
 }
 
