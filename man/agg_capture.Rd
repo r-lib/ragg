@@ -16,9 +16,7 @@ agg_capture(
 )
 }
 \arguments{
-\item{width}{The dimensions of the device}
-
-\item{height}{The dimensions of the device}
+\item{width, height}{The dimensions of the device}
 
 \item{units}{The unit `width` and `height` is measured in, in either pixels 
 (`'px'`), inches (`'in'`), millimeters (`'mm'`), or centimeter (`'cm'`).}

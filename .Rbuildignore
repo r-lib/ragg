@@ -19,3 +19,5 @@
 ^codecov\.yml$
 ^\.github$
 ^revdep$
+^CRAN-SUBMISSION$
+^ragg\.Rproj$

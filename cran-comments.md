@@ -1,9 +1,2 @@
-This release adds support for the latest graphic engine features. In addition it
-contains a couple of bug fixes related to font rendering and encoding.
-
-## revdepcheck results
-
-We checked 19 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
-
- * We saw 0 new problems
- * We failed to check 0 packages
+This is a small patch release that fixes a PROTECT imbalance in the 
+`dev.capabilities` implementation

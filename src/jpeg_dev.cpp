@@ -8,9 +8,6 @@ SEXP agg_jpeg_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
                 SEXP res, SEXP scaling, SEXP quality, SEXP smoothing, 
                 SEXP method) {
   int bgCol = RGBpar(bg, 0);
-  if (R_TRANSPARENT(bgCol)) {
-    bgCol = R_TRANWHITE;
-  }
   
   BEGIN_CPP
     AggDeviceJpegNoAlpha* device = new AggDeviceJpegNoAlpha(

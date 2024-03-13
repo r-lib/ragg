@@ -22,9 +22,7 @@ agg_supertransparent(
 naming in [grDevices::png()], meaning that you can provide a [sprintf()] 
 compliant string format to name multiple plots (such as the default value)}
 
-\item{width}{The dimensions of the device}
-
-\item{height}{The dimensions of the device}
+\item{width, height}{The dimensions of the device}
 
 \item{units}{The unit `width` and `height` is measured in, in either pixels 
 (`'px'`), inches (`'in'`), millimeters (`'mm'`), or centimeter (`'cm'`).}

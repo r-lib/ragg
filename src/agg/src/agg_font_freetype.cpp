@@ -894,7 +894,7 @@ namespace agg
                 gamma_hash = calc_crc32(gamma_table, sizeof(gamma_table));
             }
 
-            std::sprintf(m_signature, 
+            std::snprintf(m_signature, sizeof(*m_signature) * (m_name_len + 256),
                     "%s,%u,%d,%d,%d:%dx%d,%d,%d,%08X", 
                     m_name,
                     m_char_map,
@@ -913,7 +913,7 @@ namespace agg
                 double mtx[6];
                 char buf[100];
                 m_affine.store_to(mtx);
-                std::sprintf(buf, ",%08X%08X%08X%08X%08X%08X", 
+                std::snprintf(buf, sizeof(buf), ",%08X%08X%08X%08X%08X%08X", 
                     dbl_to_plain_fx(mtx[0]), 
                     dbl_to_plain_fx(mtx[1]), 
                     dbl_to_plain_fx(mtx[2]), 
@@ -1018,19 +1018,23 @@ namespace agg
                 
             case glyph_ren_native_color:
                 m_last_error = FT_Render_Glyph(m_cur_face->glyph, FT_RENDER_MODE_NORMAL);
-                if(m_last_error == 0)
+              
+                if(m_cur_face->glyph->bitmap.pixel_mode == FT_PIXEL_MODE_BGRA) // will fall through to grey render otherwise
                 {
-                    m_bounds.x1 = m_cur_face->glyph->bitmap_left;
-                    m_bounds.y1 = m_cur_face->glyph->bitmap_top;
-                    m_bounds.x2 = m_bounds.x1 + m_cur_face->glyph->bitmap.width;
-                    m_bounds.y2 = m_bounds.y1 - m_cur_face->glyph->bitmap.rows;
-                    m_data_size = m_cur_face->glyph->bitmap.rows * m_cur_face->glyph->bitmap.pitch; 
-                    m_data_type = glyph_data_color;
-                    m_advance_x = int26p6_to_dbl(m_cur_face->glyph->advance.x);
-                    m_advance_y = int26p6_to_dbl(m_cur_face->glyph->advance.y);
-                    return true;
+                    if(m_last_error == 0)
+                    {
+                        m_bounds.x1 = m_cur_face->glyph->bitmap_left;
+                        m_bounds.y1 = m_cur_face->glyph->bitmap_top;
+                        m_bounds.x2 = m_bounds.x1 + m_cur_face->glyph->bitmap.width;
+                        m_bounds.y2 = m_bounds.y1 - m_cur_face->glyph->bitmap.rows;
+                        m_data_size = m_cur_face->glyph->bitmap.rows * m_cur_face->glyph->bitmap.pitch; 
+                        m_data_type = glyph_data_color;
+                        m_advance_x = int26p6_to_dbl(m_cur_face->glyph->advance.x);
+                        m_advance_y = int26p6_to_dbl(m_cur_face->glyph->advance.y);
+                        return true;
+                    }
+                    break;
                 }
-                break;
                 
             case glyph_ren_native_gray8:
                 m_last_error = FT_Render_Glyph(m_cur_face->glyph, FT_RENDER_MODE_NORMAL);

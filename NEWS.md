@@ -1,5 +1,45 @@
 # ragg (development version)
 
+* Added supported for new graphics enigine features: Groups, paths, luminance
+  masks, and glyphs
+* Silence a bug in clang-ASAN that incorrectly reported sanitiser issues
+
+# ragg 1.2.7
+
+* Fix a stack imbalance bug
+
+# ragg 1.2.6
+
+* Fix symbol rendering bug on windows (#132)
+* Add support for `dev.capabilities()` (#105)
+* Prepare for Arm Windows
+
+# ragg 1.2.5
+
+* Fix a bug when rendering glyphs from a colour font that also provide greyscale
+  glyphs (#105)
+* Move `sprintf()` to `snprintf()` in the AGG source code to comply with Arm64
+  deprecation
+* Better guard against bad input (#116)
+
+# ragg 1.2.4
+
+* Fixed a regression that turned off line mitre support (#119)
+
+# ragg 1.2.3
+
+* Second attempt at rendering jpegs with transparent background. Now, the buffer
+  is filled with solid white before any drawing happens.
+* Fixed a bug that resulted in newlines being rendered as missing glyphs on some
+  Linux versions (#111)
+
+# ragg 1.2.2
+
+* MacOS: configure script now uses the local system dependencies provided by 
+  CRAN via pkg-config. Autobrew libs are used as fallback on non-cran servers only.
+
+# ragg 1.2.1
+
 * Fix bug that caused R to crash when writing tiff files with transparent 
   background (#97)
 

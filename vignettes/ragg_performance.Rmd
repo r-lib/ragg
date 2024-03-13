@@ -13,6 +13,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.width = 7
 )
+options(knitr.graphics.rel_path = FALSE)
 has_xlib <- capabilities()['X11']
 ```
 
@@ -22,7 +23,7 @@ library(devoid)
 library(ggplot2)
 ```
 
-This document serves as a collection of benchmarks between ragg and the build-in
+This document serves as a collection of benchmarks between ragg and the built-in
 raster devices provided by the grDevices package. As the output format is 
 immaterial to the benchmarking, this document will only compare devices 
 producing png images. The `png()` function from grDevices can use different 
@@ -46,12 +47,12 @@ still refer to it.
 ```
 
 ## Opening and closing
-All subsequent benchmarks will not include the opening and closing of the device
+All subsequent benchmarks will omit the opening and closing of the device
 and instead focus on rendering performance. The most important, and potentially 
 time-consuming, part of opening and closing a device is allocation of a buffer
 to write raster information to, and serialising the buffer into a file. It is
 also where performance differences between e.g. png and tiff will come from. As
-both ragg and grDevices uses the same underlying libraries to write to png files
+both ragg and grDevices use the same underlying libraries to write to png files
 (libpng) it is not expected that there is much difference.
 
 ```{r, message=FALSE}
@@ -73,8 +74,8 @@ plot(res, type = 'ridge') + ggtitle('Open and close performance')
 As can be seen, it is not as clear cut as it seems. ragg and cairo_png have 
 equivalent performance, while Cairo is about twice as fast. Xlib on
 the other hand is even slower. Looking at the produced files we can see that 
-ragg and cairo_png produce files of around 2Kb, whereas cairo
-produces files of around 300B and XLib around 6Kb. The differences can thus be
+ragg and cairo_png produce files of around 2 KB, whereas cairo
+produces files of around 300 B and XLib around 6 KB. The differences can thus be
 ascribed to disk write speed more than anything, and is probably due to 
 different compression and filtering settings used. ragg uses the default 
 heuristics from libpng, and my guess is that cairo_png uses this as well. A 
@@ -87,9 +88,9 @@ is difficult to test without inflating it with rendering speed.
 A graphic device provides a range of methods that R's graphic engine will use 
 when it receives plotting instructions from the user. The more performant each
 of these methods are, the more performant the graphic device is as a whole. The
-possible devices from grDevices increases here, as different anti-aliasing 
-settings can be used (ragg, again, has no settings for this. It will always draw
-with subpixel antialiasing). Below is an attempt to benchmark each of the device
+range of anti-aliasing options from grDevices increases here, while
+ragg has no settings for this and will always draw
+with subpixel antialiasing. Below is an attempt to benchmark each of the device
 methods by constructing as direct as possible calls to each of them. Remember, `void_dev()`
 provides the baseline.
 
@@ -138,7 +139,7 @@ plot_bench <- function(x, title, baseline) {
 ```
 
 ### Circles
-Circles can be drawn with e.g. `grid.circle()` but is often used when drawing
+Circles can be drawn with e.g. `grid.circle()` and are often used when drawing
 scatter plots as the default point type. It is thus of high importance that 
 circle drawing is as performant as possible, as it may get called thousands of 
 times during the creation of a plot.
@@ -174,8 +175,8 @@ the most performant device, but also the one rendering with the lowest quality
 by far (see the *Rendering quality* vignette).
 
 ### Lines
-Lines is another fundamental part. It can be used to draw single line segments
-directly and is also the workhorse for some of the different symbol types, e.g.
+Lines are another fundamental part. They can be used to draw single line segments
+directly and are also the workhorse for some of the different symbol types, e.g.
 `pch = 4`, which we will use here.
 
 ```{r, message=FALSE}
@@ -190,7 +191,7 @@ plot_bench(res, 'Line segment performance', b)
 ```
 
 Again, we see a clear performance difference between devices using antialiasing
-and those that do not. ragg is once again the fastest one using anti-aliasing.
+and those that do not. ragg is again the fastest one using anti-aliasing.
 
 ### Polylines
 Polylines are connected line segments. We should expect the same picture as for
@@ -218,7 +219,7 @@ plot_bench(res, 'Patterned connected line performance', b)
 
 The results here are quite surprising. While the general pattern continues, the
 anti-aliasing in cairo is much slower than in the other setups. For the 
-patterned test we see that Xlib is so slow at generating patterned lines that it
+patterned test, we see that Xlib is so slow at generating patterned lines that it
 completely negates its otherwise solid rendering speed leadership (again, at the
 cost of quality).
 
@@ -254,8 +255,8 @@ fills and drawing a non anti-aliased filled rectangle is extremely simple.
 
 ### Polygons
 Polygons are the general case of what we've seen with circles and rectangles. 
-While certain optimisations may be possible for e.g. rectanges the polygon
-method of device needs to handle all cases. It is used in points for e.g. 
+While certain optimisations may be possible for e.g. rectanges, the polygon
+method of a device needs to handle all cases. It is used in points for e.g. 
 triangles, but we will also test performance for bigger, more complex polygons.
 
 ```{r, message=FALSE}
@@ -288,14 +289,14 @@ plot_bench(res, 'Filled complex polygon performance', b)
 ```
 
 The findings here reflect what is seen above. ragg is faster when it comes to
-drawing the lines, but looses the advantage with fill as it is the only one 
+drawing the lines, but loses the advantage with fill as it is the only one 
 performing anti-aliasing fill.
 
 ### Paths
 Paths are the supercharged versions of polygons with support for holes and 
 whatnot. It is one of the features that was added later in the lifetime of the
 R graphic engine and devices can thus elect not to support it. Most do, however,
-including cairo, but not Xlib. In ragg path rendering is 
+including cairo, but not Xlib. In ragg, path rendering is 
 implemented in the same way as polygon rendering (the polygon method being a
 special case of the path method), but how the other devices implement it is not
 something I know.
@@ -392,7 +393,7 @@ res <- all_render_bench(rasterImage(raster, xleft = 0.25, ybottom = 0.25,
 plot_bench(res, 'Interpolated, rotated raster performance', b)
 ```
 
-Plotting rasters is whicked fast it appears. For non-rotated rasters ragg is a
+Plotting rasters is wicked fast it appears. For non-rotated rasters ragg is a
 tiny bit slower than cairo, maybe due to anti-aliasing of the edges. The loss is
 gained again when it comes to rotation, indicating a more performant affine 
 transformation implementation. Xlib is significantly slower here, for reasons 
@@ -427,15 +428,15 @@ plot_bench(res, 'Text string performance', b)
 
 Once again Xlib surprises with a significantly slower font handling than its 
 anti-aliased peers. ragg is slightly faster than cairo again but not by much. In
-general text rendering is governed as much by how quickly the code looks up
+general, text rendering is governed as much by how quickly the code looks up
 glyphs in the font database as it is about rendering speed.
 
 ### Complex example
-All of these primitives apart can be difficult to compare. In general it appears
-like ragg has a small but consistent lead in performance among the anti-aliased
+All of these primitives can be difficult to summarize. In general, it appears
+that ragg has a small but consistent lead in performance among the anti-aliased
 devices safe for a few areas. The last benchmark will tie it all together in a
 more complete graphic made using ggplot2 (don't worry about the quality of the
-graphic — we are simply pilling stuff on top of each others):
+graphic — we are simply piling on layers of stuff):
 
 ```{r, fig.height=5, message=FALSE}
 p <- ggplot(diamonds, aes(carat, price)) + 
@@ -464,19 +465,19 @@ plot_bench(res, 'Complex composite performance', b)
 We see that with complex graphics the speed benefit of the non anti-aliased Xlib
 device disappears (probably due to its slow text rendering). Ragg is clearly the
 fastest anti-aliased device, but it should be noted that the example 
-deliberately included both stroked and filled shapes. If only plotting fill the
-speed advantage might become smaller or disappear. Something else that we 
+deliberately included both stroked and filled shapes. When only plotting with filled
+shapes, the speed advantage might decrease or disappear. Something else that we 
 haven't discussed here, but may affect speed in such a complex graphic is 
 clipping speed (not drawing elements outside of the clipping region).
 
 ## Conclusion
-If there is one point, beyond any doubt, to gain from this, it is that 
-anti-aliasing will cost you in specific situation, but it will even out in 
-complex tasks. Xlib and non anti-aliased cairo is almost 
+One point to gather from this is that 
+anti-aliasing will cost you in specific situations, but it will even out in 
+complex tasks. Xlib and non anti-aliased cairo are almost 
 consistently the fastest at rendering primitives, though both show surprising 
 problems in some tasks. If you want anti-aliasing (you generally do), then ragg 
 is consistently the fastest options, with a general speed gain of around ~33% 
-compared to cairo. In the places where the speed gain is less it is mainly 
+compared to cairo. In places where the speed gain is less, it is mainly 
 because cairo chooses not to use anti-aliasing for fill. The decision to not 
 anti-alias fill is questionable in my opinion. If a stroke is also drawn it is 
 indeed immaterial whether the underlying fill is anti-aliased, that is, unless 
@@ -485,7 +486,7 @@ It could be argued that the device could inspect whether a solid stroke was
 going to be drawn and make a choice based on that, but line width comes into 
 effect as well. A very thin stroke will not be able to hide the jagged non 
 anti-aliased fill completely and result in unacceptable visual artefacts. 
-Because of this, ragg has chosen to simply always use anti-aliasing. At worst, 
+Because of this, ragg is designed to simply always use anti-aliasing. At worst, 
 it makes it only as performant as the cairo counterpart, at best it is faster 
 and with a higher quality output.
 
@@ -495,7 +496,7 @@ for more advanced rendering features such as gradients, pattern fills, arbitrary
 clipping paths etc. Support for this is depending on the device and is mainly
 supported by Cairo and PDF in the base 
 installation`r if (has_xlib) ' (Xlib will do nothing and thus appear to be very fast)' else ''`. 
-ragg will strive to keep up with the new features though it may lack behind a 
+ragg will strive to keep up with the new features though it may lag behind a 
 bit as development takes time.
 
 Most of these new features are only available through grid so we can't avoid a 
@@ -528,9 +529,9 @@ efficient as it basically surmounts to rasterising the clipping path in those
 areas where the main graphic is getting rendered.
 
 ### Masks
-Masks allows you to define the alpha level of a layer based on information from
-another layer - as such it can perform the same things as clipping paths and 
-then some but the underlying idea is very different - it also requires you to 
+Masks allow you to define the alpha level of a layer based on information from
+another layer. As such, it can perform the same things as clipping paths and 
+then some, but the underlying idea is very different. It also requires you to 
 render to a whole new canvas when creating the mask so it has some overhead not
 present in clipping paths depending on the resolution of the device.
 
@@ -550,7 +551,7 @@ plot_bench(res, 'Complex mask performance', b)
 
 We see that, at least at the resolutions these tests are performed at, alpha 
 masks are much faster than clipping paths for both ragg and cairo - ragg is 
-still quite a bit faster, but cairos mask performance is faster than raggs 
+still quite a bit faster, but cairo's mask performance is faster than ragg's 
 clipping path performance.
 
 ### Gradients
@@ -596,8 +597,8 @@ plot_bench(res, 'Pattern performance', b)
 ```
 
 We see once again a clear performance upper-hand with ragg. The same caveats 
-that apply to gradients are there for patterns unfortunately so using multiple
-different patterns will have considerable overheads as multiple grobs needs to 
+that apply to gradients are there for patterns, unfortunately, so using multiple
+different patterns will have considerable overhead as multiple grobs need to 
 be created.
 
 ## Session info

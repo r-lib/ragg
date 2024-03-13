@@ -25,7 +25,7 @@ inline FILE* unicode_fopen(const char* path, const char* mode) {
   }
   buf = (wchar_t*)R_alloc(len, sizeof(wchar_t));
   if (buf == NULL) {
-    Rf_error("Could not allocate buffer of size: %ll", len);
+    Rf_error("Could not allocate buffer of size: %zu", len);
   }
   
   MultiByteToWideChar(CP_UTF8, 0, path, -1, buf, len);

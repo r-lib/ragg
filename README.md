@@ -5,13 +5,13 @@
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/r-lib/ragg/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/ragg/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/r-lib/ragg/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/ragg?branch=main)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/ragg)](https://cran.r-project.org/package=ragg)
 [![Lifecycle:
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
-[![R-CMD-check](https://github.com/r-lib/ragg/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/ragg/actions)
 <!-- badges: end -->
 
 This package provides graphic devices for R based on the AGG library
@@ -27,8 +27,8 @@ The package can be installed from CRAN with `install.packages('ragg')`
 or, if the development version is desired, directly from github:
 
 ``` r
-# install.packages('devtools')
-devtools::install_github('r-lib/ragg')
+# install.packages('pak')
+pak::pak('r-lib/ragg')
 ```
 
 ## Use
@@ -38,15 +38,15 @@ devices provided by default from the grDevices packages and can both
 produce png, jpeg and tiff files. Notable features, that sets itself
 apart from the build-in devices, includes:
 
--   Faster (up to 40% faster than anti-aliased cairo device)
--   Direct access to all system fonts
--   Advanced text rendering, including support for right-to-left text,
-    emojis, and font fallback
--   High quality anti-aliasing
--   High quality rotated text
--   Support 16-bit output
--   System independent rendering (output from Mac, Windows, and Linux
-    should be identical)
+- Faster (up to 40% faster than anti-aliased cairo device)
+- Direct access to all system fonts
+- Advanced text rendering, including support for right-to-left text,
+  emojis, and font fallback
+- High quality anti-aliasing
+- High quality rotated text
+- Support 16-bit output
+- System independent rendering (output from Mac, Windows, and Linux
+  should be identical)
 
 You can use it like any other device. The main functions are
 `agg_png()`, `agg_jpeg()` and `agg_tiff()`, all of which have arguments
@@ -72,7 +72,7 @@ invisible(dev.off())
 knitr::include_graphics(file)
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-1.png" title="A scatterplot created with ggplot2 using a fancy non-standard font and mixing in emojis with text" alt="A scatterplot created with ggplot2 using a fancy non-standard font and mixing in emojis with text" width="100%" />
 
 Further, it provides an `agg_capture()` device that lets you access the
 device buffer directly from your R session.
@@ -89,7 +89,7 @@ par(mai = c(0, 0, 0, 0))
 plot(as.raster(scatter))
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="70%" style="margin-left: 15%;" />
+<img src="man/figures/README-unnamed-chunk-4-1.png" title="A very simple scatterplot captured as raster data and then drawn again" alt="A very simple scatterplot captured as raster data and then drawn again" width="70%" style="margin-left: 15%;" />
 
 ### Use ragg with knitr
 
@@ -103,7 +103,7 @@ ragg can be used as the graphic back-end to the RStudio device (for
 RStudio \>= 1.4) by choosing *AGG* as the backend in the graphics pane
 in general options (see screenshot)
 
-![Setting ragg as backend in RStudio](https://i.imgur.com/4XgiPWy.png)
+<img src="https://i.imgur.com/4XgiPWy.png" title="A screenshot showing the RStudio Global Options window with focus on the General pane and the Graphics tab. Here it shows AGG is selected as Backend in order to tell RStudio to use ragg" alt="A screenshot showing the RStudio Global Options window with focus on the General pane and the Graphics tab. Here it shows AGG is selected as Backend in order to tell RStudio to use ragg" width="100%" />
 
 ## Code of Conduct
 

@@ -1,4 +1,4 @@
-PKG_CXXFLAGS = -I./agg/include @cflags@
+PKG_CPPFLAGS = -I./agg/include @cflags@
 PKG_LIBS = -Lagg -lstatagg @libs@
 
 AGG_OBJECTS = agg/src/agg_curves.o agg/src/agg_font_freetype.o \

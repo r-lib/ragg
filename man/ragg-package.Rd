@@ -6,12 +6,9 @@
 \alias{ragg-package}
 \title{ragg: Graphic Devices Based on AGG}
 \description{
-\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Anti-Grain Geometry (AGG) is a high-quality and high-performance
-    2D drawing library. The 'ragg' package provides a set of graphic devices 
-    based on AGG to use as alternative to the raster devices provided through
-    the 'grDevices' package.
+Anti-Grain Geometry (AGG) is a high-quality and high-performance 2D drawing library. The 'ragg' package provides a set of graphic devices based on AGG to use as alternative to the raster devices provided through the 'grDevices' package.
 }
 \seealso{
 Useful links:
@@ -23,7 +20,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Thomas Lin Pedersen \email{thomas.pedersen@rstudio.com} (\href{https://orcid.org/0000-0002-5147-4711}{ORCID})
+\strong{Maintainer}: Thomas Lin Pedersen \email{thomas.pedersen@posit.co} (\href{https://orcid.org/0000-0002-5147-4711}{ORCID})
 
 Authors:
 \itemize{
@@ -35,7 +32,7 @@ Other contributors:
   \item Tony Juricic \email{tonygeek@yahoo.com} (Contributor to AGG) [contributor, copyright holder]
   \item Milan Marusinec \email{milan@marusinec.sk} (Contributor to AGG) [contributor, copyright holder]
   \item Spencer Garrett (Contributor to AGG) [contributor]
-  \item RStudio [copyright holder]
+  \item Posit, PBC [copyright holder, funder]
 }
 
 }

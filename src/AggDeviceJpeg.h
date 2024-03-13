@@ -24,6 +24,23 @@ public:
     
   }
   // Behaviour
+  void newPage(unsigned int bg) {
+    if (this->pageno != 0) {
+      if (!savePage()) {
+        Rf_warning("agg could not write to the given file");
+      }
+    }
+    this->renderer.reset_clipping(true);
+    // Fill background with white first to avoid weird transparency issues
+    this->renderer.clear(agg::rgba8(255, 255, 255, 255));
+    
+    if (this->visibleColour(bg)) {
+      this->renderer.fill(this->convertColour(bg));
+    } else {
+      this->renderer.fill(this->background);
+    }
+    this->pageno++;
+  };
   bool savePage() {
     char buf[PATH_MAX+1];
     snprintf(buf, PATH_MAX, this->file.c_str(), this->pageno); buf[PATH_MAX] = '\0';

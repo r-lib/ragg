@@ -1,45 +1,28 @@
-destination: docs
 url: https://ragg.r-lib.org
 
-authors:
-  Thomas Lin Pedersen:
-    href: https://data-imaginist.com
-    
 template:
-  params:
-    ganalytics: UA-115082821-1
+  package: tidytemplate
+  bootstrap: 5
 
-navbar:
-  left:
-    - icon: fa-home fa-lg
-      href: index.html
-    - text: Reference
-      href: reference/index.html
-    - text: Benchmarks
-      menu:
-        - text: Quality
-          href: articles/ragg_quality.html
-        - text: Performance
-          href: articles/ragg_performance.html
-    - text: News
-      menu:
-      - text: "Release notes"
-      - text: "Version 1.1.0"
-        href: "https://www.tidyverse.org/blog/2021/02/modern-text-features/"
-      - text: "Version 0.1.0"
-        href: "https://www.tidyverse.org/articles/2019/07/ragg-0-1-0/"
-      - text: "------------------"
-      - text: "Change log"
-        href: news/index.html
-  right:
-    - icon: fa-github fa-lg
-      href: https://github.com/r-lib/ragg
+  includes:
+    in_header: |
+      <script defer data-domain="ragg.r-lib.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+
+development:
+  mode: auto
+
+news:
+  releases:
+  - text: "Version 1.1.0"
+    href: "https://www.tidyverse.org/blog/2021/02/modern-text-features/"
+  - text: "Version 0.1.0"
+    href: "https://www.tidyverse.org/articles/2019/07/ragg-0-1-0/"
 
 reference:
   - title: Graphic Devices
     desc: >
-      ragg currently provides 4 different devices. They all share the same 
-      underlying rendering code, so the only difference is in their output 
+      ragg currently provides 4 different devices. They all share the same
+      underlying rendering code, so the only difference is in their output
       formats.
     contents:
     - agg_png
