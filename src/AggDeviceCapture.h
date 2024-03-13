@@ -9,8 +9,8 @@ public:
   bool can_capture = true;
   
   AggDeviceCapture(const char* fp, int w, int h, double ps, int bg, double res,
-                   double scaling) :
-    AggDevice<PIXFMT>(fp, w, h, ps, bg, res, scaling)
+                   double scaling, bool snap) :
+    AggDevice<PIXFMT>(fp, w, h, ps, bg, res, scaling, snap)
   {
     
   }

@@ -5,7 +5,7 @@
 
 // [[export]]
 SEXP agg_tiff_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, 
-                SEXP res, SEXP scaling, SEXP bit, SEXP compression, 
+                SEXP res, SEXP scaling, SEXP snap, SEXP bit, SEXP compression, 
                 SEXP encoding) {
   bool bit8 = INTEGER(bit)[0] == 8;
   int bgCol = RGBpar(bg, 0);
@@ -21,6 +21,7 @@ SEXP agg_tiff_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
         bgCol,
         REAL(res)[0],
         REAL(scaling)[0],
+        LOGICAL(snap)[0],
         INTEGER(compression)[0],
         INTEGER(encoding)[0]
       );
@@ -34,6 +35,7 @@ SEXP agg_tiff_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
         bgCol,
         REAL(res)[0],
         REAL(scaling)[0],
+        LOGICAL(snap)[0],
         INTEGER(compression)[0],
         INTEGER(encoding)[0]
       );
@@ -49,6 +51,7 @@ SEXP agg_tiff_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
         bgCol,
         REAL(res)[0],
         REAL(scaling)[0],
+        LOGICAL(snap)[0],
         INTEGER(compression)[0],
         INTEGER(encoding)[0]
       );
@@ -62,6 +65,7 @@ SEXP agg_tiff_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
         bgCol,
         REAL(res)[0],
         REAL(scaling)[0],
+        LOGICAL(snap)[0],
         INTEGER(compression)[0],
         INTEGER(encoding)[0]
       );

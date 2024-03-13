@@ -13,6 +13,7 @@ agg_tiff(
   background = "white",
   res = 72,
   scaling = 1,
+  snap_rect = TRUE,
   compression = "none",
   bitsize = 8,
   bg
@@ -44,6 +45,10 @@ need. If e.g. you need to render a plot at 4000x3000 pixels for it to fit
 into a layout, but you find that the result appears to small, you can 
 increase the `scaling` argument to make everything appear bigger at the 
 same resolution.}
+
+\item{snap_rect}{Should axis-aligned rectangles drawn with only fill snap to
+the pixel grid. This will prevent anti-aliasing artifacts when two 
+rectangles are touching at their border.}
 
 \item{compression}{The compression type to use for the image data. The 
 standard options from the [grDevices::tiff()] function are available under 

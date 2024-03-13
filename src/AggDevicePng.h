@@ -12,8 +12,8 @@ extern "C" {
 template<class PIXFMT>
 class AggDevicePng : public AggDevice<PIXFMT> {
 public:
-  AggDevicePng(const char* fp, int w, int h, double ps, int bg, double res, double scaling) : 
-    AggDevice<PIXFMT>(fp, w, h, ps, bg, res, scaling)
+  AggDevicePng(const char* fp, int w, int h, double ps, int bg, double res, double scaling, bool snap) : 
+    AggDevice<PIXFMT>(fp, w, h, ps, bg, res, scaling, snap)
   {
     
   }
@@ -81,8 +81,8 @@ typedef AggDevicePng<pixfmt_type_32> AggDevicePngAlpha;
 template<class PIXFMT>
 class AggDevicePng16 : public AggDevice16<PIXFMT> {
 public:
-  AggDevicePng16(const char* fp, int w, int h, double ps, int bg, double res, double scaling, double alpha_mod = 1.0) : 
-  AggDevice16<PIXFMT>(fp, w, h, ps, bg, res, scaling, alpha_mod)
+  AggDevicePng16(const char* fp, int w, int h, double ps, int bg, double res, double scaling, bool snap, double alpha_mod = 1.0) : 
+  AggDevice16<PIXFMT>(fp, w, h, ps, bg, res, scaling, snap, alpha_mod)
   {
     
   }
