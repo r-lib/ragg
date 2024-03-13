@@ -1488,10 +1488,13 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
   
   // Start by finding with family to pre-populate font feature settings
   FontSettings font_info;
+  
+#if R_GE_version >= 16
   strncpy(font_info.file, R_GE_glyphFontFile(font), PATH_MAX);
   font_info.index = R_GE_glyphFontIndex(font);
   font_info.features = NULL;
   font_info.n_features = 0;
+#endif
   
   if (!t_ren.load_font_from_file(font_info, gren, size, device_id)) {
     return;

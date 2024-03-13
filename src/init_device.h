@@ -295,11 +295,11 @@ void agg_stroke(SEXP path, const pGEcontext gc, pDevDesc dd) {
 
 template<class T>
 void agg_fill(SEXP path, int rule, const pGEcontext gc, pDevDesc dd) {
+  
+#if R_GE_version >= 15
   T * device = (T *) dd->deviceSpecific;
-  int pattern = -1;
-#if R_GE_version >= 13
-  pattern = gc->patternFill == R_NilValue ? -1 : INTEGER(gc->patternFill)[0];
-#endif
+  
+  int pattern = gc->patternFill == R_NilValue ? -1 : INTEGER(gc->patternFill)[0];
   
   bool use_evenodd = rule == R_GE_evenOddRule;
   
@@ -307,18 +307,18 @@ void agg_fill(SEXP path, int rule, const pGEcontext gc, pDevDesc dd) {
   device->renderPath(path, true, false, gc->col, gc->fill, gc->lwd, gc->lty, 
                      gc->lend, gc->ljoin, gc->lmitre, use_evenodd, pattern);
   END_CPP
-    
+#endif    
+  
   return;
 }
 
 template<class T>
 void agg_fillStroke(SEXP path, int rule, const pGEcontext gc, pDevDesc dd) {
+  
+#if R_GE_version >= 15
   T * device = (T *) dd->deviceSpecific;
   
-  int pattern = -1;
-#if R_GE_version >= 13
-  pattern = gc->patternFill == R_NilValue ? -1 : INTEGER(gc->patternFill)[0];
-#endif
+  int pattern = gc->patternFill == R_NilValue ? -1 : INTEGER(gc->patternFill)[0];
   
   bool use_evenodd = rule == R_GE_evenOddRule;
   
@@ -326,6 +326,7 @@ void agg_fillStroke(SEXP path, int rule, const pGEcontext gc, pDevDesc dd) {
   device->renderPath(path, true, true, gc->col, gc->fill, gc->lwd, gc->lty, 
                      gc->lend, gc->ljoin, gc->lmitre, use_evenodd, pattern);
   END_CPP
+#endif
     
   return;
 }
