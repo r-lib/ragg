@@ -1,5 +1,7 @@
 # ragg (development version)
 
+* Added supported for new graphics enigine features: Groups, paths, luminance
+  masks, and glyphs
 * Silence a bug in clang-ASAN that incorrectly reported sanitiser issues
 
 # ragg 1.2.7

@@ -5,6 +5,7 @@
 #include "text_renderer.h"
 #include "RenderBuffer.h"
 #include "pattern.h"
+#include "group.h"
 
 #include "agg_math_stroke.h"
 
@@ -83,7 +84,7 @@ public:
   // Caches
   std::unordered_map<unsigned int, std::pair<std::unique_ptr<agg::path_storage>, bool> > clip_cache;
   unsigned int clip_cache_next_id;
-  agg::path_storage* recording_clip;
+  agg::path_storage* recording_path;
   agg::path_storage* current_clip;
   bool current_clip_rule_is_evenodd;
   
@@ -94,7 +95,10 @@ public:
   
   std::unordered_map<unsigned int, std::unique_ptr<Pattern<BLNDFMT, R_COLOR> > > pattern_cache;
   unsigned int pattern_cache_next_id;
-  RenderBuffer<BLNDFMT>* recording_pattern;
+  std::unordered_map<unsigned int, std::unique_ptr<Group<BLNDFMT, R_COLOR> > > group_cache;
+  unsigned int group_cache_next_id;
+  RenderBuffer<BLNDFMT>* recording_raster;
+  Group<BLNDFMT, R_COLOR>* recording_group;
   
   // Lifecycle methods
   AggDevice(const char* fp, int w, int h, double ps, int bg, double res, 
@@ -111,12 +115,17 @@ public:
                      double size);
   void charMetric(int c, const char *family, int face, double size,
                   double *ascent, double *descent, double *width);
+  
+  std::unique_ptr<agg::path_storage> recordPath(SEXP path);
   SEXP createClipPath(SEXP path, SEXP ref);
   void removeClipPath(SEXP ref);
   SEXP createMask(SEXP mask, SEXP ref);
   void removeMask(SEXP ref);
   SEXP createPattern(SEXP pattern);
   void removePattern(SEXP ref);
+  SEXP renderGroup(SEXP source, int op, SEXP destination);
+  void useGroup(SEXP ref, SEXP trans);
+  void removeGroup(SEXP ref);
   
   // Drawing Methods
   void drawCircle(double x, double y, double r, int fill, int col, double lwd, 
@@ -138,6 +147,11 @@ public:
                   bool interpolate);
   void drawText(double x, double y, const char *str, const char *family, 
                 int face, double size, double rot, double hadj, int col);
+  void drawGlyph(int n, int *glyphs, double *x, double *y, SEXP font, 
+                 double size, int colour, double rot);
+  void renderPath(SEXP path, bool do_fill, bool do_stroke, int col, int fill, 
+                  double lwd, int lty, R_GE_lineend lend, R_GE_linejoin ljoin, 
+                  double lmitre, bool evenodd, int pattern);
   
 protected:
   virtual inline R_COLOR convertColour(unsigned int col) {
@@ -207,29 +221,104 @@ protected:
       ras.add_path(pg);
     }
   }
+  agg::comp_op_e compositeOperator(int op) {
+    agg::comp_op_e comp_op = agg::comp_op_src_over;
+#if R_GE_version >= 15
+    switch(op) {
+    case R_GE_compositeClear: comp_op = agg::comp_op_clear; break;
+    case R_GE_compositeSource: comp_op = agg::comp_op_src; break;
+    case R_GE_compositeOver: comp_op = agg::comp_op_src_over; break;
+    case R_GE_compositeIn: comp_op = agg::comp_op_src_in; break;
+    case R_GE_compositeOut: comp_op = agg::comp_op_src_out; break;
+    case R_GE_compositeAtop: comp_op = agg::comp_op_src_atop; break;
+    case R_GE_compositeDest: comp_op = agg::comp_op_dst; break;
+    case R_GE_compositeDestOver: comp_op = agg::comp_op_dst_over; break;
+    case R_GE_compositeDestIn: comp_op = agg::comp_op_dst_in; break;
+    case R_GE_compositeDestOut: comp_op = agg::comp_op_dst_out; break;
+    case R_GE_compositeDestAtop: comp_op = agg::comp_op_dst_atop; break;
+    case R_GE_compositeXor: comp_op = agg::comp_op_xor; break;
+    case R_GE_compositeAdd: comp_op = agg::comp_op_plus; break;
+    case R_GE_compositeSaturate: Rf_warning("`saturate` blending is not supported in ragg"); break;
+    case R_GE_compositeMultiply: comp_op = agg::comp_op_multiply; break;
+    case R_GE_compositeScreen: comp_op = agg::comp_op_screen; break;
+    case R_GE_compositeOverlay: comp_op = agg::comp_op_overlay; break;
+    case R_GE_compositeDarken: comp_op = agg::comp_op_darken; break;
+    case R_GE_compositeLighten: comp_op = agg::comp_op_lighten; break;
+    case R_GE_compositeColorDodge: comp_op = agg::comp_op_color_dodge; break;
+    case R_GE_compositeColorBurn: comp_op = agg::comp_op_color_burn; break;
+    case R_GE_compositeHardLight: comp_op = agg::comp_op_hard_light; break;
+    case R_GE_compositeSoftLight: comp_op = agg::comp_op_soft_light; break;
+    case R_GE_compositeDifference: comp_op = agg::comp_op_difference; break;
+    case R_GE_compositeExclusion: comp_op = agg::comp_op_exclusion; break;
+    }
+#endif
+    return comp_op;
+  }
+  bool opClipsSrc(int op) {
+    bool clip_src = false;
+#if R_GE_version >= 15
+    switch(op) {
+    case R_GE_compositeSource: 
+    case R_GE_compositeIn: 
+    case R_GE_compositeOut: 
+    case R_GE_compositeDest: 
+    case R_GE_compositeDestOver: 
+    case R_GE_compositeDestIn: 
+    case R_GE_compositeDestAtop: clip_src = true;
+    }
+#endif
+    return clip_src;
+  }
   template<class Raster>
   void fillPattern(Raster &ras, Raster &ras_clip, Pattern<BLNDFMT, R_COLOR>& pattern) {
     agg::scanline_u8 sl;
     bool clip = current_clip != NULL;
-    if (recording_mask == NULL && recording_pattern == NULL) {
+    if (recording_mask == NULL && recording_raster == NULL) {
       if (current_mask == NULL) {
         pattern.draw(ras, ras_clip, sl, renderer, clip);
       } else {
-        pattern.draw(ras, ras_clip, current_mask->get_masked_scanline(), renderer, clip);
+        if (current_mask->use_luminance()) {
+          pattern.draw(ras, ras_clip, current_mask->get_masked_scanline_l(), renderer, clip);
+        } else {
+          pattern.draw(ras, ras_clip, current_mask->get_masked_scanline_a(), renderer, clip);
+        }
       }
-    } else if (recording_pattern == NULL) {
+    } else if (recording_raster == NULL) {
       Pattern<pixfmt_type_32, agg::rgba8> mask_pattern = pattern.convert_for_mask();
       
       if (current_mask == NULL) {
         mask_pattern.draw(ras, ras_clip, sl, recording_mask->get_renderer(), clip);
       } else {
-        mask_pattern.draw(ras, ras_clip, current_mask->get_masked_scanline(), recording_mask->get_renderer(), clip);
+        if (current_mask->use_luminance()) {
+          mask_pattern.draw(ras, ras_clip, current_mask->get_masked_scanline_l(), recording_mask->get_renderer(), clip);
+        } else {
+          mask_pattern.draw(ras, ras_clip, current_mask->get_masked_scanline_a(), recording_mask->get_renderer(), clip);
+        }
       }
     } else {
       if (current_mask == NULL) {
-        pattern.draw(ras, ras_clip, sl, recording_pattern->get_renderer(), clip);
+        if (recording_raster->custom_blend) {
+          pattern.draw(ras, ras_clip, sl, recording_raster->get_renderer_blend(), clip);
+        } else {
+          pattern.draw(ras, ras_clip, sl, recording_raster->get_renderer(), clip);
+        }
       } else {
-        pattern.draw(ras, ras_clip, current_mask->get_masked_scanline(), recording_pattern->get_renderer(), clip);
+        if (recording_raster->custom_blend) {
+          if (current_mask->use_luminance()) {
+            pattern.draw(ras, ras_clip, current_mask->get_masked_scanline_l(), recording_raster->get_renderer_blend(), clip);
+          } else {
+            pattern.draw(ras, ras_clip, current_mask->get_masked_scanline_a(), recording_raster->get_renderer_blend(), clip);
+          }
+        } else {
+          if (current_mask->use_luminance()) {
+            pattern.draw(ras, ras_clip, current_mask->get_masked_scanline_l(), recording_raster->get_renderer(), clip);
+          } else {
+            pattern.draw(ras, ras_clip, current_mask->get_masked_scanline_a(), recording_raster->get_renderer(), clip);
+          }
+        }
+      }
+      if (recording_group != NULL) {
+        recording_group->do_blend(MAX_CELLS);
       }
     }
   }
@@ -239,8 +328,8 @@ protected:
                  int lty, R_GE_lineend lend, R_GE_linejoin ljoin = GE_ROUND_JOIN, 
                  double lmitre = 1.0, int pattern = -1, bool evenodd = false) {
     agg::scanline_p8 slp;
-    if (recording_clip != NULL) {
-      recording_clip->concat_path(path);
+    if (recording_path != NULL) {
+      recording_path->concat_path(path);
       return;
     }
     if (current_clip != NULL) {
@@ -262,26 +351,53 @@ protected:
       ras.add_path(path);
       if (evenodd) ras.filling_rule(agg::fill_even_odd);
       
-      if (recording_mask == NULL && recording_pattern == NULL) {
+      if (recording_mask == NULL && recording_raster == NULL) {
         solid_renderer.color(convertColour(fill));
         if (current_mask == NULL) {
           render<agg::scanline_p8>(ras, ras_clip, slp, solid_renderer, current_clip != NULL);
         } else {
-          render<agg::scanline_p8>(ras, ras_clip, current_mask->get_masked_scanline(), solid_renderer, current_clip != NULL);
+          if (current_mask->use_luminance()) {
+            render<agg::scanline_p8>(ras, ras_clip, current_mask->get_masked_scanline_l(), solid_renderer, current_clip != NULL);
+          } else {
+            render<agg::scanline_p8>(ras, ras_clip, current_mask->get_masked_scanline_a(), solid_renderer, current_clip != NULL);
+          }
         }
-      } else if (recording_pattern == NULL) {
+      } else if (recording_raster == NULL) {
         recording_mask->set_colour(convertMaskCol(fill));
         if (current_mask == NULL) {
           render<agg::scanline_p8>(ras, ras_clip, slp, recording_mask->get_solid_renderer(), current_clip != NULL);
         } else {
-          render<agg::scanline_p8>(ras, ras_clip, current_mask->get_masked_scanline(), recording_mask->get_solid_renderer(), current_clip != NULL);
+          if (current_mask->use_luminance()) {
+            render<agg::scanline_p8>(ras, ras_clip, current_mask->get_masked_scanline_l(), recording_mask->get_solid_renderer(), current_clip != NULL);
+          } else {
+            render<agg::scanline_p8>(ras, ras_clip, current_mask->get_masked_scanline_a(), recording_mask->get_solid_renderer(), current_clip != NULL);
+          }
         }
       } else {
-        recording_pattern->set_colour(convertColour(fill));
+        recording_raster->set_colour(convertColour(fill));
         if (current_mask == NULL) {
-          render<agg::scanline_p8>(ras, ras_clip, slp, recording_pattern->get_solid_renderer(), current_clip != NULL);
+          if (recording_raster->custom_blend) {
+            render<agg::scanline_p8>(ras, ras_clip, slp, recording_raster->get_solid_renderer_blend(), current_clip != NULL);
+          } else {
+            render<agg::scanline_p8>(ras, ras_clip, slp, recording_raster->get_solid_renderer(), current_clip != NULL);
+          }
         } else {
-          render<agg::scanline_p8>(ras, ras_clip, current_mask->get_masked_scanline(), recording_pattern->get_solid_renderer(), current_clip != NULL);
+          if (recording_raster->custom_blend) {
+            if (current_mask->use_luminance()) {
+              render<agg::scanline_p8>(ras, ras_clip, current_mask->get_masked_scanline_l(), recording_raster->get_solid_renderer_blend(), current_clip != NULL);
+            } else {
+              render<agg::scanline_p8>(ras, ras_clip, current_mask->get_masked_scanline_a(), recording_raster->get_solid_renderer_blend(), current_clip != NULL);
+            }
+          } else {
+            if (current_mask->use_luminance()) {
+              render<agg::scanline_p8>(ras, ras_clip, current_mask->get_masked_scanline_l(), recording_raster->get_solid_renderer(), current_clip != NULL);
+            } else {
+              render<agg::scanline_p8>(ras, ras_clip, current_mask->get_masked_scanline_a(), recording_raster->get_solid_renderer(), current_clip != NULL);
+            }
+          }
+        }
+        if (recording_group != NULL) {
+          recording_group->do_blend(MAX_CELLS);
         }
       }
     }
@@ -290,26 +406,53 @@ protected:
     if (evenodd) ras.filling_rule(agg::fill_non_zero);
     agg::scanline_u8 slu;
     setStroke(ras, path, lty, lwd, lend, ljoin, lmitre);
-    if (recording_mask == NULL && recording_pattern == NULL) {
+    if (recording_mask == NULL && recording_raster == NULL) {
       solid_renderer.color(convertColour(col));
       if (current_mask == NULL) {
         render<agg::scanline_u8>(ras, ras_clip, slu, solid_renderer, current_clip != NULL);
       } else {
-        render<agg::scanline_u8>(ras, ras_clip, current_mask->get_masked_scanline(), solid_renderer, current_clip != NULL);
+        if (current_mask->use_luminance()) {
+          render<agg::scanline_u8>(ras, ras_clip, current_mask->get_masked_scanline_l(), solid_renderer, current_clip != NULL);
+        } else {
+          render<agg::scanline_u8>(ras, ras_clip, current_mask->get_masked_scanline_a(), solid_renderer, current_clip != NULL);
+        }
       }
-    } else if (recording_pattern == NULL) {
+    } else if (recording_raster == NULL) {
       recording_mask->set_colour(convertMaskCol(col));
       if (current_mask == NULL) {
         render<agg::scanline_u8>(ras, ras_clip, slu, recording_mask->get_solid_renderer(), current_clip != NULL);
       } else {
-        render<agg::scanline_u8>(ras, ras_clip, current_mask->get_masked_scanline(), recording_mask->get_solid_renderer(), current_clip != NULL);
+        if (current_mask->use_luminance()) {
+          render<agg::scanline_u8>(ras, ras_clip, current_mask->get_masked_scanline_l(), recording_mask->get_solid_renderer(), current_clip != NULL);
+        } else {
+          render<agg::scanline_u8>(ras, ras_clip, current_mask->get_masked_scanline_a(), recording_mask->get_solid_renderer(), current_clip != NULL);
+        }
       }
     } else {
-      recording_pattern->set_colour(convertMaskCol(col));
+      recording_raster->set_colour(convertColour(col));
       if (current_mask == NULL) {
-        render<agg::scanline_u8>(ras, ras_clip, slu, recording_pattern->get_solid_renderer(), current_clip != NULL);
+        if (recording_raster->custom_blend) {
+          render<agg::scanline_u8>(ras, ras_clip, slu, recording_raster->get_solid_renderer_blend(), current_clip != NULL);
+        } else {
+          render<agg::scanline_u8>(ras, ras_clip, slu, recording_raster->get_solid_renderer(), current_clip != NULL);
+        }
       } else {
-        render<agg::scanline_u8>(ras, ras_clip, current_mask->get_masked_scanline(), recording_pattern->get_solid_renderer(), current_clip != NULL);
+        if (recording_raster->custom_blend) {
+          if (current_mask->use_luminance()) {
+            render<agg::scanline_u8>(ras, ras_clip, current_mask->get_masked_scanline_l(), recording_raster->get_solid_renderer_blend(), current_clip != NULL);
+          } else {
+            render<agg::scanline_u8>(ras, ras_clip, current_mask->get_masked_scanline_a(), recording_raster->get_solid_renderer_blend(), current_clip != NULL);
+          }
+        } else {
+          if (current_mask->use_luminance()) {
+            render<agg::scanline_u8>(ras, ras_clip, current_mask->get_masked_scanline_l(), recording_raster->get_solid_renderer(), current_clip != NULL);
+          } else {
+            render<agg::scanline_u8>(ras, ras_clip, current_mask->get_masked_scanline_a(), recording_raster->get_solid_renderer(), current_clip != NULL);
+          }
+        }
+      }
+      if (recording_group != NULL) {
+        recording_group->do_blend(MAX_CELLS);
       }
     }
   }
@@ -344,14 +487,15 @@ AggDevice<PIXFMT, R_COLOR, BLNDFMT>::AggDevice(const char* fp, int w, int h, dou
   y_trans(0.0),
   t_ren(),
   clip_cache_next_id(0),
-  recording_clip(NULL),
+  recording_path(NULL),
   current_clip(NULL),
   current_clip_rule_is_evenodd(false),
   mask_cache_next_id(0),
   recording_mask(NULL),
   current_mask(NULL),
   pattern_cache_next_id(0),
-  recording_pattern(NULL)
+  recording_raster(NULL),
+  recording_group(NULL)
 {
   buffer = new unsigned char[width * height * bytes_per_pixel];
   rbuf = agg::rendering_buffer(buffer, width, height, width * bytes_per_pixel);
@@ -418,13 +562,13 @@ bool AggDevice<PIXFMT, R_COLOR, BLNDFMT>::savePage() {
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::clipRect(double x0, double y0, double x1, 
                                           double y1) {
-  if (recording_pattern != NULL && x0 == 0.0 && y0 == height && x1 == width && y1 == 0.0) {
+  if (recording_raster != NULL && x0 == 0.0 && y0 == height && x1 == width && y1 == 0.0) {
     // resetting clipping while recording a pattern
     // I hate this heuristic
     clip_left = 0.0;
-    clip_right = recording_pattern->width;
+    clip_right = recording_raster->width;
     clip_top = 0.0;
-    clip_bottom = recording_pattern->height;
+    clip_bottom = recording_raster->height;
     return;
   }
   clip_left = x0 + x_trans;
@@ -492,6 +636,22 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::charMetric(int c, const char *family, 
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
+std::unique_ptr<agg::path_storage> AggDevice<PIXFMT, R_COLOR, BLNDFMT>::recordPath(SEXP path) {
+  std::unique_ptr<agg::path_storage> new_path(new agg::path_storage());
+  
+  // Assign container pointer to device
+  recording_path = new_path.get();
+  
+  SEXP R_fcall = PROTECT(Rf_lang1(path));
+  Rf_eval(R_fcall, R_GlobalEnv);
+  UNPROTECT(1);
+  
+  recording_path = NULL;
+  
+  return new_path;
+}
+
+template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createClipPath(SEXP path, SEXP ref) {
   int key;
   if (Rf_isNull(path)) {
@@ -511,25 +671,16 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createClipPath(SEXP path, SEXP ref) {
   // Check if path exists
   if (clip_cache_iter == clip_cache.end()) {
     // Path doesn't exist - create a new entry and get reference to it
-    std::unique_ptr<agg::path_storage> new_clip(new agg::path_storage());
+    std::unique_ptr<agg::path_storage> new_clip = recordPath(path);
     
-    bool new_clip_is_even_odd = false;
+    current_clip = new_clip.get();
+    current_clip_rule_is_evenodd = false;
+    
 #if R_GE_version >= 15
-    new_clip_is_even_odd = R_GE_clipPathFillRule(path) == R_GE_evenOddRule;
+    current_clip_rule_is_evenodd = R_GE_clipPathFillRule(path) == R_GE_evenOddRule;
 #endif
     
-    // Assign container pointer to device
-    recording_clip = new_clip.get();
-    
-    SEXP R_fcall = PROTECT(Rf_lang1(path));
-    Rf_eval(R_fcall, R_GlobalEnv);
-    UNPROTECT(1);
-    current_clip = recording_clip;
-    current_clip_rule_is_evenodd = new_clip_is_even_odd;
-    
-    recording_clip = NULL;
-    
-    clip_cache[key] = {std::move(new_clip), new_clip_is_even_odd};
+    clip_cache[key] = {std::move(new_clip), current_clip_rule_is_evenodd};
   } else {
     current_clip = clip_cache_iter->second.first.get();
     current_clip_rule_is_evenodd = clip_cache_iter->second.second;
@@ -589,20 +740,24 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createMask(SEXP mask, SEXP ref) {
   if (mask_cache_iter == mask_cache.end()) {
     // Mask doesn't exist - create a new entry and get reference to it
     std::unique_ptr<MaskBuffer> new_mask(new MaskBuffer());
-    new_mask->init(width, height);
+    bool luminance = false;
+#if R_GE_version >= 15
+    luminance = R_GE_maskType(mask) == R_GE_luminanceMask;
+#endif
+    new_mask->init(width, height, luminance);
     
     // Assign container pointer to device
     MaskBuffer* temp_mask = recording_mask;
-    RenderBuffer<BLNDFMT>* temp_pattern = recording_pattern;
+    RenderBuffer<BLNDFMT>* temp_raster = recording_raster;
     recording_mask = new_mask.get();
-    recording_pattern = NULL;
+    recording_raster = NULL;
     
     SEXP R_fcall = PROTECT(Rf_lang1(mask));
     Rf_eval(R_fcall, R_GlobalEnv);
     UNPROTECT(1);
     
     current_mask = recording_mask;
-    recording_pattern = temp_pattern;
+    recording_raster = temp_raster;
     recording_mask = temp_mask;
     
     mask_cache[key] = std::move(new_mask);
@@ -707,7 +862,7 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
     
     MaskBuffer* temp_mask = recording_mask;
     MaskBuffer* temp_current_mask = current_mask;
-    RenderBuffer<BLNDFMT>* temp_pattern = recording_pattern;
+    RenderBuffer<BLNDFMT>* temp_raster = recording_raster;
     
     x_trans += new_pattern->x_trans;
     y_trans += new_pattern->y_trans;
@@ -718,7 +873,7 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
     if (clip_bottom < 0) clip_bottom = -clip_bottom;
     recording_mask = NULL;
     current_mask = NULL;
-    recording_pattern = &(new_pattern->buffer);
+    recording_raster = &(new_pattern->buffer);
     
     SEXP R_fcall = PROTECT(Rf_lang1(R_GE_tilingPatternFunction(pattern)));
     Rf_eval(R_fcall, R_GlobalEnv);
@@ -733,7 +888,7 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
     y_trans -= new_pattern->y_trans;
     recording_mask = temp_mask;
     current_mask = temp_current_mask;
-    recording_pattern = temp_pattern;
+    recording_raster = temp_raster;
     break;
   }
 #endif
@@ -756,6 +911,183 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::removePattern(SEXP ref) {
   // Check if path exists
   if (it != pattern_cache.end()) {
     pattern_cache.erase(it);
+  }
+  
+  return;
+}
+
+template<class PIXFMT, class R_COLOR, typename BLNDFMT>
+SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::renderGroup(SEXP source, int op, SEXP destination) {
+  if (Rf_isNull(source)) {
+    return Rf_ScalarInteger(-1);
+  }
+  int key = group_cache_next_id;
+  group_cache_next_id++;
+  
+  std::unique_ptr<Group<BLNDFMT, R_COLOR> > new_group(new Group<BLNDFMT, R_COLOR>(width, height, opClipsSrc(op) && destination != R_NilValue));
+  
+  double temp_clip_left = clip_left;
+  double temp_clip_right = clip_right;
+  double temp_clip_top = clip_top;
+  double temp_clip_bottom = clip_bottom;
+  
+  MaskBuffer* temp_mask = recording_mask;
+  MaskBuffer* temp_current_mask = current_mask;
+  Group<BLNDFMT, R_COLOR>* temp_group = recording_group;
+  RenderBuffer<BLNDFMT>* temp_raster = recording_raster;
+  
+  clip_left = 0.0;
+  clip_right = width;
+  clip_top = 0.0;
+  clip_bottom = height;
+  recording_mask = NULL;
+  current_mask = NULL;
+  recording_group = NULL;
+  recording_raster = &(new_group->dst);
+  
+  if (destination != R_NilValue) {
+    SEXP R_fcall = PROTECT(Rf_lang1(destination));
+    Rf_eval(R_fcall, R_GlobalEnv);
+    UNPROTECT(1);
+  }
+  
+  recording_raster->set_comp(compositeOperator(op));
+  
+  recording_raster = new_group->buffer();
+  recording_group = new_group.get();
+  
+  SEXP R_fcall = PROTECT(Rf_lang1(source));
+  Rf_eval(R_fcall, R_GlobalEnv);
+  UNPROTECT(1);
+  
+  new_group->finish();
+  
+  clip_left = temp_clip_left;
+  clip_right = temp_clip_right;
+  clip_top = temp_clip_top;
+  clip_bottom = temp_clip_bottom;
+  
+  recording_mask = temp_mask;
+  current_mask = temp_current_mask;
+  recording_group = temp_group;
+  recording_raster = temp_raster;
+  
+  group_cache[key] = std::move(new_group);
+  
+  return Rf_ScalarInteger(key);
+}
+
+template<class PIXFMT, class R_COLOR, typename BLNDFMT>
+void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::useGroup(SEXP ref, SEXP trans) {
+  int key = INTEGER(ref)[0];
+  if (key < 0) {
+    Rf_warning("Unknown group");
+    return;
+  }
+  auto it = group_cache.find(key);
+  if (it == group_cache.end()) {
+    Rf_warning("Unknown group");
+    return;
+  }
+  agg::trans_affine mtx;
+  
+  if (trans != R_NilValue) {
+    mtx = agg::trans_affine(
+      REAL(trans)[0],
+      REAL(trans)[3],
+      REAL(trans)[1],
+      REAL(trans)[4],
+      REAL(trans)[2],
+      REAL(trans)[5]
+    );
+    mtx.invert();
+  }
+  
+  bool clip = current_clip != NULL;
+  
+  agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
+  ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
+  agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
+  if (clip) {
+    ras_clip.add_path(*current_clip);
+    if (current_clip_rule_is_evenodd) {
+      ras_clip.filling_rule(agg::fill_even_odd);
+    }
+  }
+  
+  agg::path_storage rect;
+  rect.remove_all();
+  rect.move_to(0, 0);
+  rect.line_to(0, height);
+  rect.line_to(width, height);
+  rect.line_to(width, 0);
+  rect.close_polygon();
+  ras.add_path(rect);
+  
+  agg::scanline_u8 sl;
+  if (recording_mask == NULL && recording_raster == NULL) {
+    if (current_mask == NULL) {
+      it->second->draw(mtx, ras, ras_clip, sl, renderer, clip);
+    } else {
+      if (current_mask->use_luminance()) {
+        it->second->draw(mtx, ras, ras_clip, current_mask->get_masked_scanline_l(), renderer, clip);
+      } else {
+        it->second->draw(mtx, ras, ras_clip, current_mask->get_masked_scanline_a(), renderer, clip);
+      }
+    }
+  } else if (recording_raster == NULL) {
+    Group<pixfmt_type_32, agg::rgba8> mask_group = it->second->convert_for_mask();
+    
+    if (current_mask == NULL) {
+      mask_group.draw(mtx, ras, ras_clip, sl, recording_mask->get_renderer(), clip);
+    } else {
+      if (current_mask->use_luminance()) {
+        mask_group.draw(mtx, ras, ras_clip, current_mask->get_masked_scanline_l(), recording_mask->get_renderer(), clip);
+      } else {
+        mask_group.draw(mtx, ras, ras_clip, current_mask->get_masked_scanline_a(), recording_mask->get_renderer(), clip);
+      }
+    }
+  } else {
+    if (current_mask == NULL) {
+      if (recording_raster->custom_blend) {
+        it->second->draw(mtx, ras, ras_clip, sl, recording_raster->get_renderer_blend(), clip);
+      } else {
+        it->second->draw(mtx, ras, ras_clip, sl, recording_raster->get_renderer(), clip);
+      }
+    } else {
+      if (recording_raster->custom_blend) {
+        if (current_mask->use_luminance()) {
+          it->second->draw(mtx, ras, ras_clip, current_mask->get_masked_scanline_l(), recording_raster->get_renderer_blend(), clip);
+        } else {
+          it->second->draw(mtx, ras, ras_clip, current_mask->get_masked_scanline_a(), recording_raster->get_renderer_blend(), clip);
+        }
+      } else {
+        if (current_mask->use_luminance()) {
+          it->second->draw(mtx, ras, ras_clip, current_mask->get_masked_scanline_l(), recording_raster->get_renderer(), clip);
+        } else {
+          it->second->draw(mtx, ras, ras_clip, current_mask->get_masked_scanline_a(), recording_raster->get_renderer(), clip);
+        }
+      }
+    }
+    if (recording_group != NULL) {
+      recording_group->do_blend(MAX_CELLS);
+    }
+  }
+}
+
+template<class PIXFMT, class R_COLOR, typename BLNDFMT>
+void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::removeGroup(SEXP ref) {
+  if (Rf_isNull(ref)) {
+    group_cache.clear();
+    group_cache_next_id = 0;
+    return;
+  }
+  
+  unsigned int key = INTEGER(ref)[0];
+  auto it = group_cache.find(key);
+  // Check if path exists
+  if (it != group_cache.end()) {
+    group_cache.erase(it);
   }
   
   return;
@@ -918,7 +1250,6 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPath(int npoly, int* nper, double*
   agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
   agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
-  agg::scanline_p8 slp, slp_clip, slp_result;
   agg::path_storage path;
   path.remove_all();
   int counter = 0;
@@ -937,6 +1268,28 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPath(int npoly, int* nper, double*
   }
   
   drawShape(ras, ras_clip, path, draw_fill, draw_stroke, fill, col, lwd, lty, lend, ljoin, lmitre, pattern, evenodd);
+}
+
+template<class PIXFMT, class R_COLOR, typename BLNDFMT>
+void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::renderPath(SEXP path, bool do_fill, bool do_stroke, 
+                                                     int col, int fill, 
+                                                     double lwd, int lty, 
+                                                     R_GE_lineend lend, 
+                                                     R_GE_linejoin ljoin, double lmitre, 
+                                                     bool evenodd, int pattern) {
+  bool draw_fill = do_fill && (visibleColour(fill) || pattern != -1);
+  bool draw_stroke = do_stroke && (visibleColour(col) && lwd > 0.0 && lty != LTY_BLANK);
+  
+  if (!draw_fill && !draw_stroke) return; // Early exit
+  
+  lwd *= lwd_mod;
+  
+  agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
+  agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
+  ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
+  std::unique_ptr<agg::path_storage> recorded_path = recordPath(path);
+  
+  drawShape(ras, ras_clip, *recorded_path, draw_fill, draw_stroke, fill, col, lwd, lty, lend, ljoin, lmitre, pattern, evenodd);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
@@ -987,23 +1340,50 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRaster(unsigned int *raster, int w
   ras.add_path(tr);
   
   agg::scanline_u8 slu;
-  if (recording_mask == NULL && recording_pattern == NULL) {
+  if (recording_mask == NULL && recording_raster == NULL) {
     if (current_mask == NULL) {
       render_raster<pixfmt_r_raster, BLNDFMT>(rbuf, w, h, ras, ras_clip, slu, interpolator, renderer, interpolate, current_clip != NULL, false);
-    } else{
-      render_raster<pixfmt_r_raster, BLNDFMT>(rbuf, w, h, ras, ras_clip, current_mask->get_masked_scanline(), interpolator, renderer, interpolate, current_clip != NULL, false);
+    } else {
+      if (current_mask->use_luminance()) {
+        render_raster<pixfmt_r_raster, BLNDFMT>(rbuf, w, h, ras, ras_clip, current_mask->get_masked_scanline_l(), interpolator, renderer, interpolate, current_clip != NULL, false);
+      } else {
+        render_raster<pixfmt_r_raster, BLNDFMT>(rbuf, w, h, ras, ras_clip, current_mask->get_masked_scanline_a(), interpolator, renderer, interpolate, current_clip != NULL, false);
+      }
     }
-  } else if (recording_pattern == NULL) {
+  } else if (recording_raster == NULL) {
     if (current_mask == NULL) {
       render_raster<pixfmt_r_raster, pixfmt_type_32>(rbuf, w, h, ras, ras_clip, slu, interpolator, recording_mask->get_renderer(), interpolate, current_clip != NULL, false);
     } else {
-      render_raster<pixfmt_r_raster, pixfmt_type_32>(rbuf, w, h, ras, ras_clip, current_mask->get_masked_scanline(), interpolator, recording_mask->get_renderer(), interpolate, current_clip != NULL, false);
+      if (current_mask->use_luminance()) {
+        render_raster<pixfmt_r_raster, pixfmt_type_32>(rbuf, w, h, ras, ras_clip, current_mask->get_masked_scanline_l(), interpolator, recording_mask->get_renderer(), interpolate, current_clip != NULL, false);
+      } else {
+        render_raster<pixfmt_r_raster, pixfmt_type_32>(rbuf, w, h, ras, ras_clip, current_mask->get_masked_scanline_a(), interpolator, recording_mask->get_renderer(), interpolate, current_clip != NULL, false);
+      }
     }
   } else {
     if (current_mask == NULL) {
-      render_raster<pixfmt_r_raster, BLNDFMT>(rbuf, w, h, ras, ras_clip, slu, interpolator, recording_pattern->get_renderer(), interpolate, current_clip != NULL, false);
+      if (recording_raster->custom_blend) {
+        render_raster<pixfmt_r_raster, BLNDFMT>(rbuf, w, h, ras, ras_clip, slu, interpolator, recording_raster->get_renderer_blend(), interpolate, current_clip != NULL, false);
+      } else {
+        render_raster<pixfmt_r_raster, BLNDFMT>(rbuf, w, h, ras, ras_clip, slu, interpolator, recording_raster->get_renderer(), interpolate, current_clip != NULL, false);
+      }
     } else {
-      render_raster<pixfmt_r_raster, BLNDFMT>(rbuf, w, h, ras, ras_clip, current_mask->get_masked_scanline(), interpolator, recording_pattern->get_renderer(), interpolate, current_clip != NULL, false);
+      if (recording_raster->custom_blend) {
+        if (current_mask->use_luminance()) {
+          render_raster<pixfmt_r_raster, BLNDFMT>(rbuf, w, h, ras, ras_clip, current_mask->get_masked_scanline_l(), interpolator, recording_raster->get_renderer_blend(), interpolate, current_clip != NULL, false);
+        } else {
+          render_raster<pixfmt_r_raster, BLNDFMT>(rbuf, w, h, ras, ras_clip, current_mask->get_masked_scanline_a(), interpolator, recording_raster->get_renderer_blend(), interpolate, current_clip != NULL, false);
+        }
+      } else {
+        if (current_mask->use_luminance()) {
+          render_raster<pixfmt_r_raster, BLNDFMT>(rbuf, w, h, ras, ras_clip, current_mask->get_masked_scanline_l(), interpolator, recording_raster->get_renderer(), interpolate, current_clip != NULL, false);
+        } else {
+          render_raster<pixfmt_r_raster, BLNDFMT>(rbuf, w, h, ras, ras_clip, current_mask->get_masked_scanline_a(), interpolator, recording_raster->get_renderer(), interpolate, current_clip != NULL, false);
+        }
+      }
+    }
+    if (recording_group != NULL) {
+      recording_group->do_blend(MAX_CELLS);
     }
   }
 }
@@ -1020,7 +1400,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawText(double x, double y, const cha
   }
 #endif
   
-  agg::glyph_rendering gren = std::fmod(rot, 90) == 0.0 && recording_clip == NULL ? agg::glyph_ren_agg_gray8 : agg::glyph_ren_outline;
+  agg::glyph_rendering gren = std::fmod(rot, 90) == 0.0 && recording_path == NULL ? agg::glyph_ren_agg_gray8 : agg::glyph_ren_outline;
   
   x += x_trans;
   y += y_trans;
@@ -1040,26 +1420,142 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawText(double x, double y, const cha
   }
   
   agg::scanline_u8 slu;
-  if (recording_mask == NULL && recording_pattern == NULL) {
+  if (recording_mask == NULL && recording_raster == NULL) {
     solid_renderer.color(convertColour(col));
     if (current_mask == NULL) {
-      t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, solid_renderer, renderer, slu, device_id, ras_clip, current_clip != NULL, recording_clip);
+      t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, solid_renderer, renderer, slu, device_id, ras_clip, current_clip != NULL, recording_path);
     } else {
-      t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, solid_renderer, renderer, current_mask->get_masked_scanline(), device_id, ras_clip, current_clip != NULL, recording_clip);
+      if (current_mask->use_luminance()) {
+        t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, solid_renderer, renderer, current_mask->get_masked_scanline_l(), device_id, ras_clip, current_clip != NULL, recording_path);
+      } else {
+        t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, solid_renderer, renderer, current_mask->get_masked_scanline_a(), device_id, ras_clip, current_clip != NULL, recording_path);
+      }
     }
-  } else if (recording_pattern == NULL) {
+  } else if (recording_raster == NULL) {
     recording_mask->set_colour(convertMaskCol(col));
     if (current_mask == NULL) {
-      t_ren.template plot_text<pixfmt_type_32>(x, y, str, rot, hadj, recording_mask->get_solid_renderer(), recording_mask->get_renderer(), slu, device_id, ras_clip, current_clip != NULL, recording_clip);
+      t_ren.template plot_text<pixfmt_type_32>(x, y, str, rot, hadj, recording_mask->get_solid_renderer(), recording_mask->get_renderer(), slu, device_id, ras_clip, current_clip != NULL, recording_path);
     } else {
-      t_ren.template plot_text<pixfmt_type_32>(x, y, str, rot, hadj, recording_mask->get_solid_renderer(), recording_mask->get_renderer(), current_mask->get_masked_scanline(), device_id, ras_clip, current_clip != NULL, recording_clip);
+      if (current_mask->use_luminance()) {
+        t_ren.template plot_text<pixfmt_type_32>(x, y, str, rot, hadj, recording_mask->get_solid_renderer(), recording_mask->get_renderer(), current_mask->get_masked_scanline_l(), device_id, ras_clip, current_clip != NULL, recording_path);
+      } else {
+        t_ren.template plot_text<pixfmt_type_32>(x, y, str, rot, hadj, recording_mask->get_solid_renderer(), recording_mask->get_renderer(), current_mask->get_masked_scanline_a(), device_id, ras_clip, current_clip != NULL, recording_path);
+      }
     }
   } else {
-    recording_pattern->set_colour(convertColour(col));
+    recording_raster->set_colour(convertColour(col));
     if (current_mask == NULL) {
-      t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, recording_pattern->get_solid_renderer(), recording_pattern->get_renderer(), slu, device_id, ras_clip, current_clip != NULL, recording_clip);
+      if (recording_raster->custom_blend) {
+        t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, recording_raster->get_solid_renderer(), recording_raster->get_renderer_blend(), slu, device_id, ras_clip, current_clip != NULL, recording_path);
+      } else {
+        t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, recording_raster->get_solid_renderer(), recording_raster->get_renderer(), slu, device_id, ras_clip, current_clip != NULL, recording_path);
+      }
     } else {
-      t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, recording_pattern->get_solid_renderer(), recording_pattern->get_renderer(), current_mask->get_masked_scanline(), device_id, ras_clip, current_clip != NULL, recording_clip);
+      if (recording_raster->custom_blend) {
+        if (current_mask->use_luminance()) {
+          t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, recording_raster->get_solid_renderer(), recording_raster->get_renderer_blend(), current_mask->get_masked_scanline_l(), device_id, ras_clip, current_clip != NULL, recording_path);
+        } else {
+          t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, recording_raster->get_solid_renderer(), recording_raster->get_renderer_blend(), current_mask->get_masked_scanline_a(), device_id, ras_clip, current_clip != NULL, recording_path);
+        }
+      } else {
+        if (current_mask->use_luminance()) {
+          t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, recording_raster->get_solid_renderer(), recording_raster->get_renderer(), current_mask->get_masked_scanline_l(), device_id, ras_clip, current_clip != NULL, recording_path);
+        } else {
+          t_ren.template plot_text<BLNDFMT>(x, y, str, rot, hadj, recording_raster->get_solid_renderer(), recording_raster->get_renderer(), current_mask->get_masked_scanline_a(), device_id, ras_clip, current_clip != NULL, recording_path);
+        }
+      }
+    }
+    if (recording_group != NULL) {
+      recording_group->do_blend(MAX_CELLS);
+    }
+  }
+}
+
+template<class PIXFMT, class R_COLOR, typename BLNDFMT>
+void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs, 
+                                                    double *x, double *y, 
+                                                    SEXP font, double size,
+                                                    int colour, double rot) {
+  agg::glyph_rendering gren = std::fmod(rot, 90) == 0.0 && recording_path == NULL ? agg::glyph_ren_agg_gray8 : agg::glyph_ren_outline;
+  
+  int i;
+  for (i=0; i<n; i++) {
+    *x += x_trans;
+    *y += y_trans;
+  }
+  
+  size *= res_mod;
+  
+  // Start by finding with family to pre-populate font feature settings
+  FontSettings font_info;
+  
+#if R_GE_version >= 16
+  strncpy(font_info.file, R_GE_glyphFontFile(font), PATH_MAX);
+  font_info.index = R_GE_glyphFontIndex(font);
+  font_info.features = NULL;
+  font_info.n_features = 0;
+#endif
+  
+  if (!t_ren.load_font_from_file(font_info, gren, size, device_id)) {
+    return;
+  }
+  
+  agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
+  if (current_clip != NULL) {
+    ras_clip.add_path(*current_clip);
+    if (current_clip_rule_is_evenodd) {
+      ras_clip.filling_rule(agg::fill_even_odd);
+    }
+  }
+  
+  agg::scanline_u8 slu;
+  if (recording_mask == NULL && recording_raster == NULL) {
+    solid_renderer.color(convertColour(colour));
+    if (current_mask == NULL) {
+      t_ren.template plot_glyphs<BLNDFMT>(n, glyphs, x, y, rot, solid_renderer, renderer, slu, ras_clip, current_clip != NULL, recording_path);
+    } else {
+      if (current_mask->use_luminance()) {
+        t_ren.template plot_glyphs<BLNDFMT>(n, glyphs, x, y, rot, solid_renderer, renderer, current_mask->get_masked_scanline_l(), ras_clip, current_clip != NULL, recording_path);
+      } else {
+        t_ren.template plot_glyphs<BLNDFMT>(n, glyphs, x, y, rot, solid_renderer, renderer, current_mask->get_masked_scanline_a(), ras_clip, current_clip != NULL, recording_path);
+      }
+    }
+  } else if (recording_raster == NULL) {
+    recording_mask->set_colour(convertMaskCol(colour));
+    if (current_mask == NULL) {
+      t_ren.template plot_glyphs<pixfmt_type_32>(n, glyphs, x, y, rot, recording_mask->get_solid_renderer(), recording_mask->get_renderer(), slu, ras_clip, current_clip != NULL, recording_path);
+    } else {
+      if (current_mask->use_luminance()) {
+        t_ren.template plot_glyphs<pixfmt_type_32>(n, glyphs, x, y, rot, recording_mask->get_solid_renderer(), recording_mask->get_renderer(), current_mask->get_masked_scanline_l(), ras_clip, current_clip != NULL, recording_path);
+      } else {
+        t_ren.template plot_glyphs<pixfmt_type_32>(n, glyphs, x, y, rot, recording_mask->get_solid_renderer(), recording_mask->get_renderer(), current_mask->get_masked_scanline_a(), ras_clip, current_clip != NULL, recording_path);
+      }
+    }
+  } else {
+    recording_raster->set_colour(convertColour(colour));
+    if (current_mask == NULL) {
+      if (recording_raster->custom_blend) {
+        t_ren.template plot_glyphs<BLNDFMT>(n, glyphs, x, y, rot, recording_raster->get_solid_renderer(), recording_raster->get_renderer_blend(), slu, ras_clip, current_clip != NULL, recording_path);
+      } else {
+        t_ren.template plot_glyphs<BLNDFMT>(n, glyphs, x, y, rot, recording_raster->get_solid_renderer(), recording_raster->get_renderer(), slu, ras_clip, current_clip != NULL, recording_path);
+      }
+    } else {
+      if (recording_raster->custom_blend) {
+        if (current_mask->use_luminance()) {
+          t_ren.template plot_glyphs<BLNDFMT>(n, glyphs, x, y, rot, recording_raster->get_solid_renderer(), recording_raster->get_renderer_blend(), current_mask->get_masked_scanline_l(), ras_clip, current_clip != NULL, recording_path);
+        } else {
+          t_ren.template plot_glyphs<BLNDFMT>(n, glyphs, x, y, rot, recording_raster->get_solid_renderer(), recording_raster->get_renderer_blend(), current_mask->get_masked_scanline_a(), ras_clip, current_clip != NULL, recording_path);
+        }
+      } else {
+        if (current_mask->use_luminance()) {
+          t_ren.template plot_glyphs<BLNDFMT>(n, glyphs, x, y, rot, recording_raster->get_solid_renderer(), recording_raster->get_renderer(), current_mask->get_masked_scanline_l(), ras_clip, current_clip != NULL, recording_path);
+        } else {
+          t_ren.template plot_glyphs<BLNDFMT>(n, glyphs, x, y, rot, recording_raster->get_solid_renderer(), recording_raster->get_renderer(), current_mask->get_masked_scanline_a(), ras_clip, current_clip != NULL, recording_path);
+        }
+      }
+    }
+    if (recording_group != NULL) {
+      recording_group->do_blend(MAX_CELLS);
     }
   }
 }
