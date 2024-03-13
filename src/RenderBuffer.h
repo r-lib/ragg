@@ -119,6 +119,7 @@ public:
   template<class COLOR>
   void set_colour(COLOR col) {
     renderer_solid.color(col);
+    blend_renderer_solid.color(col);
   }
   template<class SOURCE>
   void copy_from(agg::rendering_buffer& copy_buffer) {

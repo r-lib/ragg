@@ -296,7 +296,6 @@ void agg_stroke(SEXP path, const pGEcontext gc, pDevDesc dd) {
 template<class T>
 void agg_fill(SEXP path, int rule, const pGEcontext gc, pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
-  
   int pattern = -1;
 #if R_GE_version >= 13
   pattern = gc->patternFill == R_NilValue ? -1 : INTEGER(gc->patternFill)[0];
@@ -332,6 +331,17 @@ void agg_fillStroke(SEXP path, int rule, const pGEcontext gc, pDevDesc dd) {
 }
 
 template<class T>
+void agg_glyph(int n, int *glyphs, double *x, double *y, 
+               SEXP font, double size, 
+               int colour, double rot,
+               pDevDesc dd) {
+  T * device = (T *) dd->deviceSpecific;
+  BEGIN_CPP
+  device->drawGlyph(n, glyphs, x, y, font, size, colour, rot);
+  END_CPP
+}
+
+template<class T>
 SEXP agg_capabilities(SEXP capabilities) {
 #if R_GE_version >= 15
   // Pattern support
@@ -354,6 +364,8 @@ SEXP agg_capabilities(SEXP capabilities) {
   
   // Group composition
   SEXP compositing = PROTECT(Rf_allocVector(INTSXP, 24));
+  INTEGER(compositing)[13] = R_GE_compositeOver;
+  INTEGER(compositing)[11] = R_GE_compositeClear;
   INTEGER(compositing)[0] = R_GE_compositeMultiply;
   INTEGER(compositing)[1] = R_GE_compositeScreen;
   INTEGER(compositing)[2] = R_GE_compositeOverlay;
@@ -365,9 +377,7 @@ SEXP agg_capabilities(SEXP capabilities) {
   INTEGER(compositing)[8] = R_GE_compositeSoftLight;
   INTEGER(compositing)[9] = R_GE_compositeDifference;
   INTEGER(compositing)[10] = R_GE_compositeExclusion;
-  INTEGER(compositing)[11] = R_GE_compositeClear;
   INTEGER(compositing)[12] = R_GE_compositeSource;
-  INTEGER(compositing)[13] = R_GE_compositeOver;
   INTEGER(compositing)[14] = R_GE_compositeIn;
   INTEGER(compositing)[15] = R_GE_compositeOut;
   INTEGER(compositing)[16] = R_GE_compositeAtop;
@@ -438,6 +448,8 @@ pDevDesc agg_device_new(T* device) {
   dd->releaseClipPath = agg_releaseClipPath<T>;
   dd->setMask         = agg_setMask<T>;
   dd->releaseMask     = agg_releaseMask<T>;
+#endif
+#if R_GE_version >= 15
   dd->defineGroup     = agg_defineGroup<T>;
   dd->useGroup        = agg_useGroup<T>;
   dd->releaseGroup    = agg_releaseGroup<T>;
@@ -445,6 +457,9 @@ pDevDesc agg_device_new(T* device) {
   dd->fill            = agg_fill<T>;
   dd->fillStroke      = agg_fillStroke<T>;
   dd->capabilities    = agg_capabilities<T>;
+#endif
+#if R_GE_version >= 16
+  dd->glyph           = agg_glyph<T>;
 #endif
   // UTF-8 support
   dd->wantSymbolUTF8 = (Rboolean) 1;
@@ -486,7 +501,7 @@ pDevDesc agg_device_new(T* device) {
   dd->useRotatedTextInContour =  (Rboolean) 1;
   
 #if R_GE_version >= 13
-  dd->deviceVersion = 15; //R_GE_group;
+  dd->deviceVersion = 16; //R_GE_glyphs;
 #endif
   
   device->device_id = DEVICE_COUNTER++;
