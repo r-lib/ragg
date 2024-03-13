@@ -72,7 +72,7 @@ invisible(dev.off())
 knitr::include_graphics(file)
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" title="A scatterplot created with ggplot2 using a fancy non-standard font and mixing in emojis with text" alt="A scatterplot created with ggplot2 using a fancy non-standard font and mixing in emojis with text" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-1.png" alt="A scatterplot created with ggplot2 using a fancy non-standard font and mixing in emojis with text" width="100%" />
 
 Further, it provides an `agg_capture()` device that lets you access the
 device buffer directly from your R session.
@@ -89,7 +89,7 @@ par(mai = c(0, 0, 0, 0))
 plot(as.raster(scatter))
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" title="A very simple scatterplot captured as raster data and then drawn again" alt="A very simple scatterplot captured as raster data and then drawn again" width="70%" style="margin-left: 15%;" />
+<img src="man/figures/README-unnamed-chunk-4-1.png" alt="A very simple scatterplot captured as raster data and then drawn again" width="70%" style="margin-left: 15%;" />
 
 ### Use ragg with knitr
 
@@ -103,7 +103,14 @@ ragg can be used as the graphic back-end to the RStudio device (for
 RStudio \>= 1.4) by choosing *AGG* as the backend in the graphics pane
 in general options (see screenshot)
 
-<img src="https://i.imgur.com/4XgiPWy.png" title="A screenshot showing the RStudio Global Options window with focus on the General pane and the Graphics tab. Here it shows AGG is selected as Backend in order to tell RStudio to use ragg" alt="A screenshot showing the RStudio Global Options window with focus on the General pane and the Graphics tab. Here it shows AGG is selected as Backend in order to tell RStudio to use ragg" width="100%" />
+<div class="figure">
+
+<img src="https://i.imgur.com/4XgiPWy.png" alt="A screenshot showing the RStudio Global Options window with focus on the General pane and the Graphics tab. Here it shows AGG is selected as Backend in order to tell RStudio to use ragg" width="100%" />
+<p class="caption">
+Setting ragg as backend in RStudio
+</p>
+
+</div>
 
 ## Code of Conduct
 
