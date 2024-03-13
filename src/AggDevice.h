@@ -75,6 +75,7 @@ public:
   double res_real;
   double res_mod;
   double lwd_mod;
+  bool snap_rect;
   
   double x_trans;
   double y_trans;
@@ -102,7 +103,7 @@ public:
   
   // Lifecycle methods
   AggDevice(const char* fp, int w, int h, double ps, int bg, double res, 
-            double scaling);
+            double scaling, bool snap);
   virtual ~AggDevice();
   virtual void newPage(unsigned int bg);
   void close();
@@ -467,7 +468,8 @@ protected:
  */
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 AggDevice<PIXFMT, R_COLOR, BLNDFMT>::AggDevice(const char* fp, int w, int h, double ps, 
-                                               int bg, double res, double scaling) : 
+                                               int bg, double res, double scaling, 
+                                               bool snap) : 
   converter(),
   width(w),
   height(h),
@@ -483,6 +485,7 @@ AggDevice<PIXFMT, R_COLOR, BLNDFMT>::AggDevice(const char* fp, int w, int h, dou
   res_real(res),
   res_mod(scaling * res / 72.0),
   lwd_mod(scaling * res / 96.0),
+  snap_rect(snap),
   x_trans(0.0),
   y_trans(0.0),
   t_ren(),
@@ -1154,7 +1157,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRect(double x0, double y0, double 
   x1 += x_trans;
   y0 += y_trans;
   y1 += y_trans;
-  if (draw_fill && !draw_stroke) {
+  if (snap_rect && draw_fill && !draw_stroke) {
     x0 = std::round(x0);
     x1 = std::round(x1);
     y0 = std::round(y0);

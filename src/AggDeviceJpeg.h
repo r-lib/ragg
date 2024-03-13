@@ -15,8 +15,8 @@ class AggDeviceJpeg : public AggDevice<PIXFMT> {
   int smoothing;
   int method;
 public:
-  AggDeviceJpeg(const char* fp, int w, int h, double ps, int bg, double res, double scaling, int qual, int smooth, int meth) : 
-  AggDevice<PIXFMT>(fp, w, h, ps, bg, res, scaling),
+  AggDeviceJpeg(const char* fp, int w, int h, double ps, int bg, double res, double scaling, bool snap, int qual, int smooth, int meth) : 
+  AggDevice<PIXFMT>(fp, w, h, ps, bg, res, scaling, snap),
   quality(qual),
   smoothing(smooth),
   method(meth)

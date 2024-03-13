@@ -12,8 +12,8 @@ class AggDeviceTiff : public AggDevice<PIXFMT> {
   int encoding;
 public:
   AggDeviceTiff(const char* fp, int w, int h, double ps, int bg, double res, 
-                double scaling, int comp = 0, int enc = 0) : 
-    AggDevice<PIXFMT>(fp, w, h, ps, bg, res, scaling),
+                double scaling, bool snap, int comp = 0, int enc = 0) : 
+    AggDevice<PIXFMT>(fp, w, h, ps, bg, res, scaling, snap),
     compression(comp),
     encoding(enc)
   {
@@ -83,8 +83,8 @@ class AggDeviceTiff16 : public AggDevice16<PIXFMT> {
   int encoding;
 public:
   AggDeviceTiff16(const char* fp, int w, int h, double ps, int bg, double res, 
-                  double scaling, int comp = 0, int enc = 0) : 
-    AggDevice16<PIXFMT>(fp, w, h, ps, bg, res, scaling),
+                  double scaling, bool snap, int comp = 0, int enc = 0) : 
+    AggDevice16<PIXFMT>(fp, w, h, ps, bg, res, scaling, snap),
     compression(comp),
     encoding(enc)
   {
