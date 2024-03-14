@@ -41,7 +41,7 @@
     
     <a class="navbar-brand me-2" href="index.html">ragg</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.2.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -137,7 +137,7 @@
 <span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-3-1.png" title="A scatterplot created with ggplot2 using a fancy non-standard font and mixing in emojis with text" alt="A scatterplot created with ggplot2 using a fancy non-standard font and mixing in emojis with text" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-3-1.png" alt="A scatterplot created with ggplot2 using a fancy non-standard font and mixing in emojis with text" width="100%"></p>
 <p>Further, it provides an <code><a href="reference/agg_capture.html">agg_capture()</a></code> device that lets you access the device buffer directly from your R session.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cap</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/agg_capture.html">agg_capture</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">1000</span>, height <span class="op">=</span> <span class="fl">500</span>, res <span class="op">=</span> <span class="fl">144</span><span class="op">)</span></span>
@@ -149,7 +149,7 @@
 <span><span class="co"># Remove margins from raster plotting</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mai <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/as.raster.html" class="external-link">as.raster</a></span><span class="op">(</span><span class="va">scatter</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-4-1.png" title="A very simple scatterplot captured as raster data and then drawn again" alt="A very simple scatterplot captured as raster data and then drawn again" width="70%" style="margin-left: 15%;"></p>
+<p><img src="reference/figures/README-unnamed-chunk-4-1.png" alt="A very simple scatterplot captured as raster data and then drawn again" width="70%" style="margin-left: 15%;"></p>
 <div class="section level3">
 <h3 id="use-ragg-with-knitr">Use ragg with knitr<a class="anchor" aria-label="anchor" href="#use-ragg-with-knitr"></a>
 </h3>
@@ -159,7 +159,11 @@
 <h3 id="use-ragg-in-rstudio">Use ragg in RStudio<a class="anchor" aria-label="anchor" href="#use-ragg-in-rstudio"></a>
 </h3>
 <p>ragg can be used as the graphic back-end to the RStudio device (for RStudio &gt;= 1.4) by choosing <em>AGG</em> as the backend in the graphics pane in general options (see screenshot)</p>
-<p><img src="https://i.imgur.com/4XgiPWy.png" title="A screenshot showing the RStudio Global Options window with focus on the General pane and the Graphics tab. Here it shows AGG is selected as Backend in order to tell RStudio to use ragg" alt="A screenshot showing the RStudio Global Options window with focus on the General pane and the Graphics tab. Here it shows AGG is selected as Backend in order to tell RStudio to use ragg" width="100%"></p>
+<div class="figure">
+<img src="https://i.imgur.com/4XgiPWy.png" alt="A screenshot showing the RStudio Global Options window with focus on the General pane and the Graphics tab. Here it shows AGG is selected as Backend in order to tell RStudio to use ragg" width="100%"><p class="caption">
+Setting ragg as backend in RStudio
+</p>
+</div>
 </div>
 </div>
 <div class="section level2">
