@@ -1,5 +1,8 @@
 # ragg (development version)
 
+* Make sure the linejoin/linemitre setting is honored when drawing rectangles
+  (#162)
+
 # ragg 1.3.0
 
 * Added supported for new graphics enigine features: Groups, paths, luminance

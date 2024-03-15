@@ -132,7 +132,8 @@ public:
   void drawCircle(double x, double y, double r, int fill, int col, double lwd, 
                   int lty, R_GE_lineend lend, int pattern);
   void drawRect(double x0, double y0, double x1, double y1, int fill, int col, 
-                double lwd, int lty, R_GE_lineend lend, int pattern);
+                double lwd, int lty, R_GE_lineend lend, R_GE_linejoin ljoin, 
+                double lmitre, int pattern);
   void drawPolygon(int n, double *x, double *y, int fill, int col, double lwd, 
                    int lty, R_GE_lineend lend, R_GE_linejoin ljoin, 
                    double lmitre, int pattern);
@@ -1141,7 +1142,8 @@ template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRect(double x0, double y0, double x1, 
                                           double y1, int fill, int col, 
                                           double lwd, int lty, 
-                                          R_GE_lineend lend, int pattern) {
+                                          R_GE_lineend lend, R_GE_linejoin ljoin, 
+                                          double lmitre, int pattern) {
   bool draw_fill = visibleColour(fill) || pattern != -1;
   bool draw_stroke = visibleColour(col) && lwd > 0.0 && lty != LTY_BLANK;
   
@@ -1170,7 +1172,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRect(double x0, double y0, double 
   rect.line_to(x1, y0);
   rect.close_polygon();
   
-  drawShape(ras, ras_clip, rect, draw_fill, draw_stroke, fill, col, lwd, lty, lend, GE_ROUND_JOIN, 1.0, pattern);
+  drawShape(ras, ras_clip, rect, draw_fill, draw_stroke, fill, col, lwd, lty, lend, ljoin, lmitre, pattern);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>

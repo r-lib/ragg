@@ -129,7 +129,7 @@ void agg_rect(double x0, double y0, double x1, double y1, const pGEcontext gc,
   
   BEGIN_CPP
   device->drawRect(x0, y0, x1, y1, gc->fill, gc->col, gc->lwd, 
-                   gc->lty, gc->lend, pattern);
+                   gc->lty, gc->lend, gc->ljoin, gc->lmitre, pattern);
   END_CPP
   
   return;
