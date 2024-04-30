@@ -2,6 +2,7 @@
 
 * Make sure the linejoin/linemitre setting is honored when drawing rectangles
   (#162)
+* Fix a bug with resetting clipping during group and pattern rendering
 
 # ragg 1.3.0
 

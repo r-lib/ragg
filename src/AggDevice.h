@@ -567,18 +567,25 @@ template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::clipRect(double x0, double y0, double x1, 
                                           double y1) {
   if (recording_raster != NULL && x0 == 0.0 && y0 == height && x1 == width && y1 == 0.0) {
-    // resetting clipping while recording a pattern
+    // resetting clipping while recording a pattern / group
     // I hate this heuristic
     clip_left = 0.0;
     clip_right = recording_raster->width;
     clip_top = 0.0;
     clip_bottom = recording_raster->height;
-    return;
+  } else if (recording_mask != NULL && x0 == 0.0 && y0 == height && x1 == width && y1 == 0.0) {
+    // resetting clipping while recording a mask
+    // I still hate this heuristic
+    clip_left = 0.0;
+    clip_right = recording_mask->width;
+    clip_top = 0.0;
+    clip_bottom = recording_mask->height;
+  } else {
+    clip_left = x0 + x_trans;
+    clip_right = x1 + x_trans;
+    clip_top = y0 + y_trans;
+    clip_bottom = y1 + y_trans;
   }
-  clip_left = x0 + x_trans;
-  clip_right = x1 + x_trans;
-  clip_top = y0 + y_trans;
-  clip_bottom = y1 + y_trans;
   renderer.clip_box(clip_left, clip_top, clip_right, clip_bottom);
   current_clip = NULL;
   current_clip_rule_is_evenodd = false;
@@ -985,12 +992,12 @@ template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::useGroup(SEXP ref, SEXP trans) {
   int key = INTEGER(ref)[0];
   if (key < 0) {
-    Rf_warning("Unknown group");
+    Rf_warning("Unknown group, %i", key);
     return;
   }
   auto it = group_cache.find(key);
   if (it == group_cache.end()) {
-    Rf_warning("Unknown group");
+    Rf_warning("Unknown group, %i", key);
     return;
   }
   agg::trans_affine mtx;
@@ -1497,7 +1504,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
   
   size *= res_mod;
   
-  // Start by finding with family to pre-populate font feature settings
+  // Start by finding which family to pre-populate font feature settings
   FontSettings font_info;
   
 #if R_GE_version >= 16
