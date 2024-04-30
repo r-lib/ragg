@@ -953,6 +953,7 @@ namespace agg
                 best_match = largest_ind;
               }
               FT_Select_Size(m_cur_face, best_match);
+              m_scaling = double(m_height) / double(m_cur_face->size->metrics.height);
               m_height = m_cur_face->size->metrics.height;
           }
           else if(m_resolution)

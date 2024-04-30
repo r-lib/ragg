@@ -385,7 +385,7 @@ public:
           break;
           
         case agg::glyph_data_color:
-          renderColourGlyph<TARGET>(glyph, x[i], y[i], rot, ren, sl, 1.0, ras_clip, clip);
+          renderColourGlyph<TARGET>(glyph, x[i], y[i], rot, ren, sl, get_engine().scaling(), ras_clip, clip);
           break;
           
         case agg::glyph_data_outline:

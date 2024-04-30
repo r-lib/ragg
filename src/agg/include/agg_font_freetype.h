@@ -83,6 +83,7 @@ namespace agg
         FT_Encoding char_map()     const { return m_char_map;   }
         double      height()       const { return double(m_height) / 64.0;    }
         double      width()        const { return double(m_width) / 64.0;     }
+        double      scaling()      const { return m_scaling;    }
         double      ascender()     const;
         double      descender()    const;
         bool        hinting()      const { return m_hinting;    }
@@ -129,6 +130,7 @@ namespace agg
         char*           m_signature;
         unsigned        m_height;
         unsigned        m_width;
+        double          m_scaling;
         bool            m_hinting;
         bool            m_flip_y;
         bool            m_library_initialized;
