@@ -1,5 +1,4 @@
-This is a large update bringing the ragg devices up to speed on all the new
-graphics engine features that was introduced in 4.2 and 4.3.
+This is a small update fixing a few bugs introduced in the last release
 
 It also fixes a slew of bugs
 
