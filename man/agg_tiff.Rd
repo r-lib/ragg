@@ -20,17 +20,17 @@ agg_tiff(
 )
 }
 \arguments{
-\item{filename}{The name of the file. Follows the same semantics as the file 
-naming in [grDevices::png()], meaning that you can provide a [sprintf()] 
+\item{filename}{The name of the file. Follows the same semantics as the file
+naming in \code{\link[grDevices:png]{grDevices::png()}}, meaning that you can provide a \code{\link[=sprintf]{sprintf()}}
 compliant string format to name multiple plots (such as the default value)}
 
 \item{width, height}{The dimensions of the device}
 
-\item{units}{The unit `width` and `height` is measured in, in either pixels 
-(`'px'`), inches (`'in'`), millimeters (`'mm'`), or centimeter (`'cm'`).}
+\item{units}{The unit \code{width} and \code{height} is measured in, in either pixels
+(\code{'px'}), inches (\code{'in'}), millimeters (\code{'mm'}), or centimeter (\code{'cm'}).}
 
-\item{pointsize}{The default pointsize of the device in pt. This will in 
-general not have any effect on grid graphics (including ggplot2) as text 
+\item{pointsize}{The default pointsize of the device in pt. This will in
+general not have any effect on grid graphics (including ggplot2) as text
 size is always set explicitly there.}
 
 \item{background}{The background colour of the device}
@@ -41,27 +41,27 @@ to pixels. Further, it will be used to scale text sizes and linewidths}
 
 \item{scaling}{A scaling factor to apply to the rendered line width and text
 size. Useful for getting the right dimensions at the resolution that you
-need. If e.g. you need to render a plot at 4000x3000 pixels for it to fit 
-into a layout, but you find that the result appears to small, you can 
-increase the `scaling` argument to make everything appear bigger at the 
+need. If e.g. you need to render a plot at 4000x3000 pixels for it to fit
+into a layout, but you find that the result appears to small, you can
+increase the \code{scaling} argument to make everything appear bigger at the
 same resolution.}
 
 \item{snap_rect}{Should axis-aligned rectangles drawn with only fill snap to
-the pixel grid. This will prevent anti-aliasing artifacts when two 
+the pixel grid. This will prevent anti-aliasing artifacts when two
 rectangles are touching at their border.}
 
-\item{compression}{The compression type to use for the image data. The 
-standard options from the [grDevices::tiff()] function are available under 
+\item{compression}{The compression type to use for the image data. The
+standard options from the \code{\link[grDevices:png]{grDevices::tiff()}} function are available under
 the same name.}
 
 \item{bitsize}{Should the device record colour as 8 or 16bit}
 
-\item{bg}{Same as `background` for compatibility with old graphic device APIs}
+\item{bg}{Same as \code{background} for compatibility with old graphic device APIs}
 }
 \description{
 The TIFF (Tagged Image File Format) format is a very versatile raster image
 storage format that supports 8 and 16bit colour mode, true transparency, as
-well as a range of other features not relevant to drawing from R (e.g. 
+well as a range of other features not relevant to drawing from R (e.g.
 support for different colour spaces). The storage mode of the image data is
 not fixed and different compression modes are possible, in contrast to PNGs
 one-approach-fits-all. The default (uncompressed) will result in much larger
@@ -70,13 +70,13 @@ types produced in R. Still, TIFF has its purposes and sometimes this file
 format is explicetly requested.
 }
 \note{
-`'jpeg'` compression is only available if ragg is compiled with a 
-version of `libtiff` where jpeg support has been turned on.
+\code{'jpeg'} compression is only available if ragg is compiled with a
+version of \code{libtiff} where jpeg support has been turned on.
 }
 \section{Transparency}{
 
-TIFF have support for true transparency, meaning that the pixel colour is 
-stored in pre-multiplied form. This is in contrast to pixels being stored in 
+TIFF have support for true transparency, meaning that the pixel colour is
+stored in pre-multiplied form. This is in contrast to pixels being stored in
 plain format, where the alpha values more function as a mask. The utility of
 this is not always that important, but it is one of the benefits of TIFF over
 PNG so it should be noted.

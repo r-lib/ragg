@@ -21,17 +21,17 @@ agg_jpeg(
 )
 }
 \arguments{
-\item{filename}{The name of the file. Follows the same semantics as the file 
-naming in [grDevices::png()], meaning that you can provide a [sprintf()] 
+\item{filename}{The name of the file. Follows the same semantics as the file
+naming in \code{\link[grDevices:png]{grDevices::png()}}, meaning that you can provide a \code{\link[=sprintf]{sprintf()}}
 compliant string format to name multiple plots (such as the default value)}
 
 \item{width, height}{The dimensions of the device}
 
-\item{units}{The unit `width` and `height` is measured in, in either pixels 
-(`'px'`), inches (`'in'`), millimeters (`'mm'`), or centimeter (`'cm'`).}
+\item{units}{The unit \code{width} and \code{height} is measured in, in either pixels
+(\code{'px'}), inches (\code{'in'}), millimeters (\code{'mm'}), or centimeter (\code{'cm'}).}
 
-\item{pointsize}{The default pointsize of the device in pt. This will in 
-general not have any effect on grid graphics (including ggplot2) as text 
+\item{pointsize}{The default pointsize of the device in pt. This will in
+general not have any effect on grid graphics (including ggplot2) as text
 size is always set explicitly there.}
 
 \item{background}{The background colour of the device}
@@ -42,43 +42,43 @@ to pixels. Further, it will be used to scale text sizes and linewidths}
 
 \item{scaling}{A scaling factor to apply to the rendered line width and text
 size. Useful for getting the right dimensions at the resolution that you
-need. If e.g. you need to render a plot at 4000x3000 pixels for it to fit 
-into a layout, but you find that the result appears to small, you can 
-increase the `scaling` argument to make everything appear bigger at the 
+need. If e.g. you need to render a plot at 4000x3000 pixels for it to fit
+into a layout, but you find that the result appears to small, you can
+increase the \code{scaling} argument to make everything appear bigger at the
 same resolution.}
 
 \item{snap_rect}{Should axis-aligned rectangles drawn with only fill snap to
-the pixel grid. This will prevent anti-aliasing artifacts when two 
+the pixel grid. This will prevent anti-aliasing artifacts when two
 rectangles are touching at their border.}
 
-\item{quality}{An integer between `0` and `100` defining the quality/size 
-tradeoff. Setting this to `100` will result in no compression.}
+\item{quality}{An integer between \code{0} and \code{100} defining the quality/size
+tradeoff. Setting this to \code{100} will result in no compression.}
 
-\item{smoothing}{A smoothing factor to apply before compression, from `0` (no
-smoothing) to `100` (full smoothing). Can also by `FALSE` (no smoothing) or 
-`TRUE` (full smoothing).}
+\item{smoothing}{A smoothing factor to apply before compression, from \code{0} (no
+smoothing) to \code{100} (full smoothing). Can also by \code{FALSE} (no smoothing) or
+\code{TRUE} (full smoothing).}
 
-\item{method}{The compression algorithm to use. Either `'slow'`, `'fast'`, or
-`'float'`. Default is `'slow'` which works best for most cases. `'fast'` 
-should only be used when quality is below `97` as it may result in worse 
-performance at high quality settings. `'float'` is a legacy options that 
-calculate the compression using floating point precission instead of with 
+\item{method}{The compression algorithm to use. Either \code{'slow'}, \code{'fast'}, or
+\code{'float'}. Default is \code{'slow'} which works best for most cases. \code{'fast'}
+should only be used when quality is below \code{97} as it may result in worse
+performance at high quality settings. \code{'float'} is a legacy options that
+calculate the compression using floating point precission instead of with
 integers. It offers no quality benefit and is often much slower.}
 
-\item{bg}{Same as `background` for compatibility with old graphic device APIs}
+\item{bg}{Same as \code{background} for compatibility with old graphic device APIs}
 }
 \description{
-The JPEG file format is a lossy compressed file format developed in 
-particular for digital photography. The format is not particularly 
-well-suited for line drawings and text of the type normally associated with 
-statistical plots as the compression algorithm creates noticable artefacts. 
+The JPEG file format is a lossy compressed file format developed in
+particular for digital photography. The format is not particularly
+well-suited for line drawings and text of the type normally associated with
+statistical plots as the compression algorithm creates noticable artefacts.
 It is, however, great for saving image data, e.g. heightmaps etc. Thus, for
-standard plots, it would be better to use [agg_png()], but for plots that
+standard plots, it would be better to use \code{\link[=agg_png]{agg_png()}}, but for plots that
 includes a high degree of raster image rendering this device will result in
 smaller plots with very little quality degradation.
 }
 \note{
-Smoothing is only applied if ragg has been compiled against a jpeg 
+Smoothing is only applied if ragg has been compiled against a jpeg
 library that supports smoothing.
 }
 \examples{

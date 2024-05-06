@@ -18,17 +18,17 @@ agg_ppm(
 )
 }
 \arguments{
-\item{filename}{The name of the file. Follows the same semantics as the file 
-naming in [grDevices::png()], meaning that you can provide a [sprintf()] 
+\item{filename}{The name of the file. Follows the same semantics as the file
+naming in \code{\link[grDevices:png]{grDevices::png()}}, meaning that you can provide a \code{\link[=sprintf]{sprintf()}}
 compliant string format to name multiple plots (such as the default value)}
 
 \item{width, height}{The dimensions of the device}
 
-\item{units}{The unit `width` and `height` is measured in, in either pixels 
-(`'px'`), inches (`'in'`), millimeters (`'mm'`), or centimeter (`'cm'`).}
+\item{units}{The unit \code{width} and \code{height} is measured in, in either pixels
+(\code{'px'}), inches (\code{'in'}), millimeters (\code{'mm'}), or centimeter (\code{'cm'}).}
 
-\item{pointsize}{The default pointsize of the device in pt. This will in 
-general not have any effect on grid graphics (including ggplot2) as text 
+\item{pointsize}{The default pointsize of the device in pt. This will in
+general not have any effect on grid graphics (including ggplot2) as text
 size is always set explicitly there.}
 
 \item{background}{The background colour of the device}
@@ -39,21 +39,21 @@ to pixels. Further, it will be used to scale text sizes and linewidths}
 
 \item{scaling}{A scaling factor to apply to the rendered line width and text
 size. Useful for getting the right dimensions at the resolution that you
-need. If e.g. you need to render a plot at 4000x3000 pixels for it to fit 
-into a layout, but you find that the result appears to small, you can 
-increase the `scaling` argument to make everything appear bigger at the 
+need. If e.g. you need to render a plot at 4000x3000 pixels for it to fit
+into a layout, but you find that the result appears to small, you can
+increase the \code{scaling} argument to make everything appear bigger at the
 same resolution.}
 
 \item{snap_rect}{Should axis-aligned rectangles drawn with only fill snap to
-the pixel grid. This will prevent anti-aliasing artifacts when two 
+the pixel grid. This will prevent anti-aliasing artifacts when two
 rectangles are touching at their border.}
 
-\item{bg}{Same as `background` for compatibility with old graphic device APIs}
+\item{bg}{Same as \code{background} for compatibility with old graphic device APIs}
 }
 \description{
-The PPM (Portable Pixel Map) format defines one of the simplest storage 
-formats available for 
-image data. It is basically a raw 8bit RGB stream with a few bytes of 
+The PPM (Portable Pixel Map) format defines one of the simplest storage
+formats available for
+image data. It is basically a raw 8bit RGB stream with a few bytes of
 information in the start. It goes without saying, that this file format is
 horribly inefficient and should only be used if you want to play around with
 a simple file format, or need a file-based image stream.
