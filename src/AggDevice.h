@@ -498,6 +498,7 @@ AggDevice<PIXFMT, R_COLOR, BLNDFMT>::AggDevice(const char* fp, int w, int h, dou
   recording_mask(NULL),
   current_mask(NULL),
   pattern_cache_next_id(0),
+  group_cache_next_id(0),
   recording_raster(NULL),
   recording_group(NULL)
 {
@@ -929,9 +930,6 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::removePattern(SEXP ref) {
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::renderGroup(SEXP source, int op, SEXP destination) {
-  if (Rf_isNull(source)) {
-    return Rf_ScalarInteger(-1);
-  }
   int key = group_cache_next_id;
   group_cache_next_id++;
   
