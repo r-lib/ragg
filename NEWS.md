@@ -1,4 +1,4 @@
-# ragg (development version)
+# ragg 1.3.2
 
 * Fix a bug in how groups are defined and recalled
 
