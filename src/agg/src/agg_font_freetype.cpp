@@ -179,7 +179,7 @@ namespace agg
             v_control = v_start;
 
             point = outline.points + first;
-            tags  = outline.tags  + first;
+            tags = reinterpret_cast<char*>(outline.tags + first);
             tag   = FT_CURVE_TAG(tags[0]);
 
             // A contour cannot start with a cubic control point!
