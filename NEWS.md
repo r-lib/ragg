@@ -1,5 +1,7 @@
 # ragg (development version)
 
+* Fixed a regression from upstream changes in Freetype (#172)
+
 # ragg 1.3.2
 
 * Fix a bug in how groups are defined and recalled
@@ -51,12 +53,12 @@
 
 # ragg 1.2.2
 
-* MacOS: configure script now uses the local system dependencies provided by 
+* MacOS: configure script now uses the local system dependencies provided by
   CRAN via pkg-config. Autobrew libs are used as fallback on non-cran servers only.
 
 # ragg 1.2.1
 
-* Fix bug that caused R to crash when writing tiff files with transparent 
+* Fix bug that caused R to crash when writing tiff files with transparent
   background (#97)
 
 # ragg 1.2.0
@@ -68,10 +70,10 @@
   - Tiling patterns
 * Use white as background when passing in a fully transparent background colour
   to devices that doesn't support alpha (notably jpeg) (#91)
-* ragg now defers symbol font resolving to systemfonts which makes it possible 
+* ragg now defers symbol font resolving to systemfonts which makes it possible
   to register alternative symbol fonts using `register_font()` (#90)
 * Filenames in UTF-8 are now treated correctly on Windows (#87)
-* Fix size selection of non-scalable fonts when the requested size is bigger 
+* Fix size selection of non-scalable fonts when the requested size is bigger
   than the available
 
 # ragg 1.1.3
@@ -95,9 +97,9 @@
 
 * Major version release to signify the much improved text support that includes
   full support for right-to-left scripts and bidirectional text (mix of RtL and
-  LtR scripts). It further adds full support for OpenType features and 
+  LtR scripts). It further adds full support for OpenType features and
   non-scalable fonts.
-* Re-exporting `register_font()`, `register_variant()`, and `font_feature()` 
+* Re-exporting `register_font()`, `register_variant()`, and `font_feature()`
   from systemfonts
 * Re-exporting `get_font_features()` from textshaping
 * Use new textshaping API and handle font fallback correctly
@@ -106,30 +108,30 @@
 # ragg 0.4.1
 
 * Skip text tests on CRAN as no text is plottet on the CRAN solaris machine
-* Fixed a bug resulting in system crash on certain systems, as well as 
+* Fixed a bug resulting in system crash on certain systems, as well as
   clang-ASAN error. (#59)
-  
+
 # ragg 0.4.0
 
-* ragg now requires the Harfbuzz and Fribidi libraries to be available when 
+* ragg now requires the Harfbuzz and Fribidi libraries to be available when
   installing from source due to their dependency in the textshaping package.
 * Move text shaping to the new textshaping package.
 * Fix `agg_capture()` on big endian systems (#49, @QuLogic)
-* Fix use of symbol font on Windows by moving to Segoe UI Symbol which has a 
+* Fix use of symbol font on Windows by moving to Segoe UI Symbol which has a
   Unicode charmap (#51)
 * Better compatibility with knitr and `ggplot2::ggsave()`
 
 # ragg 0.3.1
 
-* Roll back support for new clipping options in the graphic engine as it was 
+* Roll back support for new clipping options in the graphic engine as it was
   buggy.
 
 # ragg 0.3.0
 
 * Fix a bug when plotting partially transparent raster (#44)
-* Add a `scaling` argument to all devices allowing you to change relative 
+* Add a `scaling` argument to all devices allowing you to change relative
   scaling of output.
-* Horizontal and vertical text are now snapped to the pixel grid in order to 
+* Horizontal and vertical text are now snapped to the pixel grid in order to
   improve rendering quality.
 * Internal changes to prepare for coming updates to the graphic engine
 
@@ -137,9 +139,9 @@
 
 * Fix compilation on R <= 3.3 by including Rdynload.h explicitly
 * Fix a performance regression when plotting text (#33)
-* Fix erroneous width calculations of strings starting with a space on windows 
+* Fix erroneous width calculations of strings starting with a space on windows
   (#32)
-* Fix a bug in `agg_capture()` where the output became mangled if device 
+* Fix a bug in `agg_capture()` where the output became mangled if device
   height != width
 * Fix a bug in raster support where raster data did not get premultiplied before
   rendering (#38, @yixuan)
@@ -161,13 +163,13 @@
 
 # ragg 0.1.2
 
-* Fix compilation on certain Linux systems by preferring dynamic libraries over 
+* Fix compilation on certain Linux systems by preferring dynamic libraries over
   static ones (#25, @jimhester).
 
 # ragg 0.1.1
 
 * Avoid a bug when the call to start a device included too many characters (#16)
-* Fix integer overflow runtime errors in agg source code 
+* Fix integer overflow runtime errors in agg source code
   (`agg_scanline_storage_aa.h`), by changing storage to `long`
 * Remove benchmarking vignettes as it was causing too much trouble on stripped
   down systems... They are still available on <https://ragg.r-lib.org>
