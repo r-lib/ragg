@@ -21,3 +21,4 @@
 ^revdep$
 ^CRAN-SUBMISSION$
 ^ragg\.Rproj$
+^.*\.vscode$
