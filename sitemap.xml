@@ -1,60 +1,22 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://ragg.r-lib.org/404.html</loc>
-  </url>
-  <url>
-    <loc>https://ragg.r-lib.org/CODE_OF_CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>https://ragg.r-lib.org/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://ragg.r-lib.org/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://ragg.r-lib.org/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://ragg.r-lib.org/articles/ragg_performance.html</loc>
-  </url>
-  <url>
-    <loc>https://ragg.r-lib.org/articles/ragg_quality.html</loc>
-  </url>
-  <url>
-    <loc>https://ragg.r-lib.org/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://ragg.r-lib.org/index.html</loc>
-  </url>
-  <url>
-    <loc>https://ragg.r-lib.org/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://ragg.r-lib.org/reference/agg_capture.html</loc>
-  </url>
-  <url>
-    <loc>https://ragg.r-lib.org/reference/agg_jpeg.html</loc>
-  </url>
-  <url>
-    <loc>https://ragg.r-lib.org/reference/agg_png.html</loc>
-  </url>
-  <url>
-    <loc>https://ragg.r-lib.org/reference/agg_ppm.html</loc>
-  </url>
-  <url>
-    <loc>https://ragg.r-lib.org/reference/agg_supertransparent.html</loc>
-  </url>
-  <url>
-    <loc>https://ragg.r-lib.org/reference/agg_tiff.html</loc>
-  </url>
-  <url>
-    <loc>https://ragg.r-lib.org/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://ragg.r-lib.org/reference/ragg-package.html</loc>
-  </url>
-  <url>
-    <loc>https://ragg.r-lib.org/reference/reexports.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://ragg.r-lib.org/404.html</loc></url>
+<url><loc>https://ragg.r-lib.org/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://ragg.r-lib.org/LICENSE-text.html</loc></url>
+<url><loc>https://ragg.r-lib.org/LICENSE.html</loc></url>
+<url><loc>https://ragg.r-lib.org/articles/index.html</loc></url>
+<url><loc>https://ragg.r-lib.org/articles/ragg_performance.html</loc></url>
+<url><loc>https://ragg.r-lib.org/articles/ragg_quality.html</loc></url>
+<url><loc>https://ragg.r-lib.org/authors.html</loc></url>
+<url><loc>https://ragg.r-lib.org/index.html</loc></url>
+<url><loc>https://ragg.r-lib.org/news/index.html</loc></url>
+<url><loc>https://ragg.r-lib.org/reference/agg_capture.html</loc></url>
+<url><loc>https://ragg.r-lib.org/reference/agg_jpeg.html</loc></url>
+<url><loc>https://ragg.r-lib.org/reference/agg_png.html</loc></url>
+<url><loc>https://ragg.r-lib.org/reference/agg_ppm.html</loc></url>
+<url><loc>https://ragg.r-lib.org/reference/agg_supertransparent.html</loc></url>
+<url><loc>https://ragg.r-lib.org/reference/agg_tiff.html</loc></url>
+<url><loc>https://ragg.r-lib.org/reference/index.html</loc></url>
+<url><loc>https://ragg.r-lib.org/reference/ragg-package.html</loc></url>
+<url><loc>https://ragg.r-lib.org/reference/reexports.html</loc></url>
 </urlset>
+
