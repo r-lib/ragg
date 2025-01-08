@@ -18,7 +18,7 @@ news:
   - text: "Version 0.2.0"
     href: "https://www.tidyverse.org/blog/2020/05/updates-to-ragg-and-systemfonts/"
   - text: "Version 0.1.0"
-    href: "https://www.tidyverse.org/articles/2019/07/ragg-0-1-0/"
+    href: "https://www.tidyverse.org/blog/2019/07/ragg-0-1-0/"
 
 reference:
   - title: Graphic Devices
