@@ -5,7 +5,9 @@
 #include <utility>
 #include <unordered_map>
 
+#ifndef R_NO_REMAP
 #define R_NO_REMAP
+#endif
 
 #include <Rinternals.h>
 #include <R_ext/GraphicsEngine.h>
@@ -61,18 +63,18 @@ inline void demultiply<pixfmt_type_64>(pixfmt_type_64* pixfmt) {
   return;
 }
 
-SEXP agg_ppm_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, 
+SEXP agg_ppm_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
                SEXP res, SEXP scaling, SEXP snap);
-SEXP agg_png_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, 
+SEXP agg_png_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
                SEXP res, SEXP scaling, SEXP snap, SEXP bit);
-SEXP agg_supertransparent_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, 
-                            SEXP bg, SEXP res, SEXP scaling, SEXP snap, 
+SEXP agg_supertransparent_c(SEXP file, SEXP width, SEXP height, SEXP pointsize,
+                            SEXP bg, SEXP res, SEXP scaling, SEXP snap,
                             SEXP alpha_mod);
-SEXP agg_tiff_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, 
-                SEXP res, SEXP scaling, SEXP snap, SEXP bit, SEXP compression, 
+SEXP agg_tiff_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
+                SEXP res, SEXP scaling, SEXP snap, SEXP bit, SEXP compression,
                 SEXP encoding);
-SEXP agg_jpeg_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg, 
-                SEXP res, SEXP scaling, SEXP snap, SEXP quality, SEXP smoothing, 
+SEXP agg_jpeg_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
+                SEXP res, SEXP scaling, SEXP snap, SEXP quality, SEXP smoothing,
                 SEXP method);
-SEXP agg_capture_c(SEXP name, SEXP width, SEXP height, SEXP pointsize, SEXP bg, 
+SEXP agg_capture_c(SEXP name, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
                    SEXP res, SEXP scaling, SEXP snap);
