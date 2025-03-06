@@ -446,6 +446,7 @@ pDevDesc agg_device_new(T* device) {
   } else {
     dd->cap = NULL;
   }
+  dd->haveCapture = (dd->cap) ? 2 : 1;
   dd->raster = agg_raster<T>;
 #if R_GE_version >= 13
   dd->setPattern      = agg_setPattern<T>;
