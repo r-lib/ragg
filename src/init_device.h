@@ -505,7 +505,7 @@ pDevDesc agg_device_new(T* device) {
   dd->displayListOn = FALSE;
   dd->haveTransparency = 2;
   dd->haveRaster = 2;
-  dd->haveTransparentBg = 2;
+  dd->haveTransparentBg = 3; /* background can be semi-transparent */
   dd->useRotatedTextInContour =  (Rboolean) 1;
   
 #if R_GE_version >= 13
@@ -526,6 +526,10 @@ void makeDevice(T* device, const char *name) {
     pDevDesc dev = agg_device_new<T>(device);
     if (dev == NULL)
       Rf_error("agg device failed to open");
+
+    /* jpeg and ppm formats don't support (semi-)transparent pixels */
+    if (strcmp(name, "agg_jpeg") == 0 || strcmp(name, "agg_ppm") == 0)
+        dev->haveTransparentBg = 1;
     
     pGEDevDesc dd = GEcreateDevDesc(dev);
     GEaddDevice2(dd, name);
