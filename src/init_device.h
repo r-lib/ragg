@@ -503,6 +503,7 @@ pDevDesc agg_device_new(T* device) {
   dd->canChangeGamma = FALSE;
   dd->displayListOn = FALSE;
   dd->haveTransparency = 2;
+  dd->haveRaster = 2;
   dd->haveTransparentBg = 2;
   dd->useRotatedTextInContour =  (Rboolean) 1;
   
