@@ -22,3 +22,5 @@
 ^CRAN-SUBMISSION$
 ^ragg\.Rproj$
 ^.*\.vscode$
+^compile_commands\.json$
+^\.cache$

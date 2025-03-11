@@ -1,5 +1,7 @@
 # ragg (development version)
 
+* Added `agg_record()` for optimised plot recording
+
 # ragg 1.3.3
 
 * Fixed a regression from upstream changes in Freetype (#172)
