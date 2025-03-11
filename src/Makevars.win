@@ -1,28 +1,35 @@
+PKG_CONFIG_NAME = freetype2 libpng libtiff-4 libjpeg
+PKG_CONFIG ?= $(BINPREF)pkg-config
+RAGG_LIBS := $(shell $(PKG_CONFIG) --libs $(PKG_CONFIG_NAME))
+
+ifneq ($(RAGG_LIBS),)
+$(info using $(PKG_CONFIG_NAME) from Rtools)
+RAGG_CFLAGS := $(shell $(PKG_CONFIG) --cflags $(PKG_CONFIG_NAME))
+else
 RWINLIB = ../windows/harfbuzz
+RAGG_CFLAGS = -I$(RWINLIB)/include -I$(RWINLIB)/include/freetype2
+RAGG_LIBS = -L$(RWINLIB)/lib$(R_ARCH) -L$(RWINLIB)/lib -lfreetype -lharfbuzz -lfreetype -lpng -lz -ltiff -ljpeg -lbz2 -lrpcrt4 -lgdi32 -lws2_32
+endif
+
+PKG_LIBS = -Lagg -lstatagg $(RAGG_LIBS)
+PKG_CPPFLAGS = -DSTRICT_R_HEADERS -I./agg/include $(RAGG_CFLAGS)
 
 AGG_OBJECTS = agg/src/agg_curves.o agg/src/agg_font_freetype.o \
 	agg/src/agg_image_filters.o agg/src/agg_trans_affine.o \
 	agg/src/agg_vcgen_dash.o agg/src/agg_vcgen_stroke.o
 
-PKG_CPPFLAGS = -DSTRICT_R_HEADERS \
-	-I$(RWINLIB)/include -I$(RWINLIB)/include/freetype2 \
-	-I./agg/include \
-
-PKG_LIBS = -Lagg -lstatagg \
-	-L$(RWINLIB)/lib$(R_ARCH) -L$(RWINLIB)/lib \
-	-lfreetype -lharfbuzz -lfreetype -lpng -lz -ltiff -ljpeg \
-	-lbz2 -lrpcrt4 -lgdi32 -lws2_32
-
 STATLIB = agg/libstatagg.a
 
-all: clean winlibs
+all: $(SHLIB)
 
 $(SHLIB): $(STATLIB)
 
 $(STATLIB): $(AGG_OBJECTS)
 
-winlibs:
+$(OBJECTS): $(RWINLIB)
+
+$(RWINLIB):
 	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R"
 
 clean:
-	rm -f $(OBJECTS) $(STATLIB) $(SHLIB) $(AGG_OBJECTS)
+	rm -f $(SHLIB) $(OBJECTS) $(AGG_OBJECTS) $(STATLIB)

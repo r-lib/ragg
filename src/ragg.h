@@ -5,7 +5,9 @@
 #include <utility>
 #include <unordered_map>
 
+#ifndef R_NO_REMAP
 #define R_NO_REMAP
+#endif
 
 #include <Rinternals.h>
 #include <R_ext/GraphicsEngine.h>
