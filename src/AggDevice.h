@@ -32,11 +32,11 @@
 
 static const int MAX_CELLS = 1 << 20;
 
-/* Base class for graphic device interface to AGG. See AggDevice.cpp for 
- * implementation details. 
- * 
- * Specific devices should subclass this and provide their own buffer and 
- * savePage() methods (at least), while the drawing methods should work 
+/* Base class for graphic device interface to AGG. See AggDevice.cpp for
+ * implementation details.
+ *
+ * Specific devices should subclass this and provide their own buffer and
+ * savePage() methods (at least), while the drawing methods should work
  * regardless. The base class outputs images in ppm format which is not realy
  * a usable format. See png and tiff versions for actual usable classes.
  */
@@ -48,11 +48,11 @@ public:
   typedef agg::renderer_base<pixfmt_type> renbase_type;
   typedef agg::renderer_scanline_aa_solid<renbase_type> renderer_solid;
   typedef agg::renderer_scanline_bin_solid<renbase_type> renderer_bin;
-  
+
   static const int bytes_per_pixel = pixfmt_type::pix_width;
-  
+
   bool can_capture = false;
-  
+
   int width;
   int height;
   double clip_left;
@@ -60,13 +60,14 @@ public:
   double clip_top;
   double clip_bottom;
   unsigned int device_id;
-  
+  int hold_level;
+
   renbase_type renderer;
   renderer_solid solid_renderer;
   pixfmt_type* pixf;
   agg::rendering_buffer rbuf;
   unsigned char* buffer;
-  
+
   int pageno;
   std::string file;
   R_COLOR background;
@@ -76,47 +77,48 @@ public:
   double res_mod;
   double lwd_mod;
   bool snap_rect;
-  
+
   double x_trans;
   double y_trans;
-  
+
   TextRenderer<BLNDFMT> t_ren;
-  
+
   // Caches
   std::unordered_map<unsigned int, std::pair<std::unique_ptr<agg::path_storage>, bool> > clip_cache;
   unsigned int clip_cache_next_id;
   agg::path_storage* recording_path;
   agg::path_storage* current_clip;
   bool current_clip_rule_is_evenodd;
-  
+
   std::unordered_map<unsigned int, std::unique_ptr<MaskBuffer> > mask_cache;
   unsigned int mask_cache_next_id;
   MaskBuffer* recording_mask;
   MaskBuffer* current_mask;
-  
+
   std::unordered_map<unsigned int, std::unique_ptr<Pattern<BLNDFMT, R_COLOR> > > pattern_cache;
   unsigned int pattern_cache_next_id;
   std::unordered_map<unsigned int, std::unique_ptr<Group<BLNDFMT, R_COLOR> > > group_cache;
   unsigned int group_cache_next_id;
   RenderBuffer<BLNDFMT>* recording_raster;
   Group<BLNDFMT, R_COLOR>* recording_group;
-  
+
   // Lifecycle methods
-  AggDevice(const char* fp, int w, int h, double ps, int bg, double res, 
+  AggDevice(const char* fp, int w, int h, double ps, int bg, double res,
             double scaling, bool snap);
   virtual ~AggDevice();
   virtual void newPage(unsigned int bg);
   void close();
   virtual bool savePage();
   SEXP capture();
-  
+  int hold_flush(int level);
+
   // Behaviour
   void clipRect(double x0, double y0, double x1, double y1);
-  double stringWidth(const char *str, const char *family, int face, 
+  double stringWidth(const char *str, const char *family, int face,
                      double size);
   void charMetric(int c, const char *family, int face, double size,
                   double *ascent, double *descent, double *width);
-  
+
   std::unique_ptr<agg::path_storage> recordPath(SEXP path);
   SEXP createClipPath(SEXP path, SEXP ref);
   void removeClipPath(SEXP ref);
@@ -127,34 +129,34 @@ public:
   SEXP renderGroup(SEXP source, int op, SEXP destination);
   void useGroup(SEXP ref, SEXP trans);
   void removeGroup(SEXP ref);
-  
+
   // Drawing Methods
-  void drawCircle(double x, double y, double r, int fill, int col, double lwd, 
+  void drawCircle(double x, double y, double r, int fill, int col, double lwd,
                   int lty, R_GE_lineend lend, int pattern);
-  void drawRect(double x0, double y0, double x1, double y1, int fill, int col, 
-                double lwd, int lty, R_GE_lineend lend, R_GE_linejoin ljoin, 
+  void drawRect(double x0, double y0, double x1, double y1, int fill, int col,
+                double lwd, int lty, R_GE_lineend lend, R_GE_linejoin ljoin,
                 double lmitre, int pattern);
-  void drawPolygon(int n, double *x, double *y, int fill, int col, double lwd, 
-                   int lty, R_GE_lineend lend, R_GE_linejoin ljoin, 
+  void drawPolygon(int n, double *x, double *y, int fill, int col, double lwd,
+                   int lty, R_GE_lineend lend, R_GE_linejoin ljoin,
                    double lmitre, int pattern);
-  void drawLine(double x1, double y1, double x2, double y2, int col, double lwd, 
+  void drawLine(double x1, double y1, double x2, double y2, int col, double lwd,
                 int lty, R_GE_lineend lend);
   void drawPolyline(int n, double* x, double* y, int col, double lwd, int lty,
                     R_GE_lineend lend, R_GE_linejoin ljoin, double lmitre);
-  void drawPath(int npoly, int* nper, double* x, double* y, int col, int fill, 
-                double lwd, int lty, R_GE_lineend lend, R_GE_linejoin ljoin, 
+  void drawPath(int npoly, int* nper, double* x, double* y, int col, int fill,
+                double lwd, int lty, R_GE_lineend lend, R_GE_linejoin ljoin,
                 double lmitre, bool evenodd, int pattern);
-  void drawRaster(unsigned int *raster, int w, int h, double x, double y, 
-                  double final_width, double final_height, double rot, 
+  void drawRaster(unsigned int *raster, int w, int h, double x, double y,
+                  double final_width, double final_height, double rot,
                   bool interpolate);
-  void drawText(double x, double y, const char *str, const char *family, 
+  void drawText(double x, double y, const char *str, const char *family,
                 int face, double size, double rot, double hadj, int col);
-  void drawGlyph(int n, int *glyphs, double *x, double *y, SEXP font, 
+  void drawGlyph(int n, int *glyphs, double *x, double *y, SEXP font,
                  double size, int colour, double rot);
-  void renderPath(SEXP path, bool do_fill, bool do_stroke, int col, int fill, 
-                  double lwd, int lty, R_GE_lineend lend, R_GE_linejoin ljoin, 
+  void renderPath(SEXP path, bool do_fill, bool do_stroke, int col, int fill,
+                  double lwd, int lty, R_GE_lineend lend, R_GE_linejoin ljoin,
                   double lmitre, bool evenodd, int pattern);
-  
+
 protected:
   virtual inline R_COLOR convertColour(unsigned int col) {
     return R_COLOR(R_RED(col), R_GREEN(col), R_BLUE(col), R_ALPHA(col)).premultiply();
@@ -174,7 +176,7 @@ protected:
     case GE_SQUARE_CAP:
       return agg::square_cap;
     }
-    
+
     //should never happen
     return agg::square_cap;
   }
@@ -187,7 +189,7 @@ protected:
     case GE_BEVEL_JOIN:
       return agg::bevel_join;
     }
-    
+
     //should never happen
     return agg::round_join;
   }
@@ -260,12 +262,12 @@ protected:
     bool clip_src = false;
 #if R_GE_version >= 15
     switch(op) {
-    case R_GE_compositeSource: 
-    case R_GE_compositeIn: 
-    case R_GE_compositeOut: 
-    case R_GE_compositeDest: 
-    case R_GE_compositeDestOver: 
-    case R_GE_compositeDestIn: 
+    case R_GE_compositeSource:
+    case R_GE_compositeIn:
+    case R_GE_compositeOut:
+    case R_GE_compositeDest:
+    case R_GE_compositeDestOver:
+    case R_GE_compositeDestIn:
     case R_GE_compositeDestAtop: clip_src = true;
     }
 #endif
@@ -287,7 +289,7 @@ protected:
       }
     } else if (recording_raster == NULL) {
       Pattern<pixfmt_type_32, agg::rgba8> mask_pattern = pattern.convert_for_mask();
-      
+
       if (current_mask == NULL) {
         mask_pattern.draw(ras, ras_clip, sl, recording_mask->get_renderer(), clip);
       } else {
@@ -325,9 +327,9 @@ protected:
     }
   }
   template<class Raster, class Path>
-  void drawShape(Raster &ras, Raster &ras_clip, Path &path, bool draw_fill, 
-                 bool draw_stroke, int fill, int col, double lwd, 
-                 int lty, R_GE_lineend lend, R_GE_linejoin ljoin = GE_ROUND_JOIN, 
+  void drawShape(Raster &ras, Raster &ras_clip, Path &path, bool draw_fill,
+                 bool draw_stroke, int fill, int col, double lwd,
+                 int lty, R_GE_lineend lend, R_GE_linejoin ljoin = GE_ROUND_JOIN,
                  double lmitre = 1.0, int pattern = -1, bool evenodd = false) {
     agg::scanline_p8 slp;
     if (recording_path != NULL) {
@@ -340,11 +342,11 @@ protected:
         ras_clip.filling_rule(agg::fill_even_odd);
       }
     }
-    
+
     if (pattern != -1) {
       ras.add_path(path);
       if (evenodd) ras.filling_rule(agg::fill_even_odd);
-      
+
       auto pat_it = pattern_cache.find(pattern);
       if (pat_it != pattern_cache.end()) {
         fillPattern(ras, ras_clip, *(pat_it->second));
@@ -352,7 +354,7 @@ protected:
     } else if (draw_fill) {
       ras.add_path(path);
       if (evenodd) ras.filling_rule(agg::fill_even_odd);
-      
+
       if (recording_mask == NULL && recording_raster == NULL) {
         solid_renderer.color(convertColour(fill));
         if (current_mask == NULL) {
@@ -404,7 +406,7 @@ protected:
       }
     }
     if (!draw_stroke) return;
-    
+
     if (evenodd) ras.filling_rule(agg::fill_non_zero);
     agg::scanline_u8 slu;
     setStroke(ras, path, lty, lwd, lend, ljoin, lmitre);
@@ -464,13 +466,13 @@ protected:
 
 // LIFECYCLE -------------------------------------------------------------------
 
-/* The initialiser takes care of setting up the buffer, and caching a pixel 
+/* The initialiser takes care of setting up the buffer, and caching a pixel
  * formatter and renderer.
  */
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
-AggDevice<PIXFMT, R_COLOR, BLNDFMT>::AggDevice(const char* fp, int w, int h, double ps, 
-                                               int bg, double res, double scaling, 
-                                               bool snap) : 
+AggDevice<PIXFMT, R_COLOR, BLNDFMT>::AggDevice(const char* fp, int w, int h, double ps,
+                                               int bg, double res, double scaling,
+                                               bool snap) :
   converter(),
   width(w),
   height(h),
@@ -479,6 +481,7 @@ AggDevice<PIXFMT, R_COLOR, BLNDFMT>::AggDevice(const char* fp, int w, int h, dou
   clip_top(0),
   clip_bottom(h),
   device_id(0),
+  hold_level(0),
   pageno(0),
   file(fp),
   background_int(bg),
@@ -516,7 +519,7 @@ AggDevice<PIXFMT, R_COLOR, BLNDFMT>::~AggDevice() {
   delete [] buffer;
 }
 
-/* newPage() should not need to be overwritten as long the class have an 
+/* newPage() should not need to be overwritten as long the class have an
  * appropriate savePage() method. For screen devices it may make sense to change
  * it for performance
  */
@@ -548,8 +551,14 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::capture() {
   return Rf_allocVector(INTSXP, 0);
 }
 
+template<class PIXFMT, class R_COLOR, typename BLNDFMT>
+int AggDevice<PIXFMT, R_COLOR, BLNDFMT>::hold_flush(int level) {
+  hold_level = std::max(hold_level + level, 0);
+  return hold_level;
+}
+
 /* This takes care of writing the buffer to an appropriate file. The filename
- * may be specified as a printf string with room for a page counter, so the 
+ * may be specified as a printf string with room for a page counter, so the
  * method should take care of resolving that together with the pageno field.
  */
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
@@ -565,7 +574,7 @@ bool AggDevice<PIXFMT, R_COLOR, BLNDFMT>::savePage() {
  * to avoid unneccesary allocation and looping
  */
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
-void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::clipRect(double x0, double y0, double x1, 
+void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::clipRect(double x0, double y0, double x1,
                                           double y1) {
   if (recording_raster != NULL && x0 == 0.0 && y0 == height && x1 == width && y1 == 0.0) {
     // resetting clipping while recording a pattern / group
@@ -594,13 +603,13 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::clipRect(double x0, double y0, double 
 
 /* These methods funnel all operations to the text_renderer. See text_renderer.h
  * for implementation details.
- * 
+ *
  * They work on gray8 bitmap to speed it up as all metrixs are assumed to be in
  * horizontal mode only
  */
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
-double AggDevice<PIXFMT, R_COLOR, BLNDFMT>::stringWidth(const char *str, 
-                                               const char *family, int face, 
+double AggDevice<PIXFMT, R_COLOR, BLNDFMT>::stringWidth(const char *str,
+                                               const char *family, int face,
                                                double size) {
 #if R_VERSION >= R_Version(4, 0, 0)
   if (face == 5) {
@@ -608,18 +617,18 @@ double AggDevice<PIXFMT, R_COLOR, BLNDFMT>::stringWidth(const char *str,
     str = str2;
   }
 #endif
-  
+
   size *= res_mod;
   agg::glyph_rendering gren = agg::glyph_ren_agg_gray8;
   if (!t_ren.load_font(gren, family, face, size, device_id)) {
     return 0.0;
   }
-  
+
   return t_ren.get_text_width(str);
 }
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
-void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::charMetric(int c, const char *family, int face, 
-                                   double size, double *ascent, double *descent, 
+void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::charMetric(int c, const char *family, int face,
+                                   double size, double *ascent, double *descent,
                                    double *width) {
   if (c < 0) {
     c = -c;
@@ -634,7 +643,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::charMetric(int c, const char *family, 
     }
 #endif
   }
-  
+
   size *= res_mod;
   agg::glyph_rendering gren = agg::glyph_ren_agg_gray8;
   if (!t_ren.load_font(gren, family, face, size, device_id)) {
@@ -643,23 +652,23 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::charMetric(int c, const char *family, 
     *width = 0.0;
     return;
   }
-  
+
   t_ren.get_char_metric(c, ascent, descent, width);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 std::unique_ptr<agg::path_storage> AggDevice<PIXFMT, R_COLOR, BLNDFMT>::recordPath(SEXP path) {
   std::unique_ptr<agg::path_storage> new_path(new agg::path_storage());
-  
+
   // Assign container pointer to device
   recording_path = new_path.get();
-  
+
   SEXP R_fcall = PROTECT(Rf_lang1(path));
   Rf_eval(R_fcall, R_GlobalEnv);
   UNPROTECT(1);
-  
+
   recording_path = NULL;
-  
+
   return new_path;
 }
 
@@ -678,20 +687,20 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createClipPath(SEXP path, SEXP ref) {
       return Rf_ScalarInteger(key);
     }
   }
-  
+
   auto clip_cache_iter = clip_cache.find(key);
   // Check if path exists
   if (clip_cache_iter == clip_cache.end()) {
     // Path doesn't exist - create a new entry and get reference to it
     std::unique_ptr<agg::path_storage> new_clip = recordPath(path);
-    
+
     current_clip = new_clip.get();
     current_clip_rule_is_evenodd = false;
-    
+
 #if R_GE_version >= 15
     current_clip_rule_is_evenodd = R_GE_clipPathFillRule(path) == R_GE_evenOddRule;
 #endif
-    
+
     clip_cache[key] = {std::move(new_clip), current_clip_rule_is_evenodd};
   } else {
     current_clip = clip_cache_iter->second.first.get();
@@ -702,7 +711,7 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createClipPath(SEXP path, SEXP ref) {
   clip_top = 0.0;
   clip_bottom = height;
   renderer.reset_clipping(true);
-  
+
   return Rf_ScalarInteger(key);
 }
 
@@ -713,19 +722,19 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::removeClipPath(SEXP ref) {
     clip_cache_next_id = 0;
     return;
   }
-    
+
   int key = INTEGER(ref)[0];
-  
+
   if (key < 0) {
     return;
   }
-  
+
   auto it = clip_cache.find(key);
   // Check if path exists
   if (it != clip_cache.end()) {
     clip_cache.erase(it);
   }
-  
+
   return;
 }
 
@@ -746,7 +755,7 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createMask(SEXP mask, SEXP ref) {
       return Rf_ScalarInteger(key);
     }
   }
-  
+
   auto mask_cache_iter = mask_cache.find(key);
   // Check if path exists
   if (mask_cache_iter == mask_cache.end()) {
@@ -757,27 +766,27 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createMask(SEXP mask, SEXP ref) {
     luminance = R_GE_maskType(mask) == R_GE_luminanceMask;
 #endif
     new_mask->init(width, height, luminance);
-    
+
     // Assign container pointer to device
     MaskBuffer* temp_mask = recording_mask;
     RenderBuffer<BLNDFMT>* temp_raster = recording_raster;
     recording_mask = new_mask.get();
     recording_raster = NULL;
-    
+
     SEXP R_fcall = PROTECT(Rf_lang1(mask));
     Rf_eval(R_fcall, R_GlobalEnv);
     UNPROTECT(1);
-    
+
     current_mask = recording_mask;
     recording_raster = temp_raster;
     recording_mask = temp_mask;
-    
+
     mask_cache[key] = std::move(new_mask);
-    
+
   } else {
     current_mask = mask_cache_iter->second.get();
   }
-  
+
   return Rf_ScalarInteger(key);
 }
 
@@ -788,15 +797,15 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::removeMask(SEXP ref) {
     mask_cache_next_id = 0;
     return;
   }
-  
+
   unsigned int key = INTEGER(ref)[0];
-  
+
   auto it = mask_cache.find(key);
   // Check if path exists
   if (it != mask_cache.end()) {
     mask_cache.erase(it);
   }
-  
+
   return;
 }
 
@@ -807,14 +816,14 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
   }
   int key = pattern_cache_next_id;
   pattern_cache_next_id++;
-  
+
   std::unique_ptr<Pattern<BLNDFMT, R_COLOR> > new_pattern(new Pattern<BLNDFMT, R_COLOR>());
-  
+
 #if R_GE_version >= 13
   ExtendType extend = ExtendNone;
-  
+
   switch(R_GE_patternType(pattern)) {
-  case R_GE_linearGradientPattern: 
+  case R_GE_linearGradientPattern:
     switch(R_GE_linearGradientExtend(pattern)) {
     case R_GE_patternExtendNone: extend = ExtendNone; break;
     case R_GE_patternExtendPad: extend = ExtendPad; break;
@@ -861,21 +870,21 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
     case R_GE_patternExtendReflect: extend = ExtendReflect; break;
     case R_GE_patternExtendRepeat: extend = ExtendRepeat; break;
     }
-    new_pattern->init_tile(R_GE_tilingPatternWidth(pattern), 
-                           R_GE_tilingPatternHeight(pattern), 
-                           R_GE_tilingPatternX(pattern) + x_trans, 
-                           R_GE_tilingPatternY(pattern) + y_trans, 
+    new_pattern->init_tile(R_GE_tilingPatternWidth(pattern),
+                           R_GE_tilingPatternHeight(pattern),
+                           R_GE_tilingPatternX(pattern) + x_trans,
+                           R_GE_tilingPatternY(pattern) + y_trans,
                            extend);
-    
+
     double temp_clip_left = clip_left;
     double temp_clip_right = clip_right;
     double temp_clip_top = clip_top;
     double temp_clip_bottom = clip_bottom;
-    
+
     MaskBuffer* temp_mask = recording_mask;
     MaskBuffer* temp_current_mask = current_mask;
     RenderBuffer<BLNDFMT>* temp_raster = recording_raster;
-    
+
     x_trans += new_pattern->x_trans;
     y_trans += new_pattern->y_trans;
     clip_left = 0.0;
@@ -886,16 +895,16 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
     recording_mask = NULL;
     current_mask = NULL;
     recording_raster = &(new_pattern->buffer);
-    
+
     SEXP R_fcall = PROTECT(Rf_lang1(R_GE_tilingPatternFunction(pattern)));
     Rf_eval(R_fcall, R_GlobalEnv);
     UNPROTECT(1);
-    
+
     clip_left = temp_clip_left;
     clip_right = temp_clip_right;
     clip_top = temp_clip_top;
     clip_bottom = temp_clip_bottom;
-    
+
     x_trans -= new_pattern->x_trans;
     y_trans -= new_pattern->y_trans;
     recording_mask = temp_mask;
@@ -904,9 +913,9 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
     break;
   }
 #endif
-  
+
   pattern_cache[key] = std::move(new_pattern);
-  
+
   return Rf_ScalarInteger(key);
 }
 
@@ -917,14 +926,14 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::removePattern(SEXP ref) {
     pattern_cache_next_id = 0;
     return;
   }
-  
+
   unsigned int key = INTEGER(ref)[0];
   auto it = pattern_cache.find(key);
   // Check if path exists
   if (it != pattern_cache.end()) {
     pattern_cache.erase(it);
   }
-  
+
   return;
 }
 
@@ -932,19 +941,19 @@ template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::renderGroup(SEXP source, int op, SEXP destination) {
   int key = group_cache_next_id;
   group_cache_next_id++;
-  
+
   std::unique_ptr<Group<BLNDFMT, R_COLOR> > new_group(new Group<BLNDFMT, R_COLOR>(width, height, opClipsSrc(op) && destination != R_NilValue));
-  
+
   double temp_clip_left = clip_left;
   double temp_clip_right = clip_right;
   double temp_clip_top = clip_top;
   double temp_clip_bottom = clip_bottom;
-  
+
   MaskBuffer* temp_mask = recording_mask;
   MaskBuffer* temp_current_mask = current_mask;
   Group<BLNDFMT, R_COLOR>* temp_group = recording_group;
   RenderBuffer<BLNDFMT>* temp_raster = recording_raster;
-  
+
   clip_left = 0.0;
   clip_right = width;
   clip_top = 0.0;
@@ -953,36 +962,36 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::renderGroup(SEXP source, int op, SEXP 
   current_mask = NULL;
   recording_group = NULL;
   recording_raster = &(new_group->dst);
-  
+
   if (destination != R_NilValue) {
     SEXP R_fcall = PROTECT(Rf_lang1(destination));
     Rf_eval(R_fcall, R_GlobalEnv);
     UNPROTECT(1);
   }
-  
+
   recording_raster->set_comp(compositeOperator(op));
-  
+
   recording_raster = new_group->buffer();
   recording_group = new_group.get();
-  
+
   SEXP R_fcall = PROTECT(Rf_lang1(source));
   Rf_eval(R_fcall, R_GlobalEnv);
   UNPROTECT(1);
-  
+
   new_group->finish();
-  
+
   clip_left = temp_clip_left;
   clip_right = temp_clip_right;
   clip_top = temp_clip_top;
   clip_bottom = temp_clip_bottom;
-  
+
   recording_mask = temp_mask;
   current_mask = temp_current_mask;
   recording_group = temp_group;
   recording_raster = temp_raster;
-  
+
   group_cache[key] = std::move(new_group);
-  
+
   return Rf_ScalarInteger(key);
 }
 
@@ -999,7 +1008,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::useGroup(SEXP ref, SEXP trans) {
     return;
   }
   agg::trans_affine mtx;
-  
+
   if (trans != R_NilValue) {
     mtx = agg::trans_affine(
       REAL(trans)[0],
@@ -1011,9 +1020,9 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::useGroup(SEXP ref, SEXP trans) {
     );
     mtx.invert();
   }
-  
+
   bool clip = current_clip != NULL;
-  
+
   agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
   agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
@@ -1023,7 +1032,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::useGroup(SEXP ref, SEXP trans) {
       ras_clip.filling_rule(agg::fill_even_odd);
     }
   }
-  
+
   agg::path_storage rect;
   rect.remove_all();
   rect.move_to(0, 0);
@@ -1032,7 +1041,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::useGroup(SEXP ref, SEXP trans) {
   rect.line_to(width, 0);
   rect.close_polygon();
   ras.add_path(rect);
-  
+
   agg::scanline_u8 sl;
   if (recording_mask == NULL && recording_raster == NULL) {
     if (current_mask == NULL) {
@@ -1046,7 +1055,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::useGroup(SEXP ref, SEXP trans) {
     }
   } else if (recording_raster == NULL) {
     Group<pixfmt_type_32, agg::rgba8> mask_group = it->second->convert_for_mask();
-    
+
     if (current_mask == NULL) {
       mask_group.draw(mtx, ras, ras_clip, sl, recording_mask->get_renderer(), clip);
     } else {
@@ -1091,34 +1100,34 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::removeGroup(SEXP ref) {
     group_cache_next_id = 0;
     return;
   }
-  
+
   unsigned int key = INTEGER(ref)[0];
   auto it = group_cache.find(key);
   // Check if path exists
   if (it != group_cache.end()) {
     group_cache.erase(it);
   }
-  
+
   return;
 }
 
 // DRAWING ---------------------------------------------------------------------
 
-/* Draws a circle. Use for standard points as well as grid.circle etc. The 
+/* Draws a circle. Use for standard points as well as grid.circle etc. The
  * number of points around the circle is precalculated below a radius of 64
  * pixels in order to speed up point rendering
  */
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
-void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawCircle(double x, double y, double r, 
-                                            int fill, int col, double lwd, 
+void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawCircle(double x, double y, double r,
+                                            int fill, int col, double lwd,
                                             int lty, R_GE_lineend lend, int pattern) {
   bool draw_fill = visibleColour(fill) || pattern != -1;
   bool draw_stroke = visibleColour(col) && lwd > 0.0 && lty != LTY_BLANK;
-  
+
   if (!draw_fill && !draw_stroke) return; // Early exit
-  
+
   lwd *= lwd_mod;
-  
+
   agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
   agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
@@ -1139,23 +1148,23 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawCircle(double x, double y, double 
   } else {
     e1.init(x, y, r, r);
   }
-  
+
   drawShape(ras, ras_clip, e1, draw_fill, draw_stroke, fill, col, lwd, lty, lend, GE_ROUND_JOIN, 1.0, pattern);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
-void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRect(double x0, double y0, double x1, 
-                                          double y1, int fill, int col, 
-                                          double lwd, int lty, 
-                                          R_GE_lineend lend, R_GE_linejoin ljoin, 
+void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRect(double x0, double y0, double x1,
+                                          double y1, int fill, int col,
+                                          double lwd, int lty,
+                                          R_GE_lineend lend, R_GE_linejoin ljoin,
                                           double lmitre, int pattern) {
   bool draw_fill = visibleColour(fill) || pattern != -1;
   bool draw_stroke = visibleColour(col) && lwd > 0.0 && lty != LTY_BLANK;
-  
+
   if (!draw_fill && !draw_stroke) return; // Early exit
-  
+
   lwd *= lwd_mod;
-  
+
   agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
   agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
@@ -1176,23 +1185,23 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRect(double x0, double y0, double 
   rect.line_to(x1, y1);
   rect.line_to(x1, y0);
   rect.close_polygon();
-  
+
   drawShape(ras, ras_clip, rect, draw_fill, draw_stroke, fill, col, lwd, lty, lend, ljoin, lmitre, pattern);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
-void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPolygon(int n, double *x, double *y, 
-                                             int fill, int col, double lwd, 
-                                             int lty, R_GE_lineend lend, 
-                                             R_GE_linejoin ljoin, 
+void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPolygon(int n, double *x, double *y,
+                                             int fill, int col, double lwd,
+                                             int lty, R_GE_lineend lend,
+                                             R_GE_linejoin ljoin,
                                              double lmitre, int pattern) {
   bool draw_fill = visibleColour(fill) || pattern != -1;
   bool draw_stroke = visibleColour(col) && lwd > 0.0 && lty != LTY_BLANK;
-  
+
   if (n < 2 || (!draw_fill && !draw_stroke)) return; // Early exit
-  
+
   lwd *= lwd_mod;
-  
+
   agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
   agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
@@ -1203,18 +1212,18 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPolygon(int n, double *x, double *
     poly.line_to(x[i] + x_trans, y[i] + y_trans);
   }
   poly.close_polygon();
-  
+
   drawShape(ras, ras_clip, poly, draw_fill, draw_stroke, fill, col, lwd, lty, lend, ljoin, lmitre, pattern);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
-void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawLine(double x1, double y1, double x2, 
-                                          double y2, int col, double lwd, 
+void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawLine(double x1, double y1, double x2,
+                                          double y2, int col, double lwd,
                                           int lty, R_GE_lineend lend) {
   if (!visibleColour(col) || lwd == 0.0 || lty == LTY_BLANK) return;
-  
+
   lwd *= lwd_mod;
-  
+
   agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
   agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
@@ -1222,20 +1231,20 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawLine(double x1, double y1, double 
   ps.remove_all();
   ps.move_to(x1 + x_trans, y1 + y_trans);
   ps.line_to(x2 + x_trans, y2 + y_trans);
-  
+
   drawShape(ras, ras_clip, ps, false, true, 0, col, lwd, lty, lend);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
-void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPolyline(int n, double* x, double* y, 
-                                              int col, double lwd, int lty, 
-                                              R_GE_lineend lend, 
-                                              R_GE_linejoin ljoin, 
+void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPolyline(int n, double* x, double* y,
+                                              int col, double lwd, int lty,
+                                              R_GE_lineend lend,
+                                              R_GE_linejoin ljoin,
                                               double lmitre) {
   if (!visibleColour(col) || lwd == 0.0 || lty == LTY_BLANK || n < 2) return;
-  
+
   lwd *= lwd_mod;
-  
+
   agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
   agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
@@ -1245,24 +1254,24 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPolyline(int n, double* x, double*
   for (int i = 1; i < n; i++) {
     ps.line_to(x[i]  + x_trans, y[i] + y_trans);
   }
-  
+
   drawShape(ras, ras_clip, ps, false, true, 0, col, lwd, lty, lend, ljoin, lmitre);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
-void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPath(int npoly, int* nper, double* x, 
-                                          double* y, int col, int fill, 
-                                          double lwd, int lty, 
-                                          R_GE_lineend lend, 
-                                          R_GE_linejoin ljoin, double lmitre, 
+void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPath(int npoly, int* nper, double* x,
+                                          double* y, int col, int fill,
+                                          double lwd, int lty,
+                                          R_GE_lineend lend,
+                                          R_GE_linejoin ljoin, double lmitre,
                                           bool evenodd, int pattern) {
   bool draw_fill = visibleColour(fill) || pattern != -1;
   bool draw_stroke = visibleColour(col) && lwd > 0.0 && lty != LTY_BLANK;
-  
+
   if (!draw_fill && !draw_stroke) return; // Early exit
-  
+
   lwd *= lwd_mod;
-  
+
   agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
   agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
@@ -1282,47 +1291,47 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawPath(int npoly, int* nper, double*
     };
     path.close_polygon();
   }
-  
+
   drawShape(ras, ras_clip, path, draw_fill, draw_stroke, fill, col, lwd, lty, lend, ljoin, lmitre, pattern, evenodd);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
-void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::renderPath(SEXP path, bool do_fill, bool do_stroke, 
-                                                     int col, int fill, 
-                                                     double lwd, int lty, 
-                                                     R_GE_lineend lend, 
-                                                     R_GE_linejoin ljoin, double lmitre, 
+void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::renderPath(SEXP path, bool do_fill, bool do_stroke,
+                                                     int col, int fill,
+                                                     double lwd, int lty,
+                                                     R_GE_lineend lend,
+                                                     R_GE_linejoin ljoin, double lmitre,
                                                      bool evenodd, int pattern) {
   bool draw_fill = do_fill && (visibleColour(fill) || pattern != -1);
   bool draw_stroke = do_stroke && (visibleColour(col) && lwd > 0.0 && lty != LTY_BLANK);
-  
+
   if (!draw_fill && !draw_stroke) return; // Early exit
-  
+
   lwd *= lwd_mod;
-  
+
   agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
   agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
   std::unique_ptr<agg::path_storage> recorded_path = recordPath(path);
-  
+
   drawShape(ras, ras_clip, *recorded_path, draw_fill, draw_stroke, fill, col, lwd, lty, lend, ljoin, lmitre, pattern, evenodd);
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
-void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRaster(unsigned int *raster, int w, int h, 
-                                            double x, double y, 
-                                            double final_width, 
-                                            double final_height, double rot, 
+void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRaster(unsigned int *raster, int w, int h,
+                                            double x, double y,
+                                            double final_width,
+                                            double final_height, double rot,
                                             bool interpolate) {
-  agg::rendering_buffer rbuf(reinterpret_cast<unsigned char*>(raster), w, h, 
+  agg::rendering_buffer rbuf(reinterpret_cast<unsigned char*>(raster), w, h,
                              w * 4);
-  
+
   x += x_trans;
   y += y_trans;
 
   double x_scale = final_width / double(w);
   double y_scale = final_height / double (h);
-  
+
   agg::trans_affine img_mtx;
   img_mtx *= agg::trans_affine_reflection(0);
   img_mtx *= agg::trans_affine_translation(0, h);
@@ -1331,10 +1340,10 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRaster(unsigned int *raster, int w
   img_mtx *= agg::trans_affine_translation(x, y);
   agg::trans_affine src_mtx = img_mtx;
   img_mtx.invert();
-  
+
   typedef agg::span_interpolator_linear<> interpolator_type;
   interpolator_type interpolator(img_mtx);
-  
+
   agg::rasterizer_scanline_aa<> ras(MAX_CELLS);
   ras.clip_box(clip_left, clip_top, clip_right, clip_bottom);
   agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
@@ -1344,7 +1353,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRaster(unsigned int *raster, int w
       ras_clip.filling_rule(agg::fill_even_odd);
     }
   }
-  
+
   agg::path_storage rect;
   rect.remove_all();
   rect.move_to(0, 0);
@@ -1354,7 +1363,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRaster(unsigned int *raster, int w
   rect.close_polygon();
   agg::conv_transform<agg::path_storage> tr(rect, src_mtx);
   ras.add_path(tr);
-  
+
   agg::scanline_u8 slu;
   if (recording_mask == NULL && recording_raster == NULL) {
     if (current_mask == NULL) {
@@ -1405,9 +1414,9 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawRaster(unsigned int *raster, int w
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
-void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawText(double x, double y, const char *str, 
-                                          const char *family, int face, 
-                                          double size, double rot, double hadj, 
+void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawText(double x, double y, const char *str,
+                                          const char *family, int face,
+                                          double size, double rot, double hadj,
                                           int col) {
 #if R_VERSION >= R_Version(4, 0, 0)
   if (face == 5) {
@@ -1415,18 +1424,18 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawText(double x, double y, const cha
     str = str2;
   }
 #endif
-  
+
   agg::glyph_rendering gren = std::fmod(rot, 90) == 0.0 && recording_path == NULL ? agg::glyph_ren_agg_gray8 : agg::glyph_ren_outline;
-  
+
   x += x_trans;
   y += y_trans;
-  
+
   size *= res_mod;
-  
+
   if (!t_ren.load_font(gren, family, face, size, device_id)) {
     return;
   }
-  
+
   agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
   if (current_clip != NULL) {
     ras_clip.add_path(*current_clip);
@@ -1434,7 +1443,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawText(double x, double y, const cha
       ras_clip.filling_rule(agg::fill_even_odd);
     }
   }
-  
+
   agg::scanline_u8 slu;
   if (recording_mask == NULL && recording_raster == NULL) {
     solid_renderer.color(convertColour(col));
@@ -1488,34 +1497,34 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawText(double x, double y, const cha
 }
 
 template<class PIXFMT, class R_COLOR, typename BLNDFMT>
-void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs, 
-                                                    double *x, double *y, 
+void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
+                                                    double *x, double *y,
                                                     SEXP font, double size,
                                                     int colour, double rot) {
   agg::glyph_rendering gren = std::fmod(rot, 90) == 0.0 && recording_path == NULL ? agg::glyph_ren_agg_gray8 : agg::glyph_ren_outline;
-  
+
   int i;
   for (i=0; i<n; i++) {
     *x += x_trans;
     *y += y_trans;
   }
-  
+
   size *= res_mod;
-  
+
   // Start by finding which family to pre-populate font feature settings
   FontSettings font_info;
-  
+
 #if R_GE_version >= 16
   strncpy(font_info.file, R_GE_glyphFontFile(font), PATH_MAX);
   font_info.index = R_GE_glyphFontIndex(font);
   font_info.features = NULL;
   font_info.n_features = 0;
 #endif
-  
+
   if (!t_ren.load_font_from_file(font_info, gren, size, device_id)) {
     return;
   }
-  
+
   agg::rasterizer_scanline_aa<> ras_clip(MAX_CELLS);
   if (current_clip != NULL) {
     ras_clip.add_path(*current_clip);
@@ -1523,7 +1532,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
       ras_clip.filling_rule(agg::fill_even_odd);
     }
   }
-  
+
   agg::scanline_u8 slu;
   if (recording_mask == NULL && recording_raster == NULL) {
     solid_renderer.color(convertColour(colour));

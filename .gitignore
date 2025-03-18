@@ -16,3 +16,5 @@ docs/
 configure.log
 autobrew
 .vscode/*
+compile_commands.json
+.cache
