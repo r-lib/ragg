@@ -201,6 +201,15 @@ SEXP agg_capture(pDevDesc dd) {
 }
 
 template<class T>
+int agg_holdflush(pDevDesc dd, int level) {
+  T * device = (T *) dd->deviceSpecific;
+
+  BEGIN_CPP
+  return device->hold_flush(level);
+  END_CPP
+}
+
+template<class T>
 SEXP agg_setPattern(SEXP pattern, pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
 
@@ -460,6 +469,7 @@ pDevDesc agg_device_new(T* device, bool record = FALSE) {
   } else {
     dd->cap = NULL;
   }
+  dd->holdflush = agg_holdflush<T>;
   dd->raster = agg_raster<T>;
 #if R_GE_version >= 13
   dd->setPattern      = agg_setPattern<T>;
@@ -538,7 +548,7 @@ void makeDevice(T* device, const char *name, bool record = false) {
     pDevDesc dev = agg_device_new<T>(device, record);
     if (dev == NULL)
       Rf_error("agg device failed to open");
-    
+
     pGEDevDesc dd = GEcreateDevDesc(dev);
     GEaddDevice2(dd, name);
     GEinitDisplayList(dd);

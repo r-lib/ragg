@@ -1,6 +1,7 @@
 # ragg (development version)
 
 * Added `agg_record()` for optimised plot recording
+* Added support for hold and flushing, mainly in service of Positron
 
 # ragg 1.3.3
 
