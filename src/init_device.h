@@ -469,6 +469,7 @@ pDevDesc agg_device_new(T* device, bool record = FALSE) {
   } else {
     dd->cap = NULL;
   }
+  dd->haveCapture = (dd->cap) ? 2 : 1;
   dd->holdflush = agg_holdflush<T>;
   dd->raster = agg_raster<T>;
 #if R_GE_version >= 13
@@ -527,7 +528,8 @@ pDevDesc agg_device_new(T* device, bool record = FALSE) {
   dd->canChangeGamma = FALSE;
   dd->displayListOn = (Rboolean) record;
   dd->haveTransparency = 2;
-  dd->haveTransparentBg = 2;
+  dd->haveRaster = 2;
+  dd->haveTransparentBg = 3; /* background can be semi-transparent */
   dd->useRotatedTextInContour =  (Rboolean) 1;
 
 #if R_GE_version >= 13
@@ -549,6 +551,10 @@ void makeDevice(T* device, const char *name, bool record = false) {
     if (dev == NULL)
       Rf_error("agg device failed to open");
 
+    /* jpeg and ppm formats don't support (semi-)transparent pixels */
+    if (strcmp(name, "agg_jpeg") == 0 || strcmp(name, "agg_ppm") == 0)
+        dev->haveTransparentBg = 1;
+    
     pGEDevDesc dd = GEcreateDevDesc(dev);
     GEaddDevice2(dd, name);
     GEinitDisplayList(dd);
