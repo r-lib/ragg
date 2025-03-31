@@ -36,7 +36,7 @@ namespace agg
         //--------------------------------------------------------------------
         dda_line_interpolator(int y1, int y2, unsigned count) :
             m_y(y1),
-            m_inc(((y2 - y1) << FractionShift) / int(count)),
+            m_inc((sd_min(y2 - y1, 0) << FractionShift) / int(count)),
             m_dy(0)
         {
         }
