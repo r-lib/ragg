@@ -32,3 +32,4 @@ reference:
     - agg_tiff
     - agg_capture
     - agg_ppm
+    - agg_record
