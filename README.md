@@ -107,6 +107,7 @@ in general options (see screenshot)
 
 <img src="https://i.imgur.com/4XgiPWy.png" alt="A screenshot showing the RStudio Global Options window with focus on the General pane and the Graphics tab. Here it shows AGG is selected as Backend in order to tell RStudio to use ragg" width="100%" />
 <p class="caption">
+
 Setting ragg as backend in RStudio
 </p>
 
