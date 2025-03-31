@@ -2,6 +2,7 @@
 
 * Added `agg_record()` for optimised plot recording
 * Added support for hold and flushing, mainly in service of Positron
+* Added support for `saturate` composition operator
 
 # ragg 1.3.3
 
