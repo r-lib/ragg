@@ -387,7 +387,7 @@ SEXP agg_capabilities(SEXP capabilities) {
   UNPROTECT(1);
 
   // Group composition
-  SEXP compositing = PROTECT(Rf_allocVector(INTSXP, 24));
+  SEXP compositing = PROTECT(Rf_allocVector(INTSXP, 25));
   INTEGER(compositing)[13] = R_GE_compositeOver;
   INTEGER(compositing)[11] = R_GE_compositeClear;
   INTEGER(compositing)[0] = R_GE_compositeMultiply;
@@ -412,6 +412,7 @@ SEXP agg_capabilities(SEXP capabilities) {
   INTEGER(compositing)[21] = R_GE_compositeDestAtop;
   INTEGER(compositing)[22] = R_GE_compositeXor;
   INTEGER(compositing)[23] = R_GE_compositeAdd;
+  INTEGER(compositing)[24] = R_GE_compositeSaturate;
   SET_VECTOR_ELT(capabilities, R_GE_capability_compositing, compositing);
   UNPROTECT(1);
 
@@ -554,7 +555,7 @@ void makeDevice(T* device, const char *name, bool record = false) {
     /* jpeg and ppm formats don't support (semi-)transparent pixels */
     if (strcmp(name, "agg_jpeg") == 0 || strcmp(name, "agg_ppm") == 0)
         dev->haveTransparentBg = 1;
-    
+
     pGEDevDesc dd = GEcreateDevDesc(dev);
     GEaddDevice2(dd, name);
     GEinitDisplayList(dd);

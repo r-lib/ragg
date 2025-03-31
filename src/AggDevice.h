@@ -242,7 +242,7 @@ protected:
     case R_GE_compositeDestAtop: comp_op = agg::comp_op_dst_atop; break;
     case R_GE_compositeXor: comp_op = agg::comp_op_xor; break;
     case R_GE_compositeAdd: comp_op = agg::comp_op_plus; break;
-    case R_GE_compositeSaturate: Rf_warning("`saturate` blending is not supported in ragg"); break;
+    case R_GE_compositeSaturate: comp_op = agg::comp_op_saturate; break;
     case R_GE_compositeMultiply: comp_op = agg::comp_op_multiply; break;
     case R_GE_compositeScreen: comp_op = agg::comp_op_screen; break;
     case R_GE_compositeOverlay: comp_op = agg::comp_op_overlay; break;

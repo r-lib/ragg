@@ -1032,6 +1032,34 @@ namespace agg
         }
     };
 
+    //=====================================================comp_op_rgba_saturate
+    template<class ColorT, class Order>
+    struct comp_op_rgba_saturate : blender_base<ColorT, Order>
+    {
+        typedef ColorT color_type;
+        typedef typename color_type::value_type value_type;
+        using blender_base<ColorT, Order>::get;
+        using blender_base<ColorT, Order>::set;
+
+        // Dca' = (min(Sa, 1 − Da).Sca + Dca.Da)/Da'
+        // Da'  = min(1, Sa + Da)
+        static AGG_INLINE void blend_pix(value_type* p,
+            value_type r, value_type g, value_type b, value_type a, cover_type cover)
+        {
+            rgba s = get(r, g, b, a, cover);
+            if (s.a > 0)
+            {
+                rgba d = get(p);
+                double mod = sd_min(s.a, 1.0 - d.a) / s.a;
+                d.a = sd_min(s.a + d.a, 1.0);
+                d.r += mod * s.r;
+                d.g += mod * s.g;
+                d.b += mod * s.b;
+                set(p, clip(d));
+            }
+        }
+    };
+
 #if 0
     //=====================================================comp_op_rgba_contrast
     template<class ColorT, class Order> struct comp_op_rgba_contrast
@@ -1204,6 +1232,7 @@ namespace agg
         comp_op_rgba_soft_light <ColorT,Order>::blend_pix,
         comp_op_rgba_difference <ColorT,Order>::blend_pix,
         comp_op_rgba_exclusion  <ColorT,Order>::blend_pix,
+        comp_op_rgba_saturate   <ColorT,Order>::blend_pix,
         //comp_op_rgba_contrast   <ColorT,Order>::blend_pix,
         //comp_op_rgba_invert     <ColorT,Order>::blend_pix,
         //comp_op_rgba_invert_rgb <ColorT,Order>::blend_pix,
@@ -1239,6 +1268,7 @@ namespace agg
         comp_op_soft_light,    //----comp_op_soft_light
         comp_op_difference,    //----comp_op_difference
         comp_op_exclusion,     //----comp_op_exclusion
+        comp_op_saturate,     //----comp_op_exclusion
         //comp_op_contrast,      //----comp_op_contrast
         //comp_op_invert,        //----comp_op_invert
         //comp_op_invert_rgb,    //----comp_op_invert_rgb
