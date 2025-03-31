@@ -55,7 +55,7 @@ SEXP agg_tiff_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
         INTEGER(compression)[0],
         INTEGER(encoding)[0]
       );
-      makeDevice<AggDeviceTiff16NoAlpha>(device, "agg_png");
+      makeDevice<AggDeviceTiff16NoAlpha>(device, "agg_tiff");
     } else {
       AggDeviceTiff16Alpha* device = new AggDeviceTiff16Alpha(
         Rf_translateCharUTF8((STRING_ELT(file, 0))), 
@@ -69,7 +69,7 @@ SEXP agg_tiff_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
         INTEGER(compression)[0],
         INTEGER(encoding)[0]
       );
-      makeDevice<AggDeviceTiff16Alpha>(device, "agg_png");
+      makeDevice<AggDeviceTiff16Alpha>(device, "agg_tiff");
     }
   }
   END_CPP
