@@ -19,7 +19,7 @@ get_dims <- function(width, height, units, res) {
   max_dim <- getOption('ragg.max_dim', 5e4)
   if (any(dims > max_dim)) {
     stop(
-      'One or both dimensions exceed the maximum (', max_dim, 'px).\n', 
+      'One or both dimensions exceed the maximum (', max_dim, 'px).\n',
       '- Use `options(ragg.max_dim = ...)` to change the max\n',
       '  Warning: May cause the R session to crash',
       call. = FALSE
@@ -34,7 +34,11 @@ validate_path <- function(path) {
     dir.create(dir, recursive = TRUE)
   }
   dir <- normalizePath(dir)
-  file.path(dir, basename(path))
+  path <- file.path(dir, basename(path))
+  if (grepl("(?<!%)%(?!%)(?![#0 ,+-]*[0-9.]*[diouxX])", path, perl = TRUE)) {
+    stop("Invalid path. Only use C-style formatting intended for numbers (%d, %i, %o, %u, %x, %X)")
+  }
+  path
 }
 
 #' @importFrom systemfonts register_font
