@@ -5,6 +5,10 @@
 #include "AggDevice16.h"
 #include "files.h"
 
+#ifdef _WIN32
+#include <io.h>
+#endif
+
 #include <cstdio>
 #include <tiffio.h>
 
