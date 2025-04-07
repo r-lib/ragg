@@ -4,6 +4,7 @@
 * Added support for hold and flushing, mainly in service of Positron
 * Added support for `saturate` composition operator
 * Sanitise file name before plotting (#176)
+* Tiff files can now include unicode characters on all platforms (#87)
 
 # ragg 1.3.3
 
