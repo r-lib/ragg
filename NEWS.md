@@ -1,3 +1,5 @@
+# ragg (development version)
+
 # ragg 1.4.0
 
 * Added `agg_record()` for optimised plot recording
