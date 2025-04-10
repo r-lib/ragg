@@ -63,7 +63,8 @@ rec <- recordPlot()
 dev.off()
 
 # Replay these on another device
-agg_png()
+file <- tempfile(fileext = '.png')
+agg_png(file)
 replayPlot(rec)
 dev.off()
 
