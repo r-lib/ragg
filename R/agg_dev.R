@@ -39,19 +39,40 @@
 #' plot(sin, -pi, 2*pi)
 #' dev.off()
 #'
-agg_ppm <- function(filename = 'Rplot%03d.ppm', width = 480, height = 480,
-                    units = 'px', pointsize = 12, background = 'white',
-                    res = 72, scaling = 1, snap_rect = TRUE, bg) {
-  if (environmentName(parent.env(parent.frame())) == "knitr" &&
-      deparse(sys.call(), nlines = 1, width.cutoff = 500) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
+agg_ppm <- function(
+  filename = 'Rplot%03d.ppm',
+  width = 480,
+  height = 480,
+  units = 'px',
+  pointsize = 12,
+  background = 'white',
+  res = 72,
+  scaling = 1,
+  snap_rect = TRUE,
+  bg
+) {
+  if (
+    environmentName(parent.env(parent.frame())) == "knitr" &&
+      deparse(sys.call(), nlines = 1, width.cutoff = 500) ==
+        'dev(filename = filename, width = dim[1], height = dim[2], ...)'
+  ) {
     units <- 'in'
   }
   file <- validate_path(filename)
   dim <- get_dims(width, height, units, res)
   background <- if (missing(bg)) background else bg
-  .Call("agg_ppm_c", file, dim[1], dim[2], as.numeric(pointsize), background,
-        as.numeric(res), as.numeric(scaling), as.logical(snap_rect),
-        PACKAGE = 'ragg')
+  .Call(
+    "agg_ppm_c",
+    file,
+    dim[1],
+    dim[2],
+    as.numeric(pointsize),
+    background,
+    as.numeric(res),
+    as.numeric(scaling),
+    as.logical(snap_rect),
+    PACKAGE = 'ragg'
+  )
   invisible()
 }
 
@@ -80,11 +101,24 @@ agg_ppm <- function(filename = 'Rplot%03d.ppm', width = 480, height = 480,
 #' plot(sin, -pi, 2*pi)
 #' dev.off()
 #'
-agg_png <- function(filename = 'Rplot%03d.png', width = 480, height = 480,
-                    units = 'px', pointsize = 12, background = 'white',
-                    res = 72, scaling = 1, snap_rect = TRUE, bitsize = 8, bg) {
-  if (environmentName(parent.env(parent.frame())) == "knitr" &&
-      deparse(sys.call(), nlines = 1, width.cutoff = 500) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
+agg_png <- function(
+  filename = 'Rplot%03d.png',
+  width = 480,
+  height = 480,
+  units = 'px',
+  pointsize = 12,
+  background = 'white',
+  res = 72,
+  scaling = 1,
+  snap_rect = TRUE,
+  bitsize = 8,
+  bg
+) {
+  if (
+    environmentName(parent.env(parent.frame())) == "knitr" &&
+      deparse(sys.call(), nlines = 1, width.cutoff = 500) ==
+        'dev(filename = filename, width = dim[1], height = dim[2], ...)'
+  ) {
     units <- 'in'
   }
   file <- validate_path(filename)
@@ -93,9 +127,19 @@ agg_png <- function(filename = 'Rplot%03d.png', width = 480, height = 480,
   }
   dim <- get_dims(width, height, units, res)
   background <- if (missing(bg)) background else bg
-  .Call("agg_png_c", file, dim[1], dim[2], as.numeric(pointsize), background,
-        as.numeric(res), as.numeric(scaling), as.logical(snap_rect),
-        as.integer(bitsize), PACKAGE = 'ragg')
+  .Call(
+    "agg_png_c",
+    file,
+    dim[1],
+    dim[2],
+    as.numeric(pointsize),
+    background,
+    as.numeric(res),
+    as.numeric(scaling),
+    as.logical(snap_rect),
+    as.integer(bitsize),
+    PACKAGE = 'ragg'
+  )
   invisible()
 }
 #' Draw to a TIFF file
@@ -134,12 +178,25 @@ agg_png <- function(filename = 'Rplot%03d.png', width = 480, height = 480,
 #' plot(sin, -pi, 2*pi)
 #' dev.off()
 #'
-agg_tiff <- function(filename = 'Rplot%03d.tiff', width = 480, height = 480,
-                    units = 'px', pointsize = 12, background = 'white',
-                    res = 72, scaling = 1, snap_rect = TRUE,
-                    compression = 'none', bitsize = 8, bg) {
-  if (environmentName(parent.env(parent.frame())) == "knitr" &&
-      deparse(sys.call(), nlines = 1, width.cutoff = 500) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
+agg_tiff <- function(
+  filename = 'Rplot%03d.tiff',
+  width = 480,
+  height = 480,
+  units = 'px',
+  pointsize = 12,
+  background = 'white',
+  res = 72,
+  scaling = 1,
+  snap_rect = TRUE,
+  compression = 'none',
+  bitsize = 8,
+  bg
+) {
+  if (
+    environmentName(parent.env(parent.frame())) == "knitr" &&
+      deparse(sys.call(), nlines = 1, width.cutoff = 500) ==
+        'dev(filename = filename, width = dim[1], height = dim[2], ...)'
+  ) {
     units <- 'in'
   }
   file <- validate_path(filename)
@@ -159,9 +216,21 @@ agg_tiff <- function(filename = 'Rplot%03d.tiff', width = 480, height = 480,
   }
   dim <- get_dims(width, height, units, res)
   background <- if (missing(bg)) background else bg
-  .Call("agg_tiff_c", file, dim[1], dim[2], as.numeric(pointsize), background,
-        as.numeric(res), as.numeric(scaling), as.logical(snap_rect),
-        as.integer(bitsize), compression, encoding, PACKAGE = 'ragg')
+  .Call(
+    "agg_tiff_c",
+    file,
+    dim[1],
+    dim[2],
+    as.numeric(pointsize),
+    background,
+    as.numeric(res),
+    as.numeric(scaling),
+    as.logical(snap_rect),
+    as.integer(bitsize),
+    compression,
+    encoding,
+    PACKAGE = 'ragg'
+  )
   invisible()
 }
 #' Draw to a JPEG file
@@ -199,12 +268,26 @@ agg_tiff <- function(filename = 'Rplot%03d.tiff', width = 480, height = 480,
 #' plot(sin, -pi, 2*pi)
 #' dev.off()
 #'
-agg_jpeg <- function(filename = 'Rplot%03d.jpeg', width = 480, height = 480,
-                     units = 'px', pointsize = 12, background = 'white',
-                     res = 72, scaling = 1, snap_rect = TRUE, quality = 75,
-                     smoothing = FALSE, method = 'slow', bg) {
-  if (environmentName(parent.env(parent.frame())) == "knitr" &&
-      deparse(sys.call(), nlines = 1, width.cutoff = 500) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
+agg_jpeg <- function(
+  filename = 'Rplot%03d.jpeg',
+  width = 480,
+  height = 480,
+  units = 'px',
+  pointsize = 12,
+  background = 'white',
+  res = 72,
+  scaling = 1,
+  snap_rect = TRUE,
+  quality = 75,
+  smoothing = FALSE,
+  method = 'slow',
+  bg
+) {
+  if (
+    environmentName(parent.env(parent.frame())) == "knitr" &&
+      deparse(sys.call(), nlines = 1, width.cutoff = 500) ==
+        'dev(filename = filename, width = dim[1], height = dim[2], ...)'
+  ) {
     units <- 'in'
   }
   file <- validate_path(filename)
@@ -215,9 +298,21 @@ agg_jpeg <- function(filename = 'Rplot%03d.jpeg', width = 480, height = 480,
   method <- match(method, c('slow', 'fast', 'float')) - 1L
   dim <- get_dims(width, height, units, res)
   background <- if (missing(bg)) background else bg
-  .Call("agg_jpeg_c", file, dim[1], dim[2], as.numeric(pointsize), background,
-        as.numeric(res), as.numeric(scaling), as.logical(snap_rect),
-        as.integer(quality), as.integer(smoothing), method, PACKAGE = 'ragg')
+  .Call(
+    "agg_jpeg_c",
+    file,
+    dim[1],
+    dim[2],
+    as.numeric(pointsize),
+    background,
+    as.numeric(res),
+    as.numeric(scaling),
+    as.logical(snap_rect),
+    as.integer(quality),
+    as.integer(smoothing),
+    method,
+    PACKAGE = 'ragg'
+  )
   invisible()
 }
 #' Draw to a PNG file, modifying transparency on the fly
@@ -239,20 +334,42 @@ agg_jpeg <- function(filename = 'Rplot%03d.jpeg', width = 480, height = 480,
 #' @export
 #' @keywords internal
 #'
-agg_supertransparent <- function(filename = 'Rplot%03d.png', width = 480,
-                                 height = 480, units = 'px', pointsize = 12,
-                                 background = 'white', res = 72, scaling = 1,
-                                 snap_rect = TRUE, alpha_mod = 1, bg) {
-  if (environmentName(parent.env(parent.frame())) == "knitr" &&
-      deparse(sys.call(), nlines = 1, width.cutoff = 500) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
+agg_supertransparent <- function(
+  filename = 'Rplot%03d.png',
+  width = 480,
+  height = 480,
+  units = 'px',
+  pointsize = 12,
+  background = 'white',
+  res = 72,
+  scaling = 1,
+  snap_rect = TRUE,
+  alpha_mod = 1,
+  bg
+) {
+  if (
+    environmentName(parent.env(parent.frame())) == "knitr" &&
+      deparse(sys.call(), nlines = 1, width.cutoff = 500) ==
+        'dev(filename = filename, width = dim[1], height = dim[2], ...)'
+  ) {
     units <- 'in'
   }
   file <- validate_path(filename)
   dim <- get_dims(width, height, units, res)
   background <- if (missing(bg)) background else bg
-  .Call("agg_supertransparent_c", file, dim[1], dim[2], as.numeric(pointsize),
-        background, as.numeric(res), as.numeric(scaling), as.logical(snap_rect),
-        as.double(alpha_mod), PACKAGE = 'ragg')
+  .Call(
+    "agg_supertransparent_c",
+    file,
+    dim[1],
+    dim[2],
+    as.numeric(pointsize),
+    background,
+    as.numeric(res),
+    as.numeric(scaling),
+    as.logical(snap_rect),
+    as.double(alpha_mod),
+    PACKAGE = 'ragg'
+  )
   invisible()
 }
 
@@ -290,19 +407,39 @@ agg_supertransparent <- function(filename = 'Rplot%03d.png', width = 480,
 #' # Look at the output
 #' plot(as.raster(raster))
 #'
-agg_capture <- function(width = 480, height = 480, units = 'px', pointsize = 12,
-                        background = 'white', res = 72, scaling = 1,
-                        snap_rect = TRUE, bg) {
-  if (environmentName(parent.env(parent.frame())) == "knitr" &&
-      deparse(sys.call(), nlines = 1, width.cutoff = 500) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
+agg_capture <- function(
+  width = 480,
+  height = 480,
+  units = 'px',
+  pointsize = 12,
+  background = 'white',
+  res = 72,
+  scaling = 1,
+  snap_rect = TRUE,
+  bg
+) {
+  if (
+    environmentName(parent.env(parent.frame())) == "knitr" &&
+      deparse(sys.call(), nlines = 1, width.cutoff = 500) ==
+        'dev(filename = filename, width = dim[1], height = dim[2], ...)'
+  ) {
     units <- 'in'
   }
   dim <- get_dims(width, height, units, res)
   background <- if (missing(bg)) background else bg
   name <- paste0('agg_capture_', sample(.Machine$integer.max, 1))
-  .Call("agg_capture_c", name, dim[1], dim[2], as.numeric(pointsize),
-        background, as.numeric(res), as.numeric(scaling), as.logical(snap_rect),
-        PACKAGE = 'ragg')
+  .Call(
+    "agg_capture_c",
+    name,
+    dim[1],
+    dim[2],
+    as.numeric(pointsize),
+    background,
+    as.numeric(res),
+    as.numeric(scaling),
+    as.logical(snap_rect),
+    PACKAGE = 'ragg'
+  )
   cap <- function(native = FALSE) {
     current_dev = dev.cur()
     if (names(current_dev)[1] == name) {
@@ -347,18 +484,38 @@ agg_capture <- function(width = 480, height = 480, units = 'px', pointsize = 12,
 #' replayPlot(rec)
 #' dev.off()
 #'
-agg_record <- function(width = 480, height = 480, units = 'px', pointsize = 12,
-                       background = 'white', res = 72, scaling = 1,
-                       snap_rect = TRUE, bg) {
-  if (environmentName(parent.env(parent.frame())) == "knitr" &&
-      deparse(sys.call(), nlines = 1, width.cutoff = 500) == 'dev(filename = filename, width = dim[1], height = dim[2], ...)') {
+agg_record <- function(
+  width = 480,
+  height = 480,
+  units = 'px',
+  pointsize = 12,
+  background = 'white',
+  res = 72,
+  scaling = 1,
+  snap_rect = TRUE,
+  bg
+) {
+  if (
+    environmentName(parent.env(parent.frame())) == "knitr" &&
+      deparse(sys.call(), nlines = 1, width.cutoff = 500) ==
+        'dev(filename = filename, width = dim[1], height = dim[2], ...)'
+  ) {
     units <- 'in'
   }
   dim <- get_dims(width, height, units, res)
   background <- if (missing(bg)) background else bg
   name <- paste0('agg_record_', sample(.Machine$integer.max, 1))
-  .Call("agg_record_c", name, dim[1], dim[2], as.numeric(pointsize),
-        background, as.numeric(res), as.numeric(scaling), as.logical(snap_rect),
-        PACKAGE = 'ragg')
+  .Call(
+    "agg_record_c",
+    name,
+    dim[1],
+    dim[2],
+    as.numeric(pointsize),
+    background,
+    as.numeric(res),
+    as.numeric(scaling),
+    as.logical(snap_rect),
+    PACKAGE = 'ragg'
+  )
   invisible()
 }
