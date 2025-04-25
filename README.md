@@ -12,6 +12,8 @@ coverage](https://codecov.io/gh/r-lib/ragg/branch/main/graph/badge.svg)](https:/
 status](https://www.r-pkg.org/badges/version/ragg)](https://cran.r-project.org/package=ragg)
 [![Lifecycle:
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![Codecov test
+coverage](https://codecov.io/gh/r-lib/ragg/graph/badge.svg)](https://app.codecov.io/gh/r-lib/ragg)
 <!-- badges: end -->
 
 This package provides graphic devices for R based on the AGG library
