@@ -13,7 +13,8 @@ Authors@R: c(
            comment = "Contributor to AGG"),
     person("Spencer", "Garrett", role = "ctb",
            comment = "Contributor to AGG"),
-    person("Posit, PBC", role = c("cph", "fnd"))
+    person("Posit Software, PBC", role = c("cph", "fnd"),
+           comment = c(ROR = "03wc8by49"))
   )
 Maintainer: Thomas Lin Pedersen <thomas.pedersen@posit.co>
 Description: Anti-Grain Geometry (AGG) is a high-quality and
@@ -23,23 +24,23 @@ Description: Anti-Grain Geometry (AGG) is a high-quality and
 License: MIT + file LICENSE
 URL: https://ragg.r-lib.org, https://github.com/r-lib/ragg
 BugReports: https://github.com/r-lib/ragg/issues
-Imports: 
+Imports:
     systemfonts (>= 1.0.3),
     textshaping (>= 0.3.0)
-Suggests: 
+Suggests:
     covr,
     graphics,
     grid,
     testthat (>= 3.0.0)
-LinkingTo: 
+LinkingTo:
     systemfonts,
     textshaping
+Config/build/compilation-database: true
 Config/Needs/website: ggplot2, devoid, magick, bench, tidyr, ggridges,
     hexbin, sessioninfo, pkgdown, tidyverse/tidytemplate
+Config/testthat/edition: 3
+Config/usethis/last-upkeep: 2025-04-25
 Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 SystemRequirements: freetype2, libpng, libtiff, libjpeg
-Config/testthat/edition: 3
-Roxygen: list(markdown = TRUE)
-Config/build/compilation-database: true
-Config/usethis/last-upkeep: 2025-04-25
