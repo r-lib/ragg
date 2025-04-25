@@ -7,7 +7,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r}
+#| include: false
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -17,7 +18,9 @@ options(knitr.graphics.rel_path = FALSE)
 has_xlib <- capabilities()['X11']
 ```
 
-```{r setup, message=FALSE}
+```{r}
+#| label: setup
+#| message: false
 library(ragg)
 library(devoid)
 library(ggplot2)
@@ -40,7 +43,8 @@ On Mac installation the `png()` function also offers (and defaults to) a quartz
 backend. As this is not available on all systems it will not be included here. 
 Local tests have shown it to be about as performant or slightly below ragg.
 
-```{asis, echo=!has_xlib}
+```{asis}
+#| echo: !expr '!has_xlib'
 >The present version of this vignette has been compiled on a system without the 
 X11 device. The benchmarkings will thus omit this device, though the text will 
 still refer to it.
@@ -55,7 +59,8 @@ also where performance differences between e.g. png and tiff will come from. As
 both ragg and grDevices use the same underlying libraries to write to png files
 (libpng) it is not expected that there is much difference.
 
-```{r, message=FALSE}
+```{r}
+#| message: false
 file <- tempfile(fileext = '.png')
 res <- bench::mark(
   ragg = {agg_png(file); plot.new(); dev.off()},
@@ -94,7 +99,8 @@ with subpixel antialiasing. Below is an attempt to benchmark each of the device
 methods by constructing as direct as possible calls to each of them. Remember, `void_dev()`
 provides the baseline.
 
-```{r, message=FALSE}
+```{r}
+#| message: false
 render_bench <- function(dev_f, ...) {
   dots <- rlang::enexprs(...)
   force(dev_f)
@@ -144,7 +150,9 @@ scatter plots as the default point type. It is thus of high importance that
 circle drawing is as performant as possible, as it may get called thousands of 
 times during the creation of a plot.
 
-```{r, warning=FALSE, message=FALSE}
+```{r}
+#| warning: false
+#| message: false
 x <- runif(1000)
 y <- runif(1000)
 pch <- 1
@@ -157,7 +165,8 @@ res <- all_render_bench(points(x, y, pch = pch))
 plot_bench(res, 'Unfilled circle performance', b)
 ```
 
-```{r, message=FALSE}
+```{r}
+#| message: false
 pch <- 19
 
 void_dev()
@@ -179,7 +188,8 @@ Lines are another fundamental part. They can be used to draw single line segment
 directly and are also the workhorse for some of the different symbol types, e.g.
 `pch = 4`, which we will use here.
 
-```{r, message=FALSE}
+```{r}
+#| message: false
 pch <- 4
 
 void_dev()
@@ -199,7 +209,8 @@ lines given that the operations are quite similar. We will also test different l
 patterns here to assess whether there are any differences in the efficency with which
 patterns are generated.
 
-```{r, message=FALSE}
+```{r}
+#| message: false
 void_dev()
 plot.new()
 b <- system.time(lines(x, y))
@@ -208,7 +219,8 @@ res <- all_render_bench(lines(x, y))
 plot_bench(res, 'Connected line performance', b)
 ```
 
-```{r, message=FALSE}
+```{r}
+#| message: false
 void_dev()
 plot.new()
 b <- system.time(lines(x, y, lty = 4))
@@ -227,7 +239,8 @@ cost of quality).
 Rectangle is another graphic primitive that has its own method. Again, it is 
 used when plotting certain types of points, and this is how we'll test it:
 
-```{r, message=FALSE}
+```{r}
+#| message: false
 pch <- 0
 
 void_dev()
@@ -238,7 +251,8 @@ res <- all_render_bench(points(x, y, pch = pch))
 plot_bench(res, 'Unfilled rectangle performance', b)
 ```
 
-```{r, message=FALSE}
+```{r}
+#| message: false
 pch <- 15
 
 void_dev()
@@ -259,7 +273,8 @@ While certain optimisations may be possible for e.g. rectanges, the polygon
 method of a device needs to handle all cases. It is used in points for e.g. 
 triangles, but we will also test performance for bigger, more complex polygons.
 
-```{r, message=FALSE}
+```{r}
+#| message: false
 pch <- 2
 
 void_dev()
@@ -270,7 +285,8 @@ res <- all_render_bench(points(x, y, pch = pch))
 plot_bench(res, 'Simple polygon performance', b)
 ```
 
-```{r, message=FALSE}
+```{r}
+#| message: false
 void_dev()
 plot.new()
 b <- system.time(polygon(x, y))
@@ -279,7 +295,8 @@ res <- all_render_bench(polygon(x, y))
 plot_bench(res, 'Unfilled complex polygon performance', b)
 ```
 
-```{r, message=FALSE}
+```{r}
+#| message: false
 void_dev()
 plot.new()
 b <- system.time(polygon(x, y, border = 'gray', col = 'black'))
@@ -301,7 +318,8 @@ implemented in the same way as polygon rendering (the polygon method being a
 special case of the path method), but how the other devices implement it is not
 something I know.
 
-```{r, message=FALSE}
+```{r}
+#| message: false
 section <- rep(1:10, each = 100)
 x_path <- unlist(lapply(split(x, section), function(x) c(x, NA)))
 y_path <- unlist(lapply(split(y, section), function(x) c(x, NA)))
@@ -317,7 +335,8 @@ res <- all_render_bench(polypath(x_path, y_path, rule = 'evenodd'),
 plot_bench(res, 'Unfilled path performance', b)
 ```
 
-```{r, message=FALSE}
+```{r}
+#| message: false
 void_dev()
 plot.new()
 b <- system.time(polypath(x_path, y_path, rule = 'evenodd', border = 'gray', 
@@ -341,7 +360,8 @@ we look at do. Raster images can be rotated, and they can  be interpolated or
 not during scaling. How interpolation happens is device specific, so there's a 
 lot of room for quality differences which we will not look at here.
 
-```{r, message=FALSE}
+```{r}
+#| message: false
 raster <- matrix(hcl(0, 80, seq(50, 80, 10)), nrow = 4, ncol = 5)
 
 void_dev()
@@ -355,7 +375,8 @@ res <- all_render_bench(rasterImage(raster, xleft = 0.25, ybottom = 0.25,
 plot_bench(res, 'Non-interpolated, non-rotated raster performance', b)
 ```
 
-```{r, message=FALSE}
+```{r}
+#| message: false
 void_dev()
 plot.new()
 b <- system.time(rasterImage(raster, xleft = rep(0.25, 100), ybottom = 0.25, 
@@ -368,7 +389,8 @@ res <- all_render_bench(rasterImage(raster, xleft = 0.25, ybottom = 0.25,
 plot_bench(res, 'Non-interpolated, rotated raster performance', b)
 ```
 
-```{r, message=FALSE}
+```{r}
+#| message: false
 void_dev()
 plot.new()
 b <- system.time(rasterImage(raster, xleft = rep(0.25, 100), ybottom = 0.25, 
@@ -380,7 +402,8 @@ res <- all_render_bench(rasterImage(raster, xleft = 0.25, ybottom = 0.25,
 plot_bench(res, 'Interpolated, non-rotated raster performance', b)
 ```
 
-```{r, message=FALSE}
+```{r}
+#| message: false
 void_dev()
 plot.new()
 b <- system.time(rasterImage(raster, xleft = rep(0.25, 100), ybottom = 0.25, 
@@ -406,7 +429,8 @@ native devices to find system fonts, thus having to rely on e.g. the extrafont
 or showtext packages for that. Anyway, again we only look at performance in this
 document.
 
-```{r, message=FALSE}
+```{r}
+#| message: false
 pch <- "#"
 
 void_dev()
@@ -417,7 +441,8 @@ res <- all_render_bench(points(x, y, pch = pch))
 plot_bench(res, 'Single character performance', b)
 ```
 
-```{r, message=FALSE}
+```{r}
+#| message: false
 void_dev()
 plot.new()
 b <- system.time(text(x, y, label = 'abcdefghijk'))
@@ -438,7 +463,9 @@ devices safe for a few areas. The last benchmark will tie it all together in a
 more complete graphic made using ggplot2 (don't worry about the quality of the
 graphic — we are simply piling on layers of stuff):
 
-```{r, fig.height=5, message=FALSE}
+```{r}
+#| message: false
+#| fig-height: 5
 p <- ggplot(diamonds, aes(carat, price)) + 
   geom_hex() + 
   geom_point(shape = 1, size = 0.05, colour = 'white') + 
@@ -452,7 +479,9 @@ p
 
 We will prebuild the plot so mainly rendering will be measured
 
-```{r, message=FALSE, warning=FALSE}
+```{r}
+#| message: false
+#| warning: false
 p <- ggplotGrob(p)
 void_dev()
 b <- system.time(plot(p))
@@ -507,7 +536,9 @@ Clipping paths allows you to define an arbitrary clipping region based on any
 complex grob you may define. Passing this grob to the clip argument of the 
 viewport will use the grob as a clipping region.
 
-```{r, message=FALSE, eval=getRversion() >= "4.1.0"}
+```{r}
+#| message: false
+#| eval: !expr getRversion() >= "4.1.0"
 library(grid)
 clip <- pointsGrob(runif(500), runif(500), default.units = 'npc')
 segments <- segmentsGrob(runif(100), runif(100), runif(100), runif(100), 
@@ -535,7 +566,9 @@ then some, but the underlying idea is very different. It also requires you to
 render to a whole new canvas when creating the mask so it has some overhead not
 present in clipping paths depending on the resolution of the device.
 
-```{r, message=FALSE, eval=getRversion() >= "4.1.0"}
+```{r}
+#| message: false
+#| eval: !expr getRversion() >= "4.1.0"
 mask <- pointsGrob(runif(2000), runif(2000), default.units = 'npc', pch = 16, 
                    gp = gpar(col = '#00000077'))
 segments <- segmentsGrob(runif(100), runif(100), runif(100), runif(100), 
@@ -558,7 +591,9 @@ clipping path performance.
 Gradients allow you to produce a smooth transition between a range of colours,
 either along a line or in a radial manner.
 
-```{r, message=FALSE, eval=getRversion() >= "4.1.0"}
+```{r}
+#| message: false
+#| eval: !expr getRversion() >= "4.1.0"
 circles <- circleGrob(runif(2000), runif(2000), r = unit(0.5, 'char'), 
                       gp = gpar(fill = linearGradient(c('black', 'transparent', 'blue'))))
 
@@ -580,7 +615,9 @@ Patterns are another fill type alongside gradients. They can take any grob which
 will be rendered to a separate canvas and then used as fill with different 
 extend modes (repeat, reflect, pad, etc.)
 
-```{r, message=FALSE, eval=getRversion() >= "4.1.0"}
+```{r}
+#| message: false
+#| eval: !expr getRversion() >= "4.1.0"
 segments <- segmentsGrob(runif(1000), runif(1000), runif(1000), runif(1000), 
                          gp = gpar(col = sample(palette(), 1000, TRUE)))
 pat <- pattern(segments, width = 0.1, height = 0.1, extend = 'reflect')
