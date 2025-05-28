@@ -21,6 +21,7 @@ test_that("agg_tiff 16bit generates file", {
 })
 
 test_that("agg_tiff supports unicode in path", {
+  skip_if(utils::packageVersion("base") < "4.2.0" && tolower(Sys.info()[["sysname"]]) == "windows")
   file <- tempfile(pattern = "\u0aaa", fileext = '.tiff')
   agg_tiff(file)
   plot(1:10, 1:10)
