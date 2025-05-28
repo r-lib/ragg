@@ -1,5 +1,7 @@
 # ragg (development version)
 
+* Fix gradient rendering bug introduced by trying to fix #177 (#192)
+
 # ragg 1.4.0
 
 * Added `agg_record()` for optimised plot recording
