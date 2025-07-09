@@ -1,4 +1,4 @@
-PKG_CONFIG_NAME = freetype2 libpng libtiff-4 libjpeg
+PKG_CONFIG_NAME = freetype2 libpng libtiff-4 libjpeg libwebp
 PKG_CONFIG ?= $(BINPREF)pkg-config
 RAGG_LIBS := $(shell $(PKG_CONFIG) --libs $(PKG_CONFIG_NAME))
 
