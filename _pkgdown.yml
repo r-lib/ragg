@@ -23,7 +23,7 @@ news:
 reference:
   - title: Graphic Devices
     desc: >
-      ragg currently provides 5 different devices. They all share the same
+      ragg provides several devices. They all share the same
       underlying rendering code, so the only difference is in their output
       formats.
     contents:

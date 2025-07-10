@@ -528,8 +528,8 @@ agg_record <- function(
 #' @inheritParams agg_png
 #' @param lossy Use lossy compression. Default is `FALSE`.
 #' @param quality An integer between `0` and `100` defining either the quality
-#' (if using lossy compression) or the compression level (if using lossless).
-#' 
+#' (if using lossy compression) or the compression effort (if using lossless).
+#'
 #' @export
 #'
 #' @examples
@@ -549,7 +549,7 @@ agg_webp <- function(
   scaling = 1,
   snap_rect = TRUE,
   lossy = FALSE,
-  quality = 75,
+  quality = 80,
   bg
 ) {
   if (

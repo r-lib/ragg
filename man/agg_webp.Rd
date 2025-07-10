@@ -15,7 +15,7 @@ agg_webp(
   scaling = 1,
   snap_rect = TRUE,
   lossy = FALSE,
-  quality = 75,
+  quality = 80,
   bg
 )
 }
@@ -53,7 +53,7 @@ rectangles are touching at their border.}
 \item{lossy}{Use lossy compression. Default is \code{FALSE}.}
 
 \item{quality}{An integer between \code{0} and \code{100} defining either the quality
-(if using lossy compression) or the compression level (if using lossless).}
+(if using lossy compression) or the compression effort (if using lossless).}
 
 \item{bg}{Same as \code{background} for compatibility with old graphic device APIs}
 }

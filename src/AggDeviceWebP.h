@@ -2,9 +2,7 @@
 
 #include <R_ext/Print.h> 
 
-extern "C" {
 #include <webp/encode.h>
-}
 
 #include "ragg.h"
 #include "AggDevice.h"
@@ -53,7 +51,7 @@ public:
     config.lossless = lossy_ ? 0 : 1;
 
     const int stride = this->rbuf.stride_abs();
-    auto importer = (PIXFMT::num_components == 3)
+    const auto importer = (PIXFMT::num_components == 3)
       ? WebPPictureImportRGB
       : WebPPictureImportRGBA;
 
