@@ -67,6 +67,8 @@ SEXP agg_ppm_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
                SEXP res, SEXP scaling, SEXP snap);
 SEXP agg_png_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
                SEXP res, SEXP scaling, SEXP snap, SEXP bit);
+SEXP agg_webp_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
+                SEXP res, SEXP scaling, SEXP snap, SEXP lossy, SEXP quality);
 SEXP agg_supertransparent_c(SEXP file, SEXP width, SEXP height, SEXP pointsize,
                             SEXP bg, SEXP res, SEXP scaling, SEXP snap,
                             SEXP alpha_mod);

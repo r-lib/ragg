@@ -519,3 +519,66 @@ agg_record <- function(
   )
   invisible()
 }
+
+#' Draw to a WebP file
+#'
+#' The WebP format is a raster image format that provides improved lossless (and
+#' lossy) compression for images on the web. Transparency is supported.
+#'
+#' @inheritParams agg_png
+#' @param lossy Use lossy compression. Default is `FALSE`.
+#' @param quality An integer between `0` and `100` defining either the quality
+#' (if using lossy compression) or the compression effort (if using lossless).
+#'
+#' @export
+#'
+#' @examples
+#' file <- tempfile(fileext = '.webp')
+#' agg_webp(file)
+#' plot(sin, -pi, 2*pi)
+#' dev.off()
+#'
+agg_webp <- function(
+  filename = 'Rplot%03d.webp',
+  width = 480,
+  height = 480,
+  units = 'px',
+  pointsize = 12,
+  background = 'white',
+  res = 72,
+  scaling = 1,
+  snap_rect = TRUE,
+  lossy = FALSE,
+  quality = 80,
+  bg
+) {
+  if (
+    environmentName(parent.env(parent.frame())) == "knitr" &&
+      deparse(sys.call(), nlines = 1, width.cutoff = 500) ==
+        'dev(filename = filename, width = dim[1], height = dim[2], ...)'
+  ) {
+    units <- 'in'
+  }
+  if (max(width, height) > 16383) {
+    stop('WebP does not support image width or height larger than 16383 px',
+         call. = FALSE)
+  }
+  file <- validate_path(filename)
+  dim <- get_dims(width, height, units, res)
+  background <- if (missing(bg)) background else bg
+  .Call(
+    "agg_webp_c",
+    file,
+    dim[1],
+    dim[2],
+    as.numeric(pointsize),
+    background,
+    as.numeric(res),
+    as.numeric(scaling),
+    as.logical(snap_rect),
+    as.logical(lossy),
+    as.integer(quality),
+    PACKAGE = 'ragg'
+  )
+  invisible()
+}
