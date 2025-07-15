@@ -8,7 +8,7 @@ RAGG_CFLAGS := $(shell $(PKG_CONFIG) --cflags $(PKG_CONFIG_NAME))
 else
 RWINLIB = ../windows/harfbuzz
 RAGG_CFLAGS = -I$(RWINLIB)/include -I$(RWINLIB)/include/freetype2
-RAGG_LIBS = -L$(RWINLIB)/lib$(R_ARCH) -L$(RWINLIB)/lib -lfreetype -lharfbuzz -lfreetype -lpng -lz -ltiff -ljpeg -lbz2 -lrpcrt4 -lgdi32 -lws2_32
+RAGG_LIBS = -L$(RWINLIB)/lib$(R_ARCH) -L$(RWINLIB)/lib -lfreetype -lharfbuzz -lfreetype -lpng -lz -ltiff -ljpeg -lbz2 -lrpcrt4 -lgdi32 -lws2_32 -lwebp -lsharpyuv
 endif
 
 PKG_LIBS = -Lagg -lstatagg $(RAGG_LIBS)
