@@ -12,13 +12,21 @@ make_plot <- function() {
   mtext("Triangular Puzzle", side = 1, line = 0, cex = 0.8)
 }
 
+is_webp_file <- function(path) {
+  if (!file.exists(path) || file.info(path)$size < 30) return(FALSE)
+  con <- file(path, "rb"); on.exit(close(con))
+  h <- readBin(con, "raw", 12)
+  length(h) == 12 &&
+    all(h[1:4] == charToRaw("RIFF")) && all(h[9:12] == charToRaw("WEBP"))
+}
+
 test_that("agg_webp generates lossless file", {
   file <- tempfile(pattern = "lossless", fileext = ".webp")
   agg_webp(file, width = 1024, height = 768)
   make_plot()
   dev.off()
 
-  expect_gt(file.info(file)$size, 0)
+  expect_true(is_webp_file(file))
   if (debugging) cat(sprintf("WebP at: %s\n", file)) else unlink(file)
 })
 
@@ -28,7 +36,7 @@ test_that("agg_webp generates lossy file", {
   make_plot()
   dev.off()
 
-  expect_gt(file.info(file)$size, 0)
+  expect_true(is_webp_file(file))
   if (debugging) cat(sprintf("WebP at: %s\n", file)) else unlink(file)
 })
 
@@ -38,6 +46,6 @@ test_that("agg_webp supports transparency", {
   make_plot()
   dev.off()
 
-  expect_gt(file.info(file)$size, 0)
+  expect_true(is_webp_file(file))
   if (debugging) cat(sprintf("WebP at: %s\n", file)) else unlink(file)
 })

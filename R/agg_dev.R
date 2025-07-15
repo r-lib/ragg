@@ -559,6 +559,10 @@ agg_webp <- function(
   ) {
     units <- 'in'
   }
+  if (max(width, height) > 16383) {
+    stop('WebP does not support image width or height larger than 16383 px',
+         call. = FALSE)
+  }
   file <- validate_path(filename)
   dim <- get_dims(width, height, units, res)
   background <- if (missing(bg)) background else bg

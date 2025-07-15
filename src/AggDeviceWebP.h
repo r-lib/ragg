@@ -58,15 +58,15 @@ public:
     if (!importer(&pic,
                   reinterpret_cast<const uint8_t*>(this->buffer),
                   stride)) {
-      Rf_warning("WebPPictureImport failed: error code %d",
-                 pic.error_code);
+      Rf_warning("WebPPictureImport failed: error code %d", 
+        pic.error_code);
       WebPPictureFree(&pic);
       return false;
     }
 
     const bool ok = WebPEncode(&config, &pic);
-    if (!ok) Rf_warning("WebPEncode failed: error code %d",
-                        pic.error_code);
+    if (!ok) 
+      Rf_warning("WebPEncode failed: error code %d", pic.error_code);
 
     WebPPictureFree(&pic);
     return ok;
