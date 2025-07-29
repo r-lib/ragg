@@ -20,20 +20,16 @@ SEXP agg_webp_anim_c(SEXP file, SEXP width, SEXP height, SEXP pointsize,
   int loop_count = INTEGER(loop)[0];
 
   BEGIN_CPP
-  try {
-    if (R_OPAQUE(bgCol)) {
-      auto device = new AggDeviceWebPAnimNoAlpha(
-          filename, w, h, ps, bgCol, dpi, scale, snap, lossy_, quality_,
-          delay_ms, loop_count);
-      makeDevice<AggDeviceWebPAnimNoAlpha>(device, "agg_webp_anim");
-    } else {
-      auto device = new AggDeviceWebPAnimAlpha(
-          filename, w, h, ps, bgCol, dpi, scale, snap, lossy_, quality_,
-          delay_ms, loop_count);
-      makeDevice<AggDeviceWebPAnimAlpha>(device, "agg_webp_anim");
-    }
-  } catch (const std::exception& e) {
-    Rf_error("Failed to create WebP animation device: %s", e.what());
+  if (R_OPAQUE(bgCol)) {
+    auto device = new AggDeviceWebPAnimNoAlpha(
+        filename, w, h, ps, bgCol, dpi, scale, snap, lossy_, quality_,
+        delay_ms, loop_count);
+    makeDevice<AggDeviceWebPAnimNoAlpha>(device, "agg_webp_anim");
+  } else {
+    auto device = new AggDeviceWebPAnimAlpha(
+        filename, w, h, ps, bgCol, dpi, scale, snap, lossy_, quality_,
+        delay_ms, loop_count);
+    makeDevice<AggDeviceWebPAnimAlpha>(device, "agg_webp_anim");
   }
   END_CPP
 
