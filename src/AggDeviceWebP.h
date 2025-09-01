@@ -23,9 +23,9 @@ class AggDeviceWebP : public AggDevice<PIXFMT> {
  public:
   AggDeviceWebP(const char* fp, int w, int h, double ps, int bg,
                 double res, double scaling, bool snap,
-                bool lossy, int quality)
+                bool los, int qual)
     : AggDevice<PIXFMT>(fp, w, h, ps, bg, res, scaling, snap),
-      lossy_(lossy), quality_(quality)
+      lossy(los), quality(qual)
   {}
 
   static int FileWriter(const uint8_t* data, size_t data_size,
@@ -35,8 +35,6 @@ class AggDeviceWebP : public AggDevice<PIXFMT> {
   }
 
   bool savePage() {
-    const bool verbose = LOGICAL(Rf_GetOption1(Rf_install("verbose")))[0];
-    
     char buf[PATH_MAX+1];
     snprintf(buf, PATH_MAX, this->file.c_str(), this->pageno);
     buf[PATH_MAX] = '\0';
@@ -60,14 +58,8 @@ class AggDeviceWebP : public AggDevice<PIXFMT> {
 
     WebPConfig config;
     if (!WebPConfigInit(&config)) return false;
-    
-    config.quality = float(quality_);
-    config.lossless = lossy_ ? 0 : 1;
-
-    if (verbose) {
-      Rprintf("WebP: %dx%d, quality %d, %s\n",
-              this->width, this->height, quality_, lossy_ ? "lossy" : "lossless");
-    }
+    config.quality = float(quality);
+    config.lossless = lossy ? 0 : 1;
 
     const int stride = this->rbuf.stride_abs();
     constexpr auto importer = (PIXFMT::num_components == 3)
@@ -83,16 +75,12 @@ class AggDeviceWebP : public AggDevice<PIXFMT> {
       return false;
     }
 
-    if (verbose) {
-      Rprintf("WebP encoded successfully\n");
-    }
-
     return true;
   }
 
 private:
-  bool lossy_;
-  int  quality_;
+  bool lossy;
+  int  quality;
 };
 
 typedef AggDeviceWebP<pixfmt_type_24> AggDeviceWebPNoAlpha;
