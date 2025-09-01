@@ -27,7 +27,7 @@ jobs:
 
           - {os: windows-latest, r: 'release'}
           # use 4.0 or 4.1 to check with rtools40's older compiler
-          - {os: windows-latest, r: 'oldrel-4'}
+          - {os: windows-latest, r: 'oldrel-3'}
 
           - {os: ubuntu-latest,  r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest,  r: 'release'}
@@ -55,12 +55,6 @@ jobs:
         with:
           extra-packages: any::rcmdcheck
           needs: check
-
-      - name: Install Windows specific dependencies # needed for Rtools 4.0 on Windows
-        if: runner.os == 'Windows'
-        run: |
-          pacman -Syu mingw-w64-i686-libwebp --noconfirm
-          pacman -Syu mingw-w64-x86_64-libwebp --noconfirm
 
       - uses: r-lib/actions/check-r-package@v2
         with:
