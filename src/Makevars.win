@@ -1,4 +1,4 @@
-PKG_CONFIG_NAME = freetype2 libpng libtiff-4 libjpeg
+PKG_CONFIG_NAME = freetype2 libpng libtiff-4 libjpeg libwebp
 PKG_CONFIG ?= $(BINPREF)pkg-config
 RAGG_LIBS := $(shell $(PKG_CONFIG) --libs $(PKG_CONFIG_NAME))
 
@@ -8,7 +8,7 @@ RAGG_CFLAGS := $(shell $(PKG_CONFIG) --cflags $(PKG_CONFIG_NAME))
 else
 RWINLIB = ../windows/harfbuzz
 RAGG_CFLAGS = -I$(RWINLIB)/include -I$(RWINLIB)/include/freetype2
-RAGG_LIBS = -L$(RWINLIB)/lib$(R_ARCH) -L$(RWINLIB)/lib -lfreetype -lharfbuzz -lfreetype -lpng -lz -ltiff -ljpeg -lbz2 -lrpcrt4 -lgdi32 -lws2_32
+RAGG_LIBS = -L$(RWINLIB)/lib$(R_ARCH) -L$(RWINLIB)/lib -lfreetype -lharfbuzz -lfreetype -lpng -lz -ltiff -ljpeg -lbz2 -lrpcrt4 -lgdi32 -lws2_32 -lwebp -lsharpyuv
 endif
 
 PKG_LIBS = -Lagg -lstatagg $(RAGG_LIBS)

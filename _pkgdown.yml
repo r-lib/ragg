@@ -23,13 +23,14 @@ news:
 reference:
   - title: Graphic Devices
     desc: >
-      ragg currently provides 4 different devices. They all share the same
+      ragg provides several devices. They all share the same
       underlying rendering code, so the only difference is in their output
       formats.
     contents:
     - agg_png
     - agg_jpeg
     - agg_tiff
+    - agg_webp
     - agg_capture
     - agg_ppm
     - agg_record
