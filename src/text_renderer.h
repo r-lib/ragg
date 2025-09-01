@@ -354,6 +354,9 @@ public:
     if (rot != 0) {
       get_engine().transform(agg::trans_affine());
     }
+    if (fallback_buffer.size() > 1) {
+      load_font_from_file(fallback_buffer[0], last_gren, current_font_size, id);
+    }
   }
   
   template<typename TARGET, typename renderer_solid, typename renderer, typename raster, typename scanline>
