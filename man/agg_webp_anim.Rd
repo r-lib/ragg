@@ -5,7 +5,7 @@
 \title{Draw an animation to a WebP file}
 \usage{
 agg_webp_anim(
-  filename = "Rplot\%03d.webp",
+  filename = "Ranim.webp",
   width = 480,
   height = 480,
   units = "px",
@@ -22,9 +22,9 @@ agg_webp_anim(
 )
 }
 \arguments{
-\item{filename}{The name of the file. Follows the same semantics as the file
-naming in \code{\link[grDevices:png]{grDevices::png()}}, meaning that you can provide a \code{\link[=sprintf]{sprintf()}}
-compliant string format to name multiple plots (such as the default value)}
+\item{filename}{The name of the file. This function does not perform page
+number substitution as the other devices since it cannot produce multiple
+pages.}
 
 \item{width, height}{The dimensions of the device}
 

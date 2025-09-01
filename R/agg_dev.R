@@ -592,11 +592,14 @@ agg_webp <- function(
 #' lossy) compression for images on the web. Transparency is supported.
 #'
 #' @inheritParams agg_webp
+#' @param filename The name of the file. This function does not perform page
+#'   number substitution as the other devices since it cannot produce multiple
+#'   pages.
 #' @param delay      Per-frame delay in milliseconds (single integer)
 #' @param loop       Number of loops (0 = infinite)
-#' 
+#'
 #' @seealso [agg_webp()] for static WebP images
-#' 
+#'
 #' @export
 #'
 #' @examples
@@ -610,7 +613,7 @@ agg_webp <- function(
 #' dev.off()
 #' }
 agg_webp_anim <- function(
-  filename   = 'Rplot%03d.webp',
+  filename   = 'Ranim.webp',
   width      = 480,
   height     = 480,
   units      = 'px',
