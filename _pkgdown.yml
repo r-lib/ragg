@@ -31,6 +31,7 @@ reference:
     - agg_jpeg
     - agg_tiff
     - agg_webp
+    - agg_webp_anim
     - agg_capture
     - agg_ppm
     - agg_record

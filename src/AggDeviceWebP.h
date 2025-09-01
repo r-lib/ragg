@@ -1,6 +1,6 @@
 #pragma once
 
-#include <R_ext/Print.h>
+#include <R_ext/Print.h> 
 
 #include <webp/encode.h>
 
@@ -12,7 +12,7 @@ template<class PIXFMT>
 class AggDeviceWebP : public AggDevice<PIXFMT> {
  private:
   static const char* webp_error_name(int error_code) {
-    static constexpr const char* errors[] = {"OK", "OUT_OF_MEMORY", "BITSTREAM_OUT_OF_MEMORY",
+    static constexpr const char* errors[] = {"OK", "OUT_OF_MEMORY", "BITSTREAM_OUT_OF_MEMORY", 
                                              "NULL_PARAMETER", "INVALID_CONFIGURATION", "BAD_DIMENSION",
                                              "PARTITION0_OVERFLOW", "PARTITION_OVERFLOW", "BAD_WRITE",
                                              "FILE_TOO_BIG", "USER_ABORT"};
@@ -35,7 +35,6 @@ class AggDeviceWebP : public AggDevice<PIXFMT> {
   }
 
   bool savePage() {
-
     char buf[PATH_MAX+1];
     snprintf(buf, PATH_MAX, this->file.c_str(), this->pageno);
     buf[PATH_MAX] = '\0';
@@ -48,7 +47,7 @@ class AggDeviceWebP : public AggDevice<PIXFMT> {
 
     WebPPicture pic;
     if (!WebPPictureInit(&pic)) return false;
-
+    
     auto pic_guard = std::unique_ptr<WebPPicture, void(*)(WebPPicture*)>(
         &pic, [](WebPPicture* p) { WebPPictureFree(p); });
 
@@ -59,7 +58,6 @@ class AggDeviceWebP : public AggDevice<PIXFMT> {
 
     WebPConfig config;
     if (!WebPConfigInit(&config)) return false;
-
     config.quality = float(quality);
     config.lossless = lossy ? 0 : 1;
 
