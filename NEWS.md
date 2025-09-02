@@ -1,4 +1,4 @@
-# ragg (development version)
+# ragg 1.5.0
 
 * Fix gradient rendering bug introduced by trying to fix #177 (#192)
 * Add support for WebP output, both static and animated (#190, @klausbrunner)
