@@ -427,7 +427,7 @@ agg_capture <- function(
   }
   dim <- get_dims(width, height, units, res)
   background <- if (missing(bg)) background else bg
-  name <- paste0('agg_capture_', sample(.Machine$integer.max, 1))
+  name <- basename(tempfile('agg_capture_'))
   .Call(
     "agg_capture_c",
     name,
@@ -504,7 +504,7 @@ agg_record <- function(
   }
   dim <- get_dims(width, height, units, res)
   background <- if (missing(bg)) background else bg
-  name <- paste0('agg_record_', sample(.Machine$integer.max, 1))
+  name <- basename(tempfile('agg_record_'))
   .Call(
     "agg_record_c",
     name,
