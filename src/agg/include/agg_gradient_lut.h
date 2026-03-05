@@ -209,7 +209,7 @@ namespace agg
         if(m_color_profile.size() >= 2)
         {
             unsigned i;
-            unsigned start = uround(m_color_profile[0].offset * color_lut_size);
+            unsigned start = uround(m_color_profile[0].offset * double(color_lut_size));
             unsigned end;
             color_type c = m_color_profile[0].color;
             for(i = 0; i < start; i++) 
@@ -218,7 +218,7 @@ namespace agg
             }
             for(i = 1; i < m_color_profile.size(); i++)
             {
-                end  = uround(m_color_profile[i].offset * color_lut_size);
+                end  = uround(m_color_profile[i].offset * double(color_lut_size));
                 interpolator_type ci(m_color_profile[i-1].color, 
                                      m_color_profile[i  ].color, 
                                      end - start + 1);

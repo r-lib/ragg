@@ -59,14 +59,14 @@ namespace agg
             tx = x;
             ty = y;
             m_trans->transform(&tx, &ty);
-            int x1 = iround(tx * subpixel_scale);
-            int y1 = iround(ty * subpixel_scale);
+            int x1 = iround(tx * double(subpixel_scale));
+            int y1 = iround(ty * double(subpixel_scale));
 
             tx = x + len;
             ty = y;
             m_trans->transform(&tx, &ty);
-            int x2 = iround(tx * subpixel_scale);
-            int y2 = iround(ty * subpixel_scale);
+            int x2 = iround(tx * double(subpixel_scale));
+            int y2 = iround(ty * double(subpixel_scale));
 
             m_li_x = dda2_line_interpolator(x1, x2, len);
             m_li_y = dda2_line_interpolator(y1, y2, len);
@@ -76,8 +76,8 @@ namespace agg
         void resynchronize(double xe, double ye, unsigned len)
         {
             m_trans->transform(&xe, &ye);
-            m_li_x = dda2_line_interpolator(m_li_x.y(), iround(xe * subpixel_scale), len);
-            m_li_y = dda2_line_interpolator(m_li_y.y(), iround(ye * subpixel_scale), len);
+            m_li_x = dda2_line_interpolator(m_li_x.y(), iround(xe * double(subpixel_scale)), len);
+            m_li_y = dda2_line_interpolator(m_li_y.y(), iround(ye * double(subpixel_scale)), len);
         }
     
         //----------------------------------------------------------------
@@ -170,8 +170,8 @@ namespace agg
             tx = x;
             ty = y;
             m_trans->transform(&tx, &ty);
-            int x1 = iround(tx * subpixel_scale);
-            int y1 = iround(ty * subpixel_scale);
+            int x1 = iround(tx * double(subpixel_scale));
+            int y1 = iround(ty * double(subpixel_scale));
 
             tx = x + len;
             ty = y;

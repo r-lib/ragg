@@ -64,8 +64,8 @@ namespace agg
         {
             m_dx_dbl = dx;
             m_dy_dbl = dy;
-            m_dx_int = iround(dx * image_subpixel_scale);
-            m_dy_int = iround(dy * image_subpixel_scale);
+            m_dx_int = iround(dx * double(image_subpixel_scale));
+            m_dy_int = iround(dy * double(image_subpixel_scale));
         }
         void filter_offset(double d) { filter_offset(d, d); }
 

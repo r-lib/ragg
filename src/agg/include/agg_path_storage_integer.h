@@ -50,8 +50,8 @@ namespace agg
                         double dx=0, double dy=0,
                         double scale=1.0) const
         {
-            *x_ = dx + (double(x >> 1) / coord_scale) * scale;
-            *y_ = dy + (double(y >> 1) / coord_scale) * scale;
+            *x_ = dx + (double(x >> 1) / double(coord_scale)) * scale;
+            *y_ = dy + (double(y >> 1) / double(coord_scale)) * scale;
             switch(((y & 1) << 1) | (x & 1))
             {
                 case cmd_move_to: return path_cmd_move_to;
@@ -150,7 +150,7 @@ namespace agg
                 *x = 0;
                 *y = 0;
                 ++m_vertex_idx;
-                return path_cmd_end_poly | path_flags_close;
+                return (unsigned)path_cmd_end_poly | (unsigned)path_flags_close;
             }
             unsigned cmd = m_storage[m_vertex_idx].vertex(x, y);
             if(is_move_to(cmd) && !m_closed)
@@ -158,7 +158,7 @@ namespace agg
                 *x = 0;
                 *y = 0;
                 m_closed = true;
-                return path_cmd_end_poly | path_flags_close;
+                return (unsigned)path_cmd_end_poly | (unsigned)path_flags_close;
             }
             m_closed = false;
             ++m_vertex_idx;
@@ -262,7 +262,7 @@ namespace agg
                 *x = 0;
                 *y = 0;
                 m_ptr += sizeof(vertex_integer_type);
-                return path_cmd_end_poly | path_flags_close;
+                return (unsigned)path_cmd_end_poly | (unsigned)path_flags_close;
             }
 
             vertex_integer_type v;
@@ -273,7 +273,7 @@ namespace agg
                 *x = 0;
                 *y = 0;
                 m_vertices = 0;
-                return path_cmd_end_poly | path_flags_close;
+                return (unsigned)path_cmd_end_poly | (unsigned)path_flags_close;
             }
             ++m_vertices;
             m_ptr += sizeof(vertex_integer_type);

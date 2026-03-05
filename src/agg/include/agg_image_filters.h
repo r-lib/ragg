@@ -57,7 +57,7 @@ namespace agg
             unsigned pivot = diameter() << (image_subpixel_shift - 1);
             for(i = 0; i < pivot; i++)
             {
-                double x = double(i) / double(image_subpixel_scale);
+                double x = double(i) / double(int(image_subpixel_scale));
                 double y = filter.calc_weight(x);
                 m_weight_array[pivot + i] = 
                 m_weight_array[pivot - i] = (int16)iround(y * image_filter_scale);

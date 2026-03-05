@@ -133,7 +133,7 @@ namespace agg
             int i;
             for(i = 0; i < aa_scale; i++)
             {
-                m_gamma[i] = uround(gamma_function(double(i) / aa_mask) * aa_mask);
+                m_gamma[i] = uround(gamma_function(double(i) / double(aa_mask)) * double(aa_mask));
             }
         }
 

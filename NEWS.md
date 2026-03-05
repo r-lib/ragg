@@ -6,6 +6,8 @@
 * `agg_capture()` now reports the current "page number" as well as whether any
   drawing has occured since the last time the capture was taken as attributes
   in the return value (but only if you request native raster) (#204)
+* Avoid compile time warnings from implicit casting during enum arithmetic
+* `agg_capture()` and `agg_record()` no longer advance the RNG (#212)
 
 # ragg 1.5.0
 
