@@ -104,7 +104,6 @@ static WebP images
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
 file <- tempfile(fileext = '.webp')
 agg_webp_anim(file, delay = 100, loop = 0)
 for(i in 1:10) {
@@ -112,5 +111,6 @@ for(i in 1:10) {
   dev.flush()
 }
 dev.off()
-} # }
+#> agg_record_1d8836b3ed66 
+#>                       2 
 ```

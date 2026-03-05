@@ -117,6 +117,6 @@ file <- tempfile(fileext = '.tiff')
 agg_tiff(file, compression = 'lzw+p')
 plot(sin, -pi, 2*pi)
 dev.off()
-#> agg_record_1727935000 
-#>                     2 
+#> agg_record_1d882d3388e0 
+#>                       2 
 ```
