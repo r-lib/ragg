@@ -119,6 +119,6 @@ file <- tempfile(fileext = '.jpeg')
 agg_jpeg(file, quality = 50)
 plot(sin, -pi, 2*pi)
 dev.off()
-#> agg_record_200475cf1988 
+#> agg_record_1d555b0b8926 
 #>                       2 
 ```
