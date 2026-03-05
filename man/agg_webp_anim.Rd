@@ -68,7 +68,6 @@ The WebP format is a raster image format that provides improved lossless (and
 lossy) compression for images on the web. Transparency is supported.
 }
 \examples{
-\dontrun{
 file <- tempfile(fileext = '.webp')
 agg_webp_anim(file, delay = 100, loop = 0)
 for(i in 1:10) {
@@ -76,7 +75,6 @@ for(i in 1:10) {
   dev.flush()
 }
 dev.off()
-}
 }
 \seealso{
 \code{\link[=agg_webp]{agg_webp()}} for static WebP images

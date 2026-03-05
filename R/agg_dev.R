@@ -603,7 +603,6 @@ agg_webp <- function(
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' file <- tempfile(fileext = '.webp')
 #' agg_webp_anim(file, delay = 100, loop = 0)
 #' for(i in 1:10) {
@@ -611,7 +610,6 @@ agg_webp <- function(
 #'   dev.flush()
 #' }
 #' dev.off()
-#' }
 agg_webp_anim <- function(
   filename   = 'Ranim.webp',
   width      = 480,

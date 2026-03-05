@@ -2,6 +2,7 @@
 
 #include "ragg.h"
 #include <cstddef>
+#include <memory>
 
 template<class T>
 void agg_metric_info(int c, const pGEcontext gc, double* ascent,
@@ -43,8 +44,15 @@ void agg_close(pDevDesc dd) {
   T * device = (T *) dd->deviceSpecific;
 
   BEGIN_CPP
+  auto deleter = [dd](T* ptr) {
+    if (dd != NULL) {
+      dd->deviceSpecific = NULL;
+    }
+    delete ptr;
+  };
+  std::unique_ptr<T, decltype(deleter)> guard(device, deleter);
   device->close();
-  delete device;
+  guard.reset();
   END_CPP
 
   return;

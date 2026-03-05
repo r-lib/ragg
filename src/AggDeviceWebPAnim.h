@@ -7,28 +7,13 @@
 #include <vector>
 #include <memory>
 #include <stdexcept>
+#include <string>
 
 #include "AggDevice.h"
 #include "files.h"
 #include "ragg.h"
 
-using WebPPicturePtr = std::unique_ptr<WebPPicture, void(*)(WebPPicture*)>;
-using WebPDataPtr = std::unique_ptr<WebPData, void(*)(WebPData*)>;
 using FilePtr = std::unique_ptr<FILE, int(*)(FILE*)>;
-
-inline WebPPicturePtr make_webp_picture() {
-  WebPPicture* pic = new WebPPicture;
-  if (!WebPPictureInit(pic)) {
-    delete pic;
-    throw std::runtime_error("WebPPictureInit failed");
-  }
-  return WebPPicturePtr(pic, WebPPictureFree);
-}
-
-inline WebPDataPtr make_webp_data() {
-  WebPData* data = new WebPData;
-  return WebPDataPtr(data, WebPDataClear);
-}
 
 inline FilePtr make_file(const char* filename, const char* mode) {
   FILE* f = unicode_fopen(filename, mode);
@@ -92,17 +77,22 @@ class AggDeviceWebPAnim : public AggDevice<PIXFMT> {
     demultiply<PIXFMT>(this->pixf);
 
     try {
-      auto pic = make_webp_picture();
+      WebPPicture pic;
+      if (!WebPPictureInit(&pic)) {
+        Rf_warning("WebPPictureInit failed");
+        return false;
+      }
+      auto pic_guard = std::unique_ptr<WebPPicture, decltype(&WebPPictureFree)>(&pic, WebPPictureFree);
 
       WebPMemoryWriter wr;
       WebPMemoryWriterInit(&wr);
       auto cleanup = [](WebPMemoryWriter* w) { WebPMemoryWriterClear(w); };
       std::unique_ptr<WebPMemoryWriter, decltype(cleanup)> wr_guard(&wr, cleanup);
 
-      pic->width = this->width;
-      pic->height = this->height;
-      pic->writer = WebPMemoryWrite;
-      pic->custom_ptr = &wr;
+      pic.width = this->width;
+      pic.height = this->height;
+      pic.writer = WebPMemoryWrite;
+      pic.custom_ptr = &wr;
 
       WebPConfig config;
       if (!WebPConfigInit(&config)) {
@@ -116,13 +106,13 @@ class AggDeviceWebPAnim : public AggDevice<PIXFMT> {
       const auto importer = (PIXFMT::num_components == 3) ? WebPPictureImportRGB
                                                           : WebPPictureImportRGBA;
 
-      if (!importer(pic.get(), reinterpret_cast<const uint8_t*>(this->buffer), stride)) {
-        Rf_warning("WebPPictureImport failed: %s", webp_error_name(pic->error_code));
+      if (!importer(&pic, reinterpret_cast<const uint8_t*>(this->buffer), stride)) {
+        Rf_warning("WebPPictureImport failed: %s", webp_error_name(pic.error_code));
         return false;
       }
 
-      if (!WebPEncode(&config, pic.get())) {
-        Rf_warning("WebPEncode failed: %s", webp_error_name(pic->error_code));
+      if (!WebPEncode(&config, &pic)) {
+        Rf_warning("WebPEncode failed: %s", webp_error_name(pic.error_code));
         return false;
       }
 
@@ -141,7 +131,13 @@ class AggDeviceWebPAnim : public AggDevice<PIXFMT> {
   }
 
   void close() {
-    savePage();
+    if (!savePage()) {
+      throw std::runtime_error("Failed to encode final WebP frame");
+    }
+
+    if (frames.empty()) {
+      throw std::runtime_error("WebP animation has no frames to write");
+    }
 
     for (size_t i = 0; i < frames.size(); ++i) {
       const auto& raw = frames[i];
@@ -157,29 +153,35 @@ class AggDeviceWebPAnim : public AggDevice<PIXFMT> {
       finfo.blend_method = WEBP_MUX_BLEND;
       WebPMuxError frame_err = WebPMuxPushFrame(mux.get(), &finfo, 1);
       if (frame_err != WEBP_MUX_OK) {
-        Rf_error("Failed to push WebP frame %zu/%zu: %s (%zu bytes)",
-                 i + 1, frames.size(), mux_error_name(frame_err), raw.size());
+        std::string msg = "Failed to push WebP frame " +
+                          std::to_string(i + 1) + "/" +
+                          std::to_string(frames.size()) + ": " +
+                          mux_error_name(frame_err) + " (" +
+                          std::to_string(raw.size()) + " bytes)";
+        throw std::runtime_error(msg);
       }
     }
 
-    try {
-      auto out = make_webp_data();
-      WebPMuxError mux_err = WebPMuxAssemble(mux.get(), out.get());
-      if (mux_err != WEBP_MUX_OK) {
-        Rf_error("WebP mux assemble failed: %s (%zu frames)", mux_error_name(mux_err), frames.size());
-      }
+    WebPData out;
+    WebPDataInit(&out);
+    auto out_guard = std::unique_ptr<WebPData, decltype(&WebPDataClear)>(&out, WebPDataClear);
 
-      auto fd = make_file(this->file.c_str(), "wb");
-      if (fwrite(out->bytes, 1, out->size, fd.get()) != out->size) {
-        Rf_error("Failed to write WebP animation file");
-      }
-
-    } catch (...) {
-      AggDevice<PIXFMT>::close();
-      throw;
+    WebPMuxError mux_err = WebPMuxAssemble(mux.get(), &out);
+    if (mux_err != WEBP_MUX_OK) {
+      std::string msg = "WebP mux assemble failed: " +
+                        std::string(mux_error_name(mux_err)) + " (" +
+                        std::to_string(frames.size()) + " frames)";
+      throw std::runtime_error(msg);
     }
 
-    AggDevice<PIXFMT>::close();
+    auto fd = make_file(this->file.c_str(), "wb");
+    if (fwrite(out.bytes, 1, out.size, fd.get()) != out.size) {
+      throw std::runtime_error("Failed to write WebP animation file");
+    }
+
+    if (this->pageno == 0) {
+      this->pageno = 1;
+    }
   }
 
  private:
