@@ -32,7 +32,7 @@ Other contributors:
   \item Tony Juricic \email{tonygeek@yahoo.com} (Contributor to AGG) [contributor, copyright holder]
   \item Milan Marusinec \email{milan@marusinec.sk} (Contributor to AGG) [contributor, copyright holder]
   \item Spencer Garrett (Contributor to AGG) [contributor]
-  \item Posit Software, PBC (03wc8by49) [copyright holder, funder]
+  \item Posit Software, PBC (\href{https://ror.org/03wc8by49}{ROR}) [copyright holder, funder]
 }
 
 }
