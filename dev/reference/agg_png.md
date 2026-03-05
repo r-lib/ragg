@@ -98,6 +98,6 @@ file <- tempfile(fileext = '.png')
 agg_png(file)
 plot(sin, -pi, 2*pi)
 dev.off()
-#> agg_record_1d885ac2bfdf 
+#> agg_record_1d561bf2caa9 
 #>                       2 
 ```

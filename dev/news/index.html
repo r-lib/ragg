@@ -49,6 +49,9 @@
 <ul><li>Fix support for the default symbol font on many linux distros (StandardSymbolPS) by ensuring proper fallback during character metric calculation (<a href="https://github.com/r-lib/ragg/issues/136" class="external-link">#136</a>, <a href="https://github.com/r-lib/ragg/issues/201" class="external-link">#201</a>)</li>
 <li>
 <code><a href="../reference/agg_capture.html">agg_capture()</a></code> now reports the current “page number” as well as whether any drawing has occured since the last time the capture was taken as attributes in the return value (but only if you request native raster) (<a href="https://github.com/r-lib/ragg/issues/204" class="external-link">#204</a>)</li>
+<li>Avoid compile time warnings from implicit casting during enum arithmetic</li>
+<li>
+<code><a href="../reference/agg_capture.html">agg_capture()</a></code> and <code><a href="../reference/agg_record.html">agg_record()</a></code> no longer advance the RNG (<a href="https://github.com/r-lib/ragg/issues/212" class="external-link">#212</a>)</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.5.0" id="ragg-150">ragg 1.5.0<a class="anchor" aria-label="anchor" href="#ragg-150"></a></h2><p class="text-muted">CRAN release: 2025-09-02</p>

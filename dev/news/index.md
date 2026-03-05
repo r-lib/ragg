@@ -11,6 +11,13 @@
   has occured since the last time the capture was taken as attributes in
   the return value (but only if you request native raster)
   ([\#204](https://github.com/r-lib/ragg/issues/204))
+- Avoid compile time warnings from implicit casting during enum
+  arithmetic
+- [`agg_capture()`](https://ragg.r-lib.org/dev/reference/agg_capture.md)
+  and
+  [`agg_record()`](https://ragg.r-lib.org/dev/reference/agg_record.md)
+  no longer advance the RNG
+  ([\#212](https://github.com/r-lib/ragg/issues/212))
 
 ## ragg 1.5.0
 

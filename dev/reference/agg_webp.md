@@ -95,6 +95,6 @@ file <- tempfile(fileext = '.webp')
 agg_webp(file)
 plot(sin, -pi, 2*pi)
 dev.off()
-#> agg_record_1d885f3b0d65 
+#> agg_record_1d5636b1ad8f 
 #>                       2 
 ```
