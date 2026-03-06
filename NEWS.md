@@ -1,4 +1,4 @@
-# ragg (development version)
+# ragg 1.5.1
 
 * Fix support for the default symbol font on many linux distros
   (StandardSymbolPS) by ensuring proper fallback during character metric
