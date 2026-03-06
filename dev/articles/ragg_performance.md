@@ -730,7 +730,7 @@ sessioninfo::session_info()
 #>  profmem        0.7.0      2025-05-02 [1] RSPM
 #>  purrr          1.2.1      2026-01-09 [1] RSPM
 #>  R6             2.6.1      2025-02-15 [1] RSPM
-#>  ragg         * 1.5.0.9000 2026-03-06 [1] local
+#>  ragg         * 1.5.1.9000 2026-03-06 [1] local
 #>  RColorBrewer   1.1-3      2022-04-03 [1] RSPM
 #>  rlang          1.1.7      2026-01-09 [1] RSPM
 #>  rmarkdown      2.30       2025-09-28 [1] RSPM
