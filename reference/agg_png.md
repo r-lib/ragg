@@ -1,0 +1,103 @@
+# Draw to a PNG file
+
+The PNG (Portable Network Graphic) format is one of the most ubiquitous
+today, due to its versatiliity and widespread support. It supports
+transparency as well as both 8 and 16 bit colour. The device uses
+default compression and filtering and will not use a colour palette as
+this is less useful for antialiased data. This means that it might be
+possible to compress the resulting image even more if size is of concern
+(though the defaults are often very good). In contrast to
+[`grDevices::png()`](https://rdrr.io/r/grDevices/png.html) the date and
+time will not be written to the file, meaning that similar plot code
+will produce identical files (a good feature if used with version
+control). It will, however, write in the dimensions of the image based
+on the `res` argument.
+
+## Usage
+
+``` r
+agg_png(
+  filename = "Rplot%03d.png",
+  width = 480,
+  height = 480,
+  units = "px",
+  pointsize = 12,
+  background = "white",
+  res = 72,
+  scaling = 1,
+  snap_rect = TRUE,
+  bitsize = 8,
+  bg
+)
+```
+
+## Arguments
+
+- filename:
+
+  The name of the file. Follows the same semantics as the file naming in
+  [`grDevices::png()`](https://rdrr.io/r/grDevices/png.html), meaning
+  that you can provide a
+  [`sprintf()`](https://rdrr.io/r/base/sprintf.html) compliant string
+  format to name multiple plots (such as the default value)
+
+- width, height:
+
+  The dimensions of the device
+
+- units:
+
+  The unit `width` and `height` is measured in, in either pixels
+  (`'px'`), inches (`'in'`), millimeters (`'mm'`), or centimeter
+  (`'cm'`).
+
+- pointsize:
+
+  The default pointsize of the device in pt. This will in general not
+  have any effect on grid graphics (including ggplot2) as text size is
+  always set explicitly there.
+
+- background:
+
+  The background colour of the device
+
+- res:
+
+  The resolution of the device. This setting will govern how device
+  dimensions given in inches, centimeters, or millimeters will be
+  converted to pixels. Further, it will be used to scale text sizes and
+  linewidths
+
+- scaling:
+
+  A scaling factor to apply to the rendered line width and text size.
+  Useful for getting the right dimensions at the resolution that you
+  need. If e.g. you need to render a plot at 4000x3000 pixels for it to
+  fit into a layout, but you find that the result appears to small, you
+  can increase the `scaling` argument to make everything appear bigger
+  at the same resolution.
+
+- snap_rect:
+
+  Should axis-aligned rectangles drawn with only fill snap to the pixel
+  grid. This will prevent anti-aliasing artifacts when two rectangles
+  are touching at their border.
+
+- bitsize:
+
+  Should the device record colour as 8 or 16bit
+
+- bg:
+
+  Same as `background` for compatibility with old graphic device APIs
+
+## Examples
+
+``` r
+file <- tempfile(fileext = '.png')
+agg_png(file)
+plot(sin, -pi, 2*pi)
+dev.off()
+#> agg_record_1d9938e471f0 
+#>                       2 
+```

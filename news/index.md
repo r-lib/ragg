@@ -1,0 +1,320 @@
+# Changelog
+
+## ragg 1.5.1
+
+- Fix support for the default symbol font on many linux distros
+  (StandardSymbolPS) by ensuring proper fallback during character metric
+  calculation ([\#136](https://github.com/r-lib/ragg/issues/136),
+  [\#201](https://github.com/r-lib/ragg/issues/201))
+- [`agg_capture()`](https://ragg.r-lib.org/reference/agg_capture.md) now
+  reports the current “page number” as well as whether any drawing has
+  occured since the last time the capture was taken as attributes in the
+  return value (but only if you request native raster)
+  ([\#204](https://github.com/r-lib/ragg/issues/204))
+- Avoid compile time warnings from implicit casting during enum
+  arithmetic
+- [`agg_capture()`](https://ragg.r-lib.org/reference/agg_capture.md) and
+  [`agg_record()`](https://ragg.r-lib.org/reference/agg_record.md) no
+  longer advance the RNG
+  ([\#212](https://github.com/r-lib/ragg/issues/212))
+
+## ragg 1.5.0
+
+CRAN release: 2025-09-02
+
+- Fix gradient rendering bug introduced by trying to fix
+  [\#177](https://github.com/r-lib/ragg/issues/177)
+  ([\#192](https://github.com/r-lib/ragg/issues/192))
+- Add support for WebP output, both static and animated
+  ([\#190](https://github.com/r-lib/ragg/issues/190),
+  [@klausbrunner](https://github.com/klausbrunner))
+
+## ragg 1.4.0
+
+CRAN release: 2025-04-10
+
+- Added [`agg_record()`](https://ragg.r-lib.org/reference/agg_record.md)
+  for optimised plot recording
+- Added support for hold and flushing, mainly in service of Positron
+- Added support for `saturate` composition operator
+- Sanitise file name before plotting
+  ([\#176](https://github.com/r-lib/ragg/issues/176))
+- Tiff files can now include unicode characters on all platforms
+  ([\#87](https://github.com/r-lib/ragg/issues/87))
+
+## ragg 1.3.3
+
+CRAN release: 2024-09-11
+
+- Fixed a regression from upstream changes in Freetype
+  ([\#172](https://github.com/r-lib/ragg/issues/172))
+
+## ragg 1.3.2
+
+CRAN release: 2024-05-15
+
+- Fix a bug in how groups are defined and recalled
+
+## ragg 1.3.1
+
+CRAN release: 2024-05-06
+
+- Make sure the linejoin/linemitre setting is honored when drawing
+  rectangles ([\#162](https://github.com/r-lib/ragg/issues/162))
+- Fix a bug with resetting clipping during group and pattern rendering
+- Fix scaling of raster glyphs in drawGlyph
+
+## ragg 1.3.0
+
+CRAN release: 2024-03-13
+
+- Added supported for new graphics enigine features: Groups, paths,
+  luminance masks, and glyphs
+- Add a switch (defaults to on) to snapping rectangles to the pixel grid
+  when they are only drawn with fill (no stroke)
+- Fixed a bug causing repeated warnings when using a font at 0 size
+  ([\#130](https://github.com/r-lib/ragg/issues/130))
+- Silence a bug in clang-ASAN that incorrectly reported sanitiser issues
+
+## ragg 1.2.7
+
+CRAN release: 2023-12-11
+
+- Fix a stack imbalance bug
+
+## ragg 1.2.6
+
+CRAN release: 2023-10-10
+
+- Fix symbol rendering bug on windows
+  ([\#132](https://github.com/r-lib/ragg/issues/132))
+- Add support for
+  [`dev.capabilities()`](https://rdrr.io/r/grDevices/dev.capabilities.html)
+  ([\#105](https://github.com/r-lib/ragg/issues/105))
+- Prepare for Arm Windows
+
+## ragg 1.2.5
+
+CRAN release: 2023-01-12
+
+- Fix a bug when rendering glyphs from a colour font that also provide
+  greyscale glyphs ([\#105](https://github.com/r-lib/ragg/issues/105))
+- Move [`sprintf()`](https://rdrr.io/r/base/sprintf.html) to
+  `snprintf()` in the AGG source code to comply with Arm64 deprecation
+- Better guard against bad input
+  ([\#116](https://github.com/r-lib/ragg/issues/116))
+
+## ragg 1.2.4
+
+CRAN release: 2022-10-24
+
+- Fixed a regression that turned off line mitre support
+  ([\#119](https://github.com/r-lib/ragg/issues/119))
+
+## ragg 1.2.3
+
+CRAN release: 2022-09-29
+
+- Second attempt at rendering jpegs with transparent background. Now,
+  the buffer is filled with solid white before any drawing happens.
+- Fixed a bug that resulted in newlines being rendered as missing glyphs
+  on some Linux versions
+  ([\#111](https://github.com/r-lib/ragg/issues/111))
+
+## ragg 1.2.2
+
+CRAN release: 2022-02-21
+
+- MacOS: configure script now uses the local system dependencies
+  provided by CRAN via pkg-config. Autobrew libs are used as fallback on
+  non-cran servers only.
+
+## ragg 1.2.1
+
+CRAN release: 2021-12-06
+
+- Fix bug that caused R to crash when writing tiff files with
+  transparent background
+  ([\#97](https://github.com/r-lib/ragg/issues/97))
+
+## ragg 1.2.0
+
+CRAN release: 2021-10-30
+
+- Add support for new graphic engine features:
+  - Arbitrary clipping paths
+  - Alpha masks
+  - Linear and radial gradients
+  - Tiling patterns
+- Use white as background when passing in a fully transparent background
+  colour to devices that doesn’t support alpha (notably jpeg)
+  ([\#91](https://github.com/r-lib/ragg/issues/91))
+- ragg now defers symbol font resolving to systemfonts which makes it
+  possible to register alternative symbol fonts using
+  [`register_font()`](https://systemfonts.r-lib.org/reference/register_font.html)
+  ([\#90](https://github.com/r-lib/ragg/issues/90))
+- Filenames in UTF-8 are now treated correctly on Windows
+  ([\#87](https://github.com/r-lib/ragg/issues/87))
+- Fix size selection of non-scalable fonts when the requested size is
+  bigger than the available
+
+## ragg 1.1.3
+
+CRAN release: 2021-06-09
+
+- Use int32_t instead of int32 in old code
+- Prepare for UCRT
+- Better error message when failing to allocate memory for the buffer
+  ([\#82](https://github.com/r-lib/ragg/issues/82))
+- Increase storage size limits for paths
+  ([\#80](https://github.com/r-lib/ragg/issues/80))
+
+## ragg 1.1.2
+
+CRAN release: 2021-03-17
+
+- Fix bug in
+  [`agg_capture()`](https://ragg.r-lib.org/reference/agg_capture.md)
+  that resulted in premultiplied colour values being returned
+
+## ragg 1.1.1
+
+CRAN release: 2021-02-25
+
+- Fix a bug in glyph dimension lookup that could cause system crashes
+- Fix bug in font caching when multiple ragg devices are used
+  simultaneously
+
+## ragg 1.1.0
+
+CRAN release: 2021-02-15
+
+- Major version release to signify the much improved text support that
+  includes full support for right-to-left scripts and bidirectional text
+  (mix of RtL and LtR scripts). It further adds full support for
+  OpenType features and non-scalable fonts.
+- Re-exporting
+  [`register_font()`](https://systemfonts.r-lib.org/reference/register_font.html),
+  [`register_variant()`](https://systemfonts.r-lib.org/reference/register_variant.html),
+  and
+  [`font_feature()`](https://systemfonts.r-lib.org/reference/font_feature.html)
+  from systemfonts
+- Re-exporting
+  [`get_font_features()`](https://rdrr.io/pkg/textshaping/man/get_font_features.html)
+  from textshaping
+- Use new textshaping API and handle font fallback correctly
+- Add support for rendering colour fonts
+  ([\#1](https://github.com/r-lib/ragg/issues/1))
+
+## ragg 0.4.1
+
+CRAN release: 2021-01-11
+
+- Skip text tests on CRAN as no text is plottet on the CRAN solaris
+  machine
+- Fixed a bug resulting in system crash on certain systems, as well as
+  clang-ASAN error. ([\#59](https://github.com/r-lib/ragg/issues/59))
+
+## ragg 0.4.0
+
+CRAN release: 2020-10-05
+
+- ragg now requires the Harfbuzz and Fribidi libraries to be available
+  when installing from source due to their dependency in the textshaping
+  package.
+- Move text shaping to the new textshaping package.
+- Fix [`agg_capture()`](https://ragg.r-lib.org/reference/agg_capture.md)
+  on big endian systems
+  ([\#49](https://github.com/r-lib/ragg/issues/49),
+  [@QuLogic](https://github.com/QuLogic))
+- Fix use of symbol font on Windows by moving to Segoe UI Symbol which
+  has a Unicode charmap
+  ([\#51](https://github.com/r-lib/ragg/issues/51))
+- Better compatibility with knitr and
+  [`ggplot2::ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html)
+
+## ragg 0.3.1
+
+CRAN release: 2020-07-03
+
+- Roll back support for new clipping options in the graphic engine as it
+  was buggy.
+
+## ragg 0.3.0
+
+CRAN release: 2020-06-24
+
+- Fix a bug when plotting partially transparent raster
+  ([\#44](https://github.com/r-lib/ragg/issues/44))
+- Add a `scaling` argument to all devices allowing you to change
+  relative scaling of output.
+- Horizontal and vertical text are now snapped to the pixel grid in
+  order to improve rendering quality.
+- Internal changes to prepare for coming updates to the graphic engine
+
+## ragg 0.2.0
+
+CRAN release: 2020-05-14
+
+- Fix compilation on R \<= 3.3 by including Rdynload.h explicitly
+- Fix a performance regression when plotting text
+  ([\#33](https://github.com/r-lib/ragg/issues/33))
+- Fix erroneous width calculations of strings starting with a space on
+  windows ([\#32](https://github.com/r-lib/ragg/issues/32))
+- Fix a bug in
+  [`agg_capture()`](https://ragg.r-lib.org/reference/agg_capture.md)
+  where the output became mangled if device height != width
+- Fix a bug in raster support where raster data did not get
+  premultiplied before rendering
+  ([\#38](https://github.com/r-lib/ragg/issues/38),
+  [@yixuan](https://github.com/yixuan))
+- Fix an integer overflow issue in the AGG source code
+
+## ragg 0.1.5
+
+CRAN release: 2020-03-04
+
+- Fix compilation on macOS
+
+## ragg 0.1.4
+
+CRAN release: 2020-02-25
+
+- Fix a bug in AGG’s font manager that ignored the font index when it
+  stored and retrieved cached faces
+
+## ragg 0.1.3
+
+CRAN release: 2019-08-28
+
+- Fix bug preventing ragg from displaying 50% transparent black
+- Another attempt at fixing compilation on mac build machines
+
+## ragg 0.1.2
+
+CRAN release: 2019-07-30
+
+- Fix compilation on certain Linux systems by preferring dynamic
+  libraries over static ones
+  ([\#25](https://github.com/r-lib/ragg/issues/25),
+  [@jimhester](https://github.com/jimhester)).
+
+## ragg 0.1.1
+
+CRAN release: 2019-07-29
+
+- Avoid a bug when the call to start a device included too many
+  characters ([\#16](https://github.com/r-lib/ragg/issues/16))
+- Fix integer overflow runtime errors in agg source code
+  (`agg_scanline_storage_aa.h`), by changing storage to `long`
+- Remove benchmarking vignettes as it was causing too much trouble on
+  stripped down systems… They are still available on
+  <https://ragg.r-lib.org>
+- Better build setup to properly build on all macOS systems
+
+## ragg 0.1.0
+
+CRAN release: 2019-07-15
+
+- Basic setup of package. png, tiff, ppm, and buffer capture support
+- Added a `NEWS.md` file to track changes to the package.
