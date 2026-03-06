@@ -393,7 +393,7 @@ sessioninfo::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-03-05
+#>  date     2026-03-06
 #>  pandoc   3.1.11 @ /opt/hostedtoolcache/pandoc/3.1.11/x64/ (via rmarkdown)
 #>  quarto   NA
 #> 
@@ -416,7 +416,7 @@ sessioninfo::session_info()
 #>  magrittr      2.0.4      2025-09-12 [1] RSPM
 #>  pkgdown       2.2.0      2025-11-06 [1] RSPM
 #>  R6            2.6.1      2025-02-15 [1] RSPM
-#>  ragg        * 1.5.0.9000 2026-03-05 [1] local
+#>  ragg        * 1.5.0.9000 2026-03-06 [1] local
 #>  Rcpp          1.1.1      2026-01-10 [1] RSPM
 #>  rlang         1.1.7      2026-01-09 [1] RSPM
 #>  rmarkdown     2.30       2025-09-28 [1] RSPM
