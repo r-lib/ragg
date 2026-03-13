@@ -46,9 +46,10 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="ragg-development-version">ragg (development version)<a class="anchor" aria-label="anchor" href="#ragg-development-version"></a></h2>
-</div>
+<ul><li>Fixed a sanitizer issue from not correctly closing down the recording device</li>
+</ul></div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.5.1" id="ragg-151">ragg 1.5.1<a class="anchor" aria-label="anchor" href="#ragg-151"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.5.1" id="ragg-151">ragg 1.5.1<a class="anchor" aria-label="anchor" href="#ragg-151"></a></h2><p class="text-muted">CRAN release: 2026-03-06</p>
 <ul><li>Fix support for the default symbol font on many linux distros (StandardSymbolPS) by ensuring proper fallback during character metric calculation (<a href="https://github.com/r-lib/ragg/issues/136" class="external-link">#136</a>, <a href="https://github.com/r-lib/ragg/issues/201" class="external-link">#201</a>)</li>
 <li>
 <code><a href="../reference/agg_capture.html">agg_capture()</a></code> now reports the current “page number” as well as whether any drawing has occured since the last time the capture was taken as attributes in the return value (but only if you request native raster) (<a href="https://github.com/r-lib/ragg/issues/204" class="external-link">#204</a>)</li>

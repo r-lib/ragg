@@ -2,7 +2,12 @@
 
 ## ragg (development version)
 
+- Fixed a sanitizer issue from not correctly closing down the recording
+  device
+
 ## ragg 1.5.1
+
+CRAN release: 2026-03-06
 
 - Fix support for the default symbol font on many linux distros
   (StandardSymbolPS) by ensuring proper fallback during character metric

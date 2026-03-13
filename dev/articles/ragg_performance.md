@@ -681,7 +681,7 @@ multiple grobs need to be created.
 sessioninfo::session_info()
 #> ─ Session info ──────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.5.2 (2025-10-31)
+#>  version  R version 4.5.3 (2026-03-11)
 #>  os       Ubuntu 24.04.3 LTS
 #>  system   x86_64, linux-gnu
 #>  ui       X11
@@ -689,7 +689,7 @@ sessioninfo::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-03-06
+#>  date     2026-03-13
 #>  pandoc   3.1.11 @ /opt/hostedtoolcache/pandoc/3.1.11/x64/ (via rmarkdown)
 #>  quarto   NA
 #> 
@@ -706,7 +706,7 @@ sessioninfo::session_info()
 #>  evaluate       1.0.5      2025-08-27 [1] RSPM
 #>  farver         2.1.2      2024-05-13 [1] RSPM
 #>  fastmap        1.2.0      2024-05-15 [1] RSPM
-#>  fs             1.6.6      2025-04-12 [1] RSPM
+#>  fs             1.6.7      2026-03-06 [1] RSPM
 #>  generics       0.1.4      2025-05-09 [1] RSPM
 #>  ggplot2      * 4.0.2      2026-02-03 [1] RSPM
 #>  ggridges       0.5.7      2025-08-27 [1] RSPM
@@ -718,19 +718,19 @@ sessioninfo::session_info()
 #>  jsonlite       2.0.0      2025-03-27 [1] RSPM
 #>  knitr          1.51       2025-12-20 [1] RSPM
 #>  labeling       0.4.3      2023-08-29 [1] RSPM
-#>  lattice        0.22-7     2025-04-02 [3] CRAN (R 4.5.2)
+#>  lattice        0.22-9     2026-02-09 [3] CRAN (R 4.5.3)
 #>  lifecycle      1.0.5      2026-01-08 [1] RSPM
 #>  magrittr       2.0.4      2025-09-12 [1] RSPM
-#>  Matrix         1.7-4      2025-08-28 [3] CRAN (R 4.5.2)
-#>  mgcv           1.9-3      2025-04-04 [3] CRAN (R 4.5.2)
-#>  nlme           3.1-168    2025-03-31 [3] CRAN (R 4.5.2)
+#>  Matrix         1.7-4      2025-08-28 [3] CRAN (R 4.5.3)
+#>  mgcv           1.9-4      2025-11-07 [3] CRAN (R 4.5.3)
+#>  nlme           3.1-168    2025-03-31 [3] CRAN (R 4.5.3)
 #>  pillar         1.11.1     2025-09-17 [1] RSPM
 #>  pkgconfig      2.0.3      2019-09-22 [1] RSPM
 #>  pkgdown        2.2.0      2025-11-06 [1] RSPM
 #>  profmem        0.7.0      2025-05-02 [1] RSPM
 #>  purrr          1.2.1      2026-01-09 [1] RSPM
 #>  R6             2.6.1      2025-02-15 [1] RSPM
-#>  ragg         * 1.5.1.9000 2026-03-06 [1] local
+#>  ragg         * 1.5.1.9000 2026-03-13 [1] local
 #>  RColorBrewer   1.1-3      2022-04-03 [1] RSPM
 #>  rlang          1.1.7      2026-01-09 [1] RSPM
 #>  rmarkdown      2.30       2025-09-28 [1] RSPM
@@ -738,8 +738,8 @@ sessioninfo::session_info()
 #>  sass           0.4.10     2025-04-11 [1] RSPM
 #>  scales         1.4.0      2025-04-24 [1] RSPM
 #>  sessioninfo    1.2.3      2025-02-05 [1] RSPM
-#>  systemfonts    1.3.1      2025-10-01 [1] RSPM
-#>  textshaping    1.0.4      2025-10-10 [1] RSPM
+#>  systemfonts    1.3.2      2026-03-05 [1] RSPM
+#>  textshaping    1.0.5      2026-03-06 [1] RSPM
 #>  tibble         3.3.1      2026-01-11 [1] RSPM
 #>  tidyr          1.3.2      2025-12-19 [1] RSPM
 #>  tidyselect     1.2.1      2024-03-11 [1] RSPM
@@ -749,8 +749,8 @@ sessioninfo::session_info()
 #>  yaml           2.3.12     2025-12-10 [1] RSPM
 #> 
 #>  [1] /home/runner/work/_temp/Library
-#>  [2] /opt/R/4.5.2/lib/R/site-library
-#>  [3] /opt/R/4.5.2/lib/R/library
+#>  [2] /opt/R/4.5.3/lib/R/site-library
+#>  [3] /opt/R/4.5.3/lib/R/library
 #>  * ── Packages attached to the search path.
 #> 
 #> ─────────────────────────────────────────────────────────────────────
