@@ -486,6 +486,7 @@ AggDevice<PIXFMT, R_COLOR, BLNDFMT>::AggDevice(const char* fp, int w, int h, dou
   device_id(0),
   hold_level(0),
   pageno(0),
+  changed(false),
   file(fp),
   background_int(bg),
   pointsize(ps),

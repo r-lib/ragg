@@ -14,11 +14,6 @@ void agg_new_page<AggDeviceRecordAlpha>(const pGEcontext gc, pDevDesc dd) {
 }
 
 template<>
-void agg_close<AggDeviceRecordAlpha>(pDevDesc dd) {
-  return;
-}
-
-template<>
 void agg_line<AggDeviceRecordAlpha>(double x1, double y1, double x2, double y2,
               const pGEcontext gc, pDevDesc dd) {
   return;

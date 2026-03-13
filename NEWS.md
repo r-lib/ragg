@@ -1,5 +1,7 @@
 # ragg (development version)
 
+* Fixed a sanitizer issue from not correctly closing down the recording device
+
 # ragg 1.5.1
 
 * Fix support for the default symbol font on many linux distros
