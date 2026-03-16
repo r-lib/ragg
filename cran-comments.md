@@ -1,1 +1,1 @@
-Patch release to fix compile warnings reported by cran
+Fix memory issues reported by CRAN
