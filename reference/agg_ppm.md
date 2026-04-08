@@ -87,6 +87,6 @@ file <- tempfile(fileext = '.ppm')
 agg_ppm(file)
 plot(sin, -pi, 2*pi)
 dev.off()
-#> agg_record_1d992a8b838f 
+#> agg_record_20e6541fc7b5 
 #>                       2 
 ```
