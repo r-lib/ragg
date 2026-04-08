@@ -27,12 +27,12 @@ Source:
 [`DESCRIPTION`](https://github.com/r-lib/ragg/blob/main/DESCRIPTION)
 
 Pedersen T, Shemanarev M (2026). *ragg: Graphic Devices Based on AGG*. R
-package version 1.5.1.9000, <https://ragg.r-lib.org>.
+package version 1.5.2.9000, <https://ragg.r-lib.org>.
 
     @Manual{,
       title = {ragg: Graphic Devices Based on AGG},
       author = {Thomas Lin Pedersen and Maxim Shemanarev},
       year = {2026},
-      note = {R package version 1.5.1.9000},
+      note = {R package version 1.5.2.9000},
       url = {https://ragg.r-lib.org},
     }

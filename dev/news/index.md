@@ -2,6 +2,10 @@
 
 ## ragg (development version)
 
+## ragg 1.5.2
+
+CRAN release: 2026-03-23
+
 - Fixed a sanitizer issue from not correctly closing down the recording
   device
 
