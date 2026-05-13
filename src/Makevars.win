@@ -4,7 +4,7 @@ RAGG_LIBS := $(shell $(PKG_CONFIG) --libs $(PKG_CONFIG_NAME))
 
 ifneq ($(RAGG_LIBS),)
 $(info using $(PKG_CONFIG_NAME) from Rtools)
-RAGG_CFLAGS := $(shell $(PKG_CONFIG) --cflags $(PKG_CONFIG_NAME))
+RAGG_CFLAGS := $(shell $(PKG_CONFIG) --cflags $(PKG_CONFIG_NAME)) -lws2_32
 else
 RWINLIB = ../windows/harfbuzz
 RAGG_CFLAGS = -I$(RWINLIB)/include -I$(RWINLIB)/include/freetype2
