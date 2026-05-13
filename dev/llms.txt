@@ -13,6 +13,7 @@ The package can be installed from CRAN with `install.packages('ragg')`
 or, if the development version is desired, directly from github:
 
 ``` r
+
 # install.packages('pak')
 pak::pak('r-lib/ragg')
 ```
@@ -45,6 +46,7 @@ which have arguments that closely match those of the
 over should be easy.
 
 ``` r
+
 library(ragg)
 library(ggplot2)
 
@@ -73,6 +75,7 @@ device that lets you access the device buffer directly from your R
 session.
 
 ``` r
+
 cap <- agg_capture(width = 1000, height = 500, res = 144)
 plot(1:10, 1:10)
 

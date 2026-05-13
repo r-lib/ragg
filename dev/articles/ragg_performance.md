@@ -1,6 +1,7 @@
 # Ragg Performance
 
 ``` r
+
 library(ragg)
 library(devoid)
 library(ggplot2)
@@ -46,6 +47,7 @@ same underlying libraries to write to png files (libpng) it is not
 expected that there is much difference.
 
 ``` r
+
 file <- tempfile(fileext = '.png')
 res <- bench::mark(
   ragg = {agg_png(file); plot.new(); dev.off()},
@@ -92,6 +94,7 @@ them. Remember,
 the baseline.
 
 ``` r
+
 render_bench <- function(dev_f, ...) {
   dots <- rlang::enexprs(...)
   force(dev_f)
@@ -145,6 +148,7 @@ possible, as it may get called thousands of times during the creation of
 a plot.
 
 ``` r
+
 x <- runif(1000)
 y <- runif(1000)
 pch <- 1
@@ -160,6 +164,7 @@ plot_bench(res, 'Unfilled circle performance', b)
 ![](ragg_performance_files/figure-html/unnamed-chunk-5-1.png)
 
 ``` r
+
 pch <- 19
 
 void_dev()
@@ -186,6 +191,7 @@ segments directly and are also the workhorse for some of the different
 symbol types, e.g. `pch = 4`, which we will use here.
 
 ``` r
+
 pch <- 4
 
 void_dev()
@@ -210,6 +216,7 @@ test different line patterns here to assess whether there are any
 differences in the efficency with which patterns are generated.
 
 ``` r
+
 void_dev()
 plot.new()
 b <- system.time(lines(x, y))
@@ -221,6 +228,7 @@ plot_bench(res, 'Connected line performance', b)
 ![](ragg_performance_files/figure-html/unnamed-chunk-8-1.png)
 
 ``` r
+
 void_dev()
 plot.new()
 b <- system.time(lines(x, y, lty = 4))
@@ -244,6 +252,7 @@ it is used when plotting certain types of points, and this is how we’ll
 test it:
 
 ``` r
+
 pch <- 0
 
 void_dev()
@@ -257,6 +266,7 @@ plot_bench(res, 'Unfilled rectangle performance', b)
 ![](ragg_performance_files/figure-html/unnamed-chunk-10-1.png)
 
 ``` r
+
 pch <- 15
 
 void_dev()
@@ -283,6 +293,7 @@ cases. It is used in points for e.g.  triangles, but we will also test
 performance for bigger, more complex polygons.
 
 ``` r
+
 pch <- 2
 
 void_dev()
@@ -296,6 +307,7 @@ plot_bench(res, 'Simple polygon performance', b)
 ![](ragg_performance_files/figure-html/unnamed-chunk-12-1.png)
 
 ``` r
+
 void_dev()
 plot.new()
 b <- system.time(polygon(x, y))
@@ -307,6 +319,7 @@ plot_bench(res, 'Unfilled complex polygon performance', b)
 ![](ragg_performance_files/figure-html/unnamed-chunk-13-1.png)
 
 ``` r
+
 void_dev()
 plot.new()
 b <- system.time(polygon(x, y, border = 'gray', col = 'black'))
@@ -332,6 +345,7 @@ polygon method being a special case of the path method), but how the
 other devices implement it is not something I know.
 
 ``` r
+
 section <- rep(1:10, each = 100)
 x_path <- unlist(lapply(split(x, section), function(x) c(x, NA)))
 y_path <- unlist(lapply(split(y, section), function(x) c(x, NA)))
@@ -350,6 +364,7 @@ plot_bench(res, 'Unfilled path performance', b)
 ![](ragg_performance_files/figure-html/unnamed-chunk-15-1.png)
 
 ``` r
+
 void_dev()
 plot.new()
 b <- system.time(polypath(x_path, y_path, rule = 'evenodd', border = 'gray', 
@@ -378,6 +393,7 @@ device specific, so there’s a lot of room for quality differences which
 we will not look at here.
 
 ``` r
+
 raster <- matrix(hcl(0, 80, seq(50, 80, 10)), nrow = 4, ncol = 5)
 
 void_dev()
@@ -394,6 +410,7 @@ plot_bench(res, 'Non-interpolated, non-rotated raster performance', b)
 ![](ragg_performance_files/figure-html/unnamed-chunk-17-1.png)
 
 ``` r
+
 void_dev()
 plot.new()
 b <- system.time(rasterImage(raster, xleft = rep(0.25, 100), ybottom = 0.25, 
@@ -409,6 +426,7 @@ plot_bench(res, 'Non-interpolated, rotated raster performance', b)
 ![](ragg_performance_files/figure-html/unnamed-chunk-18-1.png)
 
 ``` r
+
 void_dev()
 plot.new()
 b <- system.time(rasterImage(raster, xleft = rep(0.25, 100), ybottom = 0.25, 
@@ -423,6 +441,7 @@ plot_bench(res, 'Interpolated, non-rotated raster performance', b)
 ![](ragg_performance_files/figure-html/unnamed-chunk-19-1.png)
 
 ``` r
+
 void_dev()
 plot.new()
 b <- system.time(rasterImage(raster, xleft = rep(0.25, 100), ybottom = 0.25, 
@@ -452,6 +471,7 @@ e.g. the extrafont or showtext packages for that. Anyway, again we only
 look at performance in this document.
 
 ``` r
+
 pch <- "#"
 
 void_dev()
@@ -465,6 +485,7 @@ plot_bench(res, 'Single character performance', b)
 ![](ragg_performance_files/figure-html/unnamed-chunk-21-1.png)
 
 ``` r
+
 void_dev()
 plot.new()
 b <- system.time(text(x, y, label = 'abcdefghijk'))
@@ -491,6 +512,7 @@ worry about the quality of the graphic — we are simply piling on layers
 of stuff):
 
 ``` r
+
 p <- ggplot(diamonds, aes(carat, price)) + 
   geom_hex() + 
   geom_point(shape = 1, size = 0.05, colour = 'white') + 
@@ -507,6 +529,7 @@ p
 We will prebuild the plot so mainly rendering will be measured
 
 ``` r
+
 p <- ggplotGrob(p)
 void_dev()
 b <- system.time(plot(p))
@@ -568,6 +591,7 @@ on any complex grob you may define. Passing this grob to the clip
 argument of the viewport will use the grob as a clipping region.
 
 ``` r
+
 library(grid)
 clip <- pointsGrob(runif(500), runif(500), default.units = 'npc')
 segments <- segmentsGrob(runif(100), runif(100), runif(100), runif(100), 
@@ -601,6 +625,7 @@ creating the mask so it has some overhead not present in clipping paths
 depending on the resolution of the device.
 
 ``` r
+
 mask <- pointsGrob(runif(2000), runif(2000), default.units = 'npc', pch = 16, 
                    gp = gpar(col = '#00000077'))
 segments <- segmentsGrob(runif(100), runif(100), runif(100), runif(100), 
@@ -627,6 +652,7 @@ Gradients allow you to produce a smooth transition between a range of
 colours, either along a line or in a radial manner.
 
 ``` r
+
 circles <- circleGrob(runif(2000), runif(2000), r = unit(0.5, 'char'), 
                       gp = gpar(fill = linearGradient(c('black', 'transparent', 'blue'))))
 
@@ -653,6 +679,7 @@ grob which will be rendered to a separate canvas and then used as fill
 with different extend modes (repeat, reflect, pad, etc.)
 
 ``` r
+
 segments <- segmentsGrob(runif(1000), runif(1000), runif(1000), runif(1000), 
                          gp = gpar(col = sample(palette(), 1000, TRUE)))
 pat <- pattern(segments, width = 0.1, height = 0.1, extend = 'reflect')
@@ -678,10 +705,11 @@ multiple grobs need to be created.
 ## Session info
 
 ``` r
+
 sessioninfo::session_info()
 #> ─ Session info ──────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.5.3 (2026-03-11)
+#>  version  R version 4.6.0 (2026-04-24)
 #>  os       Ubuntu 24.04.4 LTS
 #>  system   x86_64, linux-gnu
 #>  ui       X11
@@ -689,8 +717,8 @@ sessioninfo::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-04-08
-#>  pandoc   3.1.11 @ /opt/hostedtoolcache/pandoc/3.1.11/x64/ (via rmarkdown)
+#>  date     2026-05-13
+#>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   NA
 #> 
 #> ─ Packages ──────────────────────────────────────────────────────────
@@ -698,7 +726,7 @@ sessioninfo::session_info()
 #>  bench          1.1.4      2025-01-16 [1] RSPM
 #>  bslib          0.10.0     2026-01-26 [1] RSPM
 #>  cachem         1.1.0      2024-05-16 [1] RSPM
-#>  cli            3.6.5      2025-04-23 [1] RSPM
+#>  cli            3.6.6      2026-04-09 [1] RSPM
 #>  desc           1.4.3      2023-12-10 [1] RSPM
 #>  devoid       * 0.1.2      2023-04-25 [1] RSPM
 #>  digest         0.6.39     2025-11-19 [1] RSPM
@@ -706,11 +734,11 @@ sessioninfo::session_info()
 #>  evaluate       1.0.5      2025-08-27 [1] RSPM
 #>  farver         2.1.2      2024-05-13 [1] RSPM
 #>  fastmap        1.2.0      2024-05-15 [1] RSPM
-#>  fs             2.0.1      2026-03-24 [1] RSPM
+#>  fs             2.1.0      2026-04-18 [1] RSPM
 #>  generics       0.1.4      2025-05-09 [1] RSPM
-#>  ggplot2      * 4.0.2      2026-02-03 [1] RSPM
+#>  ggplot2      * 4.0.3      2026-04-22 [1] RSPM
 #>  ggridges       0.5.7      2025-08-27 [1] RSPM
-#>  glue           1.8.0      2024-09-30 [1] RSPM
+#>  glue           1.8.1      2026-04-17 [1] RSPM
 #>  gtable         0.3.6      2024-10-25 [1] RSPM
 #>  hexbin         1.28.5     2024-11-13 [1] RSPM
 #>  htmltools      0.5.9      2025-12-04 [1] RSPM
@@ -718,23 +746,23 @@ sessioninfo::session_info()
 #>  jsonlite       2.0.0      2025-03-27 [1] RSPM
 #>  knitr          1.51       2025-12-20 [1] RSPM
 #>  labeling       0.4.3      2023-08-29 [1] RSPM
-#>  lattice        0.22-9     2026-02-09 [3] CRAN (R 4.5.3)
+#>  lattice        0.22-9     2026-02-09 [3] CRAN (R 4.6.0)
 #>  lifecycle      1.0.5      2026-01-08 [1] RSPM
 #>  magrittr       2.0.5      2026-04-04 [1] RSPM
-#>  Matrix         1.7-4      2025-08-28 [3] CRAN (R 4.5.3)
-#>  mgcv           1.9-4      2025-11-07 [3] CRAN (R 4.5.3)
-#>  nlme           3.1-168    2025-03-31 [3] CRAN (R 4.5.3)
+#>  Matrix         1.7-5      2026-03-21 [3] CRAN (R 4.6.0)
+#>  mgcv           1.9-4      2025-11-07 [3] CRAN (R 4.6.0)
+#>  nlme           3.1-169    2026-03-27 [3] CRAN (R 4.6.0)
 #>  pillar         1.11.1     2025-09-17 [1] RSPM
 #>  pkgconfig      2.0.3      2019-09-22 [1] RSPM
 #>  pkgdown        2.2.0      2025-11-06 [1] RSPM
 #>  profmem        0.7.0      2025-05-02 [1] RSPM
-#>  purrr          1.2.1      2026-01-09 [1] RSPM
+#>  purrr          1.2.2      2026-04-10 [1] RSPM
 #>  R6             2.6.1      2025-02-15 [1] RSPM
-#>  ragg         * 1.5.2.9000 2026-04-08 [1] local
+#>  ragg         * 1.5.2.9000 2026-05-13 [1] local
 #>  RColorBrewer   1.1-3      2022-04-03 [1] RSPM
 #>  rlang          1.2.0      2026-04-06 [1] RSPM
 #>  rmarkdown      2.31       2026-03-26 [1] RSPM
-#>  S7             0.2.1      2025-11-14 [1] RSPM
+#>  S7             0.2.2      2026-04-22 [1] RSPM
 #>  sass           0.4.10     2025-04-11 [1] RSPM
 #>  scales         1.4.0      2025-04-24 [1] RSPM
 #>  sessioninfo    1.2.3      2025-02-05 [1] RSPM
@@ -743,14 +771,14 @@ sessioninfo::session_info()
 #>  tibble         3.3.1      2026-01-11 [1] RSPM
 #>  tidyr          1.3.2      2025-12-19 [1] RSPM
 #>  tidyselect     1.2.1      2024-03-11 [1] RSPM
-#>  vctrs          0.7.2      2026-03-21 [1] RSPM
+#>  vctrs          0.7.3      2026-04-11 [1] RSPM
 #>  withr          3.0.2      2024-10-28 [1] RSPM
 #>  xfun           0.57       2026-03-20 [1] RSPM
 #>  yaml           2.3.12     2025-12-10 [1] RSPM
 #> 
 #>  [1] /home/runner/work/_temp/Library
-#>  [2] /opt/R/4.5.3/lib/R/site-library
-#>  [3] /opt/R/4.5.3/lib/R/library
+#>  [2] /opt/R/4.6.0/lib/R/site-library
+#>  [3] /opt/R/4.6.0/lib/R/library
 #>  * ── Packages attached to the search path.
 #> 
 #> ─────────────────────────────────────────────────────────────────────
