@@ -41,10 +41,15 @@ class AggDeviceWebPAnim : public AggDevice<PIXFMT> {
   }
 
   static const char* mux_error_name(WebPMuxError error_code) {
-    static constexpr const char* errors[] = {"OK", "NOT_FOUND", "INVALID_ARGUMENT", "BAD_DATA",
-                                             "MEMORY_ERROR", "NOT_ENOUGH_DATA"};
-    constexpr int num_errors = sizeof(errors) / sizeof(errors[0]);
-    return (error_code >= 0 && error_code < num_errors) ? errors[error_code] : "UNKNOWN";
+    switch (error_code) {
+    case WEBP_MUX_OK: return "OK";
+    case WEBP_MUX_NOT_FOUND: return "NOT_FOUND";
+    case WEBP_MUX_INVALID_ARGUMENT: return "INVALID_ARGUMENT";
+    case WEBP_MUX_BAD_DATA: return "BAD_DATA";
+    case WEBP_MUX_MEMORY_ERROR: return "MEMORY_ERROR";
+    case WEBP_MUX_NOT_ENOUGH_DATA: return "NOT_ENOUGH_DATA";
+    default: return "UNKNOWN";
+    }
   }
 
  public:
