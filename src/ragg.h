@@ -4,6 +4,9 @@
 #include <tuple>
 #include <utility>
 #include <unordered_map>
+#include <stdexcept>
+#include <cstdint>
+#include <cstddef>
 
 #ifndef R_NO_REMAP
 #define R_NO_REMAP
@@ -31,6 +34,49 @@ catch (const std::bad_alloc&) {                                                \
 catch (std::exception & e) {                                                   \
   Rf_error("C++ exception: %s", e.what());                                     \
 }                                                                              \
+
+// Compute a pixel buffer size with overflow and sanity checks. Throws
+// std::runtime_error (caught by END_CPP) on invalid or too-large sizes.
+inline size_t checked_buffer_size(int64_t w, int64_t h, int64_t bpp) {
+  if (w < 0 || h < 0 || bpp <= 0) {
+    throw std::runtime_error("Invalid device dimensions");
+  }
+  int64_t size = w * h * bpp;
+  if (static_cast<uint64_t>(size) > static_cast<uint64_t>(SIZE_MAX)) {
+    throw std::runtime_error("Device dimensions are too large");
+  }
+  return static_cast<size_t>(size);
+}
+
+// Evaluate an R call while guaranteeing that a cleanup function runs
+// afterwards, whether the call returns normally or longjmps (R error or
+// interrupt). Device code uses this to restore rendering state that was
+// changed before handing control back to R. R_UnwindProtect continues the
+// jump by throwing a non-std::exception C++ exception, so destructors run
+// and the END_CPP handlers below do not intercept it.
+typedef void (*RaggCleanupFun)(void* data);
+
+struct RaggUnwindData {
+  SEXP expr;
+  void* cleanup_data;
+  RaggCleanupFun cleanup;
+};
+
+inline SEXP ragg_unwind_eval(void* data) {
+  RaggUnwindData* d = static_cast<RaggUnwindData*>(data);
+  SEXP R_fcall = PROTECT(Rf_lang1(d->expr));
+  SEXP res = Rf_eval(R_fcall, R_GlobalEnv);
+  UNPROTECT(1);
+  return res;
+}
+inline void ragg_unwind_cleanup(void* data, Rboolean) {
+  RaggUnwindData* d = static_cast<RaggUnwindData*>(data);
+  d->cleanup(d->cleanup_data);
+}
+inline void ragg_eval_with_cleanup(SEXP expr, RaggCleanupFun cleanup, void* cleanup_data) {
+  RaggUnwindData data = {expr, cleanup_data, cleanup};
+  R_UnwindProtect(ragg_unwind_eval, &data, ragg_unwind_cleanup, &data, NULL);
+}
 
 #define R_USE_PROTOTYPES 1
 typedef agg::pixfmt_rgb24_pre                   pixfmt_type_24;

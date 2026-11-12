@@ -20,7 +20,7 @@ public:
     return true;
   }
   SEXP capture() {
-    SEXP raster = PROTECT(Rf_allocVector(INTSXP, this->width * this->height));
+    SEXP raster = PROTECT(Rf_allocVector(INTSXP, checked_buffer_size(this->width, this->height, 1)));
     agg::rendering_buffer caprbuf(reinterpret_cast<agg::int8u*>(INTEGER(raster)),
                                   this->width, this->height, this->width * 4);
     agg::convert<pixfmt_r_raster, pixfmt_type_32>(&caprbuf, &this->rbuf);

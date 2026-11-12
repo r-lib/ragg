@@ -251,6 +251,11 @@ public:
         font.index == last_font.index &&
         strncmp(font.file, last_font.file, PATH_MAX) == 0)) {
       if (!get_engine().load_font(font.file, font.index, gren)) {
+        // The engine is now left without a face. Invalidate last_font so
+        // the shortcut above can't skip reloading a working font next time,
+        // which would leave the NULL face to be dereferenced
+        last_font.file[0] = '\0';
+        last_font.index = 0;
         return false;
       }
 
@@ -288,7 +293,13 @@ public:
       uint32_t cc = c;
       const char *utf_c = converter.convert_to_utf(&cc, 1, n_chars);
       FontSettings fallback = get_fallback(utf_c, last_font.file, last_font.index);
-      load_font_from_file(fallback, last_gren, get_engine().height(), get_engine().id());
+      if (!load_font_from_file(fallback, last_gren, get_engine().height(), get_engine().id())) {
+        // No face is loaded at this point, so font metrics cannot be read
+        *ascent = 0.0;
+        *descent = 0.0;
+        *width = 0.0;
+        return;
+      }
       index = get_engine().get_glyph_index(c);
     }
     const agg::glyph_cache* glyph = get_manager().glyph(index);

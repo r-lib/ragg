@@ -1,5 +1,35 @@
 # ragg (development version)
 
+* Fixed a range of memory safety issues uncovered in a review of the C++ code:
+  * Pixel buffer sizes are now computed with overflow checks, preventing heap
+    corruption when opening devices with extreme dimensions
+  * Sub-pixel tiling patterns are now a clean error instead of a crash in the
+    tile renderer
+  * Failed allocations when creating masks, patterns, and groups can no longer
+    result in double frees
+  * 16-bit TIFF output no longer passes a malformed ExtraSamples tag to libtiff
+    which could crash on transparent backgrounds
+* R errors or interrupts raised while recording clipping paths, masks,
+  patterns, or groups no longer leak memory or leave the device in a broken
+  recording state where subsequent drawing silently disappears
+* Removed clip paths and masks are no longer referenced by the device,
+  avoiding potential use-after-free
+* Fixed a segfault that could occur when a font failed to load after another
+  font had been used, due to a stale font cache
+* Device ids are now unique across device types, fixing a potential font mixup
+  when different device types were open simultaneously
+* 16-bit devices now render masks with the correct colours (previously mask
+  colours were misinterpreted, e.g. a solid black mask rendered almost white)
+* libjpeg errors (e.g. write failures) no longer terminate the R session
+* libpng write failures no longer leak file handles
+* TIFF writing no longer leaks a file handle per saved page and is
+  unicode-aware on Windows for both 8- and 16-bit output
+* The `smoothing` and `method` arguments of `agg_jpeg()` are now respected
+  (they were previously reset by libjpeg defaults)
+* WebP save failures with `options(warn = 2)` no longer skip resource cleanup
+* `drawGlyph()` now translates all glyph positions correctly inside patterns
+  and no longer mutates R's coordinate arrays
+
 # ragg 1.5.2
 
 * Fixed a sanitizer issue from not correctly closing down the recording device

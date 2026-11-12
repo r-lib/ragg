@@ -78,14 +78,27 @@ class AggDeviceWebPAnim : public AggDevice<PIXFMT> {
   }
 
   bool savePage() {
+    // savePageImpl owns cleanup objects (unique_ptr) and uses exceptions
+    // internally, so Rf_warning must not be called until it has returned:
+    // under options(warn = 2) a warning longjmps and would skip destructors
+    // and unwind out of the try block
+    std::string error = savePageImpl();
+    if (!error.empty()) {
+      Rf_warning("%s", error.c_str());
+      return false;
+    }
+    return true;
+  }
+
+ private:
+  std::string savePageImpl() {
     AggDevice<PIXFMT>::savePage();
     demultiply<PIXFMT>(this->pixf);
 
     try {
       WebPPicture pic;
       if (!WebPPictureInit(&pic)) {
-        Rf_warning("WebPPictureInit failed");
-        return false;
+        return "WebPPictureInit failed";
       }
       auto pic_guard = std::unique_ptr<WebPPicture, decltype(&WebPPictureFree)>(&pic, WebPPictureFree);
 
@@ -101,8 +114,7 @@ class AggDeviceWebPAnim : public AggDevice<PIXFMT> {
 
       WebPConfig config;
       if (!WebPConfigInit(&config)) {
-        Rf_warning("WebPConfigInit failed");
-        return false;
+        return "WebPConfigInit failed";
       }
       config.quality = float(quality);
       config.lossless = lossy ? 0 : 1;
@@ -112,28 +124,26 @@ class AggDeviceWebPAnim : public AggDevice<PIXFMT> {
                                                           : WebPPictureImportRGBA;
 
       if (!importer(&pic, reinterpret_cast<const uint8_t*>(this->buffer), stride)) {
-        Rf_warning("WebPPictureImport failed: %s", webp_error_name(pic.error_code));
-        return false;
+        return std::string("WebPPictureImport failed: ") + webp_error_name(pic.error_code);
       }
 
       if (!WebPEncode(&config, &pic)) {
-        Rf_warning("WebPEncode failed: %s", webp_error_name(pic.error_code));
-        return false;
+        return std::string("WebPEncode failed: ") + webp_error_name(pic.error_code);
       }
 
       if (wr.size > 0 && wr.mem != nullptr) {
         frames.emplace_back(wr.mem, wr.mem + wr.size);
       } else {
-        Rf_warning("Empty or invalid WebP frame data");
-        return false;
+        return "Empty or invalid WebP frame data";
       }
-      return true;
+      return "";
 
     } catch (const std::exception& e) {
-      Rf_warning("Exception in savePage: %s", e.what());
-      return false;
+      return std::string("Exception in savePage: ") + e.what();
     }
   }
+
+ public:
 
   void close() {
     if (!savePage()) {

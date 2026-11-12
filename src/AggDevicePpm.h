@@ -7,10 +7,10 @@
 template<class PIXFMT>
 class AggDevicePpm : public AggDevice<PIXFMT> {
 public:
-  AggDevicePpm(const char* fp, int w, int h, double ps, int bg, double res, double scaling, bool snap) : 
+  AggDevicePpm(const char* fp, int w, int h, double ps, int bg, double res, double scaling, bool snap) :
   AggDevice<PIXFMT>(fp, w, h, ps, bg, res, scaling, snap)
   {
-    
+
   }
   // Behaviour
   bool savePage() {
@@ -19,10 +19,11 @@ public:
     FILE* fd = unicode_fopen(buf, "wb");
     if(fd)
     {
-      fprintf(fd, "P6 %d %d 255 ", this->width, this->height);
-      fwrite(this->buffer, 1,this-> width * this->height * this->bytes_per_pixel, fd);
+      size_t size = static_cast<size_t>(this->width) * this->height * this->bytes_per_pixel;
+      bool ok = fprintf(fd, "P6 %d %d 255 ", this->width, this->height) >= 0 &&
+                fwrite(this->buffer, 1, size, fd) == size;
       fclose(fd);
-      return true;
+      return ok;
     }
     return false;
   };

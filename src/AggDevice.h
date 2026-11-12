@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "ragg.h"
 #include "rendering.h"
 #include "text_renderer.h"
@@ -102,6 +104,70 @@ public:
   unsigned int group_cache_next_id;
   RenderBuffer<BLNDFMT>* recording_raster;
   Group<BLNDFMT, R_COLOR>* recording_group;
+
+  /* A snapshot of the mutable rendering state that is changed when handing
+   * control back to R (recording paths, masks, patterns, and groups). Used
+   * together with ragg_eval_with_cleanup() so the state is restored even if
+   * the R callback errors or is interrupted.
+   */
+  struct DeviceStateSnapshot {
+    AggDevice* self;
+    double clip_left, clip_right, clip_top, clip_bottom;
+    double x_trans, y_trans;
+    int ren_xmin, ren_ymin, ren_xmax, ren_ymax;
+    agg::path_storage* recording_path;
+    agg::path_storage* current_clip;
+    bool current_clip_rule_is_evenodd;
+    MaskBuffer* recording_mask;
+    MaskBuffer* current_mask;
+    RenderBuffer<BLNDFMT>* recording_raster;
+    Group<BLNDFMT, R_COLOR>* recording_group;
+  };
+
+  DeviceStateSnapshot snapshotState() {
+    DeviceStateSnapshot s;
+    s.self = this;
+    s.clip_left = clip_left;
+    s.clip_right = clip_right;
+    s.clip_top = clip_top;
+    s.clip_bottom = clip_bottom;
+    s.x_trans = x_trans;
+    s.y_trans = y_trans;
+    s.ren_xmin = renderer.xmin();
+    s.ren_ymin = renderer.ymin();
+    s.ren_xmax = renderer.xmax();
+    s.ren_ymax = renderer.ymax();
+    s.recording_path = recording_path;
+    s.current_clip = current_clip;
+    s.current_clip_rule_is_evenodd = current_clip_rule_is_evenodd;
+    s.recording_mask = recording_mask;
+    s.current_mask = current_mask;
+    s.recording_raster = recording_raster;
+    s.recording_group = recording_group;
+    return s;
+  }
+
+  void restoreState(const DeviceStateSnapshot& s) {
+    clip_left = s.clip_left;
+    clip_right = s.clip_right;
+    clip_top = s.clip_top;
+    clip_bottom = s.clip_bottom;
+    x_trans = s.x_trans;
+    y_trans = s.y_trans;
+    renderer.clip_box(s.ren_xmin, s.ren_ymin, s.ren_xmax, s.ren_ymax);
+    recording_path = s.recording_path;
+    current_clip = s.current_clip;
+    current_clip_rule_is_evenodd = s.current_clip_rule_is_evenodd;
+    recording_mask = s.recording_mask;
+    current_mask = s.current_mask;
+    recording_raster = s.recording_raster;
+    recording_group = s.recording_group;
+  }
+
+  static void restoreStateCallback(void* data) {
+    DeviceStateSnapshot* s = static_cast<DeviceStateSnapshot*>(data);
+    s->self->restoreState(*s);
+  }
 
   // Lifecycle methods
   AggDevice(const char* fp, int w, int h, double ps, int bg, double res,
@@ -289,15 +355,15 @@ protected:
         }
       }
     } else if (recording_raster == NULL) {
-      Pattern<pixfmt_type_32, agg::rgba8> mask_pattern = pattern.convert_for_mask();
+      std::unique_ptr<Pattern<pixfmt_type_32, agg::rgba8>> mask_pattern = pattern.convert_for_mask();
 
       if (current_mask == NULL) {
-        mask_pattern.draw(ras, ras_clip, sl, recording_mask->get_renderer(), clip);
+        mask_pattern->draw(ras, ras_clip, sl, recording_mask->get_renderer(), clip);
       } else {
         if (current_mask->use_luminance()) {
-          mask_pattern.draw(ras, ras_clip, current_mask->get_masked_scanline_l(), recording_mask->get_renderer(), clip);
+          mask_pattern->draw(ras, ras_clip, current_mask->get_masked_scanline_l(), recording_mask->get_renderer(), clip);
         } else {
-          mask_pattern.draw(ras, ras_clip, current_mask->get_masked_scanline_a(), recording_mask->get_renderer(), clip);
+          mask_pattern->draw(ras, ras_clip, current_mask->get_masked_scanline_a(), recording_mask->get_renderer(), clip);
         }
       }
     } else {
@@ -509,7 +575,7 @@ AggDevice<PIXFMT, R_COLOR, BLNDFMT>::AggDevice(const char* fp, int w, int h, dou
   recording_raster(NULL),
   recording_group(NULL)
 {
-  buffer = new unsigned char[width * height * bytes_per_pixel];
+  buffer = new unsigned char[checked_buffer_size(width, height, bytes_per_pixel)];
   rbuf = agg::rendering_buffer(buffer, width, height, width * bytes_per_pixel);
   pixf = new pixfmt_type(rbuf);
   renderer = renbase_type(*pixf);
@@ -665,14 +731,13 @@ template<class PIXFMT, class R_COLOR, typename BLNDFMT>
 std::unique_ptr<agg::path_storage> AggDevice<PIXFMT, R_COLOR, BLNDFMT>::recordPath(SEXP path) {
   std::unique_ptr<agg::path_storage> new_path(new agg::path_storage());
 
+  DeviceStateSnapshot state = snapshotState();
+
   // Assign container pointer to device
   recording_path = new_path.get();
 
-  SEXP R_fcall = PROTECT(Rf_lang1(path));
-  Rf_eval(R_fcall, R_GlobalEnv);
-  UNPROTECT(1);
-
-  recording_path = NULL;
+  // State is restored even if the path callback errors or is interrupted
+  ragg_eval_with_cleanup(path, restoreStateCallback, &state);
 
   return new_path;
 }
@@ -725,6 +790,8 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::removeClipPath(SEXP ref) {
   if (Rf_isNull(ref)) {
     clip_cache.clear();
     clip_cache_next_id = 0;
+    current_clip = NULL;
+    current_clip_rule_is_evenodd = false;
     return;
   }
 
@@ -737,6 +804,11 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::removeClipPath(SEXP ref) {
   auto it = clip_cache.find(key);
   // Check if path exists
   if (it != clip_cache.end()) {
+    // Don't leave current_clip pointing at the freed path
+    if (current_clip == it->second.first.get()) {
+      current_clip = NULL;
+      current_clip_rule_is_evenodd = false;
+    }
     clip_cache.erase(it);
   }
 
@@ -772,19 +844,16 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createMask(SEXP mask, SEXP ref) {
 #endif
     new_mask->init(width, height, luminance);
 
+    DeviceStateSnapshot state = snapshotState();
+
     // Assign container pointer to device
-    MaskBuffer* temp_mask = recording_mask;
-    RenderBuffer<BLNDFMT>* temp_raster = recording_raster;
     recording_mask = new_mask.get();
     recording_raster = NULL;
 
-    SEXP R_fcall = PROTECT(Rf_lang1(mask));
-    Rf_eval(R_fcall, R_GlobalEnv);
-    UNPROTECT(1);
+    // State is restored even if the mask callback errors or is interrupted
+    ragg_eval_with_cleanup(mask, restoreStateCallback, &state);
 
-    current_mask = recording_mask;
-    recording_raster = temp_raster;
-    recording_mask = temp_mask;
+    current_mask = new_mask.get();
 
     mask_cache[key] = std::move(new_mask);
 
@@ -800,6 +869,7 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::removeMask(SEXP ref) {
   if (Rf_isNull(ref)) {
     mask_cache.clear();
     mask_cache_next_id = 0;
+    current_mask = NULL;
     return;
   }
 
@@ -808,6 +878,10 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::removeMask(SEXP ref) {
   auto it = mask_cache.find(key);
   // Check if path exists
   if (it != mask_cache.end()) {
+    // Don't leave current_mask pointing at the freed mask
+    if (current_mask == it->second.get()) {
+      current_mask = NULL;
+    }
     mask_cache.erase(it);
   }
 
@@ -881,14 +955,7 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
                            R_GE_tilingPatternY(pattern) + y_trans,
                            extend);
 
-    double temp_clip_left = clip_left;
-    double temp_clip_right = clip_right;
-    double temp_clip_top = clip_top;
-    double temp_clip_bottom = clip_bottom;
-
-    MaskBuffer* temp_mask = recording_mask;
-    MaskBuffer* temp_current_mask = current_mask;
-    RenderBuffer<BLNDFMT>* temp_raster = recording_raster;
+    DeviceStateSnapshot state = snapshotState();
 
     x_trans += new_pattern->x_trans;
     y_trans += new_pattern->y_trans;
@@ -901,20 +968,8 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::createPattern(SEXP pattern) {
     current_mask = NULL;
     recording_raster = &(new_pattern->buffer);
 
-    SEXP R_fcall = PROTECT(Rf_lang1(R_GE_tilingPatternFunction(pattern)));
-    Rf_eval(R_fcall, R_GlobalEnv);
-    UNPROTECT(1);
-
-    clip_left = temp_clip_left;
-    clip_right = temp_clip_right;
-    clip_top = temp_clip_top;
-    clip_bottom = temp_clip_bottom;
-
-    x_trans -= new_pattern->x_trans;
-    y_trans -= new_pattern->y_trans;
-    recording_mask = temp_mask;
-    current_mask = temp_current_mask;
-    recording_raster = temp_raster;
+    // State is restored even if the tile callback errors or is interrupted
+    ragg_eval_with_cleanup(R_GE_tilingPatternFunction(pattern), restoreStateCallback, &state);
     break;
   }
 #endif
@@ -949,15 +1004,7 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::renderGroup(SEXP source, int op, SEXP 
 
   std::unique_ptr<Group<BLNDFMT, R_COLOR> > new_group(new Group<BLNDFMT, R_COLOR>(width, height, opClipsSrc(op) && destination != R_NilValue));
 
-  double temp_clip_left = clip_left;
-  double temp_clip_right = clip_right;
-  double temp_clip_top = clip_top;
-  double temp_clip_bottom = clip_bottom;
-
-  MaskBuffer* temp_mask = recording_mask;
-  MaskBuffer* temp_current_mask = current_mask;
-  Group<BLNDFMT, R_COLOR>* temp_group = recording_group;
-  RenderBuffer<BLNDFMT>* temp_raster = recording_raster;
+  DeviceStateSnapshot state = snapshotState();
 
   clip_left = 0.0;
   clip_right = width;
@@ -968,32 +1015,21 @@ SEXP AggDevice<PIXFMT, R_COLOR, BLNDFMT>::renderGroup(SEXP source, int op, SEXP 
   recording_group = NULL;
   recording_raster = &(new_group->dst);
 
+  // State is restored even if the group callbacks error or are interrupted
   if (destination != R_NilValue) {
-    SEXP R_fcall = PROTECT(Rf_lang1(destination));
-    Rf_eval(R_fcall, R_GlobalEnv);
-    UNPROTECT(1);
+    ragg_eval_with_cleanup(destination, restoreStateCallback, &state);
   }
 
-  recording_raster->set_comp(compositeOperator(op));
+  // NB: recording_raster has been restored by the eval cleanup at this
+  // point, so address the group buffer directly
+  new_group->dst.set_comp(compositeOperator(op));
 
   recording_raster = new_group->buffer();
   recording_group = new_group.get();
 
-  SEXP R_fcall = PROTECT(Rf_lang1(source));
-  Rf_eval(R_fcall, R_GlobalEnv);
-  UNPROTECT(1);
+  ragg_eval_with_cleanup(source, restoreStateCallback, &state);
 
   new_group->finish();
-
-  clip_left = temp_clip_left;
-  clip_right = temp_clip_right;
-  clip_top = temp_clip_top;
-  clip_bottom = temp_clip_bottom;
-
-  recording_mask = temp_mask;
-  current_mask = temp_current_mask;
-  recording_group = temp_group;
-  recording_raster = temp_raster;
 
   group_cache[key] = std::move(new_group);
 
@@ -1060,15 +1096,15 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::useGroup(SEXP ref, SEXP trans) {
       }
     }
   } else if (recording_raster == NULL) {
-    Group<pixfmt_type_32, agg::rgba8> mask_group = it->second->convert_for_mask();
+    std::unique_ptr<Group<pixfmt_type_32, agg::rgba8>> mask_group = it->second->convert_for_mask();
 
     if (current_mask == NULL) {
-      mask_group.draw(mtx, ras, ras_clip, sl, recording_mask->get_renderer(), clip);
+      mask_group->draw(mtx, ras, ras_clip, sl, recording_mask->get_renderer(), clip);
     } else {
       if (current_mask->use_luminance()) {
-        mask_group.draw(mtx, ras, ras_clip, current_mask->get_masked_scanline_l(), recording_mask->get_renderer(), clip);
+        mask_group->draw(mtx, ras, ras_clip, current_mask->get_masked_scanline_l(), recording_mask->get_renderer(), clip);
       } else {
-        mask_group.draw(mtx, ras, ras_clip, current_mask->get_masked_scanline_a(), recording_mask->get_renderer(), clip);
+        mask_group->draw(mtx, ras, ras_clip, current_mask->get_masked_scanline_a(), recording_mask->get_renderer(), clip);
       }
     }
   } else {
@@ -1511,11 +1547,15 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
                                                     int colour, double rot) {
   agg::glyph_rendering gren = std::fmod(rot, 90) == 0.0 && recording_path == NULL ? agg::glyph_ren_agg_gray8 : agg::glyph_ren_outline;
 
-  int i;
-  for (i=0; i<n; i++) {
-    *x += x_trans;
-    *y += y_trans;
+  // Translate all glyph positions, without mutating the caller's arrays
+  std::vector<double> x_translated(n);
+  std::vector<double> y_translated(n);
+  for (int i = 0; i < n; i++) {
+    x_translated[i] = x[i] + x_trans;
+    y_translated[i] = y[i] + y_trans;
   }
+  x = x_translated.data();
+  y = y_translated.data();
 
   size *= res_mod;
 
@@ -1523,7 +1563,8 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
   FontSettings font_info;
 
 #if R_GE_version >= 16
-  strncpy(font_info.file, R_GE_glyphFontFile(font), PATH_MAX);
+  // strncpy may not NUL-terminate if the path fills the buffer
+  snprintf(font_info.file, PATH_MAX + 1, "%s", R_GE_glyphFontFile(font));
   font_info.index = R_GE_glyphFontIndex(font);
   font_info.features = NULL;
   font_info.n_features = 0;

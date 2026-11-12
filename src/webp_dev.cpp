@@ -8,11 +8,12 @@ SEXP agg_webp_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
   int bgCol = RGBpar(bg, 0);
   bool los = LOGICAL(lossy)[0];
   int qual = INTEGER(quality)[0];
+  const char* filename = Rf_translateCharUTF8(STRING_ELT(file, 0));
 
   BEGIN_CPP
   if (R_OPAQUE(bgCol)) { // Opaque bg... no need for alpha channel
     AggDeviceWebPNoAlpha* device = new AggDeviceWebPNoAlpha(
-      Rf_translateCharUTF8((STRING_ELT(file, 0))),
+      filename,
       INTEGER(width)[0],
       INTEGER(height)[0],
       REAL(pointsize)[0],
@@ -26,7 +27,7 @@ SEXP agg_webp_c(SEXP file, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
     makeDevice<AggDeviceWebPNoAlpha>(device, "agg_webp");
   } else {
     AggDeviceWebPAlpha* device = new AggDeviceWebPAlpha(
-      Rf_translateCharUTF8((STRING_ELT(file, 0))),
+      filename,
       INTEGER(width)[0],
       INTEGER(height)[0],
       REAL(pointsize)[0],

@@ -440,7 +440,11 @@ SEXP agg_capabilities(SEXP capabilities) {
   return capabilities;
 }
 
-static unsigned int DEVICE_COUNTER = 0;
+// `inline` so all translation units share a single counter. A header-static
+// would give every device type its own sequence, and since devices share one
+// FreeType engine, duplicate ids could make one device render with another
+// device's font face
+inline unsigned int DEVICE_COUNTER = 0;
 
 template<class T>
 pDevDesc agg_device_new(T* device, bool record = FALSE) {
@@ -551,14 +555,34 @@ pDevDesc agg_device_new(T* device, bool record = FALSE) {
   return dd;
 }
 
+// Helpers for makeDevice() below. R_CheckDeviceAvailable() and
+// R_GE_checkVersionOrDie() signal errors with a longjmp, which skips C++
+// destructors, so the device must be deleted from an unwind-protect cleanup
+// rather than by a unique_ptr
 template<class T>
-void makeDevice(T* device, const char *name, bool record = false) {
+static SEXP check_device_available_impl(void*) {
   R_GE_checkVersionOrDie(R_GE_version);
   R_CheckDeviceAvailable();
+  return R_NilValue;
+}
+template<class T>
+static void delete_device_on_jump(void* data, Rboolean jump) {
+  if (jump) {
+    delete *static_cast<T**>(data);
+  }
+}
+
+template<class T>
+void makeDevice(T* device, const char *name, bool record = false) {
+  R_UnwindProtect(check_device_available_impl<T>, NULL,
+                  delete_device_on_jump<T>, &device, NULL);
+
   BEGIN_SUSPEND_INTERRUPTS {
     pDevDesc dev = agg_device_new<T>(device, record);
-    if (dev == NULL)
+    if (dev == NULL) {
+      delete device;
       Rf_error("agg device failed to open");
+    }
 
     /* jpeg and ppm formats don't support (semi-)transparent pixels */
     if (strcmp(name, "agg_jpeg") == 0 || strcmp(name, "agg_ppm") == 0)
@@ -566,6 +590,7 @@ void makeDevice(T* device, const char *name, bool record = false) {
 
     pGEDevDesc dd = GEcreateDevDesc(dev);
     GEaddDevice2(dd, name);
+    // R owns the device from here on
     GEinitDisplayList(dd);
 
   } END_SUSPEND_INTERRUPTS;

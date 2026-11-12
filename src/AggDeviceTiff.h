@@ -12,6 +12,26 @@
 #include <cstdio>
 #include <tiffio.h>
 
+// Unicode-aware replacement for TIFFOpen. Using TIFFOpen directly lets
+// libtiff own the file handle so nothing leaks when it is closed (unlike
+// pairing unicode_fopen() with TIFFFdOpen()).
+inline TIFF* unicode_TIFFOpen(const char* path, const char* mode) {
+#ifdef _WIN32
+  size_t len = MultiByteToWideChar(CP_UTF8, 0, path, -1, NULL, 0);
+  if (len <= 0) {
+    return NULL;
+  }
+  wchar_t* buf = (wchar_t*) R_alloc(len, sizeof(wchar_t));
+  if (buf == NULL) {
+    return NULL;
+  }
+  MultiByteToWideChar(CP_UTF8, 0, path, -1, buf, len);
+  return TIFFOpenW(buf, mode);
+#else
+  return TIFFOpen(path, mode);
+#endif
+}
+
 template<class PIXFMT>
 class AggDeviceTiff : public AggDevice<PIXFMT> {
   int compression;
@@ -30,19 +50,8 @@ public:
   bool savePage() {
     char buf[PATH_MAX+1];
     snprintf(buf, PATH_MAX, this->file.c_str(), this->pageno); buf[PATH_MAX] = '\0';
-    FILE* fd = unicode_fopen(buf, "wb");
-    if(!fd) return false;
-
-#ifdef _WIN32
-    TIFF *out= TIFFFdOpen(_get_osfhandle(fileno(fd)), buf, "w");
-#else
-    TIFF *out= TIFFFdOpen(fileno(fd), buf, "w");
-#endif
-
-    if (!out) {
-      fclose(fd);
-      return false;
-    }
+    TIFF *out = unicode_TIFFOpen(buf, "w");
+    if (!out) return false;
 
     // Image dims
     TIFFSetField (out, TIFFTAG_IMAGEWIDTH, this->width);
@@ -112,7 +121,7 @@ public:
   bool savePage() {
     char buf[PATH_MAX+1];
     snprintf(buf, PATH_MAX, this->file.c_str(), this->pageno); buf[PATH_MAX] = '\0';
-    TIFF *out= TIFFOpen(buf, "w");
+    TIFF *out = unicode_TIFFOpen(buf, "w");
     if (!out) return false;
 
     // Image dims
@@ -120,7 +129,9 @@ public:
     TIFFSetField(out, TIFFTAG_IMAGELENGTH, this->height);
     TIFFSetField(out, TIFFTAG_SAMPLESPERPIXEL, PIXFMT::num_components);
     if (PIXFMT::num_components == 4) {
-      TIFFSetField(out, TIFFTAG_EXTRASAMPLES, EXTRASAMPLE_ASSOCALPHA);
+      // EXTRASAMPLES takes a count and an array, like in the 8-bit device
+      short extras[] = {EXTRASAMPLE_ASSOCALPHA};
+      TIFFSetField(out, TIFFTAG_EXTRASAMPLES, 1, extras);
     }
     TIFFSetField(out, TIFFTAG_BITSPERSAMPLE, 16);
     TIFFSetField(out, TIFFTAG_ORIENTATION, ORIENTATION_TOPLEFT);

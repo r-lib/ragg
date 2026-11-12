@@ -1,6 +1,6 @@
 #pragma once
 
-#include <R_ext/Print.h> 
+#include <R_ext/Print.h>
 
 #include <webp/encode.h>
 
@@ -12,7 +12,7 @@ template<class PIXFMT>
 class AggDeviceWebP : public AggDevice<PIXFMT> {
  private:
   static const char* webp_error_name(int error_code) {
-    static constexpr const char* errors[] = {"OK", "OUT_OF_MEMORY", "BITSTREAM_OUT_OF_MEMORY", 
+    static constexpr const char* errors[] = {"OK", "OUT_OF_MEMORY", "BITSTREAM_OUT_OF_MEMORY",
                                              "NULL_PARAMETER", "INVALID_CONFIGURATION", "BAD_DIMENSION",
                                              "PARTITION0_OVERFLOW", "PARTITION_OVERFLOW", "BAD_WRITE",
                                              "FILE_TOO_BIG", "USER_ABORT"};
@@ -35,19 +35,32 @@ class AggDeviceWebP : public AggDevice<PIXFMT> {
   }
 
   bool savePage() {
+    // savePageImpl owns cleanup objects (unique_ptr), so Rf_warning must not
+    // be called until it has returned: under options(warn = 2) a warning
+    // longjmps and would skip their destructors
+    std::string error = savePageImpl();
+    if (!error.empty()) {
+      Rf_warning("%s", error.c_str());
+      return false;
+    }
+    return true;
+  }
+
+ private:
+  std::string savePageImpl() {
     char buf[PATH_MAX+1];
     snprintf(buf, PATH_MAX, this->file.c_str(), this->pageno);
     buf[PATH_MAX] = '\0';
 
     auto fd = std::unique_ptr<FILE, decltype(&std::fclose)>(
         unicode_fopen(buf, "wb"), &std::fclose);
-    if (!fd) return false;
+    if (!fd) return "Could not open file for writing";
 
     demultiply<PIXFMT>(this->pixf);
 
     WebPPicture pic;
-    if (!WebPPictureInit(&pic)) return false;
-    
+    if (!WebPPictureInit(&pic)) return "WebPPictureInit failed";
+
     auto pic_guard = std::unique_ptr<WebPPicture, void(*)(WebPPicture*)>(
         &pic, [](WebPPicture* p) { WebPPictureFree(p); });
 
@@ -57,7 +70,7 @@ class AggDeviceWebP : public AggDevice<PIXFMT> {
     pic.custom_ptr = fd.get();
 
     WebPConfig config;
-    if (!WebPConfigInit(&config)) return false;
+    if (!WebPConfigInit(&config)) return "WebPConfigInit failed";
     config.quality = float(quality);
     config.lossless = lossy ? 0 : 1;
 
@@ -66,16 +79,14 @@ class AggDeviceWebP : public AggDevice<PIXFMT> {
         ? WebPPictureImportRGB : WebPPictureImportRGBA;
 
     if (!importer(&pic, reinterpret_cast<const uint8_t*>(this->buffer), stride)) {
-      Rf_warning("WebPPictureImport failed: %s", webp_error_name(pic.error_code));
-      return false;
+      return std::string("WebPPictureImport failed: ") + webp_error_name(pic.error_code);
     }
 
     if (!WebPEncode(&config, &pic)) {
-      Rf_warning("WebPEncode failed: %s", webp_error_name(pic.error_code));
-      return false;
+      return std::string("WebPEncode failed: ") + webp_error_name(pic.error_code);
     }
 
-    return true;
+    return "";
   }
 
 private:

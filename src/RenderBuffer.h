@@ -19,11 +19,11 @@ public:
   typedef agg::pixfmt_custom_blend_rgba<blender_type, agg::rendering_buffer> blend_pixfmt_type;
   typedef agg::renderer_base<blend_pixfmt_type> blend_renbase_type;
   typedef agg::renderer_scanline_aa_solid<blend_renbase_type> blend_rensolid_type;
-  
+
   int width;
   int height;
   bool custom_blend;
-  
+
 protected:
   unsigned char* buffer;
   agg::rendering_buffer rbuf;
@@ -33,7 +33,7 @@ protected:
   blend_pixfmt_type* blend_pixf;
   blend_renbase_type blend_renderer;
   blend_rensolid_type blend_renderer_solid;
-  
+
 public:
   RenderBuffer() :
   width(0),
@@ -46,56 +46,68 @@ public:
     pixf = new pixfmt_type(rbuf);
     renderer = renbase_type(*pixf);
     renderer_solid = rensolid_type(renderer);
-    
+
     blend_pixf = new blend_pixfmt_type(rbuf);
     blend_renderer = blend_renbase_type(*blend_pixf);
     blend_renderer_solid = blend_rensolid_type(blend_renderer);
   }
   template<class COLOR>
-  RenderBuffer(int _width, int _height, COLOR bg) : 
+  RenderBuffer(int _width, int _height, COLOR bg) :
   width(_width),
   height(_height),
   custom_blend(false),
   rbuf()
   {
-    buffer = new unsigned char[width * height * PIXFMT::pix_width];
+    buffer = new unsigned char[checked_buffer_size(width, height, PIXFMT::pix_width)];
     rbuf.attach(buffer, width, height, width * PIXFMT::pix_width);
     pixf = new pixfmt_type(rbuf);
     renderer = renbase_type(*pixf);
     renderer_solid = rensolid_type(renderer);
-    
+
     blend_pixf = new blend_pixfmt_type(rbuf);
     blend_renderer = blend_renbase_type(*blend_pixf);
     blend_renderer_solid = blend_rensolid_type(blend_renderer);
-    
+
     renderer.clear(bg);
   }
+  // RenderBuffer owns raw pointers and its renderers reference them, so
+  // neither copying nor moving is safe
+  RenderBuffer(const RenderBuffer&) = delete;
+  RenderBuffer& operator=(const RenderBuffer&) = delete;
+  RenderBuffer(RenderBuffer&&) = delete;
+  RenderBuffer& operator=(RenderBuffer&&) = delete;
+
   ~RenderBuffer() {
     delete pixf;
     delete blend_pixf;
     delete [] buffer;
   }
-  
+
   template<class COLOR>
   void init(int _width, int _height, COLOR bg) {
+    // Allocate the new buffer before releasing the old one so a bad_alloc
+    // can't leave the object holding pointers to freed memory
+    unsigned char* new_buffer =
+      new unsigned char[checked_buffer_size(_width, _height, PIXFMT::pix_width)];
+
     delete pixf;
     delete blend_pixf;
     delete [] buffer;
     width = _width;
     height = _height;
-    buffer = new unsigned char[width * height * PIXFMT::pix_width];
+    buffer = new_buffer;
     rbuf.attach(buffer, width, height, width * PIXFMT::pix_width);
     pixf = new pixfmt_type(rbuf);
     renderer = renbase_type(*pixf);
     renderer_solid = rensolid_type(renderer);
-    
+
     blend_pixf = new blend_pixfmt_type(rbuf);
     blend_renderer = blend_renbase_type(*blend_pixf);
     blend_renderer_solid = blend_rensolid_type(blend_renderer);
-    
+
     renderer.clear(bg);
   }
-  
+
   void set_comp(agg::comp_op_e op) {
     if (op == agg::comp_op_src_over) return;
     blend_pixf->comp_op(op);
@@ -131,14 +143,14 @@ class MaskBuffer : public RenderBuffer<pixfmt_type_32> {
 public:
   typedef agg::scanline_u8_am<agg::alpha_mask_rgba32a> scanline_type_a;
   typedef agg::scanline_u8_am<agg::alpha_mask_rgba32gray> scanline_type_l;
-  
+
 private:
   agg::alpha_mask_rgba32a alpha_mask;
   agg::alpha_mask_rgba32gray luminance_mask;
   scanline_type_a scanline_a;
   scanline_type_l scanline_l;
   bool luminance;
-  
+
 public:
   MaskBuffer() :
   RenderBuffer<pixfmt_type_32>(),
@@ -148,7 +160,7 @@ public:
   scanline_l(luminance_mask),
   luminance(false)
   {
-    
+
   }
   MaskBuffer(int width, int height, bool lumin) :
   RenderBuffer<pixfmt_type_32>(width, height, agg::rgba8(0, 0, 0, 0)),
@@ -158,29 +170,33 @@ public:
   scanline_l(luminance_mask),
   luminance(lumin)
   {
-    
+
   }
-  
+
   void init(int _width, int _height, bool lumin) {
+    // Allocate first, see RenderBuffer::init
+    unsigned char* new_buffer =
+      new unsigned char[checked_buffer_size(_width, _height, 4)];
+
     delete pixf;
     delete blend_pixf;
     delete [] buffer;
     width = _width;
     height = _height;
     luminance = lumin;
-    buffer = new unsigned char[width * height * 4];
+    buffer = new_buffer;
     rbuf.attach(buffer, width, height, width * 4);
     pixf = new pixfmt_type_32(rbuf);
     renderer = renbase_type(*pixf);
     renderer_solid = rensolid_type(renderer);
-    
+
     blend_pixf = new blend_pixfmt_type(rbuf);
     blend_renderer = blend_renbase_type(*blend_pixf);
     blend_renderer_solid = blend_rensolid_type(blend_renderer);
-    
+
     renderer.clear(agg::rgba8(0, 0, 0, 0));
   }
-  
+
   scanline_type_a& get_masked_scanline_a() {
     return scanline_a;
   }
