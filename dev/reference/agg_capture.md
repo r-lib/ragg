@@ -92,7 +92,7 @@ raster <- cap()
 raster_n <- cap(native = TRUE)
 
 dev.off()
-#> agg_record_1b3134fcd7b8 
+#> agg_record_1c3616f9df4b 
 #>                       2 
 
 # Look at the output

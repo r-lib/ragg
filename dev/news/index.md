@@ -2,6 +2,10 @@
 
 ## ragg (development version)
 
+- Glyph loading now bypasses embedded bitmap strikes in scalable fonts,
+  which failed to render at specific font sizes with certain fonts (e.g.
+  Calibri and Arial on Windows) and silently produced missing text
+  ([\#219](https://github.com/r-lib/ragg/issues/219))
 - Fixed undefined behaviour (flagged by ASAN as `memcpy-param-overlap`)
   when the font cache pool evicted a font, by using `memmove` for the
   overlapping array shift in the vendored AGG font cache
