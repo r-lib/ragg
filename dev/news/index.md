@@ -2,6 +2,10 @@
 
 ## ragg (development version)
 
+- Fixed undefined behaviour (flagged by ASAN as `memcpy-param-overlap`)
+  when the font cache pool evicted a font, by using `memmove` for the
+  overlapping array shift in the vendored AGG font cache
+  ([\#222](https://github.com/r-lib/ragg/issues/222))
 - Fixed a range of memory safety issues uncovered in a review of the C++
   code:
   - Pixel buffer sizes are now computed with overflow checks, preventing
