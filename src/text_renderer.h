@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <cstdint>
+#include <cstring>
 #include <systemfonts.h>
 #include <textshaping.h>
 
@@ -199,15 +200,49 @@ public:
   }
 };
 
+// Deep-copy a FontSettings2, taking ownership of the axis arrays so the copy
+// stays valid after the source (which may point into caller-owned or
+// textshaping-owned memory) goes away
+inline void copy_font_settings(const FontSettings2& src, FontSettings2& dst,
+                               std::vector<int>& axes_store,
+                               std::vector<int>& coords_store) {
+  axes_store.clear();
+  coords_store.clear();
+  if (src.n_axes > 0 && src.axes != nullptr && src.coords != nullptr) {
+    axes_store.assign(src.axes, src.axes + src.n_axes);
+    coords_store.assign(src.coords, src.coords + src.n_axes);
+  }
+  dst = src;
+  dst.n_axes = axes_store.size();
+  dst.axes = axes_store.empty() ? nullptr : axes_store.data();
+  dst.coords = coords_store.empty() ? nullptr : coords_store.data();
+}
+
+inline bool same_font_axes(const FontSettings2& font,
+                           const std::vector<int>& axes,
+                           const std::vector<int>& coords) {
+  if (font.n_axes != (int) axes.size()) return false;
+  if (axes.empty()) return true;
+  if (font.axes == nullptr || font.coords == nullptr) return false;
+  return std::memcmp(font.axes, axes.data(), axes.size() * sizeof(int)) == 0 &&
+         std::memcmp(font.coords, coords.data(), coords.size() * sizeof(int)) == 0;
+}
+
 template<typename PIXFMT>
 class TextRenderer {
-  FontSettings last_font;
+  FontSettings2 last_font;
+  std::vector<int> last_axes;
+  std::vector<int> last_coords;
   agg::glyph_rendering last_gren;
   std::vector<textshaping::Point> loc_buffer;
   std::vector<uint32_t> id_buffer;
   std::vector<int> cluster_buffer;
   std::vector<unsigned int> font_buffer;
-  std::vector<FontSettings> fallback_buffer;
+  std::vector<FontSettings2> fallback_buffer;
+  // Owned axis storage for the fallbacks; pointers in fallback_buffer are
+  // re-pointed here after shaping
+  std::vector<std::vector<int> > fallback_axes_buffer;
+  std::vector<std::vector<int> > fallback_coords_buffer;
   std::vector<double> scaling_buffer;
   double current_font_height;
   double current_font_size;
@@ -223,10 +258,10 @@ public:
 
   bool load_font(agg::glyph_rendering gren, const char *family, int face,
                  double size, unsigned int id = 0) {
-    FontSettings font = get_font_file(family,
-                                      face == 2 || face == 4,
-                                      face == 3 || face == 4,
-                                      face == 5);
+    FontSettings2 font = get_font_file(family,
+                                       face == 2 || face == 4,
+                                       face == 3 || face == 4,
+                                       face == 5);
     current_font_size = size;
     if (!load_font_from_file(font, gren, size, id)) {
       Rf_warning("Unable to load font: %s", family);
@@ -244,11 +279,12 @@ public:
     return true;
   }
 
-  bool load_font_from_file(FontSettings font, agg::glyph_rendering gren, double size,
+  bool load_font_from_file(const FontSettings2& font, agg::glyph_rendering gren, double size,
                            unsigned int id) {
     if (id != get_engine().id() ||
         !(gren == last_gren &&
         font.index == last_font.index &&
+        same_font_axes(font, last_axes, last_coords) &&
         strncmp(font.file, last_font.file, PATH_MAX) == 0)) {
       if (!get_engine().load_font(font.file, font.index, gren)) {
         // The engine is now left without a face. Invalidate last_font so
@@ -256,8 +292,16 @@ public:
         // which would leave the NULL face to be dereferenced
         last_font.file[0] = '\0';
         last_font.index = 0;
+        last_axes.clear();
+        last_coords.clear();
         return false;
       }
+      // load_font() invalidates the engine's variation state, so re-apply it
+      // on every (re)load. A failure here leaves the face at its default
+      // instance, which is an acceptable degradation
+      get_engine().variations(font.n_axes > 0 ? font.axes : nullptr,
+                              font.n_axes > 0 ? font.coords : nullptr,
+                              font.n_axes > 0 ? font.n_axes : 0);
 
       last_gren = gren;
       get_engine().height(size);
@@ -265,13 +309,13 @@ public:
     } else if (size != get_engine().height()) {
       get_engine().height(size);
     }
-    last_font = font;
+    copy_font_settings(font, last_font, last_axes, last_coords);
     return true;
   }
 
   double get_text_width(const char* string) {
     double width = 0.0;
-    int error = textshaping::string_width(
+    int error = textshaping::ver2::string_width(
       string,
       last_font,
       current_font_size,
@@ -292,7 +336,7 @@ public:
       int n_chars = 0;
       uint32_t cc = c;
       const char *utf_c = converter.convert_to_utf(&cc, 1, n_chars);
-      FontSettings fallback = get_fallback(utf_c, last_font.file, last_font.index);
+      FontSettings2 fallback = systemfonts::ver2::get_fallback(utf_c, last_font);
       if (!load_font_from_file(fallback, last_gren, get_engine().height(), get_engine().id())) {
         // No face is loaded at this point, so font metrics cannot be read
         *ascent = 0.0;
@@ -359,7 +403,7 @@ public:
     fallback_buffer.resize(expected_max);
     scaling_buffer.resize(expected_max);
 
-    int err = textshaping::string_shape(
+    int err = textshaping::ver2::string_shape(
       string,
       last_font,
       current_font_size,
@@ -375,6 +419,15 @@ public:
     if (err != 0) {
       Rf_warning("textshaping failed to shape the string");
       return;
+    }
+
+    // Take ownership of the fallback axis arrays so they survive subsequent
+    // shaping calls
+    fallback_axes_buffer.resize(fallback_buffer.size());
+    fallback_coords_buffer.resize(fallback_buffer.size());
+    for (size_t i = 0; i < fallback_buffer.size(); ++i) {
+      copy_font_settings(fallback_buffer[i], fallback_buffer[i],
+                         fallback_axes_buffer[i], fallback_coords_buffer[i]);
     }
 
     int n_glyphs = loc_buffer.size();
@@ -510,13 +563,17 @@ private:
     return manager;
   }
 
-  FontSettings get_font_file(const char* family, int bold, int italic,
-                             int symbol) {
+  FontSettings2 get_font_file(const char* family, int bold, int italic,
+                              int symbol) {
     const char* fontfamily = family;
     if (symbol) {
       fontfamily = "symbol";
     }
-    return locate_font_with_features(fontfamily, italic, bold);
+    return systemfonts::ver2::locate_font(fontfamily,
+                                          italic ? 1.0 : 0.0,
+                                          bold ? 700.0 : 400.0,
+                                          0.0,
+                                          nullptr, nullptr, 0);
   }
 
   template<typename TARGET, typename ren, typename raster, typename scanline>

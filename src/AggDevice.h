@@ -1560,7 +1560,9 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
   size *= res_mod;
 
   // Start by finding which family to pre-populate font feature settings
-  FontSettings font_info;
+  FontSettings2 font_info;
+  std::vector<int> var_axes;
+  std::vector<int> var_coords;
 
 #if R_GE_version >= 16
   // strncpy may not NUL-terminate if the path fills the buffer
@@ -1568,6 +1570,27 @@ void AggDevice<PIXFMT, R_COLOR, BLNDFMT>::drawGlyph(int n, int *glyphs,
   font_info.index = R_GE_glyphFontIndex(font);
   font_info.features = NULL;
   font_info.n_features = 0;
+
+#if R_GE_version >= 17
+  // Collect any variable font axis settings. Tags are 4 characters packed
+  // big-endian into an int and coordinates are passed to the font stack as
+  // 16.16 fixed point
+  int n_var = R_GE_glyphFontNumVar(font);
+  var_axes.reserve(n_var);
+  var_coords.reserve(n_var);
+  for (int i = 0; i < n_var; i++) {
+    const char* tag = R_GE_glyphFontVarAxis(font, i);
+    if (tag == NULL || strlen(tag) != 4) continue;
+    var_axes.push_back(((int)(unsigned char)tag[0] << 24) |
+                       ((int)(unsigned char)tag[1] << 16) |
+                       ((int)(unsigned char)tag[2] << 8) |
+                       (int)(unsigned char)tag[3]);
+    var_coords.push_back((int) llround(R_GE_glyphFontVarValue(font, i) * 65536.0));
+  }
+#endif
+  font_info.n_axes = (int) var_axes.size();
+  font_info.axes = var_axes.empty() ? nullptr : var_axes.data();
+  font_info.coords = var_coords.empty() ? nullptr : var_coords.data();
 #endif
 
   if (!t_ren.load_font_from_file(font_info, gren, size, device_id)) {

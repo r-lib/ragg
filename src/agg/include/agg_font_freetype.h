@@ -2,8 +2,8 @@
 // Anti-Grain Geometry - Version 2.4
 // Copyright (C) 2002-2005 Maxim Shemanarev (http://www.antigrain.com)
 //
-// Permission to copy, use, modify, sell and distribute this software 
-// is granted provided this copyright notice appears in all copies. 
+// Permission to copy, use, modify, sell and distribute this software
+// is granted provided this copyright notice appears in all copies.
 // This software is provided "as is" without express or implied
 // warranty, and with no claim as to its suitability for any purpose.
 //
@@ -22,6 +22,9 @@
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#include FT_MULTIPLE_MASTERS_H
+
+#include <vector>
 
 
 #include "agg_scanline_storage_aa.h"
@@ -65,6 +68,16 @@ namespace agg
         void flip_y(bool f);
         void transform(const trans_affine& affine);
         void id(unsigned id) { m_cur_id = id; }
+
+        // Set variable font axis coordinates. `axes` holds n axis tags
+        // (4-byte tags packed into ints) and `coords` the matching design
+        // coordinates in 16.16 fixed point, mirroring the FontSettings2
+        // convention from systemfonts. Coordinates outside the range of an
+        // axis are clamped. Unknown axes are ignored. Returns true if the
+        // current face accepts the settings (a non-variable face accepts an
+        // empty axis set only). The active coordinates participate in the
+        // font signature, so the glyph cache is keyed per variation.
+        bool variations(const int* axes, const int* coords, unsigned n);
 
         // Set Gamma
         //--------------------------------------------------------------------
@@ -134,7 +147,7 @@ namespace agg
         bool            m_hinting;
         bool            m_flip_y;
         bool            m_library_initialized;
-        FT_Library      m_library;    // handle to library    
+        FT_Library      m_library;    // handle to library
         FT_Face*        m_faces;      // A pool of font faces
         char**          m_face_names;
         unsigned*       m_face_indices;
@@ -151,6 +164,11 @@ namespace agg
         double          m_advance_y;
         trans_affine    m_affine;
 
+        // Requested variable font state (axis tags + 16.16 design coords).
+        // Empty when the default instance of the face is in effect.
+        std::vector<int>    m_var_axes;
+        std::vector<int>    m_var_coords;
+
         path_storage_integer<int16, 6>              m_path16;
         path_storage_integer<int32, 6>              m_path32;
         conv_curve<path_storage_integer<int16, 6> > m_curves16;
@@ -166,7 +184,7 @@ namespace agg
 
 
     //------------------------------------------------font_engine_freetype_int16
-    // This class uses values of type int16 (10.6 format) for the vector cache. 
+    // This class uses values of type int16 (10.6 format) for the vector cache.
     // The vector cache is compact, but when rendering glyphs of height
     // more that 200 there integer overflow can occur.
     //
@@ -179,13 +197,13 @@ namespace agg
         typedef font_engine_freetype_base::scanlines_aa_type  scanlines_aa_type;
         typedef font_engine_freetype_base::scanlines_bin_type scanlines_bin_type;
 
-        font_engine_freetype_int16(unsigned max_faces = 32) : 
+        font_engine_freetype_int16(unsigned max_faces = 32) :
             font_engine_freetype_base(false, max_faces) {}
     };
 
     //------------------------------------------------font_engine_freetype_int32
-    // This class uses values of type int32 (26.6 format) for the vector cache. 
-    // The vector cache is twice larger than in font_engine_freetype_int16, 
+    // This class uses values of type int32 (26.6 format) for the vector cache.
+    // The vector cache is twice larger than in font_engine_freetype_int16,
     // but it allows you to render glyphs of very large sizes.
     //
     class font_engine_freetype_int32 : public font_engine_freetype_base
@@ -197,7 +215,7 @@ namespace agg
         typedef font_engine_freetype_base::scanlines_aa_type  scanlines_aa_type;
         typedef font_engine_freetype_base::scanlines_bin_type scanlines_bin_type;
 
-        font_engine_freetype_int32(unsigned max_faces = 32) : 
+        font_engine_freetype_int32(unsigned max_faces = 32) :
             font_engine_freetype_base(true, max_faces) {}
     };
 

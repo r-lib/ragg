@@ -437,6 +437,11 @@ SEXP agg_capabilities(SEXP capabilities) {
   SET_VECTOR_ELT(capabilities, R_GE_capability_glyphs, Rf_ScalarInteger(1));
 #endif
 
+#if R_GE_version >= 17
+  // Variable font axis support in glyph rendering
+  SET_VECTOR_ELT(capabilities, R_GE_capability_variableFonts, Rf_ScalarInteger(1));
+#endif
+
   return capabilities;
 }
 
@@ -545,7 +550,9 @@ pDevDesc agg_device_new(T* device, bool record = FALSE) {
   dd->haveTransparentBg = 3; /* background can be semi-transparent */
   dd->useRotatedTextInContour =  (Rboolean) 1;
 
-#if R_GE_version >= 13
+#if R_GE_version >= 17
+  dd->deviceVersion = R_GE_fontVar;
+#elif R_GE_version >= 13
   dd->deviceVersion = 16; //R_GE_glyphs;
 #endif
 

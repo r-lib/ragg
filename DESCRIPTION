@@ -25,8 +25,8 @@ License: MIT + file LICENSE
 URL: https://ragg.r-lib.org, https://github.com/r-lib/ragg
 BugReports: https://github.com/r-lib/ragg/issues
 Imports:
-    systemfonts (>= 1.0.3),
-    textshaping (>= 0.3.0)
+    systemfonts (>= 1.3.3),
+    textshaping (>= 1.0.5.9000)
 Suggests:
     covr,
     graphics,

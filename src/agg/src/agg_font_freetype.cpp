@@ -650,6 +650,12 @@ namespace agg
         {
             m_last_error = 0;
 
+            // Variation coordinates live on the FT_Face, not the engine, so
+            // the requested variation state is invalidated by a face switch.
+            // Callers re-apply it with variations() after loading.
+            m_var_axes.clear();
+            m_var_coords.clear();
+
             int idx = find_face(font_name, face_index);
             if(idx >= 0)
             {
@@ -838,6 +844,70 @@ namespace agg
     }
 
     //------------------------------------------------------------------------
+    bool font_engine_freetype_base::variations(const int* axes,
+                                               const int* coords,
+                                               unsigned n)
+    {
+        // Fast path: requested state is already in effect
+        if(m_var_axes.size() == n &&
+           (n == 0 ||
+            (std::memcmp(m_var_axes.data(), axes, n * sizeof(int)) == 0 &&
+             std::memcmp(m_var_coords.data(), coords, n * sizeof(int)) == 0)))
+        {
+            return true;
+        }
+        if(!m_cur_face) return false;
+
+        std::vector<int> new_axes;
+        std::vector<int> new_coords;
+
+        FT_MM_Var* mm = 0;
+        bool face_is_variable = FT_Get_MM_Var(m_cur_face, &mm) == 0 && mm != 0;
+        if(face_is_variable && n > 0)
+        {
+            std::vector<FT_Fixed> design(mm->num_axis);
+            for(FT_UInt i = 0; i < mm->num_axis; ++i)
+            {
+                design[i] = mm->axis[i].def;
+            }
+            for(unsigned i = 0; i < n; ++i)
+            {
+                for(FT_UInt j = 0; j < mm->num_axis; ++j)
+                {
+                    if((FT_ULong)(unsigned)axes[i] == mm->axis[j].tag)
+                    {
+                        FT_Fixed v = (FT_Fixed)coords[i];
+                        if(v < mm->axis[j].minimum) v = mm->axis[j].minimum;
+                        if(v > mm->axis[j].maximum) v = mm->axis[j].maximum;
+                        design[j] = v;
+                        new_axes.push_back(axes[i]);
+                        new_coords.push_back(coords[i]);
+                        break;
+                    }
+                }
+            }
+            m_last_error = FT_Set_Var_Design_Coordinates(m_cur_face,
+                                                         design.size(),
+                                                         design.data());
+            FT_Done_MM_Var(m_library, mm);
+        }
+        else
+        {
+            if(mm) FT_Done_MM_Var(m_library, mm);
+            // No (usable) axes requested: reset the face to its default
+            // instance. Non-variable faces simply stay as they are.
+            m_last_error = FT_Set_Var_Design_Coordinates(m_cur_face, 0, 0);
+        }
+        if(m_last_error != 0) return false;
+
+        m_var_axes.swap(new_axes);
+        m_var_coords.swap(new_coords);
+        update_signature();
+        return true;
+    }
+
+
+    //------------------------------------------------------------------------
     void font_engine_freetype_base::hinting(bool h)
     {
         m_hinting = h;
@@ -906,6 +976,18 @@ namespace agg
                     int(m_hinting),
                     int(m_flip_y),
                     gamma_hash);
+            if(!m_var_axes.empty())
+            {
+                // Variation coordinates change the rendered glyphs, so they
+                // must be part of the cache key
+                char vbuf[16];
+                unsigned var_hash = calc_crc32((const unsigned char*)m_var_axes.data(),
+                                               m_var_axes.size() * sizeof(int)) ^
+                                    calc_crc32((const unsigned char*)m_var_coords.data(),
+                                               m_var_coords.size() * sizeof(int));
+                std::snprintf(vbuf, sizeof(vbuf), ",v%08X", var_hash);
+                std::strcat(m_signature, vbuf);
+            }
             if(m_glyph_rendering == glyph_ren_outline ||
                m_glyph_rendering == glyph_ren_agg_mono ||
                m_glyph_rendering == glyph_ren_agg_gray8)

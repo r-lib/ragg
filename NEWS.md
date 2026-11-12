@@ -1,5 +1,12 @@
 # ragg (development version)
 
+* ragg is now variable font aware. Axis settings travel through shaping via
+  the new `FontSettings2` C API in textshaping and are honoured both in
+  regular text rendering and in the `glyph()` device callback (R >= 4.6.0),
+  which now reads the variations carried by `grid::glyphFont()`. Variation
+  coordinates are part of the AGG font cache key so glyphs are cached per
+  instance of the font, and the device now advertises the `variableFonts`
+  capability
 * Glyph loading now bypasses embedded bitmap strikes in scalable fonts,
   which failed to render at specific font sizes with certain fonts (e.g.
   Calibri and Arial on Windows) and silently produced missing text (#219)
