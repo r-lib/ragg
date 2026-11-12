@@ -717,7 +717,7 @@ sessioninfo::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-11-11
+#>  date     2026-11-12
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   NA
 #> 
@@ -759,7 +759,7 @@ sessioninfo::session_info()
 #>  profmem        0.7.0      2025-05-02 [1] RSPM
 #>  purrr          1.2.2      2026-04-10 [1] RSPM
 #>  R6             2.6.1      2025-02-15 [1] RSPM
-#>  ragg         * 1.5.2.9000 2026-11-11 [1] local
+#>  ragg         * 1.5.2.9000 2026-11-12 [1] local
 #>  RColorBrewer   1.1-3      2022-04-03 [1] RSPM
 #>  rlang          1.3.0      2026-07-05 [1] RSPM
 #>  rmarkdown      2.32       2026-09-01 [1] RSPM

@@ -83,14 +83,14 @@ agg_record()
 plot(1:10, 1:10)
 rec <- recordPlot()
 dev.off()
-#> agg_record_1d096587bf46 
-#>                       2 
+#> agg_record_1b762b97c28 
+#>                      2 
 
 # Replay these on another device
 file <- tempfile(fileext = '.png')
 agg_png(file)
 replayPlot(rec)
 dev.off()
-#> agg_record_1d096587bf46 
-#>                       2 
+#> agg_record_1b762b97c28 
+#>                      2 
 ```

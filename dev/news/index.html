@@ -46,7 +46,25 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="ragg-development-version">ragg (development version)<a class="anchor" aria-label="anchor" href="#ragg-development-version"></a></h2>
-</div>
+<ul><li>Fixed a range of memory safety issues uncovered in a review of the C++ code:
+<ul><li>Pixel buffer sizes are now computed with overflow checks, preventing heap corruption when opening devices with extreme dimensions</li>
+<li>Sub-pixel tiling patterns are now a clean error instead of a crash in the tile renderer</li>
+<li>Failed allocations when creating masks, patterns, and groups can no longer result in double frees</li>
+<li>16-bit TIFF output no longer passes a malformed ExtraSamples tag to libtiff which could crash on transparent backgrounds</li>
+</ul></li>
+<li>R errors or interrupts raised while recording clipping paths, masks, patterns, or groups no longer leak memory or leave the device in a broken recording state where subsequent drawing silently disappears</li>
+<li>Removed clip paths and masks are no longer referenced by the device, avoiding potential use-after-free</li>
+<li>Fixed a segfault that could occur when a font failed to load after another font had been used, due to a stale font cache</li>
+<li>Device ids are now unique across device types, fixing a potential font mixup when different device types were open simultaneously</li>
+<li>16-bit devices now render masks with the correct colours (previously mask colours were misinterpreted, e.g. a solid black mask rendered almost white)</li>
+<li>libjpeg errors (e.g. write failures) no longer terminate the R session</li>
+<li>libpng write failures no longer leak file handles</li>
+<li>TIFF writing no longer leaks a file handle per saved page and is unicode-aware on Windows for both 8- and 16-bit output</li>
+<li>The <code>smoothing</code> and <code>method</code> arguments of <code><a href="../reference/agg_jpeg.html">agg_jpeg()</a></code> are now respected (they were previously reset by libjpeg defaults)</li>
+<li>WebP save failures with <code>options(warn = 2)</code> no longer skip resource cleanup</li>
+<li>
+<code>drawGlyph()</code> now translates all glyph positions correctly inside patterns and no longer mutates R’s coordinate arrays</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.5.2" id="ragg-152">ragg 1.5.2<a class="anchor" aria-label="anchor" href="#ragg-152"></a></h2><p class="text-muted">CRAN release: 2026-03-23</p>
 <ul><li>Fixed a sanitizer issue from not correctly closing down the recording device</li>
