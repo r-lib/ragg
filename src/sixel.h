@@ -86,18 +86,18 @@ namespace sixeldev_impl {
 				}
 				int axis = depth % 3;
 				std::int64_t dist_axis = (std::int64_t)c.rgb[axis] - (std::int64_t)palette[node->color_index].rgb[axis];
-				const color_node *near { nullptr }, *far { nullptr };
+				const color_node *near_node { nullptr }, *far_node { nullptr };
 				if (dist_axis < 0) {
-					near = node->lhs.get();
-					far = node->rhs.get();
+					near_node = node->lhs.get();
+					far_node = node->rhs.get();
 				}
 				else {
-					near = node->rhs.get();
-					far = node->lhs.get();
+					near_node = node->rhs.get();
+					far_node = node->lhs.get();
 				}
-				search_recursively(near, c, depth + 1, res);
+				search_recursively(near_node, c, depth + 1, res);
 				if (dist_axis * dist_axis <= res.dist_sq) {
-					search_recursively(far, c, depth + 1, res);
+					search_recursively(far_node, c, depth + 1, res);
 				}
 			}
 			std::unique_ptr<color_node> data;
