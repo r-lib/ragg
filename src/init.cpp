@@ -18,6 +18,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"agg_jpeg_c", (DL_FUNC) &agg_jpeg_c, 11},
   {"agg_capture_c", (DL_FUNC) &agg_capture_c, 8},
   {"agg_record_c", (DL_FUNC) &agg_record_c, 8},
+  {"agg_sixel_c", (DL_FUNC) &agg_sixel_c, 7},
   {NULL, NULL, 0}
 };
 
