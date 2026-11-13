@@ -2,7 +2,7 @@
 % Please edit documentation in R/agg_dev.R
 \name{agg_sixel}
 \alias{agg_sixel}
-\title{Draw to a Sixel file}
+\title{Draw to the standard output using Sixel graphics}
 \usage{
 agg_sixel(
   width = 480,
@@ -52,8 +52,10 @@ data upon termination with \code{dev.off()}. This requires a terminal emulator
 that supports Sixel graphics.
 }
 \examples{
-agg_sixel(file)
+\dontrun{
+agg_sixel()
 plot(sin, -pi, 2*pi)
 dev.off()
+}
 
 }

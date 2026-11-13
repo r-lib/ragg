@@ -672,7 +672,7 @@ agg_webp_anim <- function(
   invisible()
 }
 
-#' Draw to a Sixel file
+#' Draw to the standard output using Sixel graphics
 #'
 #' This function creates a graphics device that renders plots to the standard
 #' output using the Sixel bitmap graphics protocol. The device outputs Sixel
@@ -703,9 +703,11 @@ agg_webp_anim <- function(
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' agg_sixel()
 #' plot(sin, -pi, 2*pi)
 #' dev.off()
+#' }
 #'
 agg_sixel <- function(
   width = 480,

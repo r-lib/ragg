@@ -18,6 +18,7 @@ public:
     std::string sixel = sixeldev_impl::as_sixel(this->buffer, this->width, this->height);
     sixel.push_back('\n');
     fwrite(sixel.c_str(), 1, sixel.size(), stdout);
+    fflush(stdout);
     return true;
   };
 };
