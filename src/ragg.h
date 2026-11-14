@@ -131,3 +131,5 @@ SEXP agg_capture_c(SEXP name, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
                    SEXP res, SEXP scaling, SEXP snap);
 SEXP agg_record_c(SEXP name, SEXP width, SEXP height, SEXP pointsize, SEXP bg,
                   SEXP res, SEXP scaling, SEXP snap);
+SEXP agg_sixel_c(SEXP width, SEXP height, SEXP pointsize, SEXP bg,
+               SEXP res, SEXP scaling, SEXP snap);

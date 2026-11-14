@@ -36,3 +36,4 @@ reference:
   - agg_capture
   - agg_ppm
   - agg_record
+  - agg_sixel
