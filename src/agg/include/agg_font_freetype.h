@@ -97,6 +97,7 @@ namespace agg
         double      height()       const { return double(m_height) / 64.0;    }
         double      width()        const { return double(m_width) / 64.0;     }
         double      scaling()      const { return m_scaling;    }
+        double      glyph_scaling() const { return m_glyph_scaling; }
         double      ascender()     const;
         double      descender()    const;
         bool        hinting()      const { return m_hinting;    }
@@ -142,8 +143,10 @@ namespace agg
         FT_Encoding     m_char_map;
         char*           m_signature;
         unsigned        m_height;
+        unsigned        m_requested_height; // height before strike snapping
         unsigned        m_width;
         double          m_scaling;
+        double          m_glyph_scaling;
         bool            m_hinting;
         bool            m_flip_y;
         bool            m_library_initialized;
@@ -159,6 +162,10 @@ namespace agg
         unsigned        m_glyph_index;
         unsigned        m_data_size;
         glyph_data_type m_data_type;
+        // Owns a copy of color bitmap data so the glyph slot can be
+        // invalidated (e.g. by restoring a borrowed bitmap strike) before
+        // write_glyph_to() runs
+        std::vector<int8u> m_color_data;
         rect_i          m_bounds;
         double          m_advance_x;
         double          m_advance_y;

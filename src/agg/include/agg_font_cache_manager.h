@@ -2,8 +2,8 @@
 // Anti-Grain Geometry - Version 2.4
 // Copyright (C) 2002-2005 Maxim Shemanarev (http://www.antigrain.com)
 //
-// Permission to copy, use, modify, sell and distribute this software 
-// is granted provided this copyright notice appears in all copies. 
+// Permission to copy, use, modify, sell and distribute this software
+// is granted provided this copyright notice appears in all copies.
 // This software is provided "as is" without express or implied
 // warranty, and with no claim as to its suitability for any purpose.
 //
@@ -43,6 +43,7 @@ namespace agg
         rect_i          bounds;
         double          advance_x;
         double          advance_y;
+        double          scaling; // requested/strike scaling at rasterization
     };
 
 
@@ -53,7 +54,7 @@ namespace agg
         enum block_size_e { block_size = 16384-16 };
 
         //--------------------------------------------------------------------
-        font_cache() : 
+        font_cache() :
             m_allocator(block_size),
             m_font_signature(0)
         {}
@@ -76,7 +77,7 @@ namespace agg
         const glyph_cache* find_glyph(unsigned glyph_code) const
         {
             unsigned msb = (glyph_code >> 8) & 0xFF;
-            if(m_glyphs[msb]) 
+            if(m_glyphs[msb])
             {
                 return m_glyphs[msb][glyph_code & 0xFF];
             }
@@ -84,19 +85,20 @@ namespace agg
         }
 
         //--------------------------------------------------------------------
-        glyph_cache* cache_glyph(unsigned        glyph_code, 
+        glyph_cache* cache_glyph(unsigned        glyph_code,
                                  unsigned        glyph_index,
                                  unsigned        data_size,
                                  glyph_data_type data_type,
                                  const rect_i&   bounds,
                                  double          advance_x,
-                                 double          advance_y)
+                                 double          advance_y,
+                                 double          scaling)
         {
             unsigned msb = (glyph_code >> 8) & 0xFF;
             if(m_glyphs[msb] == 0)
             {
-                m_glyphs[msb] = 
-                    (glyph_cache**)m_allocator.allocate(sizeof(glyph_cache*) * 256, 
+                m_glyphs[msb] =
+                    (glyph_cache**)m_allocator.allocate(sizeof(glyph_cache*) * 256,
                                                         sizeof(glyph_cache*));
                 std::memset(m_glyphs[msb], 0, sizeof(glyph_cache*) * 256);
             }
@@ -104,7 +106,7 @@ namespace agg
             unsigned lsb = glyph_code & 0xFF;
             if(m_glyphs[msb][lsb]) return 0; // Already exists, do not overwrite
 
-            glyph_cache* glyph = 
+            glyph_cache* glyph =
                 (glyph_cache*)m_allocator.allocate(sizeof(glyph_cache),
                                                    sizeof(double));
 
@@ -115,6 +117,7 @@ namespace agg
             glyph->bounds             = bounds;
             glyph->advance_x          = advance_x;
             glyph->advance_y          = advance_y;
+            glyph->scaling            = scaling;
             return m_glyphs[msb][lsb] = glyph;
         }
 
@@ -129,7 +132,7 @@ namespace agg
 
 
 
-    
+
     //---------------------------------------------------------font_cache_pool
     class font_cache_pool
     {
@@ -146,7 +149,7 @@ namespace agg
         }
 
         //--------------------------------------------------------------------
-        font_cache_pool(unsigned max_fonts=32) : 
+        font_cache_pool(unsigned max_fonts=32) :
             m_fonts(pod_allocator<font_cache*>::allocate(max_fonts)),
             m_max_fonts(max_fonts),
             m_num_fonts(0),
@@ -199,15 +202,16 @@ namespace agg
         }
 
         //--------------------------------------------------------------------
-        glyph_cache* cache_glyph(unsigned        glyph_code, 
+        glyph_cache* cache_glyph(unsigned        glyph_code,
                                  unsigned        glyph_index,
                                  unsigned        data_size,
                                  glyph_data_type data_type,
                                  const rect_i&   bounds,
                                  double          advance_x,
-                                 double          advance_y)
+                                 double          advance_y,
+                                 double          scaling)
         {
-            if(m_cur_font) 
+            if(m_cur_font)
             {
                 return m_cur_font->cache_glyph(glyph_code,
                                                glyph_index,
@@ -215,7 +219,8 @@ namespace agg
                                                data_type,
                                                bounds,
                                                advance_x,
-                                               advance_y);
+                                               advance_y,
+                                               scaling);
             }
             return 0;
         }
@@ -288,7 +293,7 @@ namespace agg
         {
             synchronize();
             const glyph_cache* gl = m_fonts.find_glyph(glyph_code);
-            if(gl) 
+            if(gl)
             {
                 m_prev_glyph = m_last_glyph;
                 return m_last_glyph = gl;
@@ -298,13 +303,14 @@ namespace agg
                 if(m_engine.prepare_glyph(glyph_code))
                 {
                     m_prev_glyph = m_last_glyph;
-                    m_last_glyph = m_fonts.cache_glyph(glyph_code, 
+                    m_last_glyph = m_fonts.cache_glyph(glyph_code,
                                                        m_engine.glyph_index(),
                                                        m_engine.data_size(),
                                                        m_engine.data_type(),
                                                        m_engine.bounds(),
                                                        m_engine.advance_x(),
-                                                       m_engine.advance_y());
+                                                       m_engine.advance_y(),
+                                                       m_engine.glyph_scaling());
                     m_engine.write_glyph_to(m_last_glyph->data);
                     return m_last_glyph;
                 }
@@ -313,8 +319,8 @@ namespace agg
         }
 
         //--------------------------------------------------------------------
-        void init_embedded_adaptors(const glyph_cache* gl, 
-                                    double x, double y, 
+        void init_embedded_adaptors(const glyph_cache* gl,
+                                    double x, double y,
                                     double scale=1.0)
         {
             if(gl)
@@ -353,7 +359,7 @@ namespace agg
         {
             if(m_prev_glyph && m_last_glyph)
             {
-                return m_engine.add_kerning(m_prev_glyph->glyph_index, 
+                return m_engine.add_kerning(m_prev_glyph->glyph_index,
                                             m_last_glyph->glyph_index,
                                             x, y);
             }

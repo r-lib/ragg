@@ -10,6 +10,10 @@
 * Glyph loading now bypasses embedded bitmap strikes in scalable fonts,
   which failed to render at specific font sizes with certain fonts (e.g.
   Calibri and Arial on Windows) and silently produced missing text (#219)
+* Glyphs missing from the selected bitmap strike of a non-scalable font
+  (e.g. newer emoji in Apple Color Emoji at sizes whose strike lacks
+  artwork) now fall back to the nearest strike that carries the glyph and
+  are scaled to the requested size, instead of silently disappearing
 * Fixed undefined behaviour (flagged by ASAN as `memcpy-param-overlap`) when the
   font cache pool evicted a font, by using `memmove` for the overlapping array
   shift in the vendored AGG font cache (#222)

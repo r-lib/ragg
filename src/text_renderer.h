@@ -474,9 +474,18 @@ public:
                                          clip);
                 break;
 
-              case agg::glyph_data_color:
-                renderColourGlyph<TARGET>(glyph, x + x_offset, y + y_offset, rot, ren, sl, scaling_buffer[font_buffer[text_run_start]], ras_clip, clip);
+              case agg::glyph_data_color: {
+                // textshaping's scaling reflects the strike chosen at shape
+                // time; rescale it if a bitmap-strike fallback served this
+                // glyph from a different strike. glyph->scaling ==
+                // engine.scaling() when no fallback occurred.
+                double ts_scaling = scaling_buffer[font_buffer[text_run_start]];
+                double engine_scaling = get_engine().scaling();
+                double glyph_scaling = engine_scaling > 0 ?
+                    ts_scaling * glyph->scaling / engine_scaling : glyph->scaling;
+                renderColourGlyph<TARGET>(glyph, x + x_offset, y + y_offset, rot, ren, sl, glyph_scaling, ras_clip, clip);
                 break;
+              }
 
               case agg::glyph_data_outline:
                 if (recording_clip != NULL) {
@@ -532,7 +541,7 @@ public:
           break;
 
         case agg::glyph_data_color:
-          renderColourGlyph<TARGET>(glyph, x[i], y[i], rot, ren, sl, get_engine().scaling(), ras_clip, clip);
+          renderColourGlyph<TARGET>(glyph, x[i], y[i], rot, ren, sl, glyph->scaling, ras_clip, clip);
           break;
 
         case agg::glyph_data_outline:

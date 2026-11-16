@@ -16,6 +16,7 @@
 
 #include <cstdio>
 #include <cstring>
+#include <vector>
 #include "agg_font_freetype.h"
 #include "agg_bitset_iterator.h"
 #include "agg_renderer_scanline.h"
@@ -558,7 +559,10 @@ namespace agg
         m_char_map(FT_ENCODING_NONE),
         m_signature(new char [256+256-16]),
         m_height(0),
+        m_requested_height(0),
         m_width(0),
+        m_scaling(1.0),
+        m_glyph_scaling(1.0),
         m_hinting(true),
         m_flip_y(false),
         m_library_initialized(false),
@@ -823,6 +827,10 @@ namespace agg
     bool font_engine_freetype_base::height(double h)
     {
         m_height = int(h * 64.0);
+        // Bitmap-strike snapping overwrites m_height with the strike's
+        // metrics; keep the requested height for the cache signature so
+        // sizes mapping to the same strike don't share cache entries
+        m_requested_height = m_height;
         if(m_cur_face)
         {
             update_char_size();
@@ -971,7 +979,7 @@ namespace agg
                     m_face_index,
                     int(m_glyph_rendering),
                     m_resolution,
-                    m_height,
+                    m_requested_height,
                     m_width,
                     int(m_hinting),
                     int(m_flip_y),
@@ -1067,6 +1075,15 @@ namespace agg
     bool font_engine_freetype_base::prepare_glyph(unsigned glyph_index)
     {
         m_glyph_index = glyph_index;
+        m_glyph_scaling = m_scaling;
+        // Restores a borrowed bitmap strike on scope exit (see below); armed
+        // only when the strike-fallback path ran
+        struct strike_restorer {
+            FT_Face face;
+            int strike;
+            strike_restorer() : face(0), strike(-1) {}
+            ~strike_restorer() { if(face && strike >= 0) FT_Select_Size(face, strike); }
+        } restorer;
         int load_flags = m_glyph_rendering == glyph_ren_native_color ? FT_LOAD_COLOR : (m_hinting ? FT_LOAD_DEFAULT : FT_LOAD_NO_HINTING);
         // Embedded bitmap strikes in scalable fonts don't survive the
         // outline-based rendering pipeline; always load outlines instead.
@@ -1078,6 +1095,63 @@ namespace agg
         m_last_error = FT_Load_Glyph(m_cur_face,
                                      m_glyph_index,
                                      load_flags);
+        if(m_last_error == 0 && !FT_IS_SCALABLE(m_cur_face) &&
+           (m_cur_face->glyph->bitmap.width == 0 ||
+            m_cur_face->glyph->bitmap.rows == 0))
+        {
+            // Bitmap strikes can be sparse per glyph (e.g. Apple Color Emoji
+            // glyphs added in later Unicode versions lack artwork in the
+            // mid-size strikes). Fall back to the nearest strike that
+            // carries the glyph. The strike is only borrowed for the load and
+            // render below; the original strike is restored before returning,
+            // and the requested-to-actual scaling travels with the cached
+            // glyph (m_glyph_scaling) so it renders at the right size.
+            unsigned requested = (unsigned)(m_scaling * m_height);
+            int n_strikes = m_cur_face->num_fixed_sizes;
+            // Remember the currently selected strike so the face can be
+            // returned to it afterwards
+            int orig_strike = -1;
+            for(int i = 0; i < n_strikes; ++i)
+            {
+                if(m_cur_face->available_sizes[i].size ==
+                   (unsigned)m_cur_face->size->metrics.height)
+                { orig_strike = i; break; }
+            }
+            std::vector<char> tried(n_strikes, 0);
+            for(int pass = 0; pass < n_strikes; ++pass)
+            {
+                int best = -1;
+                unsigned best_diff = ~0u;
+                for(int i = 0; i < n_strikes; ++i)
+                {
+                    if(tried[i]) continue;
+                    unsigned size = m_cur_face->available_sizes[i].size;
+                    unsigned diff = size > requested ? size - requested
+                                                     : requested - size;
+                    if(diff < best_diff) { best_diff = diff; best = i; }
+                }
+                if(best < 0) break;
+                tried[best] = 1;
+                if(FT_Select_Size(m_cur_face, best) != 0) continue;
+                m_last_error = FT_Load_Glyph(m_cur_face,
+                                             m_glyph_index,
+                                             load_flags);
+                if(m_last_error != 0) continue;
+                if(m_cur_face->glyph->bitmap.width != 0 &&
+                   m_cur_face->glyph->bitmap.rows != 0)
+                {
+                    m_glyph_scaling = double(requested) /
+                                double(m_cur_face->size->metrics.height);
+                    break;
+                }
+            }
+            // Restore the original strike when leaving this function (after
+            // the glyph has been rendered below, since selecting a strike may
+            // invalidate the glyph slot). This keeps the face in sync with
+            // m_scaling/m_height regardless of which strike served the glyph.
+            restorer.face = m_cur_face;
+            restorer.strike = orig_strike;
+        }
         if(m_last_error == 0)
         {
             switch(m_glyph_rendering)
@@ -1120,6 +1194,8 @@ namespace agg
                         m_bounds.y2 = m_bounds.y1 - m_cur_face->glyph->bitmap.rows;
                         m_data_size = m_cur_face->glyph->bitmap.rows * m_cur_face->glyph->bitmap.pitch;
                         m_data_type = glyph_data_color;
+                        m_color_data.assign(m_cur_face->glyph->bitmap.buffer,
+                                            m_cur_face->glyph->bitmap.buffer + m_data_size);
                         m_advance_x = int26p6_to_dbl(m_cur_face->glyph->advance.x);
                         m_advance_y = int26p6_to_dbl(m_cur_face->glyph->advance.y);
                         return true;
@@ -1291,7 +1367,7 @@ namespace agg
             {
             default: return;
             case glyph_data_mono:    m_scanlines_bin.serialize(data); break;
-            case glyph_data_color:   memcpy(data, m_cur_face->glyph->bitmap.buffer, m_data_size); break;
+            case glyph_data_color:   memcpy(data, m_color_data.data(), m_data_size); break;
             case glyph_data_gray8:   m_scanlines_aa.serialize(data);  break;
             case glyph_data_outline:
                 if(m_flag32)
