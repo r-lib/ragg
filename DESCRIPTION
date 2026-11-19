@@ -44,3 +44,6 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 SystemRequirements: freetype2, libpng, libtiff, libjpeg, libwebp, libwebpmux
+Remotes:
+    r-lib/systemfonts,
+    r-lib/textshaping
