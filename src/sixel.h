@@ -126,8 +126,9 @@ namespace sixeldev_impl {
 			for (size_t i = 0; i < pixel_size; i += bitmap_stride) {
 				std::uint32_t r = data[i], g = data[i + 1], b = data[i + 2];
 				std::uint32_t color = pack_pixel(r, g, b);
-				auto [itr, inserted] = color_index.try_emplace(color, colors.size());
-				if (inserted) {
+				auto itr = color_index.find(color);
+				if (itr == color_index.end()) {
+					color_index.emplace(color, colors.size());
 					color_cluster cluster(r, g, b);
 					if (r < min_r) { min_r = r; } if (r > max_r) { max_r = r; }
 					if (g < min_g) { min_g = g; } if (g > max_g) { max_g = g; }
@@ -335,9 +336,9 @@ namespace sixeldev_impl {
 					}
 					if (pq.empty()) { break; }
 					auto top_box = pq.top(); pq.pop();
-					auto [box1, box2] = top_box.split();
-					pq.push(std::move(box1));
-					pq.push(std::move(box2));
+					auto boxes = top_box.split();
+					pq.push(std::move(boxes.first));
+					pq.push(std::move(boxes.second));
 				}
 
 				while (!pq.empty()) {
